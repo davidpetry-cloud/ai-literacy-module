@@ -20,8 +20,10 @@ claims.js          every factual claim, as a ledger record
 lesson-core.js     renderer for both pages; no side effects on import
 index.html         hub: lessons, design basis, evaluation, claims ledger
 lesson.html        one page for every lesson: lesson.html?n=1&track=educators
-course.css         tokens forked from Singapore Math; status colours from live-sound-eq-sop
-tests/             alignment · governance · render
+course.css         tokens, fonts, header and themes from Singapore Math; status colours from live-sound-eq-sop
+theme-toggle.js    light/dark toggle, loaded in <head> before first paint
+fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requests
+tests/             alignment · governance · render · ui
 scripts/serve.js   local preview on :8080
 ```
 
@@ -70,6 +72,35 @@ Each framework has one job. Don't add a sixth without removing one.
 - **Reteach criteria are specific.** `crit` names the signal that triggers
   reteaching, not a score.
 
+## UI rules
+
+The UX/UI baseline is the live Singapore Math site
+(`davidpetry-cloud.github.io/grade6-singapore-math-cpa`). When in doubt, do
+what it does. `tests/ui.test.js` enforces everything below from `course.css`.
+
+- **Both themes, always.** Every colour token in `:root` has a twin in
+  `:root[data-theme="dark"]`. Print forces light. Check new UI in both themes
+  and at 375px before calling it done.
+- **Contrast is 4.5:1 minimum** for all text, in both themes. The allowed
+  text/surface pairings are listed in `PAIRS` in the UI test. A new pairing
+  goes there first, and must pass, before it's used.
+- **Token naming:** a bare hue (`--teal`, `--att`, `--peri`, `--rose`) is for
+  borders and fills only. Its `-text` twin is the shade that passes as text.
+  `--ink*` flips in dark mode, so it is never a background. Dark bands use
+  `--header-bg`, `--btn-bg` or `--chip-bg`. Text on a lesson colour uses
+  `--on-lc`.
+- **Labels that carry meaning** (status badges, answer-key labels) sit on their
+  own `--card` background, so they pass wherever they're placed.
+- **Type:** Lexend for all non-heading text, Fraunces for headings; both are
+  self-hosted. Body text is 16px with 1.62 line height. Nothing is smaller
+  than 12.8px (0.8rem).
+- **Tap targets:** buttons, header pills and radios are at least 44px tall;
+  inline disclosures (`<summary>`) at least 24px.
+- **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
+  so re-rendering never removes it. New pages copy it from `lesson.html`.
+- **Each lesson has its own colour** (`--l1`…`--l5`) as a ribbon and outline,
+  always paired with the lesson number. Lessons in design get a dashed outline.
+
 ## Voice
 
 Plain and specific. Scripts read like a person talking. Warm-ups surface a
@@ -87,7 +118,8 @@ a source, so use it like one.
 4. Add any new factual claims to `claims.js` as model proposals, with reasons.
 5. Fill `arcs`, `transfer` and `access`. Set `ready: true`.
 6. `npm test`. Don't ship on a failure.
-7. `npm run preview`. Check every track, the reveal controls, and 375px width.
+7. `npm run preview`. Check every track, the reveal controls, both themes,
+   and 375px width.
 
 ## Model guidance
 
@@ -119,7 +151,10 @@ npm test
   never resolves as attested (even when disguised), and the ledger version
   pinned in each page matches the installed one.
 - `render`: jsdom. Stage order on the page, track switching changes only what
-  it should, grid aria-labels before and after reveal, badges keep their text.
+  it should, grid aria-labels before and after reveal, badges keep their text,
+  and lesson colours.
+- `ui`: contrast of every allowed pairing in both themes, token usage, type
+  floor, self-hosted fonts, tap targets, and theme toggle behaviour.
 
 When bumping `attestation-ledger`, change the version in `package.json` and in
 the import map in **both** HTML pages. The governance test fails until all
