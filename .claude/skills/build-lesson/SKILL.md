@@ -25,7 +25,14 @@ is the contract. Read it in full before anything else, along with
 
 ## 1. Propose the evidence, then wait (backward design gate)
 
-Before writing any code, show David in chat:
+**If `docs/lesson-0$ARGUMENTS-design.md` exists, start from it.** It's a
+design already proposed in an earlier session. Summarise it in chat, point
+out anything that conflicts with the current CLAUDE.md or code, and ask David
+to approve it or say what to change. Update the file with any changes. Once
+approved, set its Status line to "approved <date>" and build exactly what it
+says. Don't draft a new design over it.
+
+Otherwise, before writing any code, show David in chat:
 
 - one warm-up (pre) item and one check (post) item for **every** objective,
   each with its `expected` or `crit` text;
