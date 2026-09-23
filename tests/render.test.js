@@ -120,6 +120,35 @@ describe("track switching changes context, not the core", () => {
   });
 });
 
+describe("page structure", () => {
+  const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
+  const hub = page("index.html");
+  renderHub(hub);
+
+  it.each([
+    ["hub", hub],
+    ...TRACK_IDS.map((t) => [`lesson 1 (${t})`, lessonDoc(t)])
+  ])("%s has one h1 and never skips a heading level", (_, doc) => {
+    const levels = outline(doc);
+    expect(levels.filter((l) => l === 1)).toHaveLength(1);
+    levels.forEach((l, i) => i && expect(l, `h${levels[i - 1]} → h${l}`).toBeLessThanOrEqual(levels[i - 1] + 1));
+  });
+
+  it.each([
+    ["hub", hub],
+    ["lesson 1", lessonDoc(TRACK_IDS[0])]
+  ])("%s gives every control a distinct accessible name", (_, doc) => {
+    const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
+    expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
+  });
+
+  it("moves focus to the grid when the reveal button removes itself", () => {
+    const doc = lessonDoc(TRACK_IDS[0]);
+    doc.querySelector("#reveal-grid").click();
+    expect(doc.activeElement).toBe(doc.querySelector("#grid"));
+  });
+});
+
 describe("lesson colours", () => {
   const css = readFileSync(new URL("../course.css", import.meta.url), "utf8");
 

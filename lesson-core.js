@@ -57,7 +57,7 @@ export function claimCard(id, now = new Date()) {
   return `<div class="claim" data-claim="${esc(id)}" data-status="${status}">
     <div class="claim-head">${statusBadge(status)}<span class="claim-id">${esc(id)}</span></div>
     <p>${esc(record.text)}</p>
-    <details><summary>Who says so</summary>${provenance(record, now)}</details>
+    <details><summary>Who says so<span class="sr"> about: ${esc(record.text.split(" ").slice(0, 8).join(" "))}…</span></summary>${provenance(record, now)}</details>
   </div>`;
 }
 
@@ -216,50 +216,50 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       .map((o) => `<li><span class="oid">${esc(o.id)}</span> ${esc(o.text)} <span class="bloom">${esc(o.bloom)}</span></li>`)
       .join("")}</ul></div>
 
-    <section class="block why"><h3>Why this matters</h3>
+    <section class="block why"><h2>Why this matters</h2>
       <p class="relevance">${esc(lesson.arcs.relevance[track])}</p>
       <p><b>Open with:</b> ${esc(lesson.arcs.attention)}</p>
       <p><b>Confidence:</b> ${esc(lesson.arcs.confidence)}</p>
     </section>
 
-    <section class="block w" data-stage="warmup"><h3>Warm-up · pre-check <span class="mins">${lesson.warmup.minutes} min</span></h3>
+    <section class="block w" data-stage="warmup"><h2>Warm-up · Pre-check <span class="mins">${lesson.warmup.minutes} min</span></h2>
       <p class="sense">Record answers — they are the "before" for the post-check.</p>
       <ol class="probs">${lesson.warmup.items
         .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="expect"><b>Expect</b>${esc(i.expected)}</div></li>`)
         .join("")}</ol>
     </section>
 
-    <section class="block c" data-stage="concrete"><h3>Concrete · ${esc(concrete.title)} <span class="mins">${concrete.minutes} min</span></h3>
-      <p class="sense">${targets(concrete.targets)}</p>
+    <section class="block c" data-stage="concrete"><h2>Concrete · ${esc(concrete.title)} <span class="mins">${concrete.minutes} min</span></h2>
+      <p class="stage-meta">${targets(concrete.targets)}</p>
       <p class="context">${esc(passage.context)}</p>
       <figure class="passage" data-track="${track}">
         <ol>${sentences
           .map(
-            (s) => `<li><p>${esc(s.text)}</p><details class="key"><summary>Reveal</summary><p><b class="k k-${s.key}">${KEY_LABEL[s.key]}</b> ${esc(s.note)}</p>${
+            (s, i) => `<li><p>${esc(s.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for sentence ${i + 1}</span></summary><p><b class="k k-${s.key}">${KEY_LABEL[s.key]}</b> ${esc(s.note)}</p>${
               s.source ? `<p class="src">Source card: ${esc(s.source)}</p>` : ""
             }</details></li>`
           )
           .join("")}</ol>
         <figcaption>${provenanceNote}</figcaption>
       </figure>
-      <div class="keyclaim"><p class="sense">Is this answer key right?</p>${claimCard(passage.passage.claim, now)}</div>
+      <div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(passage.passage.claim, now)}</div>
       ${moves(concrete.moves)}${say(concrete.say)}${watch(concrete.watch)}
     </section>
 
-    <section class="block p" data-stage="pictorial"><h3>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h3>
-      <p class="sense">${targets(pictorial.targets)}</p>
+    <section class="block p" data-stage="pictorial"><h2>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h2>
+      <p class="stage-meta">${targets(pictorial.targets)}</p>
       <div class="figure" id="grid">${confidenceGrid(sentences)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>
       ${moves(pictorial.moves)}${say(pictorial.say)}${watch(pictorial.watch)}
     </section>
 
-    <section class="block a" data-stage="abstract"><h3>Abstract · ${esc(abstract.title)} <span class="mins">${abstract.minutes} min</span></h3>
-      <p class="sense">${targets(abstract.targets)}</p>
+    <section class="block a" data-stage="abstract"><h2>Abstract · ${esc(abstract.title)} <span class="mins">${abstract.minutes} min</span></h2>
+      <p class="stage-meta">${targets(abstract.targets)}</p>
       <div class="claims">${abstract.principles.map((id) => claimCard(id, now)).join("")}</div>
       ${moves(abstract.moves)}${say(abstract.say)}${watch(abstract.watch)}
     </section>
 
-    <section class="block w" data-stage="check"><h3>Post-check <span class="mins">${lesson.check.minutes} min</span></h3>
+    <section class="block w" data-stage="check"><h2>Check · Post-check <span class="mins">${lesson.check.minutes} min</span></h2>
       <p class="sense">Compare with the warm-up answers, objective by objective.</p>
       <ol class="probs">${lesson.check.items
         .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="crit"><b>Reteach if</b>${esc(i.crit)}</div></li>`)
@@ -267,22 +267,26 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       <div class="exit"><b>Exit ticket</b><p>${esc(lesson.check.exit.rating)}</p><p>${esc(lesson.check.exit.open)}</p></div>
     </section>
 
-    <section class="block transfer"><h3>Take it back to work</h3>
+    <section class="block transfer"><h2>Use it this week</h2>
       <p>${esc(lesson.transfer[track])}</p>
       <p class="sense">Follow up in two weeks: bring one AI output you used and show what you checked.</p>
     </section>`;
 
   side.innerHTML = `
-    <div class="sidebox"><h4>Alignment</h4>${alignmentTable(lesson)}</div>
-    <div class="sidebox"><h4>Access</h4>${lesson.access
+    <div class="sidebox"><h2>Alignment</h2>${alignmentTable(lesson)}</div>
+    <div class="sidebox"><h2>Access notes</h2>${lesson.access
       .map((a) => `<p><b>${esc(a.channel)}</b> ${esc(a.note)}</p>`)
       .join("")}</div>
-    <div class="sidebox"><h4>Satisfaction</h4><p>${esc(lesson.arcs.satisfaction)}</p></div>`;
+    <div class="sidebox"><h2>What learners leave with</h2><p>${esc(lesson.arcs.satisfaction)}</p></div>`;
 
   const btn = doc.querySelector("#reveal-grid");
   btn.addEventListener("click", () => {
-    doc.querySelector("#grid").innerHTML = confidenceGrid(sentences, { revealed: true });
+    const grid = doc.querySelector("#grid");
+    grid.innerHTML = confidenceGrid(sentences, { revealed: true });
     btn.remove();
+    // The button vanishes, so hand focus to what it revealed rather than dropping it on <body>.
+    grid.tabIndex = -1;
+    grid.focus();
   });
 }
 

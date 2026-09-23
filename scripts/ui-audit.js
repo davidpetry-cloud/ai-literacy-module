@@ -57,12 +57,43 @@ export async function audit() {
   root.dataset.theme = original;
   freeze.remove();
 
+  // Heading outline: exactly one h1, and no level skipped on the way down.
+  const levels = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")]
+    .filter((h) => h.getClientRects().length)
+    .map((h) => Number(h.tagName[1]));
+  result.headingSkips = levels
+    .map((l, i) => (i && l > levels[i - 1] + 1 ? `h${levels[i - 1]}→h${l}` : null))
+    .filter(Boolean);
+  result.h1Count = levels.filter((l) => l === 1).length;
+
+  // Controls a screen reader would announce with the same name.
+  const nameOf = (el) => (el.getAttribute("aria-label") || el.textContent).replace(/\s+/g, " ").trim();
+  const names = [...document.querySelectorAll("button, summary, a[href]")].filter((e) => e.getClientRects().length).map(nameOf);
+  result.duplicateNames = [...new Set(names.filter((n, i) => names.indexOf(n) !== i))];
+
+  // Real characters per line for running text (not `ch`, which is the width of "0").
+  const canvas = document.createElement("canvas").getContext("2d");
+  result.longLines = [...document.querySelectorAll("main p, main li, main dd, main td")]
+    .filter((e) => e.getClientRects().length && e.textContent.trim().length > 80 && !e.querySelector("p, li"))
+    .map((e) => {
+      const s = getComputedStyle(e);
+      canvas.font = `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
+      const avg = canvas.measureText("the quick brown fox jumps over a lazy dog").width / 41;
+      const style = getComputedStyle(e);
+      const inner = e.getBoundingClientRect().width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      return { el: `${e.tagName.toLowerCase()}.${e.className}`, chars: Math.round(inner / avg) };
+    })
+    .filter((l) => l.chars > 75)
+    .map((l) => `${l.el} ${l.chars}`)
+    .filter((v, i, a) => a.indexOf(v) === i);
+
   result.horizontalScroll = root.scrollWidth > root.clientWidth;
   result.smallTargets = [...document.querySelectorAll("button, a.back, .tracks label")]
     .filter((e) => e.getClientRects().length && e.getBoundingClientRect().height < 44)
     .map((e) => `${e.tagName.toLowerCase()}.${e.className} ${Math.round(e.getBoundingClientRect().height)}px`);
   result.pass =
     !result.light.contrastFails.length && !result.dark.contrastFails.length &&
-    !result.light.under12_8px.length && !result.horizontalScroll && !result.smallTargets.length;
+    !result.light.under12_8px.length && !result.horizontalScroll && !result.smallTargets.length &&
+    !result.headingSkips.length && result.h1Count === 1 && !result.duplicateNames.length && !result.longLines.length;
   return result;
 }
