@@ -1,0 +1,22 @@
+{
+  "name": "ai-literacy-module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A five-lesson AI literacy course for educators, professionals and students. Every factual claim carries an attestation: a model can propose, only a named human can attest.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "preview": "node scripts/serve.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "author": "David Petry",
+  "license": "MIT",
+  "devDependencies": {
+    "attestation-ledger": "0.1.1",
+    "jsdom": "^30.1.1",
+    "vitest": "^5.0.1"
+  }
+}

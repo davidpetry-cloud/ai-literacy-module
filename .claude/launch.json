@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ai-literacy-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/serve.js"],
+      "port": 8080
+    }
+  ]
+}
