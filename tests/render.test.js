@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -9,11 +9,14 @@ const page = (name) => new JSDOM(readFileSync(new URL(`../${name}`, import.meta.
 const lesson1 = getLesson(1);
 const concreteData = (track) => lesson1.stages[0].tracks[track].passage.sentences;
 
-function lessonDoc(track) {
+function lessonDoc(track, lesson = lesson1) {
   const doc = page("lesson.html");
-  renderLesson(doc, lesson1, { track });
+  renderLesson(doc, lesson, { track });
   return doc;
 }
+const lesson2 = getLesson(2);
+const pairData = (track) => lesson2.stages[0].tracks[track].pair;
+const lesson2Doc = (track) => lessonDoc(track, lesson2);
 
 describe("hub", () => {
   const doc = page("index.html");
@@ -102,6 +105,114 @@ describe.each(TRACK_IDS)("lesson 1, %s track", (track) => {
   });
 });
 
+describe.each(TRACK_IDS)("lesson 2, %s track", (track) => {
+  const doc = lesson2Doc(track);
+  const pair = pairData(track);
+  const press = (part) => doc.querySelector(`.cmp-btn[data-part="${part}"]`).click();
+  const marked = () => [...doc.querySelectorAll("#cmp-structured li.on")].map((li) => li.firstChild.textContent.trim());
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    const order = [...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage);
+    expect(order).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows this track's vague request and output, labelled with its provenance", () => {
+    expect(doc.querySelector(".pair .req").textContent).toBe(`“${pair.vague.prompt}”`);
+    const items = doc.querySelectorAll(".pair li > p");
+    expect([...items].map((p) => p.textContent)).toEqual(pair.vague.output.map((l) => l.text));
+    expect(doc.querySelector(".pair figcaption").textContent).toMatch(/planted on purpose|Captured from/);
+  });
+
+  it("asks about all four parts, with each key closed until revealed", () => {
+    const rows = doc.querySelectorAll(".gaps li");
+    expect(rows).toHaveLength(PARTS.length);
+    rows.forEach((li, i) => {
+      expect(li.textContent).toContain(PARTS[i].label);
+      expect(li.querySelector("details").open).toBe(false);
+      expect(li.querySelector(".k").classList.contains(`k-${pair.vague.gaps[PARTS[i].id].key}`)).toBe(true);
+    });
+  });
+
+  it("starts with no part pressed, nothing marked, and says so", () => {
+    for (const b of doc.querySelectorAll(".cmp-btn")) expect(b.getAttribute("aria-pressed")).toBe("false");
+    expect(marked()).toEqual([]);
+    expect(doc.querySelector("#cmp-status").textContent).toContain("No part selected");
+  });
+
+  it("labels every invented line in words", () => {
+    const expected = [...pair.vague.output, ...pair.structured.output].filter((l) => l.invented).length;
+    const labels = [...doc.querySelectorAll("#compare .cmp-inv")];
+    expect(labels).toHaveLength(expected);
+    for (const l of labels) expect(l.textContent).toBe(INVENTED);
+  });
+
+  it.each(PARTS.map((p) => p.id))("pressing %s marks exactly the lines it caused, and says what changed", (part) => {
+    press(part);
+    const expected = pair.structured.output.filter((l) => l.causedBy?.includes(part)).map((l) => l.text);
+    expect(marked()).toEqual(expected);
+    for (const b of doc.querySelectorAll(".cmp-btn")) expect(b.getAttribute("aria-pressed")).toBe(String(b.dataset.part === part));
+    const label = PARTS.find((p) => p.id === part).label;
+    for (const li of doc.querySelectorAll("#cmp-structured li.on")) expect(li.querySelector(".cmp-tag").textContent).toContain(label);
+    const status = doc.querySelector("#cmp-status").textContent;
+    expect(status).toContain(pair.structured.effects[part]);
+    expect(status).toContain(`${expected.length} line`);
+    press(part);
+  });
+
+  it("clears when the pressed part is pressed again", () => {
+    press("format");
+    press("format");
+    expect(marked()).toEqual([]);
+    expect(doc.querySelector(".cmp-btn[aria-pressed=\"true\"]")).toBeNull();
+    expect(doc.querySelector("#cmp-status").textContent).toContain("No part selected");
+  });
+
+  it("moves from one part to the next without a second press", () => {
+    press("task");
+    press("context");
+    expect([...doc.querySelectorAll('.cmp-btn[aria-pressed="true"]')].map((b) => b.dataset.part)).toEqual(["context"]);
+    press("context");
+  });
+
+  it("keeps focus on the button that was pressed", () => {
+    const b = doc.querySelector('.cmp-btn[data-part="constraints"]');
+    b.focus();
+    b.click();
+    expect(doc.activeElement).toBe(b);
+    b.click();
+  });
+
+  it("escapes content rather than injecting it", () => {
+    expect(doc.querySelector("#content script")).toBeNull();
+  });
+});
+
+describe("lesson 2: the comparison tool is one core across tracks", () => {
+  const html = (track, sel) => lesson2Doc(track).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      const first = html(TRACK_IDS[0], sel);
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(first);
+    }
+  });
+
+  it("keeps the tool's controls, headings and script identical; only the pair changes", () => {
+    const shared = (t) => {
+      const stage = lesson2Doc(t).querySelector('[data-stage="pictorial"]');
+      return [".cmp-controls", "#cmp-status", ".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)
+        .concat([...stage.querySelectorAll("h2, h3")].map((h) => h.textContent)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+    expect(new Set(TRACK_IDS.map((t) => html(t, "#cmp-structured"))).size).toBe(TRACK_IDS.length);
+  });
+
+  it("asks the same four questions in every track's concrete stage", () => {
+    const asks = (t) => [...lesson2Doc(t).querySelectorAll(".gaps li > p")].map((p) => p.textContent).join();
+    for (const t of TRACK_IDS.slice(1)) expect(asks(t)).toBe(asks(TRACK_IDS[0]));
+  });
+});
+
 describe("track switching changes context, not the core", () => {
   const html = (track, sel) => lessonDoc(track).querySelector(sel).innerHTML;
 
@@ -127,7 +238,8 @@ describe("page structure", () => {
 
   it.each([
     ["hub", hub],
-    ...TRACK_IDS.map((t) => [`lesson 1 (${t})`, lessonDoc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 1 (${t})`, lessonDoc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 2 (${t})`, lesson2Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -136,7 +248,8 @@ describe("page structure", () => {
 
   it.each([
     ["hub", hub],
-    ["lesson 1", lessonDoc(TRACK_IDS[0])]
+    ["lesson 1", lessonDoc(TRACK_IDS[0])],
+    ["lesson 2", lesson2Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
