@@ -1,8 +1,8 @@
 # Lesson 2: Asking well (prompt structure). Design
 
-**Status:** proposed 2026-09-23, awaiting David's approval. This is the
-backward-design proposal (step 1 of `/build-lesson`). Nothing here is built.
-Once it's approved, build exactly this. Any change goes back into this file
+**Status:** approved 2026-09-23, with five fixes folded in (see "Changes at
+approval" at the end). This is the backward-design proposal (step 1 of
+`/build-lesson`). Build exactly this. Any change goes back into this file
 first.
 
 **Model:** Opus. The lesson needs a new interactive tool (see CLAUDE.md's
@@ -28,7 +28,7 @@ model guidance).
 | id | Objective | Question | What to expect |
 |---|---|---|---|
 | w1 | 2.1 | "A colleague asks you to 'write something about the meeting.' What would you need to know to do it well?" | Most people name one or two things (topic, length). Note which of the four parts nobody mentions unprompted. |
-| w2 | 2.2 | "Two people ask a chatbot for the same thing and get very different answers. Why?" | "The AI is random" or "they're better at AI." The lesson replaces this with: the request is what differed. |
+| w2 | 2.2 | "Two people ask a chatbot for the same thing and get very different answers. Why?" | "The AI is random" or "they're better at AI." Some variation really is chance. But large, consistent differences in shape and content trace back to what each person asked. |
 | w3 | 2.3 | "How would you get a chatbot to write exactly like a note you already have?" | Most describe the style in words. Few think to paste the note itself. |
 
 ## Check (post-check)
@@ -36,15 +36,17 @@ model guidance).
 | id | Objective | Question | Reteach if… |
 |---|---|---|---|
 | p1 | 2.1 | Rewrite "Make a flyer for the event" so it names the task, context, constraints and format. | Context or constraints are missing (the usual gaps), or a part is vague ("make it good"). |
-| p2 | 2.2 | Two short outputs whose prompts differ by one line ("…for a 10-year-old"). Which line caused each difference? | They put it down to chance or to the model "trying harder". |
+| p2 | 2.2 | Two short outputs whose prompts differ by one line ("…for a 10-year-old"). Which line caused each difference? | They put a difference that follows plainly from the added line down to chance, or to the model "trying harder". |
 | p3 | 2.3 | Write a prompt, with an example, for a task you'll actually do this week. | There's no actual example, or they ask the model to copy the example's *content* rather than its form. |
 
-Exit ticket: the same two questions as Lesson 1.
+Exit ticket: Lesson 1's rating question word for word, so ratings compare
+across lessons. The open question becomes "What's one request you'll now write
+differently?"
 
 ## Concrete (14 min): a vague request and a structured one, per track
 
-Learners mark which of the four parts (task, context, constraints, format) the
-vague request is missing, rewrite it themselves, then compare with the
+Learners mark each of the four parts (task, context, constraints, format) in
+the vague request as stated, vague or missing, rewrite it themselves, then compare with the
 structured version's output.
 
 In each vague output, the model makes up specifics. That's deliberate, and it
@@ -66,7 +68,7 @@ inventions.
   - context: the reader is a VP who cares about budget and dates; a CRM
     migration is two weeks behind because of data clean-up;
   - constraints: 100 words or fewer, lead with the risk, no blame;
-  - format: three labelled lines (Status / Risk / Ask).
+  - format: three labelled lines (Risk / Status / Ask).
 
   The vague output invents "on track".
 - **Students.** Vague request: "Help me with my essay on climate change."
@@ -99,15 +101,16 @@ outputs later.
   are labelled "Invented — the request didn't say."
 - **Accessibility:** it's plain HTML rather than SVG, so every state is
   written in words and everything works by keyboard. Each part gets an
-  existing pale surface plus its written label, so colour is never the only
-  cue:
+  existing pale surface, a solid left border in its own hue, and its written
+  label, so colour is never the only cue. The border keeps the parts from
+  reading as the course's callouts, which use the same pale surfaces:
 
-  | Part | Surface |
-  |---|---|
-  | Task | `--peri-pale` |
-  | Context | `--amber-pale` |
-  | Constraints | `--rose-pale` |
-  | Format | `--teal-pale` |
+  | Part | Surface | Border |
+  |---|---|---|
+  | Task | `--peri-pale` | `--peri` |
+  | Context | `--amber-pale` | `--amber` |
+  | Constraints | `--rose-pale` | `--rose` |
+  | Format | `--teal-pale` | `--teal` |
 
   The only new colour pairing is `--text` on `--teal-pale`. Add it to `PAIRS`
   in `tests/ui.test.js` first. It must pass in both themes.
@@ -119,16 +122,21 @@ outputs later.
 
 ## Abstract (8 min): principles, as new claims
 
+Targets 2.3. After the principles, learners add a short example of the output
+they want to the request they rewrote in the concrete stage.
+
 Four new `source: "model"` claims for `claims.js`, each with a rationale:
 
 - **prompt-parts:** A clear request states four things: the task, the
   context, the constraints, and the format you want back.
 - **gaps-get-filled:** When a request leaves out details the output needs, a
   model often fills the gap with plausible invented specifics.
-- **example-steers-form:** Showing an example of the output you want is one of
-  the most reliable ways to control its format and tone.
+- **example-steers-form:** Showing an example of the output you want is an
+  effective way to steer its format and tone, often more effective than
+  describing them.
 - **structure-not-truth:** A better-structured request makes an output more
-  useful, not more accurate. The output still needs checking.
+  likely to fit what you need. It doesn't make the output reliable: any fact
+  you didn't supply still needs checking.
 
 Each track's answer key is also a claim (`l2-key-educators`,
 `l2-key-professionals`, `l2-key-students`), so there are **7 new claims** in
@@ -157,3 +165,32 @@ all, all awaiting David's attestation.
   - type scale, spacing and radius tokens, heading order;
   - distinct control names ("Show what Task changed", and so on);
   - focus management, both themes, 375px.
+
+## Changes at approval (2026-09-23)
+
+1. **2.3 is taught, not only checked.** The abstract stage targets 2.3, and
+   learners add an example to their own rewritten request there.
+2. **Randomness is real.** w2's expected note and p2's reteach signal allow
+   for run-to-run variation, and pin large, consistent differences on the
+   request.
+3. **Exit ticket.** Rating question unchanged; open question asks what request
+   they'll write differently.
+4. **Part colours.** Each part has a solid left border in its own hue, so the
+   parts don't read as the course's callouts.
+5. **example-steers-form** reworded so it doesn't overclaim.
+
+Also settled while building:
+
+- The pictorial tool's controls, moves and script are shared across tracks,
+  and its content is drawn from the track's prompt pair. Lesson 1's grid works
+  the same way once revealed.
+- The professionals format is Risk / Status / Ask, not Status / Risk / Ask.
+  The constraint "lead with the risk" contradicted the old order.
+- **structure-not-truth** reworded. "Not more accurate" was wrong: facts you
+  put in the context do come back more accurately.
+- The concrete stage shows the vague request and its answer. The structured
+  version first appears in the pictorial tool, after learners have written
+  their own.
+- Each line of a structured output may name more than one part in
+  `causedBy`, because a line's content and its shape often come from
+  different parts.
