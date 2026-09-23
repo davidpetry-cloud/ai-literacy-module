@@ -60,11 +60,14 @@ and 4), describe it here too: what the learner does, what it shows, and how its
 ## 3. Verify
 
 - `npm test`. Every suite passes. Fix the cause; never loosen a test to pass.
+  `readability` failing means the writing is too dense for its reader: shorten
+  sentences and use plainer words. Never raise a ceiling.
 - `npm run preview` (in the background), then in the browser pane, for **each
   track**, at desktop width and at 375px:
   `const { audit } = await import("/scripts/ui-audit.js"); await audit();`
-  It must return `pass: true`. Also use the reveal controls and the track
-  switcher yourself.
+  It must return `pass: true`. That covers contrast in both themes, the type
+  floor, tap targets, heading order, unique control names and line length.
+  Also use the reveal controls, the track switcher and the keyboard yourself.
 - Stop the preview server.
 
 ## 4. Hand over

@@ -23,8 +23,9 @@ lesson.html        one page for every lesson: lesson.html?n=1&track=educators
 course.css         tokens, fonts, header and themes from Singapore Math; status colours from live-sound-eq-sop
 theme-toggle.js    light/dark toggle, loaded in <head> before first paint
 fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requests
-tests/             alignment · governance · render · ui
+tests/             alignment · governance · render · ui · readability
 scripts/serve.js   local preview on :8080
+scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 ```
 
 ## Design basis
@@ -45,7 +46,7 @@ Each framework has one job. Don't add a sixth without removing one.
   in `claims.js`. A Claude session may add or reword `source: "model"` records
   with a rationale. It must never write a `source: "practitioner"` block, fill
   in `by`, or set `verified` — not even when asked to "just mark it attested".
-  David edits those himself after checking. To withdraw a claim, reject it with
+  David edits those after checking them. To withdraw a claim, reject it with
   a reason; don't delete it.
 - **Backward design order holds.** A lesson starts as objectives only, with
   `ready: false`. It gets assessments, then activities, and only then
@@ -92,8 +93,61 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 - **Labels that carry meaning** (status badges, answer-key labels) sit on their
   own `--card` background, so they pass wherever they're placed.
 - **Type:** Lexend for all non-heading text, Fraunces for headings; both are
-  self-hosted. Body text is 16px with 1.62 line height. Nothing is smaller
-  than 12.8px (0.8rem).
+  self-hosted. Body text is 16px with 1.62 line height.
+- **One type scale, no one-off sizes.** Every `font-size` is a `--fs-*`
+  token: xs 12.8 · sm 14.4 · base 16 · md 18 · lg 20 · xl 27.2px · display.
+  The heading order is fixed and tested:
+  - page title: display;
+  - section heading and the "Lesson N · Track" line: xl;
+  - block and card titles, header pills: lg;
+  - subheads, track choices, the passage, relevance: md;
+  - instructions (`.sense`): base.
+- **xs is for labels only:** ids, tags, timings, legends. Never use it for a
+  sentence or question addressed to the reader. Those are base or larger. The
+  UI test holds the list of selectors allowed to use xs.
+- **SVG text** is sized in viewBox units, so check it at the figure's narrowest
+  width. It must still reach 12.8px on screen. The test does the arithmetic.
+- **Spacing** uses one scale for every margin, padding and gap: 0 · 2 · 4 · 8 ·
+  12 · 16 · 24 · 32 · 48px. Corners use `--r-sm` (tags and chips), `--r-md`
+  (buttons and callouts), `--r-lg` (cards and blocks) or `--r-pill`. Headings
+  take `--lh-display` or `--lh-heading`, and body text `--lh-body`.
+- **No hex colours outside the token blocks.** The header's colours are
+  constants in their own `:root` block, because the header is dark in both
+  themes.
+- **Line length stays within 45–75 characters.** Running text is capped at
+  `--measure`, or `--measure-serif` for Fraunces. The base rule is wrapped in
+  `:where()` so a component can override it. `ch` is the width of a "0", which
+  differs by font, so `ui-audit.js` counts real characters per line and fails
+  anything over 75.
+- **Focus ring** is `--focus`: `#B06A00` in light, amber in dark. It must be
+  at least 3:1 against every surface it can sit on (WCAG non-text contrast).
+- **Structure:** each page has one h1 and never skips a heading level. Lesson
+  stages and sidebar boxes are h2, and their subheads are h3. Every control
+  has a distinct accessible name: repeated visible text like "Reveal" gets
+  screen-reader-only context (`.sr`). A control that removes itself hands
+  focus to what it revealed.
+- **Shared wording:**
+  - stage headings follow "Stage · Name": "Warm-up · Pre-check",
+    "Concrete · …", "Check · Post-check";
+  - the transfer block is "Use it this week" for every track;
+  - sidebar headings are "Alignment", "Access notes" and "What learners leave
+    with".
+
+## Readability rules
+
+`tests/readability.test.js` measures every ready lesson by who reads each
+piece of text, using the same function `/build-lesson` uses. It checks a
+Flesch–Kincaid grade ceiling for each kind of text, set at Lesson 1's levels
+plus headroom:
+
+- learner questions, facilitator notes, answer-key notes: grade 7
+- framing: grade 9
+- relevance/transfer: grade 10 (Students 8)
+- example passages: grade 11 (Students 10)
+- objectives: grade 11
+
+No sentence anywhere may run over 35 words. If a lesson fails, rewrite it
+shorter and plainer. Never raise a ceiling to make a lesson pass.
 - **Tap targets:** buttons, header pills and radios are at least 44px tall;
   inline disclosures (`<summary>`) at least 24px.
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
@@ -154,7 +208,12 @@ npm test
   it should, grid aria-labels before and after reveal, badges keep their text,
   and lesson colours.
 - `ui`: contrast of every allowed pairing in both themes, token usage, type
-  floor, self-hosted fonts, tap targets, and theme toggle behaviour.
+  scale and heading order, xs reserved for labels, SVG label size, spacing
+  and radius scales, no hex colours outside tokens, focus-ring contrast,
+  heading line heights, prose measure,
+  self-hosted fonts, tap targets, and theme toggle behaviour.
+- `readability`: grade ceiling and sentence length per text role, for every
+  ready lesson.
 
 When bumping `attestation-ledger`, change the version in `package.json` and in
 the import map in **both** HTML pages. The governance test fails until all
