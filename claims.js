@@ -15,9 +15,9 @@
  * reason and propose a replacement.
  */
 
-const proposedBy = (rationale) => ({
+const proposedBy = (rationale, model = "claude-opus-5-5") => ({
   source: "model",
-  model: "claude-opus-5-5",
+  model,
   rationale,
   by: null,
   verified: null
@@ -106,6 +106,48 @@ export const CLAIMS = {
     text: "The answer key for the Lesson 2 students prompt pair is correct: each part of the vague request is labelled as the request shows it, each line of the structured output is traced to the parts that caused it, and each line marked invented has no basis in the request.",
     attestation: proposedBy(
       "Written with the prompt pair. Check it by reading each request beside its output. It is a judgement about the text on the page, so no outside source is needed."
+    )
+  },
+  "independent-source": {
+    text: "Checking a claim means comparing it with a source that doesn't depend on the AI's answer: the original study, law, dataset or organisation. Another chatbot, or a page that repeats the claim, isn't independent.",
+    attestation: proposedBy(
+      "Basic source-evaluation practice: a check only counts if the source could disagree with the AI. A chatbot or a page that copies the claim can't. Objective 3.1 rests on it.",
+      "claude-sonnet-5"
+    )
+  },
+  "citations-unreliable": {
+    text: "AI tools can produce citations that look real but point to nothing. A citation that does exist can also fail to say what it's cited for.",
+    attestation: proposedBy(
+      "Invented and misattributed references are among the best-documented AI errors; lawyers were sanctioned in 2023 (Mata v. Avianca, S.D.N.Y.) for filing cases a chatbot made up. Follows from risk-zones. The second sentence covers the 'real, but doesn't say that' case Lesson 3 teaches. Check the case details before attesting.",
+      "claude-sonnet-5"
+    )
+  },
+  "check-fits-stakes": {
+    text: "How much checking an output needs depends on what happens if it's wrong and how hard that is to undo, not on how the output sounds.",
+    attestation: proposedBy(
+      "Proportionate verification is standard risk practice. Worded to rule out both 'check everything' and 'trust fluent output'. Objective 3.3 rests on it.",
+      "claude-sonnet-5"
+    )
+  },
+  "l3-key-educators": {
+    text: "The answer key for the Lesson 3 educators passage is correct: each sentence's label matches its cited source, the no-source sentence has no real review behind it, and each use is given a fitting level of checking.",
+    attestation: proposedBy(
+      "Written with the passage. Black & Wiliam (1998) and Bloom (1984) should be checked against the originals before this is attested. The level for each use is a judgement about consequences, not a fact.",
+      "claude-sonnet-5"
+    )
+  },
+  "l3-key-professionals": {
+    text: "The answer key for the Lesson 3 professionals passage is correct: each sentence's label matches its cited source, the no-source sentence has no real report behind it, and each use is given a fitting level of checking.",
+    attestation: proposedBy(
+      "Written with the passage. The FTC's CAN-SPAM compliance guide (10 business days for opt-outs; valid physical postal address) should be checked before this is attested. The level for each use is a judgement about consequences.",
+      "claude-sonnet-5"
+    )
+  },
+  "l3-key-students": {
+    text: "The answer key for the Lesson 3 students passage is correct: each sentence's label matches its cited source, the no-source sentence has no real study behind it, and each use is given a fitting level of checking.",
+    attestation: proposedBy(
+      "Written with the passage. Paruthi et al. (2016, 8 to 10 hours for ages 13 to 18) and the AAP's 2014 school start time statement (8:30 a.m. or later) should be checked before this is attested. The level for each use is a judgement about consequences.",
+      "claude-sonnet-5"
     )
   }
 };
