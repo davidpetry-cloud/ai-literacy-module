@@ -142,7 +142,11 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date() } = {}) 
       <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
       <p>${esc(l.framing)}</p>
       <ul class="objs">${l.objectives.map((o) => `<li><span class="bloom">${esc(o.bloom)}</span>${esc(o.text)}</li>`).join("")}</ul>
-      ${l.ready ? "" : `<p class="note">Objectives drafted. Assessments and activities follow once the objectives are signed off.</p>`}
+      ${l.ready ? "" : `<p class="note">${
+        l.objectivesApproved
+          ? `Objectives approved ${esc(l.objectivesApproved)}. Assessments and activities come next.`
+          : "Objectives drafted, awaiting review."
+      }</p>`}
     </article>`
     )
     .join("");

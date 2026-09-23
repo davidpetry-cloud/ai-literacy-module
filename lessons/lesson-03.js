@@ -3,6 +3,7 @@ export default {
   slug: "verifying-output",
   title: "Checking what it says",
   ready: false,
+  objectivesApproved: "2026-09-23",
   framing:
     "Verification isn't distrust; it's the ordinary work of using any source. The question is how much checking an output needs, and that depends on what happens if it's wrong.",
   objectives: [

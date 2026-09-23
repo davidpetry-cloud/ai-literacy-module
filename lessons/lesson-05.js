@@ -3,6 +3,7 @@ export default {
   slug: "failure-modes",
   title: "How it goes wrong, and a checklist that holds",
   ready: false,
+  objectivesApproved: "2026-09-23",
   framing:
     "Most AI errors fall into a handful of kinds. Naming them turns vague unease into specific checks, and a personal checklist makes those checks routine.",
   objectives: [

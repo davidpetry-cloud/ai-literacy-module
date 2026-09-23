@@ -3,6 +3,7 @@ export default {
   slug: "prompt-structure",
   title: "Asking well: prompt structure",
   ready: false,
+  objectivesApproved: "2026-09-23",
   framing:
     "A vague request gets a generic answer. Saying what you need, for whom, within what limits, and in what shape changes what comes back — in ways you can predict.",
   objectives: [

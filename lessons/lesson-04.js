@@ -3,6 +3,7 @@ export default {
   slug: "human-in-the-loop",
   title: "Who signs off: human in the loop",
   ready: false,
+  objectivesApproved: "2026-09-23",
   framing:
     "A model can propose. Only a named human can attest. This lesson makes that rule concrete — the same one this course applies to its own claims.",
   objectives: [
