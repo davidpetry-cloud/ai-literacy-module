@@ -132,5 +132,6 @@ changes get their own commits, so `git log --oneline` reads as a build history.
 
 ## Status
 
-Lesson 1 is built as the pilot. Lessons 2–5 have objectives only, awaiting
-David's review. All 7 claims are proposed and none are attested.
+Lesson 1 is built as the pilot. Lessons 2–5 have objectives only; David
+approved them as written on 2026-09-23, so the next step for each is its
+warm-up and check items. All 7 claims are proposed and none are attested.
