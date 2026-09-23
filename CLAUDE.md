@@ -234,4 +234,7 @@ type, `prompt-pair`, with its own alignment rules, and the `prompt-compare`
 figure; its approved design is `docs/lesson-02-design.md`. Lessons 3–5 have
 objectives only; David approved them as written on 2026-09-23, so the next
 step for each is its warm-up and check items. All 14 claims are proposed and
-none are attested.
+none are attested. David attests claims once all five lessons are built, so
+he can see the whole course first. Until then, don't prompt him to attest.
+When Lesson 5 ships, give him every claim grouped by lesson, with the source
+to check each against.
