@@ -189,7 +189,7 @@ Sonnet worked well.
 |---|---|---|
 | 01 | done | pilot, built on Opus |
 | 02 | done | built on Opus with the prompt-comparison tool (`promptCompare` in `lesson-core.js`) |
-| 03 | Sonnet | reuses the passage pattern, with source cards doing more of the work |
+| 03 | done | built on Sonnet: passage pattern with source cards, plus the `check-scale` figure (`checkScale` in `lesson-core.js`) |
 | 04 | Opus | the attestation exercise is new, and it's the course's centrepiece |
 | 05 | Sonnet | checklist builder is simple; classification reuses the passage pattern |
 
@@ -229,12 +229,15 @@ changes get their own commits, so `git log --oneline` reads as a build history.
 
 ## Status
 
-Lessons 1 and 2 are built. Lesson 2 (2026-09-23) added a second exercise
+Lessons 1, 2 and 3 are built. Lesson 2 (2026-09-23) added a second exercise
 type, `prompt-pair`, with its own alignment rules, and the `prompt-compare`
-figure; its approved design is `docs/lesson-02-design.md`. Lessons 3–5 have
-objectives only; David approved them as written on 2026-09-23, so the next
-step for each is its warm-up and check items. All 14 claims are proposed and
-none are attested. David attests claims once all five lessons are built, so
-he can see the whole course first. Until then, don't prompt him to attest.
-When Lesson 5 ships, give him every claim grouped by lesson, with the source
-to check each against.
+figure; its approved design is `docs/lesson-02-design.md`. Lesson 3
+(2026-09-23) reuses the passage exercise with citations and adds the
+`check-scale` figure: one passage, three uses, three levels of checking. The
+passage's `uses` feed the figure. Lessons 4–5 have objectives only; David
+approved them as written on 2026-09-23, so the next step for each is its
+warm-up and check items. All 20 claims are proposed and none are attested.
+David attests claims once all five lessons are built, so he can see the whole
+course first. Until then, don't prompt him to attest. When Lesson 5 ships,
+give him every claim grouped by lesson, with the source to check each
+against.
