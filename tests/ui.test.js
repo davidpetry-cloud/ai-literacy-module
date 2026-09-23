@@ -72,6 +72,12 @@ describe.each(Object.keys(THEMES))("%s theme contrast", (name) => {
     expect(contrast(theme, "--focus", bg)).toBeGreaterThanOrEqual(3);
   });
 
+  // WCAG 2.2 non-text contrast (1.4.11): the lines that make a grid a grid, and
+  // the ring that keeps a button's shape, must be 3:1 against the surface under them.
+  it.each([["--edge", "--card"], ["--btn-edge", "--card"], ["--btn-edge", "--paper"]])("%s is at least 3:1 on %s", (edge, bg) => {
+    expect(contrast(theme, edge, bg)).toBeGreaterThanOrEqual(3);
+  });
+
   it.each(LESSONS)("lesson colour %s is readable as text on a card", (l) => {
     expect(contrast(theme, l, "--card")).toBeGreaterThanOrEqual(4.5);
   });
@@ -107,6 +113,42 @@ describe("colour usage", () => {
     for (const sel of [".badge", ".k"]) {
       expect(rules.find((r) => r.sel === sel)?.body, sel).toContain("background:var(--card)");
     }
+  });
+
+  // The audit and these tests measure a colour, not the colour after opacity
+  // has faded it. Fade nothing that carries text; use a token instead.
+  it("never fades anything with opacity", () => {
+    for (const r of rules) expect(r.body, r.sel).not.toMatch(/(?:^|;)\s*opacity\s*:/);
+  });
+
+  it("marks a rejected claim with a strike-through in a passing colour, not a fade", () => {
+    const body = rules.find((r) => r.sel === '.claim[data-status="rejected"] > p').body;
+    expect(body).toContain("line-through");
+    expect(body).toContain("color:var(--rej)");
+  });
+
+  it("draws its own disclosure arrow, closed and open, so no summary loses it", () => {
+    expect(rules.some((r) => r.sel === "summary::before" && r.body.includes('content:"▸"'))).toBe(true);
+    expect(rules.some((r) => r.sel === "details[open] > summary::before" && r.body.includes('content:"▾"'))).toBe(true);
+  });
+
+  it("shows a narrow figure as a table instead of a drawing that scrolls sideways", () => {
+    expect(css).toMatch(/@container \(max-width:\d+px\)\{\s*svg\.grid\{display:none\}\s*table\.grid-alt\{display:table\}/);
+    expect(rules.find((r) => r.sel === "table.grid-alt").body).toContain("display:none");
+    expect(rules.find((r) => r.sel === ".figure").body).toContain("container-type:inline-size");
+  });
+
+  it("makes a pressed button look different from an unpressed one, not just tick it", () => {
+    const pressed = rules.find((r) => r.sel === '.cmp-btn[aria-pressed="true"]').body;
+    expect(pressed).toContain("background:var(--card)");
+    expect(pressed).toContain("color:var(--ink)");
+    expect(rules.find((r) => r.sel === '.cmp-btn[aria-pressed="true"]::before').body).toContain("✓");
+  });
+
+  it("gives every button a ring, and draws grid lines and marks in the edge tokens", () => {
+    expect(rules.find((r) => r.sel === ".btn").body).toContain("border:2px solid var(--btn-edge)");
+    expect(rules.find((r) => r.sel === ".g-cell").body).toContain("stroke:var(--edge)");
+    expect(rules.find((r) => r.sel === ".g-mark circle").body).toContain("stroke:var(--btn-edge)");
   });
 
   it("prints in light colours whatever the screen theme", () => {
@@ -196,8 +238,8 @@ describe("tap targets", () => {
     expect(minHeight(sel)).toBeGreaterThanOrEqual(44);
   });
 
-  it.each([".key summary", ".claim details summary"])("%s is at least 24px tall", (sel) => {
-    expect(minHeight(sel)).toBeGreaterThanOrEqual(24);
+  it.each([".key summary", ".claim details summary"])("%s is at least 44px tall", (sel) => {
+    expect(minHeight(sel)).toBeGreaterThanOrEqual(44);
   });
 
   it("shows a visible focus ring", () => {
@@ -231,7 +273,10 @@ describe("theme toggle", () => {
       const b = doc.querySelector("header .hdr-row [data-theme-toggle]");
       expect(b, page).not.toBeNull();
       expect(b.closest("#top"), page).toBeNull();
-      expect(b.getAttribute("aria-label")).toBe("Toggle dark mode");
+      // Label in name (WCAG 2.5.3): what a sighted user reads is what a voice user says.
+      expect(b.hasAttribute("aria-label"), page).toBe(false);
+      expect(b.textContent.replace(/[^\w ]/gu, "").trim(), page).toBe("Dark mode");
+      expect(b.querySelector("[aria-hidden='true']"), page).not.toBeNull();
     }
   });
 
@@ -244,13 +289,14 @@ describe("theme toggle", () => {
     expect(theme(load({ saved: "light", systemDark: true }))).toBe("light");
   });
 
-  it("flips, saves, and reports its state on click", () => {
+  it("flips, saves, and renames itself for what a click will do next", () => {
     const w = load();
-    expect(btn(w).getAttribute("aria-pressed")).toBe("false");
+    expect(btn(w).textContent).toContain("Dark mode");
     btn(w).click();
     expect(theme(w)).toBe("dark");
-    expect(btn(w).getAttribute("aria-pressed")).toBe("true");
-    expect(btn(w).textContent).toContain("Light");
+    expect(btn(w).textContent).toContain("Light mode");
+    expect(btn(w).hasAttribute("aria-pressed")).toBe(false);
+    expect(btn(w).hasAttribute("aria-label")).toBe(false);
     expect(w.localStorage.getItem("ai-literacy-theme")).toBe("dark");
   });
 });

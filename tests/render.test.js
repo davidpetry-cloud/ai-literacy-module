@@ -282,6 +282,76 @@ describe("lesson 3: the grid is one core across tracks", () => {
   });
 });
 
+describe("narrow figures: the grid as a table", () => {
+  const revealed = (doc) => { doc.querySelector("#reveal-grid").click(); return doc; };
+  const cellsOf = (doc) => [...doc.querySelectorAll("#grid table.grid-alt tbody tr")].map((tr) => [...tr.querySelectorAll("td")].map((td) => td.textContent.replace(/\s+/g, " ").trim()));
+
+  it.each(TRACK_IDS)("lesson 1 (%s): empty until revealed, then every sentence in its cell", (track) => {
+    const doc = lessonDoc(track);
+    expect(doc.querySelector("#grid table.grid-alt caption").textContent).toBe(doc.querySelector("#grid svg").getAttribute("aria-label"));
+    expect(cellsOf(doc).flat().every((c) => c === "")).toBe(true);
+    revealed(doc);
+    const data = concreteData(track);
+    const cols = ["correct", "wrong", "no-source", "nothing"];
+    const rows = ["confident", "hedged"];
+    // The table is turned on its side: one row per answer, one column per tone.
+    cellsOf(doc).forEach((row, c) => row.forEach((cell, r) => {
+      const want = data.map((s, i) => [s, i + 1]).filter(([s]) => rows.indexOf(s.tone) === r && cols.indexOf(s.key) === c).map(([, n]) => `Sentence ${n}`);
+      expect(cell, `${track} r${r} c${c}`).toBe(want.join(" "));
+    }));
+    expect(doc.querySelector("#grid table caption").textContent).toBe(doc.querySelector("#grid svg").getAttribute("aria-label"));
+  });
+
+  it.each(TRACK_IDS)("lesson 3 (%s): each use lands in its level's column", (track) => {
+    const doc = revealed(lesson3Doc(track));
+    const grid = cellsOf(doc);
+    usesData(track).forEach((u, r) => grid[r].forEach((cell, c) => expect(cell, `${u.label} col ${c}`).toBe(LEVELS[c].id === u.check ? `Use ${r + 1}` : "")));
+    expect([...doc.querySelectorAll("#grid table tbody th")].map((th) => th.textContent)).toEqual(usesData(track).map((u) => u.label));
+  });
+
+  it("labels every row and column of the table", () => {
+    const t = lessonDoc(TRACK_IDS[0]).querySelector("#grid table");
+    for (const th of t.querySelectorAll("th")) expect(["col", "row"]).toContain(th.getAttribute("scope"));
+  });
+});
+
+describe("facilitator content is labelled and kept apart from what learners work on", () => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
+    const doc = make(TRACK_IDS[0]);
+    for (const stage of doc.querySelectorAll('[data-stage="concrete"], [data-stage="pictorial"], [data-stage="abstract"]')) {
+      const box = stage.querySelector(".facil");
+      expect(box?.querySelector("h3")?.textContent, stage.dataset.stage).toBe("Facilitator notes");
+      for (const sel of [".moves", ".say", ".watch"]) expect(box.querySelector(sel), `${stage.dataset.stage} ${sel}`).not.toBeNull();
+      // Learner-facing material stays outside the box.
+      for (const sel of [".passage", ".figure", ".claims"]) expect(box.querySelector(sel), sel).toBeNull();
+    }
+  });
+
+  it("puts the answer-key card after the facilitator's steps, not between them and the exercise", () => {
+    for (const make of [lessonDoc, lesson2Doc, lesson3Doc]) {
+      const stage = make(TRACK_IDS[0]).querySelector('[data-stage="concrete"]');
+      const kids = [...stage.children];
+      expect(kids.findIndex((e) => e.classList.contains("keyclaim"))).toBeGreaterThan(kids.findIndex((e) => e.classList.contains("facil")));
+    }
+  });
+
+  it("marks the facilitator's expect and reteach boxes, and says what the marking means", () => {
+    const doc = lessonDoc(TRACK_IDS[0]);
+    for (const b of doc.querySelectorAll(".expect b, .crit b")) expect(b.textContent).toMatch(/^Facilitator · /);
+    expect(doc.querySelector(".obj .legend").textContent).toContain("Facilitator");
+    expect(doc.querySelector(".why .facil h3").textContent).toBe("Facilitator notes");
+  });
+});
+
+describe("alignment table", () => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
+    const doc = make(TRACK_IDS[0]);
+    const lesson = getLesson(n);
+    expect([...doc.querySelectorAll(".align tbody th")].map((t) => t.textContent)).toEqual(["Warm-up (pre)", "Concrete", "Pictorial", "Abstract", "Check (post)"]);
+    expect([...doc.querySelectorAll(".align thead th")].slice(1).map((t) => t.textContent.replace("Objective ", ""))).toEqual(lesson.objectives.map((o) => o.id));
+  });
+});
+
 describe("track switching changes context, not the core", () => {
   const html = (track, sel) => lessonDoc(track).querySelector(sel).innerHTML;
 
