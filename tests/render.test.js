@@ -120,6 +120,25 @@ describe("track switching changes context, not the core", () => {
   });
 });
 
+describe("lesson colours", () => {
+  const css = readFileSync(new URL("../course.css", import.meta.url), "utf8");
+
+  it("defines a distinct colour for every lesson", () => {
+    const colours = COURSE.lessons.map((l) => css.match(new RegExp(`--l${l.n}:(#[0-9A-Fa-f]{6})`))?.[1]);
+    for (const [i, c] of colours.entries()) expect(c, `lesson ${i + 1}`).toBeTruthy();
+    expect(new Set(colours.map((c) => c.toLowerCase())).size).toBe(colours.length);
+  });
+
+  it("tags every hub card and the lesson header with its lesson number", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    expect([...hub.querySelectorAll(".card")].map((c) => c.dataset.lesson)).toEqual(COURSE.lessons.map((l) => String(l.n)));
+    const doc = lessonDoc(TRACK_IDS[0]);
+    expect(doc.querySelector("header.top").dataset.lesson).toBe("1");
+    expect(doc.querySelector(".lesson-no").textContent).toBe("Lesson 1");
+  });
+});
+
 describe("lessons that aren't ready", () => {
   it("says a lesson in design is still in design", () => {
     const doc = page("lesson.html");

@@ -137,7 +137,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date() } = {}) 
 
   const lessons = COURSE.lessons
     .map(
-      (l) => `<article class="card${l.ready ? "" : " pending"}">
+      (l) => `<article class="card${l.ready ? "" : " pending"}" data-lesson="${l.n}">
       <p class="eyebrow">Lesson ${l.n}${l.ready ? "" : " · in design"}</p>
       <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
       <p>${esc(l.framing)}</p>
@@ -179,8 +179,10 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const top = doc.querySelector("#top");
   const content = doc.querySelector("#content");
   const side = doc.querySelector("#side");
+  const header = top.closest(".top");
 
   if (!lesson || !lesson.ready) {
+    delete header.dataset.lesson;
     top.innerHTML = `<a class="back" href="index.html">&larr; Course overview</a><h1>Lesson not available</h1>`;
     content.innerHTML = `<p>${lesson ? `Lesson ${lesson.n} is still in design.` : "There is no lesson with that number."} <a href="index.html">Back to the course overview</a>.</p>`;
     side.innerHTML = "";
@@ -190,9 +192,10 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const [concrete, pictorial, abstract] = lesson.stages;
   const passage = concrete.tracks[track];
 
+  header.dataset.lesson = lesson.n;
   top.innerHTML = `
     <a class="back" href="index.html?track=${track}">&larr; Course overview</a>
-    <p class="eyebrow">Lesson ${lesson.n} · ${esc(TRACKS[track].label)}</p>
+    <p class="eyebrow"><span class="lesson-no">Lesson ${lesson.n}</span> ${esc(TRACKS[track].label)}</p>
     <h1>${esc(lesson.title)}</h1>
     <p class="sub">${esc(lesson.framing)}</p>
     <div class="facts">
