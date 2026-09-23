@@ -101,6 +101,56 @@ export function confidenceGrid(sentences, { revealed = false } = {}) {
   return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${cells.join("")}${marks}</svg>`;
 }
 
+/* ---------- prompt pairs: which part of a request caused which line ---------- */
+
+export const PARTS = [
+  { id: "task", label: "Task", ask: "What kind of writing is wanted?" },
+  { id: "context", label: "Context", ask: "Who is it for, and what's the situation?" },
+  { id: "constraints", label: "Constraints", ask: "What limits apply, such as length, tone or must-haves?" },
+  { id: "format", label: "Format", ask: "What shape should it come back in?" }
+];
+export const GAP_LABEL = { stated: "Stated", vague: "Vague", missing: "Missing" };
+export const INVENTED = "Invented — the request didn't say.";
+const partLabel = (id) => PARTS.find((p) => p.id === id).label;
+const IDLE = "No part selected. Press one to see which lines it changed.";
+
+function outputLines(lines, active = null) {
+  return lines
+    .map((l) => {
+      const on = active && l.causedBy?.includes(active);
+      const tag = on ? ` <span class="cmp-tag"><span aria-hidden="true">←</span> ${partLabel(active)}<span class="sr"> caused this line</span></span>` : "";
+      const inv = l.invented ? ` <span class="cmp-inv">${INVENTED}</span><span class="cmp-note">${esc(l.invented)}</span>` : "";
+      return `<li${on ? ` class="on part-${active}"` : ""}>${esc(l.text)}${tag}${inv}</li>`;
+    })
+    .join("");
+}
+
+/** What the live region says for a pressed part, or for none. */
+export function compareStatus(pair, active) {
+  if (!active) return IDLE;
+  const n = pair.structured.output.filter((l) => l.causedBy?.includes(active)).length;
+  return `${pair.structured.effects[active]} ${n} line${n === 1 ? "" : "s"} marked.`;
+}
+
+export function structuredOutput(pair, active = null) {
+  return `<ul class="cmp-out" id="cmp-structured">${outputLines(pair.structured.output, active)}</ul>`;
+}
+
+export function promptCompare(pair) {
+  return `<div class="cmp-controls" role="group" aria-label="Parts of the request">${PARTS.map(
+    (p) => `<button type="button" class="btn cmp-btn" data-part="${p.id}" aria-pressed="false" aria-controls="cmp-structured">Show what ${p.label} changed</button>`
+  ).join("")}</div>
+    <p class="cmp-status" id="cmp-status" aria-live="polite">${IDLE}</p>
+    <div class="cmp">
+      <div class="cmp-col"><h3 class="subhead">The vague request</h3><p class="req">“${esc(pair.vague.prompt)}”</p>
+        <p class="cmp-label">What came back</p><ul class="cmp-out">${outputLines(pair.vague.output)}</ul></div>
+      <div class="cmp-col"><h3 class="subhead">The request in four parts</h3><dl class="cmp-parts">${PARTS.map(
+        (p) => `<div class="cmp-part part-${p.id}"><dt>${p.label}</dt><dd>${esc(pair.structured.parts[p.id])}</dd></div>`
+      ).join("")}</dl>
+        <p class="cmp-label">What came back</p>${structuredOutput(pair)}</div>
+    </div>`;
+}
+
 /* ---------- shared pieces ---------- */
 
 function say(lines) {
@@ -194,7 +244,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   }
 
   const [concrete, pictorial, abstract] = lesson.stages;
-  const passage = concrete.tracks[track];
+  const art = concrete.tracks[track];
+  const isPair = concrete.exercise === "prompt-pair";
+  const artefact = isPair ? art.pair : art.passage;
 
   header.dataset.lesson = lesson.n;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
@@ -209,11 +261,15 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     </div>
     ${trackPicker(track)}`;
 
-  const sentences = passage.passage.sentences;
   const provenanceNote =
-    passage.passage.provenance === "planted"
-      ? `Written by ${esc(passage.passage.model)} for this lesson, with errors planted on purpose.`
-      : `Captured from ${esc(passage.passage.model)} on ${esc(passage.passage.captured)}.`;
+    artefact.provenance === "planted"
+      ? `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
+      : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
+  const concreteBody = isPair ? pairExercise(artefact, provenanceNote) : passageExercise(artefact, provenanceNote);
+  const pictorialBody = isPair
+    ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
+    : `<div class="figure" id="grid">${confidenceGrid(artefact.sentences)}</div>
+      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
 
   content.innerHTML = `
     <div class="obj"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
@@ -235,25 +291,15 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
     <section class="block c" data-stage="concrete"><h2>Concrete · ${esc(concrete.title)} <span class="mins">${concrete.minutes} min</span></h2>
       <p class="stage-meta">${targets(concrete.targets)}</p>
-      <p class="context">${esc(passage.context)}</p>
-      <figure class="passage" data-track="${track}">
-        <ol>${sentences
-          .map(
-            (s, i) => `<li><p>${esc(s.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for sentence ${i + 1}</span></summary><p><b class="k k-${s.key}">${KEY_LABEL[s.key]}</b> ${esc(s.note)}</p>${
-              s.source ? `<p class="src">Source card: ${esc(s.source)}</p>` : ""
-            }</details></li>`
-          )
-          .join("")}</ol>
-        <figcaption>${provenanceNote}</figcaption>
-      </figure>
-      <div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(passage.passage.claim, now)}</div>
+      <p class="context">${esc(art.context)}</p>
+      ${concreteBody}
+      <div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(artefact.claim, now)}</div>
       ${moves(concrete.moves)}${say(concrete.say)}${watch(concrete.watch)}
     </section>
 
     <section class="block p" data-stage="pictorial"><h2>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h2>
       <p class="stage-meta">${targets(pictorial.targets)}</p>
-      <div class="figure" id="grid">${confidenceGrid(sentences)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>
+      ${pictorialBody}
       ${moves(pictorial.moves)}${say(pictorial.say)}${watch(pictorial.watch)}
     </section>
 
@@ -283,6 +329,39 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       .join("")}</div>
     <div class="sidebox"><h2>What learners leave with</h2><p>${esc(lesson.arcs.satisfaction)}</p></div>`;
 
+  if (isPair) wireCompare(doc, artefact);
+  else wireGrid(doc, artefact.sentences);
+}
+
+function passageExercise(passage, provenanceNote) {
+  return `<figure class="passage">
+        <ol>${passage.sentences
+          .map(
+            (s, i) => `<li><p>${esc(s.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for sentence ${i + 1}</span></summary><p><b class="k k-${s.key}">${KEY_LABEL[s.key]}</b> ${esc(s.note)}</p>${
+              s.source ? `<p class="src">Source card: ${esc(s.source)}</p>` : ""
+            }</details></li>`
+          )
+          .join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>`;
+}
+
+function pairExercise(pair, provenanceNote) {
+  return `<figure class="passage pair">
+        <p class="cmp-label">The request</p>
+        <p class="req">“${esc(pair.vague.prompt)}”</p>
+        <p class="cmp-label">What came back</p>
+        <ol>${pair.vague.output.map((l) => `<li><p>${esc(l.text)}</p></li>`).join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>
+      <h3 class="subhead">Mark each part: stated, vague or missing</h3>
+      <ol class="gaps">${PARTS.map((p) => {
+        const g = pair.vague.gaps[p.id];
+        return `<li><p><b>${p.label}.</b> ${p.ask}</p><details class="key"><summary>Reveal<span class="sr"> the answer for ${p.label}</span></summary><p><b class="k k-${g.key}">${GAP_LABEL[g.key]}</b> ${esc(g.note)}</p></details></li>`;
+      }).join("")}</ol>`;
+}
+
+function wireGrid(doc, sentences) {
   const btn = doc.querySelector("#reveal-grid");
   btn.addEventListener("click", () => {
     const grid = doc.querySelector("#grid");
@@ -292,6 +371,19 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     grid.tabIndex = -1;
     grid.focus();
   });
+}
+
+// One part at a time: pressing a part marks the lines it caused; pressing it again clears.
+function wireCompare(doc, pair) {
+  const buttons = [...doc.querySelectorAll(".cmp-btn")];
+  for (const b of buttons) {
+    b.addEventListener("click", () => {
+      const active = b.getAttribute("aria-pressed") === "true" ? null : b.dataset.part;
+      for (const o of buttons) o.setAttribute("aria-pressed", String(o.dataset.part === active));
+      doc.querySelector("#cmp-structured").outerHTML = structuredOutput(pair, active);
+      doc.querySelector("#cmp-status").textContent = compareStatus(pair, active);
+    });
+  }
 }
 
 function alignmentTable(lesson) {

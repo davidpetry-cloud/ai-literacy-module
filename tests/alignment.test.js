@@ -10,6 +10,11 @@ import { CLAIMS } from "../claims.js";
 const CPA = ["concrete", "pictorial", "abstract"];
 const KEYS = ["correct", "wrong", "no-source", "nothing"];
 const TONES = ["confident", "hedged"];
+const PARTS = ["task", "context", "constraints", "format"];
+const GAPS = ["stated", "vague", "missing"];
+// Each exercise type has its own rules; a lesson's concrete stage names its type.
+const EXERCISES = ["passage", "prompt-pair"];
+const exerciseOf = (lesson) => lesson.stages.find((s) => s.kind === "concrete").exercise ?? "passage";
 // Verbs that name an internal state rather than something you can observe.
 const UNMEASURABLE = /^(understand|know|learn|appreciate|be aware|become familiar|grasp|realise|realize)\b/i;
 
@@ -117,7 +122,13 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
     }
   });
 
-  describe("concrete stage", () => {
+  it("names a known exercise type, and a pictorial figure that fits it", () => {
+    expect(EXERCISES).toContain(exerciseOf(lesson));
+    const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
+    expect(figure).toBe({ passage: "confidence-grid", "prompt-pair": "prompt-compare" }[exerciseOf(lesson)]);
+  });
+
+  describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
     const concrete = lesson.stages.find((s) => s.kind === "concrete");
 
     it("has a context and passage for every track", () => {
@@ -157,6 +168,82 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each passage's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(concrete.tracks[t].passage.claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "prompt-pair")("concrete stage: prompt pair", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const pair = (t) => concrete.tracks[t].pair;
+
+    it("has a context and a vague and structured request for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(pair(t)?.vague?.prompt, t).toBeTruthy();
+        for (const p of PARTS) expect(pair(t).structured.parts[p], `${t} ${p}`).toBeTruthy();
+        expect(pair(t).vague.output.length, t).toBeGreaterThanOrEqual(3);
+        expect(pair(t).structured.output.length, t).toBeGreaterThanOrEqual(3);
+      }
+    });
+
+    it("records where every pair came from", () => {
+      for (const t of TRACK_IDS) {
+        const p = pair(t);
+        expect(["planted", "captured"], t).toContain(p.provenance);
+        expect(p.model, t).toBeTruthy();
+        if (p.provenance === "captured") {
+          expect(Number.isNaN(new Date(p.captured).getTime()), `${t} capture date`).toBe(false);
+        }
+      }
+    });
+
+    it("keys every part of the vague request, with a reason", () => {
+      for (const t of TRACK_IDS) {
+        expect(Object.keys(pair(t).vague.gaps).sort(), t).toEqual([...PARTS].sort());
+        for (const p of PARTS) {
+          expect(GAPS, `${t} ${p}`).toContain(pair(t).vague.gaps[p].key);
+          expect(pair(t).vague.gaps[p].note, `${t} ${p}`).toBeTruthy();
+        }
+      }
+    });
+
+    it("doesn't let the gap key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => PARTS.map((p) => pair(t).vague.gaps[p].key).join());
+      for (const o of orders) expect(new Set(o.split(",")).size, o).toBeGreaterThan(1);
+      expect(new Set(orders).size, "every track uses the same order").toBeGreaterThan(1);
+    });
+
+    it("shows at least one invented detail in every vague output, each with a reason", () => {
+      for (const t of TRACK_IDS) {
+        const invented = pair(t).vague.output.filter((l) => l.invented);
+        expect(invented.length, t).toBeGreaterThanOrEqual(1);
+        for (const l of pair(t).vague.output) expect(l.causedBy, l.text).toBeUndefined();
+      }
+    });
+
+    it("traces every structured line to real parts, or marks it invented — never both", () => {
+      for (const t of TRACK_IDS) {
+        for (const l of pair(t).structured.output) {
+          expect(Boolean(l.causedBy) !== Boolean(l.invented), l.text).toBe(true);
+          if (l.invented) expect(typeof l.invented, l.text).toBe("string");
+          else {
+            expect(l.causedBy.length, l.text).toBeGreaterThan(0);
+            for (const c of l.causedBy) expect(PARTS, l.text).toContain(c);
+          }
+        }
+      }
+    });
+
+    it("gives every part at least one line it caused, and says what it changed", () => {
+      for (const t of TRACK_IDS) {
+        for (const p of PARTS) {
+          expect(pair(t).structured.output.some((l) => l.causedBy?.includes(p)), `${t} ${p}`).toBe(true);
+          expect(pair(t).structured.effects[p], `${t} ${p}`).toBeTruthy();
+        }
+      }
+    });
+
+    it("puts each pair's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(pair(t).claim);
     });
   });
 

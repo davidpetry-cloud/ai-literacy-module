@@ -1,7 +1,8 @@
 // In-browser UI audit for a rendered page, in both themes. From the preview:
 //   const { audit } = await import("/scripts/ui-audit.js"); await audit();
-// Opens every <details>, reveals the grid, and checks every visible text
-// element against the background it actually sits on.
+// Opens every <details>, reveals the grid, presses each part of the prompt
+// comparison in turn, and checks every visible text element against the
+// background it actually sits on.
 const rgb = (s) => (s.match(/[\d.]+/g) || []).map(Number);
 const lum = ([r, g, b]) => {
   const f = (v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -49,11 +50,24 @@ export async function audit() {
   const root = document.documentElement;
   const original = root.dataset.theme;
   const result = { page: location.pathname + location.search, viewport: root.clientWidth };
+  // Each part marks its lines on its own surface, so check the page once per part.
+  const parts = [...document.querySelectorAll(".cmp-btn")];
+  const states = parts.length ? parts : [null];
   for (const theme of ["light", "dark"]) {
     root.dataset.theme = theme;
-    void document.body.offsetWidth;
-    result[theme] = check();
+    const runs = states.map((b) => {
+      if (b && b.getAttribute("aria-pressed") !== "true") b.click();
+      void document.body.offsetWidth;
+      return check();
+    });
+    result[theme] = {
+      checked: Math.max(...runs.map((r) => r.checked)),
+      lowest: Math.min(...runs.map((r) => r.lowest)),
+      contrastFails: [...new Set(runs.flatMap((r) => r.contrastFails))],
+      under12_8px: [...new Set(runs.flatMap((r) => r.under12_8px))]
+    };
   }
+  document.querySelector('.cmp-btn[aria-pressed="true"]')?.click();
   root.dataset.theme = original;
   freeze.remove();
 

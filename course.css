@@ -188,6 +188,37 @@ ol.probs li{margin-bottom:16px}
 .btn{font-family:var(--sans);font-weight:600;font-size:var(--fs-sm);background:var(--btn-bg);color:var(--on-dark);border:0;border-radius:var(--r-md);padding:12px 16px;cursor:pointer;margin-bottom:16px;min-height:44px}
 .btn:hover{background:var(--btn-bg-hover)}
 
+/* prompt pairs (Lesson 2): each part has a pale surface, a border in its own
+   hue AND a written label, so colour is never the only cue. */
+.part-task{--pc:var(--peri);--pp:var(--peri-pale)}
+.part-context{--pc:var(--amber);--pp:var(--amber-pale)}
+.part-constraints{--pc:var(--rose);--pp:var(--rose-pale)}
+.part-format{--pc:var(--teal);--pp:var(--teal-pale)}
+.req{font-family:var(--serif);font-size:var(--fs-md);color:var(--ink-2);margin:0 0 12px}
+.cmp-label{font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;color:var(--muted);margin:12px 0 4px}
+.pair .cmp-label:first-child{margin-top:0}
+ol.gaps{margin:0 0 16px;padding-left:24px}
+ol.gaps li{margin-bottom:12px}
+ol.gaps li > p{margin:0}
+.k-stated{color:var(--att-text)} .k-vague{color:var(--prop)} .k-missing{color:var(--exp)}
+.cmp-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.cmp-btn{margin:0}
+.cmp-btn[aria-pressed="true"]{background:var(--chip-bg)}
+.cmp-btn[aria-pressed="true"]::before{content:"✓ "}
+.cmp-status{font-family:var(--sans);font-size:var(--fs-base);font-weight:600;color:var(--ink-2);margin:0 0 16px;min-height:52px}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.cmp-parts{margin:0}
+.cmp-part{background:var(--pp);border-left:4px solid var(--pc);border-radius:0 var(--r-md) var(--r-md) 0;padding:8px 12px;margin:0 0 8px;color:var(--text)}
+.cmp-part dt{font-family:var(--sans);font-size:var(--fs-sm);font-weight:700}
+.cmp-part dd{margin:0}
+ul.cmp-out{list-style:none;margin:0;padding:0}
+.cmp-out li{font-family:var(--serif);font-size:var(--fs-base);padding:4px 8px;margin:0 0 4px;border-radius:var(--r-sm)}
+.cmp-out li.on{background:var(--pp);outline:2px solid var(--pc);color:var(--text)}
+.cmp-tag,.cmp-inv{display:inline-block;font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;background:var(--card);padding:2px 8px;border-radius:var(--r-sm);border:1.5px solid currentColor}
+.cmp-tag{color:var(--text);white-space:nowrap}
+.cmp-inv{color:var(--exp)}
+.cmp-note{display:block;font-family:var(--sans);font-size:var(--fs-sm);color:var(--muted);margin-top:4px}
+
 svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .g-cell{fill:var(--card);stroke:var(--line);stroke-width:1.5}
 .g-col{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:middle}

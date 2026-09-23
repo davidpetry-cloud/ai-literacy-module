@@ -40,7 +40,7 @@ const LIGHT_SURFACES = ["--card", "--paper", "--peri-pale", "--amber-pale", "--r
 // Which text colours may sit on which surfaces. Adding a pairing here is a
 // design decision — make it pass in both themes before using it in the CSS.
 const PAIRS = {
-  "--text": LIGHT_SURFACES,
+  "--text": [...LIGHT_SURFACES, "--teal-pale"],
   "--ink": LIGHT_SURFACES,
   "--ink-2": LIGHT_SURFACES,
   "--ink-3": LIGHT_SURFACES,
