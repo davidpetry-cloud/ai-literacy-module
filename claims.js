@@ -65,5 +65,47 @@ export const CLAIMS = {
     attestation: proposedBy(
       "Written with the passage. The landing date and surface duration should be checked against NASA's mission record before this is attested."
     )
+  },
+  "prompt-parts": {
+    text: "A clear request to an AI tool usually states four things: the task, the context, the constraints, and the format you want back.",
+    attestation: proposedBy(
+      "A common framing in the prompting guides model providers publish, cut down to four parts a non-specialist can remember. Says 'usually' because a short request can work when the context is obvious."
+    )
+  },
+  "gaps-get-filled": {
+    text: "When a request leaves out details the output needs, a model often fills the gaps with plausible invented specifics, such as times, dates or how a project is going.",
+    attestation: proposedBy(
+      "Follows from model-predicts: the model writes likely text, and a specific-sounding detail is often more likely than a blank. Each track's vague output in Lesson 2 is built to show it."
+    )
+  },
+  "example-steers-form": {
+    text: "Showing an example of the output you want is an effective way to steer its format and tone, often more effective than describing them.",
+    attestation: proposedBy(
+      "Giving examples (few-shot prompting) is widely documented as a way to control format and style. Worded as 'often more effective' rather than 'the most reliable way', which would overclaim."
+    )
+  },
+  "structure-not-truth": {
+    text: "A better-structured request makes an output more likely to fit what you need. It doesn't make the output reliable: any fact you didn't supply still needs checking.",
+    attestation: proposedBy(
+      "Stops the lesson being read as 'good prompts give true answers', and links it back to Lesson 1. Facts you put in the context can come back right; anything the model adds is still predicted text."
+    )
+  },
+  "l2-key-educators": {
+    text: "The answer key for the Lesson 2 educators prompt pair is correct: each part of the vague request is labelled as the request shows it, each line of the structured output is traced to the parts that caused it, and each line marked invented has no basis in the request.",
+    attestation: proposedBy(
+      "Written with the prompt pair. Check it by reading each request beside its output. It is a judgement about the text on the page, so no outside source is needed."
+    )
+  },
+  "l2-key-professionals": {
+    text: "The answer key for the Lesson 2 professionals prompt pair is correct: each part of the vague request is labelled as the request shows it, each line of the structured output is traced to the parts that caused it, and each line marked invented has no basis in the request.",
+    attestation: proposedBy(
+      "Written with the prompt pair. Check it by reading each request beside its output. It is a judgement about the text on the page, so no outside source is needed."
+    )
+  },
+  "l2-key-students": {
+    text: "The answer key for the Lesson 2 students prompt pair is correct: each part of the vague request is labelled as the request shows it, each line of the structured output is traced to the parts that caused it, and each line marked invented has no basis in the request.",
+    attestation: proposedBy(
+      "Written with the prompt pair. Check it by reading each request beside its output. It is a judgement about the text on the page, so no outside source is needed."
+    )
   }
 };
