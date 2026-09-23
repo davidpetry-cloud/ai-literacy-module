@@ -183,7 +183,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   if (!lesson || !lesson.ready) {
     delete header.dataset.lesson;
-    top.innerHTML = `<a class="back" href="index.html">&larr; Course overview</a><h1>Lesson not available</h1>`;
+    top.innerHTML = `<h1>Lesson not available</h1>`;
     content.innerHTML = `<p>${lesson ? `Lesson ${lesson.n} is still in design.` : "There is no lesson with that number."} <a href="index.html">Back to the course overview</a>.</p>`;
     side.innerHTML = "";
     return;
@@ -193,8 +193,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const passage = concrete.tracks[track];
 
   header.dataset.lesson = lesson.n;
+  doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
   top.innerHTML = `
-    <a class="back" href="index.html?track=${track}">&larr; Course overview</a>
     <p class="eyebrow"><span class="lesson-no">Lesson ${lesson.n}</span> ${esc(TRACKS[track].label)}</p>
     <h1>${esc(lesson.title)}</h1>
     <p class="sub">${esc(lesson.framing)}</p>
