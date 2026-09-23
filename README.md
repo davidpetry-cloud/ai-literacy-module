@@ -51,7 +51,7 @@ timings add up to 45 minutes.
 | # | Lesson | Status |
 |---|---|---|
 | 1 | What a model actually does | Built |
-| 2 | Asking well: prompt structure | Objectives drafted |
+| 2 | Asking well: prompt structure | Built |
 | 3 | Checking what it says | Objectives drafted |
 | 4 | Who signs off: human in the loop | Objectives drafted |
 | 5 | How it goes wrong, and a checklist that holds | Objectives drafted |

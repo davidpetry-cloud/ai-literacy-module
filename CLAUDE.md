@@ -54,6 +54,9 @@ Each framework has one job. Don't add a sixth without removing one.
 - **One core, three tracks.** Only the concrete stage's context and passage,
   ARCS relevance, and the transfer task vary by track. Objectives, checks,
   pictorial and abstract stages are shared. The render tests enforce this.
+  A pictorial figure may draw its content from the track's concrete artefact
+  (Lesson 1's grid once revealed, Lesson 2's comparison tool), but its
+  controls, headings, moves and script stay the same in every track.
 - **Concrete means a real output in the learner's hands**, which they act on:
   mark it, check it, rewrite it. A description of an output isn't concrete.
 - **Passages say where they came from.** `planted` means written by a model
@@ -185,7 +188,7 @@ Sonnet worked well.
 | lesson | model | why |
 |---|---|---|
 | 01 | done | pilot, built on Opus |
-| 02 | Opus for the tool | needs a prompt-comparison tool: same task, two prompts, differences attributed |
+| 02 | done | built on Opus with the prompt-comparison tool (`promptCompare` in `lesson-core.js`) |
 | 03 | Sonnet | reuses the passage pattern, with source cards doing more of the work |
 | 04 | Opus | the attestation exercise is new, and it's the course's centrepiece |
 | 05 | Sonnet | checklist builder is simple; classification reuses the passage pattern |
@@ -226,6 +229,9 @@ changes get their own commits, so `git log --oneline` reads as a build history.
 
 ## Status
 
-Lesson 1 is built as the pilot. Lessons 2–5 have objectives only; David
-approved them as written on 2026-09-23, so the next step for each is its
-warm-up and check items. All 7 claims are proposed and none are attested.
+Lessons 1 and 2 are built. Lesson 2 (2026-09-23) added a second exercise
+type, `prompt-pair`, with its own alignment rules, and the `prompt-compare`
+figure; its approved design is `docs/lesson-02-design.md`. Lessons 3–5 have
+objectives only; David approved them as written on 2026-09-23, so the next
+step for each is its warm-up and check items. All 14 claims are proposed and
+none are attested.
