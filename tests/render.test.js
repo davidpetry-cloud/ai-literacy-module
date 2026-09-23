@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -213,6 +213,75 @@ describe("lesson 2: the comparison tool is one core across tracks", () => {
   });
 });
 
+const lesson3 = getLesson(3);
+const usesData = (track) => lesson3.stages[0].tracks[track].passage.uses;
+const lesson3Doc = (track) => lessonDoc(track, lesson3);
+
+describe.each(TRACK_IDS)("lesson 3, %s track", (track) => {
+  const doc = lesson3Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows this track's passage with every source card closed until revealed", () => {
+    const items = doc.querySelectorAll(".passage li");
+    expect(items).toHaveLength(lesson3.stages[0].tracks[track].passage.sentences.length);
+    for (const d of doc.querySelectorAll(".passage details")) expect(d.open).toBe(false);
+    expect(doc.querySelector(".passage figcaption").textContent).toContain("planted on purpose");
+  });
+
+  it("lists this track's three uses and all three levels of checking", () => {
+    const uses = [...doc.querySelectorAll("ol.uses li")].map((li) => li.textContent);
+    usesData(track).forEach((u, i) => expect(uses[i]).toContain(u.label));
+    expect([...doc.querySelectorAll("dl.levels dt")].map((d) => d.textContent)).toEqual(LEVELS.map((l) => l.label));
+  });
+
+  it("describes the empty grid, then the level for every use once revealed", () => {
+    const before = doc.querySelector("#grid svg").getAttribute("aria-label");
+    expect(before).toContain("Empty until revealed");
+    expect(doc.querySelectorAll("#grid .g-mark")).toHaveLength(0);
+    doc.querySelector("#reveal-grid").click();
+    const svg = doc.querySelector("#grid svg");
+    const after = svg.getAttribute("aria-label");
+    const level = (id) => LEVELS.find((l) => l.id === id).label.toLowerCase();
+    usesData(track).forEach((u) => expect(after).toContain(`${u.label} gets a ${level(u.check)}.`));
+    expect(after).toContain("the use decides the check");
+    expect(svg.querySelectorAll(".g-mark")).toHaveLength(3);
+    expect(doc.querySelector("#reveal-grid")).toBeNull();
+    expect(doc.activeElement).toBe(doc.querySelector("#grid"));
+  });
+
+  it("puts each mark in the column of its use's level", () => {
+    const doc2 = lesson3Doc(track);
+    doc2.querySelector("#reveal-grid").click();
+    const cols = [...doc2.querySelectorAll("#grid .g-mark circle")].map((c) => Number(c.getAttribute("cx")));
+    expect(cols.map((cx) => LEVELS[Math.floor((cx - 240) / 136)].id)).toEqual(usesData(track).map((u) => u.check));
+  });
+});
+
+describe("lesson 3: the grid is one core across tracks", () => {
+  const html = (track, sel) => lesson3Doc(track).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      const first = html(TRACK_IDS[0], sel);
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(first);
+    }
+  });
+
+  it("keeps the figure's headings, levels, button and script identical; only the uses change", () => {
+    const shared = (t) => {
+      const stage = lesson3Doc(t).querySelector('[data-stage="pictorial"]');
+      return [".levels", "#reveal-grid", ".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)
+        .concat([...stage.querySelectorAll("h2, h3")].map((h) => h.textContent)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+    expect(new Set(TRACK_IDS.map((t) => html(t, "ol.uses"))).size).toBe(TRACK_IDS.length);
+    expect(lesson3Doc(TRACK_IDS[0]).querySelector("#content script")).toBeNull();
+  });
+});
+
 describe("track switching changes context, not the core", () => {
   const html = (track, sel) => lessonDoc(track).querySelector(sel).innerHTML;
 
@@ -239,7 +308,8 @@ describe("page structure", () => {
   it.each([
     ["hub", hub],
     ...TRACK_IDS.map((t) => [`lesson 1 (${t})`, lessonDoc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 2 (${t})`, lesson2Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 2 (${t})`, lesson2Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 3 (${t})`, lesson3Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -249,7 +319,8 @@ describe("page structure", () => {
   it.each([
     ["hub", hub],
     ["lesson 1", lessonDoc(TRACK_IDS[0])],
-    ["lesson 2", lesson2Doc(TRACK_IDS[0])]
+    ["lesson 2", lesson2Doc(TRACK_IDS[0])],
+    ["lesson 3", lesson3Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);

@@ -200,6 +200,12 @@ ol.probs li{margin-bottom:16px}
 ol.gaps{margin:0 0 16px;padding-left:24px}
 ol.gaps li{margin-bottom:12px}
 ol.gaps li > p{margin:0}
+dl.levels{margin:0 0 16px}
+.levels div{margin-bottom:8px}
+.levels dt{font-weight:700;color:var(--ink)}
+.levels dd{margin:0}
+ol.uses{margin:0 0 16px;padding-left:24px}
+ol.uses li{margin-bottom:8px}
 .k-stated{color:var(--att-text)} .k-vague{color:var(--prop)} .k-missing{color:var(--exp)}
 .cmp-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .cmp-btn{margin:0}

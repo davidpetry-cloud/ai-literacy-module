@@ -11,6 +11,7 @@ const CPA = ["concrete", "pictorial", "abstract"];
 const KEYS = ["correct", "wrong", "no-source", "nothing"];
 const TONES = ["confident", "hedged"];
 const PARTS = ["task", "context", "constraints", "format"];
+const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
 const EXERCISES = ["passage", "prompt-pair"];
@@ -125,7 +126,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect(figure).toBe({ passage: "confidence-grid", "prompt-pair": "prompt-compare" }[exerciseOf(lesson)]);
+    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -244,6 +245,27 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each pair's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(pair(t).claim);
+    });
+  });
+
+  describe.runIf(lesson.stages.find((s) => s.kind === "pictorial").figure === "check-scale")("pictorial stage: check scale", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const uses = (t) => concrete.tracks[t].passage.uses;
+
+    it("gives every track three uses, one at each level of checking, each with a reason", () => {
+      for (const t of TRACK_IDS) {
+        expect(uses(t).map((u) => u.check).sort(), t).toEqual([...LEVELS].sort());
+        for (const u of uses(t)) {
+          expect(u.label.length, u.label).toBeLessThanOrEqual(24);
+          expect(u.why, u.label).toBeTruthy();
+        }
+      }
+    });
+
+    it("doesn't let the levels be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => uses(t).map((u) => u.check).join());
+      for (const o of orders) expect(o).not.toBe(LEVELS.join());
+      expect(new Set(orders).size, "every track uses the same order").toBeGreaterThan(1);
     });
   });
 

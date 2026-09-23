@@ -101,6 +101,52 @@ export function confidenceGrid(sentences, { revealed = false } = {}) {
   return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${cells.join("")}${marks}</svg>`;
 }
 
+/* ---------- pictorial: one passage, three uses, three levels of checking ---------- */
+
+export const LEVELS = [
+  { id: "glance", label: "Glance", what: "Read it. Does it fit what you already know? No lookup." },
+  { id: "spot", label: "Spot-check", what: "Check the numbers, dates, names, quotes and citations. One source for each." },
+  { id: "full", label: "Full check", what: "Check every claim against the original. A second person reads it too." }
+];
+
+export function checkScale(uses, { revealed = false } = {}) {
+  const x0 = 240, y0 = 44, cw = 136, rh = 64, w = x0 + cw * LEVELS.length + 8, h = y0 + rh * uses.length + 8;
+  const col = (u) => LEVELS.findIndex((l) => l.id === u.check);
+
+  let label = `Grid with three rows, the uses of this passage, and three columns: ${LEVELS.map((l) => l.label.toLowerCase()).join(", ")}.`;
+  if (revealed) {
+    label += " " + uses.map((u) => `${u.label} gets a ${LEVELS[col(u)].label.toLowerCase()}.`).join(" ");
+    label += " The passage is the same in every row: the use decides the check.";
+  } else {
+    label += " Empty until revealed.";
+  }
+
+  const cells = [];
+  LEVELS.forEach((l, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${l.label}</text>`));
+  uses.forEach((u, r) => {
+    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${esc(u.label)}</text>`);
+    LEVELS.forEach((_, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell"/>`));
+  });
+  const marks = revealed
+    ? uses
+        .map((u, r) => {
+          const cx = x0 + col(u) * cw + cw / 2, cy = y0 + r * rh + rh / 2;
+          return `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${r + 1}</text></g>`;
+        })
+        .join("")
+    : "";
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${cells.join("")}${marks}</svg>`;
+}
+
+function scaleFigure(uses) {
+  return `<h3 class="subhead">Three levels of checking</h3>
+      <dl class="levels">${LEVELS.map((l) => `<div><dt>${l.label}</dt><dd>${l.what}</dd></div>`).join("")}</dl>
+      <h3 class="subhead">Three uses of this passage</h3>
+      <ol class="uses">${uses.map((u) => `<li><b>${esc(u.label)}.</b> ${esc(u.why)}</li>`).join("")}</ol>
+      <div class="figure" id="grid">${checkScale(uses)}</div>
+      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
+}
+
 /* ---------- prompt pairs: which part of a request caused which line ---------- */
 
 export const PARTS = [
@@ -266,9 +312,12 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ? `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
       : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
   const concreteBody = isPair ? pairExercise(artefact, provenanceNote) : passageExercise(artefact, provenanceNote);
+  const scale = pictorial.figure === "check-scale";
   const pictorialBody = isPair
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
-    : `<div class="figure" id="grid">${confidenceGrid(artefact.sentences)}</div>
+    : scale
+      ? scaleFigure(artefact.uses)
+      : `<div class="figure" id="grid">${confidenceGrid(artefact.sentences)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
 
   content.innerHTML = `
@@ -330,7 +379,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     <div class="sidebox"><h2>What learners leave with</h2><p>${esc(lesson.arcs.satisfaction)}</p></div>`;
 
   if (isPair) wireCompare(doc, artefact);
-  else wireGrid(doc, artefact.sentences);
+  else if (scale) wireGrid(doc, (revealed) => checkScale(artefact.uses, { revealed }));
+  else wireGrid(doc, (revealed) => confidenceGrid(artefact.sentences, { revealed }));
 }
 
 function passageExercise(passage, provenanceNote) {
@@ -361,11 +411,11 @@ function pairExercise(pair, provenanceNote) {
       }).join("")}</ol>`;
 }
 
-function wireGrid(doc, sentences) {
+function wireGrid(doc, draw) {
   const btn = doc.querySelector("#reveal-grid");
   btn.addEventListener("click", () => {
     const grid = doc.querySelector("#grid");
-    grid.innerHTML = confidenceGrid(sentences, { revealed: true });
+    grid.innerHTML = draw(true);
     btn.remove();
     // The button vanishes, so hand focus to what it revealed rather than dropping it on <body>.
     grid.tabIndex = -1;

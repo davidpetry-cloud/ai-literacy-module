@@ -39,7 +39,7 @@ function concreteTexts(concrete, t) {
   if (!art.pair) {
     return {
       passage: art.passage.sentences.map((s) => s.text),
-      key: art.passage.sentences.map((s) => s.note)
+      key: [...art.passage.sentences.map((s) => s.note), ...(art.passage.uses ?? []).flatMap((u) => [u.label, u.why])]
     };
   }
   const { vague, structured } = art.pair;
