@@ -18,8 +18,8 @@
     var dark=root.getAttribute("data-theme")==="dark";
     var btns=document.querySelectorAll("[data-theme-toggle]");
     for(var i=0;i<btns.length;i++){
-      btns[i].setAttribute("aria-pressed", String(dark));
-      btns[i].textContent = dark ? "☀ Light" : "🌙 Dark";
+      // The visible words are the accessible name, so it always names what a click will switch to.
+      btns[i].innerHTML = dark ? '<span aria-hidden="true">☀</span> Light mode' : '<span aria-hidden="true">🌙</span> Dark mode';
     }
   }
 

@@ -68,10 +68,10 @@ const KEY_ORDER = ["correct", "wrong", "no-source", "nothing"];
 const TONE_ORDER = ["confident", "hedged"];
 const TONE_LABEL = { confident: "Sounds confident", hedged: "Sounds unsure" };
 
-export function confidenceGrid(sentences, { revealed = false } = {}) {
-  const x0 = 150, y0 = 44, cw = 122, rh = 96, w = x0 + cw * 4 + 8, h = y0 + rh * 2 + 8;
-  const placed = sentences.map((s, i) => ({ n: i + 1, row: TONE_ORDER.indexOf(s.tone), col: KEY_ORDER.indexOf(s.key), s }));
+const placeSentences = (sentences) =>
+  sentences.map((s, i) => ({ n: i + 1, row: TONE_ORDER.indexOf(s.tone), col: KEY_ORDER.indexOf(s.key), s }));
 
+function confidenceLabel(placed, revealed) {
   let label = "Grid with two rows, sounds confident and sounds unsure, and four columns: correct, wrong, no source, nothing to check.";
   if (revealed) {
     label += " " + placed.map((p) => `Sentence ${p.n} is in ${TONE_LABEL[p.s.tone].toLowerCase()}, ${KEY_LABEL[p.s.key].toLowerCase()}.`).join(" ");
@@ -80,6 +80,21 @@ export function confidenceGrid(sentences, { revealed = false } = {}) {
   } else {
     label += " Empty until revealed.";
   }
+  return label;
+}
+
+/** The same grid as a table, for figures too narrow to draw it. Only one of the two is ever shown. */
+function gridTable(caption, corner, cols, rows) {
+  const cell = (marks) => `<td>${marks.map((m) => `<span class="tmark"><span class="sr">${m.word} </span>${m.n}</span>`).join("")}</td>`;
+  return `<table class="grid-alt"><caption class="sr">${esc(caption)}</caption><thead><tr><th scope="col">${corner}</th>${cols
+    .map((c) => `<th scope="col">${c}</th>`)
+    .join("")}</tr></thead><tbody>${rows.map((r) => `<tr><th scope="row">${esc(r.label)}</th>${r.cells.map(cell).join("")}</tr>`).join("")}</tbody></table>`;
+}
+
+export function confidenceGrid(sentences, { revealed = false } = {}) {
+  const x0 = 150, y0 = 44, cw = 122, rh = 96, w = x0 + cw * 4 + 8, h = y0 + rh * 2 + 8;
+  const placed = placeSentences(sentences);
+  const label = confidenceLabel(placed, revealed);
 
   const cells = [];
   KEY_ORDER.forEach((k, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${KEY_LABEL[k]}</text>`));
@@ -101,6 +116,17 @@ export function confidenceGrid(sentences, { revealed = false } = {}) {
   return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${cells.join("")}${marks}</svg>`;
 }
 
+/** Drawing plus table: CSS shows whichever fits the figure's width. */
+export function confidenceView(sentences, { revealed = false } = {}) {
+  const placed = placeSentences(sentences);
+  // Turned on its side (answers down, tone across) so it needs three columns, not five, on a phone.
+  const rows = KEY_ORDER.map((k, c) => ({
+    label: KEY_LABEL[k],
+    cells: TONE_ORDER.map((_, r) => (revealed ? placed.filter((p) => p.row === r && p.col === c).map((p) => ({ word: "Sentence", n: p.n })) : []))
+  }));
+  return confidenceGrid(sentences, { revealed }) + gridTable(confidenceLabel(placed, revealed), "Answer", TONE_ORDER.map((t) => TONE_LABEL[t]), rows);
+}
+
 /* ---------- pictorial: one passage, three uses, three levels of checking ---------- */
 
 export const LEVELS = [
@@ -109,17 +135,31 @@ export const LEVELS = [
   { id: "full", label: "Full check", what: "Check every claim against the original. A second person reads it too." }
 ];
 
-export function checkScale(uses, { revealed = false } = {}) {
-  const x0 = 240, y0 = 44, cw = 136, rh = 64, w = x0 + cw * LEVELS.length + 8, h = y0 + rh * uses.length + 8;
-  const col = (u) => LEVELS.findIndex((l) => l.id === u.check);
+const levelCol = (u) => LEVELS.findIndex((l) => l.id === u.check);
 
+function scaleLabel(uses, revealed) {
   let label = `Grid with three rows, the uses of this passage, and three columns: ${LEVELS.map((l) => l.label.toLowerCase()).join(", ")}.`;
   if (revealed) {
-    label += " " + uses.map((u) => `${u.label} gets a ${LEVELS[col(u)].label.toLowerCase()}.`).join(" ");
+    label += " " + uses.map((u) => `${u.label} gets a ${LEVELS[levelCol(u)].label.toLowerCase()}.`).join(" ");
     label += " The passage is the same in every row: the use decides the check.";
   } else {
     label += " Empty until revealed.";
   }
+  return label;
+}
+
+export function checkScaleView(uses, { revealed = false } = {}) {
+  const rows = uses.map((u, r) => ({
+    label: u.label,
+    cells: LEVELS.map((_, c) => (revealed && levelCol(u) === c ? [{ word: "Use", n: r + 1 }] : []))
+  }));
+  return checkScale(uses, { revealed }) + gridTable(scaleLabel(uses, revealed), "Use", LEVELS.map((l) => l.label), rows);
+}
+
+export function checkScale(uses, { revealed = false } = {}) {
+  const x0 = 240, y0 = 44, cw = 136, rh = 64, w = x0 + cw * LEVELS.length + 8, h = y0 + rh * uses.length + 8;
+  const col = levelCol;
+  const label = scaleLabel(uses, revealed);
 
   const cells = [];
   LEVELS.forEach((l, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${l.label}</text>`));
@@ -143,7 +183,7 @@ function scaleFigure(uses) {
       <dl class="levels">${LEVELS.map((l) => `<div><dt>${l.label}</dt><dd>${l.what}</dd></div>`).join("")}</dl>
       <h3 class="subhead">Three uses of this passage</h3>
       <ol class="uses">${uses.map((u) => `<li><b>${esc(u.label)}.</b> ${esc(u.why)}</li>`).join("")}</ol>
-      <div class="figure" id="grid">${checkScale(uses)}</div>
+      <div class="figure" id="grid">${checkScaleView(uses)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
 }
 
@@ -202,6 +242,8 @@ export function promptCompare(pair) {
 function say(lines) {
   return `<div class="say">${lines.map(([who, line]) => `<p><span class="who">${esc(who)}</span>${esc(line)}</p>`).join("")}</div>`;
 }
+// What the person leading the session does and says, kept apart from what learners work on.
+const facil = (m, sy, w) => `<div class="facil"><h3 class="subhead">Facilitator notes</h3>${moves(m)}${say(sy)}${watch(w)}</div>`;
 const moves = (list) => `<ol class="moves">${list.map((m) => `<li>${esc(m)}</li>`).join("")}</ol>`;
 const watch = (text) => `<div class="watch"><b>Watch for</b>${esc(text)}</div>`;
 const targets = (ids) => `<span class="targets">Objectives ${ids.map(esc).join(", ")}</span>`;
@@ -317,24 +359,25 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
     : scale
       ? scaleFigure(artefact.uses)
-      : `<div class="figure" id="grid">${confidenceGrid(artefact.sentences)}</div>
+      : `<div class="figure" id="grid">${confidenceView(artefact.sentences)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
 
   content.innerHTML = `
     <div class="obj"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
       .map((o) => `<li><span class="oid">${esc(o.id)}</span> ${esc(o.text)} <span class="bloom">${esc(o.bloom)}</span></li>`)
-      .join("")}</ul></div>
+      .join("")}</ul><p class="legend">Boxes marked <b>Facilitator</b> are for whoever leads the session. Everything else is for learners.</p></div>
 
     <section class="block why"><h2>Why this matters</h2>
       <p class="relevance">${esc(lesson.arcs.relevance[track])}</p>
-      <p><b>Open with:</b> ${esc(lesson.arcs.attention)}</p>
-      <p><b>Confidence:</b> ${esc(lesson.arcs.confidence)}</p>
+      <div class="facil"><h3 class="subhead">Facilitator notes</h3>
+        <p><b>Open with:</b> ${esc(lesson.arcs.attention)}</p>
+        <p><b>Confidence:</b> ${esc(lesson.arcs.confidence)}</p></div>
     </section>
 
     <section class="block w" data-stage="warmup"><h2>Warm-up · Pre-check <span class="mins">${lesson.warmup.minutes} min</span></h2>
       <p class="sense">Record answers — they are the "before" for the post-check.</p>
       <ol class="probs">${lesson.warmup.items
-        .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="expect"><b>Expect</b>${esc(i.expected)}</div></li>`)
+        .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="expect"><b>Facilitator · Expect</b>${esc(i.expected)}</div></li>`)
         .join("")}</ol>
     </section>
 
@@ -342,26 +385,26 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       <p class="stage-meta">${targets(concrete.targets)}</p>
       <p class="context">${esc(art.context)}</p>
       ${concreteBody}
+      ${facil(concrete.moves, concrete.say, concrete.watch)}
       <div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(artefact.claim, now)}</div>
-      ${moves(concrete.moves)}${say(concrete.say)}${watch(concrete.watch)}
     </section>
 
     <section class="block p" data-stage="pictorial"><h2>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h2>
       <p class="stage-meta">${targets(pictorial.targets)}</p>
       ${pictorialBody}
-      ${moves(pictorial.moves)}${say(pictorial.say)}${watch(pictorial.watch)}
+      ${facil(pictorial.moves, pictorial.say, pictorial.watch)}
     </section>
 
     <section class="block a" data-stage="abstract"><h2>Abstract · ${esc(abstract.title)} <span class="mins">${abstract.minutes} min</span></h2>
       <p class="stage-meta">${targets(abstract.targets)}</p>
       <div class="claims">${abstract.principles.map((id) => claimCard(id, now)).join("")}</div>
-      ${moves(abstract.moves)}${say(abstract.say)}${watch(abstract.watch)}
+      ${facil(abstract.moves, abstract.say, abstract.watch)}
     </section>
 
     <section class="block w" data-stage="check"><h2>Check · Post-check <span class="mins">${lesson.check.minutes} min</span></h2>
       <p class="sense">Compare with the warm-up answers, objective by objective.</p>
       <ol class="probs">${lesson.check.items
-        .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="crit"><b>Reteach if</b>${esc(i.crit)}</div></li>`)
+        .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="crit"><b>Facilitator · Reteach if</b>${esc(i.crit)}</div></li>`)
         .join("")}</ol>
       <div class="exit"><b>Exit ticket</b><p>${esc(lesson.check.exit.rating)}</p><p>${esc(lesson.check.exit.open)}</p></div>
     </section>
@@ -379,8 +422,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     <div class="sidebox"><h2>What learners leave with</h2><p>${esc(lesson.arcs.satisfaction)}</p></div>`;
 
   if (isPair) wireCompare(doc, artefact);
-  else if (scale) wireGrid(doc, (revealed) => checkScale(artefact.uses, { revealed }));
-  else wireGrid(doc, (revealed) => confidenceGrid(artefact.sentences, { revealed }));
+  else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
+  else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }
 
 function passageExercise(passage, provenanceNote) {
@@ -437,18 +480,18 @@ function wireCompare(doc, pair) {
 }
 
 function alignmentTable(lesson) {
-  const cols = [
-    ["Pre", lesson.warmup.items.flatMap((i) => i.targets)],
-    ...lesson.stages.map((s) => [s.kind[0].toUpperCase(), s.targets]),
-    ["Post", lesson.check.items.flatMap((i) => i.targets)]
+  const rows = [
+    ["Warm-up (pre)", lesson.warmup.items.flatMap((i) => i.targets)],
+    ...lesson.stages.map((s) => [s.kind[0].toUpperCase() + s.kind.slice(1), s.targets]),
+    ["Check (post)", lesson.check.items.flatMap((i) => i.targets)]
   ];
-  return `<table class="align"><thead><tr><th scope="col">Obj</th>${cols
-    .map(([h]) => `<th scope="col">${h}</th>`)
-    .join("")}</tr></thead><tbody>${lesson.objectives
+  return `<table class="align"><thead><tr><th scope="col">Stage</th>${lesson.objectives
+    .map((o) => `<th scope="col"><span class="sr">Objective </span>${esc(o.id)}</th>`)
+    .join("")}</tr></thead><tbody>${rows
     .map(
-      (o) =>
-        `<tr><th scope="row">${esc(o.id)}</th>${cols
-          .map(([, t]) => (t.includes(o.id) ? `<td>✓<span class="sr"> taught or checked</span></td>` : `<td><span class="sr">not here</span></td>`))
+      ([name, t]) =>
+        `<tr><th scope="row">${name}</th>${lesson.objectives
+          .map((o) => (t.includes(o.id) ? `<td>✓<span class="sr"> taught or checked</span></td>` : `<td><span class="sr">not here</span></td>`))
           .join("")}</tr>`
     )
     .join("")}</tbody></table>`;
