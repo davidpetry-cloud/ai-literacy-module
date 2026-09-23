@@ -98,4 +98,10 @@ replacement.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+- **Code** (renderer, styles, pages, tests, scripts): MIT — see
+  [LICENSE](LICENSE).
+- **Course content** (lessons, claims, course text, lesson designs):
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — see
+  [LICENSE-CONTENT.md](LICENSE-CONTENT.md) for exactly what's covered and how
+  to credit it.
+- **Fonts** (Lexend, Fraunces): SIL Open Font License — see `fonts/OFL-*.txt`.
