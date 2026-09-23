@@ -93,6 +93,17 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
   `--ink*` flips in dark mode, so it is never a background. Dark bands use
   `--header-bg`, `--btn-bg` or `--chip-bg`. Text on a lesson colour uses
   `--on-lc`.
+- **Non-text contrast is 3:1.** Grid lines use `--edge` and buttons carry a
+  2px `--btn-edge` ring, so their shape shows in both themes. Nothing that
+  carries text is faded with `opacity`; use a token.
+- **A figure must not scroll sideways on a phone.** Every grid is drawn twice,
+  as an SVG and as a `table.grid-alt` with the same caption. A container query
+  on `.figure` shows the table when the SVG would not fit. New figures do the same.
+- **Facilitator and learner content are kept apart.** Moves, say and watch
+  sit in a `.facil` box headed "Facilitator notes", with the answer-key card
+  after it. Warm-up and check notes start "Facilitator ·".
+- **A control's accessible name contains its visible words** (the theme toggle
+  has no `aria-label`). Every `summary` shows an arrow.
 - **Labels that carry meaning** (status badges, answer-key labels) sit on their
   own `--card` background, so they pass wherever they're placed.
 - **Type:** Lexend for all non-heading text, Fraunces for headings; both are
