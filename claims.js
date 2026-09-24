@@ -69,7 +69,7 @@ export const CLAIMS = {
     source: "practitioner",
     by: "David Petry",
     role: "Course author and UX lead",
-    basis: "Checked against Kandpal et al. (2023), ICML (proceedings.mlr.press). Accuracy falls for facts that rarely appear in training data.",
+    basis: "Checked against Kandpal et al. (2023), ICML (proceedings.mlr.press). Numbers, dates, citations and quotes. Walters & Wilder (2023), Sci. Rep. 13:14045.",
     verified: "2026-09-24",
     ttlDays: 1095,
       supersedes:  { source: "model", model:
