@@ -39,11 +39,18 @@ export const CLAIMS = {
     },
   "retrieval-still-generated": {
     text: "Some AI tools add a search or retrieval step that pulls in documents first. The answer is still generated text, and it can misstate or overstate what those documents say.",
-    attestation: proposedBy(
-      "Many current assistants browse or retrieve. Without this claim, learners who use such tools would rightly say claim model-predicts doesn't describe them."
-    )
-  },
-  "fluency-not-evidence": {
+     attestation: {
+    source: "practitioner",
+    by: "David Petry",
+    role: "Course author and UX lead",
+    basis: "Checked against Lewis et al. (2020), NeurIPS 33, arXiv:2005.11401, and Jurafsky & Martin 3rd ed. draft ch. 11: retrieved passages condition a generator; the answer is still generated text.",
+    verified: "2026-09-24",
+    ttlDays: 1095,
+      supersedes: { source: "model", model: 
+    "claude-opus-5-5" },
+      }
+    },
+    "fluency-not-evidence": {
     text: "How confident an AI output sounds is not a reliable signal of whether it is correct.",
     attestation: proposedBy(
       "Models produce correct and incorrect statements in the same register; Lesson 1's passages are built to show it. Stated as 'not a reliable signal' rather than 'no signal', which would overclaim."
