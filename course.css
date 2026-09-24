@@ -219,6 +219,26 @@ ol.probs li{margin-bottom:16px}
 ol.gaps{margin:0 0 16px;padding-left:24px}
 ol.gaps li{margin-bottom:12px}
 ol.gaps li > p{margin:0}
+/* sign-offs (Lesson 4) */
+dl.so-line{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:4px 0 0;font-size:var(--fs-sm)}
+.so-line div{display:contents}
+.so-line dt{color:var(--muted);font-weight:600}
+.so-line dd{margin:0;color:var(--text)}
+.so-ledger{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.k-sound{color:var(--att-text)} .k-not-a-person{color:var(--exp)} .k-no-basis{color:var(--prop)} .k-wrong-signer{color:var(--rej)} .k-lapsed{color:var(--exp)}
+.so-form{display:grid;gap:12px;margin:0 0 16px;max-width:var(--measure)}
+.so-form label{display:grid;gap:4px;font-weight:600;color:var(--ink)}
+.so-form input[type="text"],.so-form input[type="date"]{font:inherit;font-size:var(--fs-base);font-weight:400;color:var(--text);background:var(--card);border:2px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;min-height:44px}
+.so-who{border:2px solid var(--edge);border-radius:var(--r-md);padding:4px 16px 8px;margin:0;display:flex;flex-wrap:wrap;gap:0 24px}
+.so-who legend{font-weight:600;color:var(--ink);padding:0 8px}
+.so-who label{display:flex;align-items:center;gap:12px;min-height:44px}
+.so-who input{width:22px;height:22px;margin:0;accent-color:var(--btn-bg)}
+.so-result{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 12px}
+.so-status{margin:0;font-weight:600;color:var(--ink-2);min-height:52px;flex:1 1 240px}
+.so-empty{color:var(--muted)}
+.tl-axis{stroke:var(--edge);stroke-width:2}
+.tl-live{stroke:var(--ink-3);stroke-width:6;stroke-linecap:round}
+.tl-today{stroke:var(--ink);stroke-width:2;stroke-dasharray:4 4}
 dl.levels{margin:0 0 16px}
 .levels div{margin-bottom:8px}
 .levels dt{font-weight:700;color:var(--ink)}

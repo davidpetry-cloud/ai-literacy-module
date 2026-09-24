@@ -36,6 +36,11 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.signoffs) {
+    // The document and its sign-offs read as passage text; the notes are the answer key.
+    const items = art.signoffs.items;
+    return { passage: items.flatMap((i) => [i.statement, i.basis]).filter(Boolean), key: items.map((i) => i.note) };
+  }
   if (!art.pair) {
     return {
       passage: art.passage.sentences.map((s) => s.text),

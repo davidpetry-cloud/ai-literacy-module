@@ -6,6 +6,8 @@
 import { describe, it, expect } from "vitest";
 import { COURSE, TRACK_IDS, BLOOM, ACCESS_CHANNELS, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
+import { signoffRecord } from "../lesson-core.js";
+import { resolveStatus } from "attestation-ledger";
 
 const CPA = ["concrete", "pictorial", "abstract"];
 const KEYS = ["correct", "wrong", "no-source", "nothing"];
@@ -14,7 +16,8 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs"];
+const SIGNOFF_KEYS = ["sound", "not-a-person", "no-basis", "wrong-signer", "lapsed"];
 const exerciseOf = (lesson) => lesson.stages.find((s) => s.kind === "concrete").exercise ?? "passage";
 // Verbs that name an internal state rather than something you can observe.
 const UNMEASURABLE = /^(understand|know|learn|appreciate|be aware|become familiar|grasp|realise|realize)\b/i;
@@ -126,7 +129,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -245,6 +248,70 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each pair's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(pair(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "sign-offs")("concrete stage: sign-offs", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const set = (t) => concrete.tracks[t].signoffs;
+
+    it("has a context and five sign-offs for every track, each fully written", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(set(t).items, t).toHaveLength(5);
+        for (const i of set(t).items) {
+          for (const f of ["statement", "by", "role", "note"]) expect(i[f], `${t} ${f}`).toBeTruthy();
+          expect(typeof i.basis, i.statement).toBe("string");
+          expect(Number.isInteger(i.daysAgo) && i.daysAgo >= 0, i.statement).toBe(true);
+        }
+      }
+    });
+
+    it("records where every document came from", () => {
+      for (const t of TRACK_IDS) {
+        expect(["planted", "captured"], t).toContain(set(t).provenance);
+        expect(set(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("uses each key exactly once per track", () => {
+      for (const t of TRACK_IDS) expect(set(t).items.map((i) => i.key).sort(), t).toEqual([...SIGNOFF_KEYS].sort());
+    });
+
+    it("dates the lapsed sign-off well past two years, and every other one well inside it", () => {
+      for (const t of TRACK_IDS) {
+        for (const i of set(t).items) {
+          if (i.key === "lapsed") expect(i.daysAgo, `${t} lapsed`).toBeGreaterThan(760);
+          else expect(i.daysAgo, `${t} ${i.key}`).toBeLessThan(365);
+        }
+      }
+    });
+
+    it("gives a no-basis sign-off a basis that names nothing checkable", () => {
+      for (const t of TRACK_IDS) {
+        const b = set(t).items.find((i) => i.key === "no-basis").basis;
+        expect(b.length < 25, `${t}: "${b}"`).toBe(true);
+      }
+    });
+
+    // The lesson's point: the ledger lets four of five through, and only a person catches them.
+    it("matches what the real ledger engine says: only the lapsed one fails its check", () => {
+      const now = new Date("2030-01-01");
+      for (const t of TRACK_IDS) {
+        for (const i of set(t).items) {
+          expect(resolveStatus(signoffRecord(i, now), now), `${t} ${i.key}`).toBe(i.key === "lapsed" ? "expired" : "attested");
+        }
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => set(t).items.map((i) => i.key).join());
+      for (const o of orders) expect(o).not.toBe(SIGNOFF_KEYS.join());
+      expect(new Set(orders).size, "every track uses the same order").toBe(TRACK_IDS.length);
+    });
+
+    it("puts each document's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(set(t).claim);
     });
   });
 

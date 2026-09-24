@@ -237,6 +237,136 @@ export function promptCompare(pair) {
     </div>`;
 }
 
+/* ---------- sign-offs (Lesson 4): what the ledger checks, and what only a person can ---------- */
+
+export const SIGNOFF_LABEL = {
+  sound: "Sound",
+  "not-a-person": "Not a person",
+  "no-basis": "No basis",
+  "wrong-signer": "Wrong signer",
+  lapsed: "Lapsed"
+};
+const DAY_MS = 86400000;
+const TTL_DAYS = 730;
+const isoDay = (d) => d.toISOString().slice(0, 10);
+const daysFrom = (d, days) => new Date(d.getTime() + days * DAY_MS);
+const validDate = (s) => Boolean(s) && !Number.isNaN(new Date(s).getTime());
+
+/**
+ * A lesson's fictional sign-off as a ledger record. Dated relative to `now`,
+ * so a sound sign-off never drifts into a lapsed one as real time passes.
+ */
+export function signoffRecord(item, now = new Date()) {
+  return {
+    attestation: { source: SOURCE.PRACTITIONER, by: item.by, role: item.role, basis: item.basis, verified: isoDay(daysFrom(now, -item.daysAgo)) }
+  };
+}
+
+/** What the builder's fields add up to, as a record the real engine can judge. */
+export function draftRecord({ who, by = "", role = "", basis = "", date = "" }) {
+  if (who === "model") return { attestation: { source: SOURCE.MODEL, model: by.trim() || "an AI tool", rationale: basis, by: null, verified: null } };
+  return { attestation: { source: SOURCE.PRACTITIONER, by: by.trim() || null, role: role.trim() || null, basis: basis.trim(), verified: date || null } };
+}
+
+/** The builder's verdict: the engine's status, and a sentence saying why. */
+export function signoffStatus(fields, now = new Date()) {
+  const status = resolveStatus(draftRecord(fields), now);
+  let text;
+  if (fields.who === "model") text = "Proposed. An AI tool can propose a value, but it can't sign for it.";
+  else if (!fields.by.trim()) text = "Proposed. There's no name, so nobody has signed it.";
+  else if (!validDate(fields.date)) text = "Proposed. There's no date, so nobody can tell when it was checked.";
+  else if (status === STATUS.EXPIRED) {
+    const age = Math.round((now - new Date(fields.date)) / DAY_MS);
+    text = `Lapsed. It was checked ${age} days ago. Sign-offs here last two years, so it needs checking again.`;
+  } else if (fields.date > isoDay(now)) text = "Attested, but the date is in the future. Nobody can have checked it then.";
+  else {
+    const left = daysRemaining(draftRecord(fields), now);
+    text = `Attested. It lapses on ${isoDay(daysFrom(new Date(fields.date), TTL_DAYS))}, in ${left} days.`;
+  }
+  if (status === STATUS.ATTESTED && !fields.basis.trim()) text += " The ledger accepted a sign-off with no basis. Would you?";
+  return { status, text };
+}
+
+/** Checked, today and lapses on one line: drawn, and again as a table for narrow screens. */
+export function signoffTimeline(date, now = new Date()) {
+  if (!validDate(date)) return `<p class="so-empty">No date checked, so there is no timeline to draw.</p>`;
+  const checked = new Date(date), lapse = daysFrom(checked, TTL_DAYS);
+  const x0 = 80, x1 = 540, w = 640, h = 124, y = 64;
+  const age = (now - checked) / DAY_MS;
+  const tx = Math.max(24, Math.min(616, x0 + (age / TTL_DAYS) * (x1 - x0)));
+  const gap = Math.round(Math.abs((now - lapse) / DAY_MS));
+  const where =
+    age < 0 ? "before the date it was checked" : now > lapse ? `${gap} days after it lapsed` : `${gap} days before it lapses`;
+  const label = `Timeline. Checked on ${isoDay(checked)}. Lapses on ${isoDay(lapse)}, two years later. Today, ${isoDay(now)}, is ${where}.`;
+  const svg = `<svg class="grid timeline" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">
+    <line class="tl-axis" x1="24" y1="${y}" x2="616" y2="${y}"/>
+    <line class="tl-live" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>
+    <line class="tl-today" x1="${tx}" y1="${y - 26}" x2="${tx}" y2="${y + 14}"/>
+    <text x="${tx}" y="28" class="g-col">Today</text>
+    <g class="g-mark"><circle cx="${x0}" cy="${y}" r="9"/></g>
+    <g class="g-mark"><circle cx="${x1}" cy="${y}" r="9"/></g>
+    <text x="${x0}" y="${y + 34}" class="g-col">Checked</text><text x="${x0}" y="${y + 54}" class="g-col">${isoDay(checked)}</text>
+    <text x="${x1}" y="${y + 34}" class="g-col">Lapses</text><text x="${x1}" y="${y + 54}" class="g-col">${isoDay(lapse)}</text>
+  </svg>`;
+  const rows = [["Checked", isoDay(checked)], ["Today", isoDay(now)], ["Lapses", isoDay(lapse)]];
+  const table = `<table class="grid-alt"><caption class="sr">${esc(label)}</caption><thead><tr><th scope="col">Point</th><th scope="col">Date</th></tr></thead><tbody>${rows
+    .map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`)
+    .join("")}</tbody></table>`;
+  return svg + table;
+}
+
+const soField = (id, label, value) =>
+  `<label for="${id}">${label}<input id="${id}" type="text" autocomplete="off" value="${esc(value)}"></label>`;
+
+function signoffBuilder(items, now) {
+  const start = items.find((i) => i.key === "lapsed");
+  const fields = { who: "person", by: start.by, role: start.role, basis: start.basis, date: isoDay(daysFrom(now, -start.daysAgo)) };
+  const s = signoffStatus(fields, now);
+  return `<p class="cmp-label">The statement being signed</p>
+      <p class="req">“${esc(start.statement)}”</p>
+      <form class="so-form" id="so-form" novalidate>
+        <fieldset class="so-who"><legend>Who is signing?</legend>
+          <label><input type="radio" name="so-who" value="person" checked> A person</label>
+          <label><input type="radio" name="so-who" value="model"> An AI tool</label>
+        </fieldset>
+        ${soField("so-by", "Name", fields.by)}
+        ${soField("so-role", "Role", fields.role)}
+        ${soField("so-basis", "What you checked it against", fields.basis)}
+        <label for="so-date">Date checked<input id="so-date" type="date" value="${fields.date}"></label>
+      </form>
+      <div class="so-result"><span id="so-badge">${statusBadge(s.status)}</span><p class="so-status" id="so-status" aria-live="polite">${esc(s.text)}</p></div>
+      <div class="figure" id="timeline">${signoffTimeline(fields.date, now)}</div>`;
+}
+
+function signoffExercise(set, provenanceNote, now) {
+  return `<figure class="passage signoffs">
+        <ol>${set.items
+          .map((it, i) => {
+            const rec = signoffRecord(it, now);
+            return `<li><p>${esc(it.statement)}</p>
+          <dl class="so-line"><div><dt>Signed</dt><dd>${esc(it.by)}, ${esc(it.role)}</dd></div><div><dt>Basis</dt><dd>${it.basis ? esc(it.basis) : "<i>None given</i>"}</dd></div><div><dt>Checked</dt><dd>${rec.attestation.verified}</dd></div></dl>
+          <details class="key"><summary>Reveal<span class="sr"> the answer for sign-off ${i + 1}</span></summary><p class="so-ledger">The ledger shows ${statusBadge(resolveStatus(rec, now))}</p><p><b class="k k-${it.key}">${SIGNOFF_LABEL[it.key]}</b> ${esc(it.note)}</p></details></li>`;
+          })
+          .join("")}</ol>
+        <figcaption>${provenanceNote} This team treats a sign-off as lapsed two years after it was checked. Today is ${isoDay(now)}.</figcaption>
+      </figure>`;
+}
+
+function wireSignoff(doc, now) {
+  const form = doc.querySelector("#so-form");
+  const val = (id) => form.querySelector(`#${id}`).value;
+  const update = () => {
+    const fields = { who: form.querySelector('input[name="so-who"]:checked').value, by: val("so-by"), role: val("so-role"), basis: val("so-basis"), date: val("so-date") };
+    const s = signoffStatus(fields, now);
+    doc.querySelector("#so-badge").innerHTML = statusBadge(s.status);
+    doc.querySelector("#so-status").textContent = s.text;
+    doc.querySelector("#timeline").innerHTML = signoffTimeline(fields.date, now);
+  };
+  form.addEventListener("input", update);
+  form.addEventListener("change", update);
+  form.addEventListener("submit", (e) => e.preventDefault());
+}
+
 /* ---------- shared pieces ---------- */
 
 function say(lines) {
@@ -333,8 +463,10 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const [concrete, pictorial, abstract] = lesson.stages;
   const art = concrete.tracks[track];
-  const isPair = concrete.exercise === "prompt-pair";
-  const artefact = isPair ? art.pair : art.passage;
+  const exercise = concrete.exercise ?? "passage";
+  const isPair = exercise === "prompt-pair";
+  const isSignoff = exercise === "sign-offs";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs }[exercise];
 
   header.dataset.lesson = lesson.n;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
@@ -351,12 +483,20 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
+      ? isSignoff
+        ? `Written by ${esc(artefact.model)} for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
+        : `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
       : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
-  const concreteBody = isPair ? pairExercise(artefact, provenanceNote) : passageExercise(artefact, provenanceNote);
+  const concreteBody = isPair
+    ? pairExercise(artefact, provenanceNote)
+    : isSignoff
+      ? signoffExercise(artefact, provenanceNote, now)
+      : passageExercise(artefact, provenanceNote);
   const scale = pictorial.figure === "check-scale";
   const pictorialBody = isPair
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
+    : isSignoff
+      ? signoffBuilder(artefact.items, now)
     : scale
       ? scaleFigure(artefact.uses)
       : `<div class="figure" id="grid">${confidenceView(artefact.sentences)}</div>
@@ -422,6 +562,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     <div class="sidebox"><h2>What learners leave with</h2><p>${esc(lesson.arcs.satisfaction)}</p></div>`;
 
   if (isPair) wireCompare(doc, artefact);
+  else if (isSignoff) wireSignoff(doc, now);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }
