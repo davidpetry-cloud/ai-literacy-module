@@ -146,7 +146,7 @@ export default {
                 note: "It assumes mothers do the packing. Fathers, guardians and students who pack their own lunch are left out."
               },
               {
-                text: "Our guide, Dr. Priya Nandakumar from the university observatory, will answer questions.",
+                text: "Our guide, Dr. Mara Linwood from the university observatory, will answer questions.",
                 key: "fabrication",
                 source: null,
                 note: "The request named no guide. The name, the title and the observatory were made up, and nothing on the page can back them."
@@ -161,7 +161,7 @@ export default {
             model: "claude-sonnet-5",
             claim: "l5-key-professionals",
             request:
-              "Write a short blurb for the team newsletter on how we send EU customers' data to our US servers, which are run by Nimbus Host. Use plain words, with no legal terms. Keep it under 70 words.",
+              "Write a short blurb for the team newsletter on how we send EU customers' data to our US servers, which are run by our cloud vendor. Use plain words, with no legal terms. Keep it under 70 words.",
             items: [
               {
                 text: "Each transfer relies on Standard Contractual Clauses under Article 46(2)(c) of the GDPR.",
@@ -177,7 +177,7 @@ export default {
                 note: "The request mentioned no audit. The year and the result were made up, and nothing on the page can back them."
               },
               {
-                text: "We send EU customers' data to our US servers, which are run by Nimbus Host.",
+                text: "We send EU customers' data to our US servers, which are run by our cloud vendor.",
                 key: "fine",
                 source: null,
                 note: "Every detail comes from the request. It adds nothing and breaks no rule."
@@ -232,10 +232,10 @@ export default {
                 note: "The request said the reminder is for juniors only. This sentence tells the whole school to sign up."
               },
               {
-                text: "Bring two sharpened pencils, because the SAT is taken on paper.",
+                text: "The SAT is a paper test, filled in with answer bubbles.",
                 key: "outdated",
-                source: "College Board. The digital SAT: the SAT moved to a digital format, and students in the US have taken it on a computer since spring 2024.",
-                note: "For years this was true. The US moved to a digital test in 2024. Check the date behind a fact."
+                source: "College Board. The digital SAT: students in the US have taken the SAT on a computer, in the Bluebook app, since spring 2024. The College Board still asks students to bring a pencil or pen for scratch work.",
+                note: "For years this was true. Since spring 2024, students in the US take it on a computer. Check the date behind a fact."
               }
             ]
           }

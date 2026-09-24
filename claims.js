@@ -139,14 +139,14 @@ export const CLAIMS = {
   "l3-key-professionals": {
     text: "The answer key for the Lesson 3 professionals passage is correct: each sentence's label matches its cited source, the no-source sentence has no real report behind it, and each use is given a fitting level of checking.",
     attestation: proposedBy(
-      "Written with the passage. The FTC's CAN-SPAM compliance guide (10 business days for opt-outs; valid physical postal address) should be checked before this is attested. The level for each use is a judgement about consequences.",
+      "Written with the passage. The FTC's CAN-SPAM compliance guide (10 business days for opt-outs; valid physical postal address) should be checked before this is attested. The level for each use is a judgement about consequences. Revised 2026-09-24: the planted report's firm is now 'Tallowmere Compliance Group', because several real firms trade as 'Meridian Compliance'.",
       "claude-sonnet-5"
     )
   },
   "l3-key-students": {
     text: "The answer key for the Lesson 3 students passage is correct: each sentence's label matches its cited source, the no-source sentence has no real study behind it, and each use is given a fitting level of checking.",
     attestation: proposedBy(
-      "Written with the passage. Paruthi et al. (2016, 8 to 10 hours for ages 13 to 18) and the AAP's 2014 school start time statement (8:30 a.m. or later) should be checked before this is attested. The level for each use is a judgement about consequences.",
+      "Written with the passage. Paruthi et al. (2016, 8 to 10 hours for ages 13 to 18) and the AAP's 2014 school start time statement (8:30 a.m. or later) should be checked before this is attested. The level for each use is a judgement about consequences. Revised 2026-09-24: the planted study's university is now 'Brambleford University', because real institutions are named Lakeside University College.",
       "claude-sonnet-5"
     )
   },
@@ -163,9 +163,9 @@ export const CLAIMS = {
     )
   },
   "signer-must-know": {
-    text: "The right person to sign off is someone who did the check and answers for the result, not the most senior person or whoever asked for the output.",
+    text: "The right person to sign off is someone who did the check and answers for the result. Being the most senior person, or the one who asked for the output, isn't enough on its own.",
     attestation: proposedBy(
-      "Objective 4.2 rests on it. Worded around doing the check and being accountable, the two things each track's wrong-signer example lacks."
+      "Objective 4.2 rests on it. Worded around doing the check and being accountable, the two things each track's wrong-signer example lacks. Revised 2026-09-24: the old wording read as if a senior person could never be the right signer. A senior person who did the check can be."
     )
   },
   "form-not-substance": {
@@ -183,13 +183,13 @@ export const CLAIMS = {
   "l4-key-professionals": {
     text: "The answer key for the Lesson 4 professionals sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. Fictional, so check each label against the sign-off as shown. The wrong-signer judgement assumes legal and data protection own retention periods, which is typical but worth a look."
+      "Written with the document. Fictional, so check each label against the sign-off as shown. The wrong-signer judgement assumes legal and data protection own retention periods, which is typical but worth a look. Revised 2026-09-24: the tool signer is now 'AI writing tool (verified)', replacing a product-like name."
     )
   },
   "l4-key-students": {
     text: "The answer key for the Lesson 4 students sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true."
+      "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true. Revised 2026-09-24: the tool signer is now 'Study chatbot (self-check)', replacing a product-like name."
     )
   },
   "error-kinds": {
@@ -230,21 +230,21 @@ export const CLAIMS = {
   "l5-key-educators": {
     text: "The answer key for the Lesson 5 educators answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. Pluto's reclassification should be checked against IAU Resolution B5 (2006). The request and answer are made up, so check each other label against the sentence as shown. Revised 2026-09-24: the request now names everything the No error sentence says.",
+      "Written with the answer. Pluto's reclassification should be checked against IAU Resolution B5 (2006). The request and answer are made up, so check each other label against the sentence as shown. Revised 2026-09-24: the request now names everything the No error sentence says. Revised 2026-09-24: the invented guide is now 'Dr. Mara Linwood', because the old name was close to a real Yale astronomer.",
       "claude-sonnet-5"
     )
   },
   "l5-key-professionals": {
     text: "The answer key for the Lesson 5 professionals answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. Privacy Shield's invalidation should be checked against CJEU Case C-311/18 (2020) and the EU-US Data Privacy Framework decision (2023). The misread sentence breaks the plain-words rule with a real reference, GDPR Article 46(2)(c) on Standard Contractual Clauses, which is correct in itself; check it. The vendor and audit are made up. Revised 2026-09-24: the No error sentence no longer adds a claim the request didn't make.",
+      "Written with the answer. Privacy Shield's invalidation should be checked against CJEU Case C-311/18 (2020) and the EU-US Data Privacy Framework decision (2023). The misread sentence breaks the plain-words rule with a real reference, GDPR Article 46(2)(c) on Standard Contractual Clauses, which is correct in itself; check it. The vendor and audit are made up. Revised 2026-09-24: the No error sentence no longer adds a claim the request didn't make. Revised 2026-09-24: the vendor is no longer named, because 'Nimbus Hosting' is a real UK company.",
       "claude-sonnet-5"
     )
   },
   "l5-key-students": {
     text: "The answer key for the Lesson 5 students answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up. Revised 2026-09-24: the answer now keeps the request's word limit, the misread sentence ignores who the reminder is for, and the bias sentence is a default assumption about families rather than a contested group statistic.",
+      "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up. Revised 2026-09-24: the answer now keeps the request's word limit, the misread sentence ignores who the reminder is for, and the bias sentence is a default assumption about families rather than a contested group statistic. Revised 2026-09-24: the outdated sentence is now 'The SAT is a paper test', because the College Board still asks students to bring a pencil for scratch work, so the old sentence was only half outdated.",
       "claude-sonnet-5"
     )
   },
@@ -255,9 +255,9 @@ export const CLAIMS = {
     )
   },
   "design-principles": {
-    text: "This course teaches seven design principles: user-centricity, consistency, hierarchy, context, user control, accessibility and usability. They are the course's own teaching set, not a published standard, and which principle serves which goal is the course's mapping.",
+    text: "This course teaches eight design principles: user-centricity, consistency, hierarchy, context, user control, accessibility and usability in Lesson 6, and wellbeing (mindful UX) in Lesson 7. They are the course's own teaching set, not a published standard, and which principle serves which goal is the course's mapping.",
     attestation: proposedBy(
-      "David's set of seven (2026-09-24). They draw on Nielsen's ten usability heuristics (1994, e.g. consistency and standards, visibility of system status, user control and freedom), Norman's The Design of Everyday Things (1988, revised 2013; e.g. feedback and constraints), user-centred design (ISO 9241-210), and WCAG for accessibility. Worded as the course's own set, so it isn't mistaken for any one scholar's list."
+      "David's set of seven (2026-09-24). They draw on Nielsen's ten usability heuristics (1994, e.g. consistency and standards, visibility of system status, user control and freedom), Norman's The Design of Everyday Things (1988, revised 2013; e.g. feedback and constraints), user-centred design (ISO 9241-210), and WCAG for accessibility. Worded as the course's own set, so it isn't mistaken for any one scholar's list. Revised 2026-09-24: the text said seven, but Lesson 7 teaches wellbeing as an eighth, so the claim contradicted the course."
     )
   },
   "context-principle": {
@@ -299,7 +299,7 @@ export const CLAIMS = {
   "wcag-structure": {
     text: "WCAG 2.2 organises accessibility under four principles: perceivable, operable, understandable and robust. Its testable success criteria sit at three levels: A (the minimum), AA (the usual target) and AAA (the highest).",
     attestation: proposedBy(
-      "W3C, Web Content Accessibility Guidelines (WCAG) 2.2, W3C Recommendation, October 2023. The W3C's conformance notes say AAA is not recommended as a general policy for entire sites, because some content can't meet it. AA as 'the usual target' reflects its use in laws and policies; check against the conformance section."
+      "W3C, Web Content Accessibility Guidelines (WCAG) 2.2, W3C Recommendation, October 2023. The W3C's conformance notes say AAA is not recommended as a general policy for entire sites, because some content can't meet it. AA as 'the usual target' reflects its use in laws and policies; check against the conformance section. The current edition of WCAG 2.2 is dated 12 December 2024; the Recommendation was first published 5 October 2023."
     )
   },
   "contrast-thresholds": {

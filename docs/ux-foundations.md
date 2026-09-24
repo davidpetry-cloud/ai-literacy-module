@@ -56,7 +56,8 @@ Organised by the four WCAG principles (POUR), with David's practical groups.
 | Robust | Mobile and device compatibility | Controls have a name and role (4.1.2); status messages are announced (4.1.3); reflows at 320px with no sideways scroll (1.4.10, filed under Perceivable in the standard) |
 
 Levels: **A** is the minimum, **AA** the usual target and legal reference, and
-**AAA** aspirational. The W3C says AAA can't be required for whole sites.
+**AAA** aspirational. The W3C doesn't recommend requiring AAA for whole sites,
+because some content can't meet every AAA criterion.
 
 **Contrast thresholds:**
 - AA: 4.5:1 for normal text, and 3:1 for large text and UI parts.

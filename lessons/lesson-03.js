@@ -184,10 +184,10 @@ export default {
                 note: "An opinion. It can't be wrong, so it can't be checked."
               },
               {
-                text: "A 2022 report from the Meridian Compliance Group found that 61% of small firms were fined under the law.",
+                text: "A 2022 report from the Tallowmere Compliance Group found that 61% of small firms were fined under the law.",
                 key: "no-source",
                 source: null,
-                note: "No link. Planted for this lesson: there is no Meridian report to find. A firm's name and a precise figure make it sound real."
+                note: "No link. Planted for this lesson: there is no Tallowmere report to find. A firm's name and a precise figure make it sound real."
               }
             ],
             uses: [
@@ -217,7 +217,7 @@ export default {
             claim: "l3-key-students",
             sentences: [
               {
-                text: "A 2019 study at Lakeside University found that teens who slept nine hours scored 14% higher on exams.",
+                text: "A 2019 study at Brambleford University found that teens who slept nine hours scored 14% higher on exams.",
                 key: "no-source",
                 source: null,
                 note: "No author and no link. Planted for this lesson: there is no such study to find. A school's name and a neat number make it sound real."

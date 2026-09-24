@@ -418,7 +418,7 @@ input::placeholder{color:#B0B0B0}</style>
           rows: [
             ["A", "The minimum. Without it, some people can't use the page at all."],
             ["AA", "The usual target, and the one most laws point to."],
-            ["AAA", "The highest level. Aim for it where you can. It can't be required for a whole site."]
+            ["AAA", "The highest level. Aim for it where you can. It isn't recommended as a rule for a whole site, because some content can't meet it."]
           ]
         },
         {

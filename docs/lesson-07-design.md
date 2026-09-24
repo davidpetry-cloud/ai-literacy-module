@@ -28,7 +28,7 @@ The four groups are a teaching view. The reference table prints the official
 principle beside each criterion so learners don't learn it wrongly.
 
 **Levels:** A is the minimum, AA the usual target and legal reference, AAA
-aspirational. The W3C says AAA can't be required for whole sites, because some
+aspirational. The W3C doesn't recommend requiring AAA for whole sites, because some
 criteria can't be met for all content.
 
 **Wellbeing (mindful UX), the eighth principle:**

@@ -184,7 +184,7 @@ export default {
               },
               {
                 statement: "Support chat logs are deleted after 90 days.",
-                by: "DraftBot (verified)",
+                by: "AI writing tool (verified)",
                 role: "AI writing tool",
                 basis: "Cross-checked by the model.",
                 daysAgo: 5,
@@ -248,7 +248,7 @@ export default {
               },
               {
                 statement: "Plastic bottles take 450 years to break down.",
-                by: "Homework Helper AI",
+                by: "Study chatbot (self-check)",
                 role: "Chatbot",
                 basis: "The chatbot said it was accurate.",
                 daysAgo: 7,
