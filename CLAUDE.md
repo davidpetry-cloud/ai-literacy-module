@@ -119,7 +119,7 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 - **xs is for labels only:** ids, tags, timings, legends. Never use it for a
   sentence or question addressed to the reader. Those are base or larger. The
   UI test holds the list of selectors allowed to use xs.
-- **SVG text** is sized in viewBox units, so check it at the figure's narrowest
+- **SVG text** must sit inside its drawing (the audit checks that no text runs past the edge), and is sized in viewBox units, so check it at the figure's narrowest
   width. It must still reach 12.8px on screen. The test does the arithmetic.
 - **Spacing** uses one scale for every margin, padding and gap: 0 · 2 · 4 · 8 ·
   12 · 16 · 24 · 32 · 48px. Corners use `--r-sm` (tags and chips), `--r-md`
@@ -202,7 +202,7 @@ Sonnet worked well.
 | 02 | done | built on Opus with the prompt-comparison tool (`promptCompare` in `lesson-core.js`) |
 | 03 | done | built on Sonnet: passage pattern with source cards, plus the `check-scale` figure (`checkScale` in `lesson-core.js`) |
 | 04 | done | built on Opus: `sign-offs` exercise and the `sign-off` builder (`signoffStatus`, `signoffTimeline` in `lesson-core.js`), judged by the real ledger engine |
-| 05 | Sonnet | checklist builder is simple; classification reuses the passage pattern |
+| 05 | done | built on Sonnet: `classify` exercise (passage pattern, error-kind keys) and the `checklist` builder (`checklistStatus`, `checklistGrid` in `lesson-core.js`) |
 
 One lesson per session.
 
@@ -240,16 +240,18 @@ changes get their own commits, so `git log --oneline` reads as a build history.
 
 ## Status
 
-Lessons 1–4 are built. Lesson 2 (2026-09-23) added the `prompt-pair`
+Lessons 1–5 are built. Lesson 2 (2026-09-23) added the `prompt-pair`
 exercise and `prompt-compare` figure (`docs/lesson-02-design.md`). Lesson 3
 (2026-09-23) reuses the passage exercise and adds the `check-scale` figure.
 Lesson 4 (2026-09-24) adds the `sign-offs` exercise and the `sign-off`
-builder (`docs/lesson-04-design.md`). Its sign-offs are fictional,
-attestation-shaped lesson material stored with `daysAgo`, turned into ledger
-records at render time, and never written to `claims.js`; the alignment test
-checks that the real engine passes four of five. Lesson 5 has objectives
-only (approved 2026-09-23), so its next step is warm-up and check items. All
-27 claims are proposed and none are attested. David attests claims once all
-five lessons are built, so he can see the whole course first. Until then,
-don't prompt him to attest. When Lesson 5 ships, give him every claim grouped
-by lesson, with the source to check each against.
+builder (`docs/lesson-04-design.md`); its sign-offs are fictional lesson
+material, never in `claims.js`. Lesson 5 (2026-09-24) adds the `classify`
+exercise and the `checklist` builder (`docs/lesson-05-design.md`). Its
+objectives 5.1 and 5.2 were reworded on 2026-09-24 to meet the objectives
+grade ceiling; the levels, verbs and meaning are unchanged, and David still
+needs to confirm the wording. All 35 claims are proposed and none are
+attested. David attests claims once all five lessons are built, so he can see
+the whole course first, and that point has now been reached: give him every
+claim grouped by lesson, with the source to check each against. An additional
+lesson on UX/UI design principles and usability goals is planned. It has no
+objectives yet, so the first step is to draft them for David to approve.

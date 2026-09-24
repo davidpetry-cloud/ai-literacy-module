@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -415,6 +415,145 @@ describe("lesson 4: the sign-off builder", () => {
   });
 });
 
+const lesson5 = getLesson(5);
+const classifyData = (track) => lesson5.stages[0].tracks[track].classify;
+const checksData = lesson5.stages[1].checks;
+const lesson5Doc = (track) => lessonDoc(track, lesson5);
+const tick = (doc, id, on = true) => {
+  const box = doc.querySelector(`#ck-form input[value="${id}"]`);
+  box.checked = on;
+  box.dispatchEvent(new doc.defaultView.Event("change", { bubbles: true }));
+};
+
+describe.each(TRACK_IDS)("lesson 5, %s track", (track) => {
+  const doc = lesson5Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows the request, then five sentences with answers closed, and says it's made up", () => {
+    expect(doc.querySelector(".classify .req").textContent).toContain(classifyData(track).request);
+    const items = doc.querySelectorAll(".classify ol > li");
+    expect(items).toHaveLength(5);
+    classifyData(track).items.forEach((d, i) => expect(items[i].querySelector("p").textContent).toBe(d.text));
+    for (const d of doc.querySelectorAll(".classify details")) expect(d.open).toBe(false);
+    expect(doc.querySelector(".classify figcaption").textContent).toContain("made up");
+  });
+
+  it("labels each answer in words, says where to look, and quotes the rule a misread sentence breaks", () => {
+    const keys = [...doc.querySelectorAll(".classify .k")].map((k) => k.textContent);
+    expect(keys).toEqual(classifyData(track).items.map((d) => ERROR_LABEL[d.key]));
+    const misread = classifyData(track).items.find((d) => d.key === "misread");
+    expect(doc.querySelector(".classify").textContent).toContain(`The request said: “${misread.rule}”`);
+    const where = [...doc.querySelectorAll(".classify .src")].filter((p) => p.textContent.startsWith("Where to look"));
+    expect(where).toHaveLength(5);
+  });
+
+  it("shows a source card for the outdated sentence only", () => {
+    const cards = [...doc.querySelectorAll(".classify .src")].filter((p) => p.textContent.startsWith("Source card"));
+    expect(cards).toHaveLength(1);
+  });
+});
+
+describe("lesson 5: the checklist builder", () => {
+  const stage = lesson5.stages[1];
+
+  it("starts empty: nothing ticked, an empty grid, and a status that says so", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    expect(doc.querySelectorAll("#ck-form input[type=checkbox]")).toHaveLength(checksData.length);
+    expect(doc.querySelectorAll("#ck-form input:checked")).toHaveLength(0);
+    expect(doc.querySelector("#ck-status").textContent).toContain("No checks yet");
+    expect(doc.querySelector("#ck-status").getAttribute("aria-live")).toBe("polite");
+    expect(doc.querySelector("#ck-figure svg").getAttribute("aria-label")).toContain("Empty until you pick checks");
+    expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(0);
+  });
+
+  it("marks the grid, the table and the status as checks are ticked and unticked", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    tick(doc, "c1");
+    expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(1);
+    expect(doc.querySelector("#ck-status").textContent).toContain("This covers fabrication. Nothing catches outdated information, bias and a misread request.");
+    expect(doc.querySelector("#ck-figure svg").getAttribute("aria-label")).toContain("Fabrication is covered by check 1.");
+    const rows = [...doc.querySelectorAll("#ck-figure tbody tr")].map((tr) => tr.querySelector("td").textContent.replace(/\s+/g, " ").trim());
+    expect(rows).toEqual(["Check 1", "Nothing yet", "Nothing yet", "Nothing yet"]);
+    tick(doc, "c1", false);
+    expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(0);
+    expect(doc.querySelector("#ck-status").textContent).toContain("No checks yet");
+  });
+
+  it("reaches full coverage with four checks, and says how many of the five were used", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    for (const id of ["c1", "c2", "c3", "c4"]) tick(doc, id);
+    expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(4);
+    expect(doc.querySelector("#ck-status").textContent).toBe("Every kind of error has a check. You used 4 of 5.");
+    expect(doc.querySelector("#ck-figure svg").getAttribute("aria-label")).toContain("Every kind is covered.");
+    expect([...doc.querySelectorAll("#ck-figure .g-stat")].map((t) => t.textContent)).toEqual(Array(4).fill("✓ Covered"));
+  });
+
+  it("names a check that catches nothing, and marks nothing for it", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    tick(doc, "c6");
+    expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(0);
+    expect(doc.querySelector("#ck-status").textContent).toContain("None of these checks catches any of the four kinds. Check 6 catches none of the four kinds.");
+    expect([...doc.querySelectorAll("#ck-figure .g-stat")].every((t) => t.textContent === "✕ Not covered")).toBe(true);
+  });
+
+  it("says when one check repeats another, and warns when the list gets long", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    for (const id of ["c4", "c5"]) tick(doc, id);
+    expect(doc.querySelector("#ck-status").textContent).toContain("Check 5 repeats check 4.");
+    for (const id of ["c1", "c2", "c3"]) tick(doc, id);
+    expect(doc.querySelector("#ck-status").textContent).toContain("You used 5 of 5.");
+    expect(doc.querySelector("#ck-status").textContent).not.toContain("is short");
+    tick(doc, "c6");
+    expect(doc.querySelector("#ck-status").textContent).toContain("That's 6 checks. A checklist people use is short.");
+  });
+
+  it("prints the learner's checklist back, with the task they name", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    expect(doc.querySelector("#ck-mine").textContent).toContain("Nothing ticked yet");
+    tick(doc, "c4");
+    tick(doc, "c1");
+    const task = doc.querySelector("#ck-task");
+    task.value = "Weekly parent email <b>";
+    task.dispatchEvent(new doc.defaultView.Event("input", { bubbles: true }));
+    expect([...doc.querySelectorAll("#ck-mine li")].map((l) => l.textContent)).toEqual([checksData[0].text, checksData[3].text]);
+    expect(doc.querySelector("#ck-mine").textContent).toContain("For: Weekly parent email <b>");
+    expect(doc.querySelector("#ck-mine b")).toBeNull();
+  });
+
+  it("computes coverage the same way from the data as it shows on the page", () => {
+    const s = checklistStatus(["c2", "c3", "c7"], checksData, stage.limit);
+    expect(s.covered).toEqual(["outdated", "bias"]);
+    expect(s.gaps).toEqual(["fabrication", "misread"]);
+    expect(s.weak.map((c) => c.id)).toEqual(["c7"]);
+    expect(s.over).toBe(false);
+    expect(checklistStatus(checksData.map((c) => c.id), checksData, stage.limit).over).toBe(true);
+    expect(KINDS).toHaveLength(4);
+  });
+
+  it("keeps the builder's controls, labels, checks and script the same in every track", () => {
+    const shared = (t) => lesson5Doc(t).querySelector('[data-stage="pictorial"]').innerHTML;
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+    expect(lesson5Doc(TRACK_IDS[0]).querySelector("#content script")).toBeNull();
+  });
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    const html = (t, sel) => lesson5Doc(t).querySelector(sel).innerHTML;
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("labels every check so a screen reader names it, each with a different name", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    const names = [...doc.querySelectorAll("#ck-form input")].map((i) => i.closest("label").textContent.replace(/\s+/g, " ").trim());
+    expect(new Set(names).size).toBe(names.length);
+    expect(doc.querySelector("#ck-form fieldset legend").textContent).toBe("Pick up to 5 checks");
+  });
+});
+
 describe("narrow figures: the grid as a table", () => {
   const revealed = (doc) => { doc.querySelector("#reveal-grid").click(); return doc; };
   const cellsOf = (doc) => [...doc.querySelectorAll("#grid table.grid-alt tbody tr")].map((tr) => [...tr.querySelectorAll("td")].map((td) => td.textContent.replace(/\s+/g, " ").trim()));
@@ -449,7 +588,7 @@ describe("narrow figures: the grid as a table", () => {
 });
 
 describe("facilitator content is labelled and kept apart from what learners work on", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     for (const stage of doc.querySelectorAll('[data-stage="concrete"], [data-stage="pictorial"], [data-stage="abstract"]')) {
       const box = stage.querySelector(".facil");
@@ -461,7 +600,7 @@ describe("facilitator content is labelled and kept apart from what learners work
   });
 
   it("puts the answer-key card after the facilitator's steps, not between them and the exercise", () => {
-    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc]) {
+    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc, lesson5Doc]) {
       const stage = make(TRACK_IDS[0]).querySelector('[data-stage="concrete"]');
       const kids = [...stage.children];
       expect(kids.findIndex((e) => e.classList.contains("keyclaim"))).toBeGreaterThan(kids.findIndex((e) => e.classList.contains("facil")));
@@ -477,7 +616,7 @@ describe("facilitator content is labelled and kept apart from what learners work
 });
 
 describe("alignment table", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     const lesson = getLesson(n);
     expect([...doc.querySelectorAll(".align tbody th")].map((t) => t.textContent)).toEqual(["Warm-up (pre)", "Concrete", "Pictorial", "Abstract", "Check (post)"]);
@@ -513,7 +652,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 1 (${t})`, lessonDoc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 2 (${t})`, lesson2Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 3 (${t})`, lesson3Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 4 (${t})`, lesson4Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 4 (${t})`, lesson4Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 5 (${t})`, lesson5Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -525,7 +665,8 @@ describe("page structure", () => {
     ["lesson 1", lessonDoc(TRACK_IDS[0])],
     ["lesson 2", lesson2Doc(TRACK_IDS[0])],
     ["lesson 3", lesson3Doc(TRACK_IDS[0])],
-    ["lesson 4", lesson4Doc(TRACK_IDS[0])]
+    ["lesson 4", lesson4Doc(TRACK_IDS[0])],
+    ["lesson 5", lesson5Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
@@ -560,7 +701,8 @@ describe("lesson colours", () => {
 describe("lessons that aren't ready", () => {
   it("says a lesson in design is still in design", () => {
     const doc = page("lesson.html");
-    renderLesson(doc, COURSE.lessons.find((l) => !l.ready));
+    // Every lesson is built now, so take one and mark it not ready, as a new lesson starts out.
+    renderLesson(doc, { ...COURSE.lessons[0], ready: false });
     expect(doc.querySelector("#content").textContent).toContain("still in design");
   });
 
