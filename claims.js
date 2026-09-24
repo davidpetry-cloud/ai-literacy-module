@@ -191,5 +191,61 @@ export const CLAIMS = {
     attestation: proposedBy(
       "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true."
     )
+  },
+  "error-kinds": {
+    text: "Most AI output errors fall into four kinds: fabrication (an invented detail), outdated information (once true, no longer), bias (an assumption that favours or leaves out a group), and a misread instruction (ignoring or skipping something the request said). The four are a teaching frame, not a full list.",
+    attestation: proposedBy(
+      "A teaching frame drawn from common failure analyses: hallucination, knowledge cutoff, social bias and instruction-following failures. Worded as 'most' and 'not a full list' so it doesn't claim to be complete. Objective 5.1 rests on it.",
+      "claude-sonnet-5"
+    )
+  },
+  "outdated-cutoff": {
+    text: "A model's knowledge stops at a training cutoff, so it can state something as current that has since changed, even when it was once correct.",
+    attestation: proposedBy(
+      "Follows from model-predicts: a model writes text it learned from data up to a cutoff. The three answer keys use Pluto (2006), Privacy Shield (2020 and 2023) and the digital SAT (2024). Check each against its source.",
+      "claude-sonnet-5"
+    )
+  },
+  "bias-inherited": {
+    text: "Models can reproduce stereotypes and one-sided assumptions from their training data, in wording that reads as neutral.",
+    attestation: proposedBy(
+      "Widely documented in studies of language models. Worded as 'can reproduce', not 'always', and about neutral-sounding wording because that is what makes it hard to see.",
+      "claude-sonnet-5"
+    )
+  },
+  "misread-instruction": {
+    text: "A model can skip or contradict a constraint in a request while the rest of the output reads well, so compare the output with the request line by line.",
+    attestation: proposedBy(
+      "Instruction-following failures are a standard evaluation category. Each misread sentence in Lesson 5 breaks one line of the request, so the check is a comparison you can make from the page.",
+      "claude-sonnet-5"
+    )
+  },
+  "checklist-specific": {
+    text: "A checklist works best when it is short and each check is a specific action aimed at one kind of error. A general check such as 'does it sound right' catches none of the four kinds.",
+    attestation: proposedBy(
+      "Checklist practice in aviation and medicine favours short, action-based items. The second sentence follows from fluency-not-evidence. 'Works best' is a claim about practice, not a measured threshold, and the five-check limit is this course's choice.",
+      "claude-sonnet-5"
+    )
+  },
+  "l5-key-educators": {
+    text: "The answer key for the Lesson 5 educators answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
+    attestation: proposedBy(
+      "Written with the answer. Pluto's reclassification should be checked against IAU Resolution B5 (2006). The request and answer are made up, so check each other label against the sentence as shown.",
+      "claude-sonnet-5"
+    )
+  },
+  "l5-key-professionals": {
+    text: "The answer key for the Lesson 5 professionals answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
+    attestation: proposedBy(
+      "Written with the answer. Privacy Shield's invalidation should be checked against CJEU Case C-311/18 (2020) and the EU-US Data Privacy Framework decision (2023). The vendor and audit are made up.",
+      "claude-sonnet-5"
+    )
+  },
+  "l5-key-students": {
+    text: "The answer key for the Lesson 5 students answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
+    attestation: proposedBy(
+      "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up.",
+      "claude-sonnet-5"
+    )
   }
 };
