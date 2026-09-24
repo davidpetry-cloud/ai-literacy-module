@@ -295,5 +295,47 @@ export const CLAIMS = {
     attestation: proposedBy(
       "Written with the screen, which is made up, so check it by using the screen beside the key. Twelve required fields is filed under usability (effort) rather than user-centricity; either is defensible, and the note explains the choice."
     )
+  },
+  "wcag-structure": {
+    text: "WCAG 2.2 organises accessibility under four principles: perceivable, operable, understandable and robust. Its testable success criteria sit at three levels: A (the minimum), AA (the usual target) and AAA (the highest).",
+    attestation: proposedBy(
+      "W3C, Web Content Accessibility Guidelines (WCAG) 2.2, W3C Recommendation, October 2023. The W3C's conformance notes say AAA is not recommended as a general policy for entire sites, because some content can't meet it. AA as 'the usual target' reflects its use in laws and policies; check against the conformance section."
+    )
+  },
+  "contrast-thresholds": {
+    text: "WCAG sets contrast minimums: 4.5:1 for normal text and 3:1 for large text at level AA, 7:1 and 4.5:1 at AAA, and 3:1 for the parts of a screen you need to see to use it, such as input borders and icons.",
+    attestation: proposedBy(
+      "WCAG 2.2 success criteria 1.4.3 Contrast (Minimum, AA), 1.4.6 Contrast (Enhanced, AAA) and 1.4.11 Non-text Contrast (AA). Large text is at least 18 point, or 14 point bold. The checker in Lesson 7 uses the WCAG relative-luminance formula; check a few pairs against another checker."
+    )
+  },
+  "mindful-ux": {
+    text: "Interfaces can steer people against their own interests through deceptive design, often called dark patterns. A design that respects time, attention and choice avoids them, and uses calmer defaults and natural pause points.",
+    attestation: proposedBy(
+      "'Dark patterns' was coined by Harry Brignull (2010). Sources: FTC staff report, Bringing Dark Patterns to Light (2022); EU Digital Services Act, Article 25, on online interface design. 'Calmer defaults' and 'natural pause points' are this course's terms for the practices David set out on 2026-09-24, not terms from those sources."
+    )
+  },
+  "wellbeing-habits": {
+    text: "Small, repeated cues and defaults shape habits, so calmer defaults and natural pause points can support healthier use of technology.",
+    attestation: proposedBy(
+      "Habit research finds that behaviour repeated in a stable context becomes cued by that context (Wood and Rünger, 2016, 'Psychology of Habit', Annual Review of Psychology). Worded as 'can support', not 'cause'. The personal-wellbeing framing is David's (2026-09-24)."
+    )
+  },
+  "l7-key-educators": {
+    text: "The answer key for the Lesson 7 educators screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
+    attestation: proposedBy(
+      "Written with the screen, which is made up, so check it by using the screen beside the key and WCAG 2.2: 1.4.3 (AA), 4.1.2 (A), 2.2.1 (A). The instructions' contrast was measured at 2.44:1 (rounded down, as the checker does)."
+    )
+  },
+  "l7-key-professionals": {
+    text: "The answer key for the Lesson 7 professionals screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
+    attestation: proposedBy(
+      "Written with the screen, which is made up. Check against WCAG 2.2: 1.4.1 (A), 2.5.8 (AA, 24 by 24 CSS pixels unless spacing exceptions apply), 3.3.3 (AA). The red border was measured at 1.94:1 against white."
+    )
+  },
+  "l7-key-students": {
+    text: "The answer key for the Lesson 7 students screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
+    attestation: proposedBy(
+      "Written with the screen, which is made up. Check against WCAG 2.2: 2.2.2 (A; the carousel runs longer than 5 seconds with no pause), 1.4.10 (AA; filed under Perceivable, taught in the mobile and device group), 3.3.2 (A). The placeholder was measured at 2.16:1 (rounded down, as the checker does)."
+    )
   }
 };
