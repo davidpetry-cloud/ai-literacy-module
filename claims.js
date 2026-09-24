@@ -149,5 +149,47 @@ export const CLAIMS = {
       "Written with the passage. Paruthi et al. (2016, 8 to 10 hours for ages 13 to 18) and the AAP's 2014 school start time statement (8:30 a.m. or later) should be checked before this is attested. The level for each use is a judgement about consequences.",
       "claude-sonnet-5"
     )
+  },
+  "attest-not-propose": {
+    text: "A model can propose a value but can't attest it. Attesting means a named person takes responsibility for having checked it, on a stated basis, on a date.",
+    attestation: proposedBy(
+      "The rule attestation-ledger enforces and this course runs on. Stated as a definition of attesting, so it doesn't claim models are always wrong, only that they can't take responsibility."
+    )
+  },
+  "attestation-lapses": {
+    text: "A sign-off records a check at one point in time. Sources and rules change, so a sign-off should be treated as lapsed after a set period unless someone checks it again. The two-year window used here is this course's choice, not a standard.",
+    attestation: proposedBy(
+      "Periodic review is common practice for policies and reference material. The last sentence stops learners reading 730 days (the ledger's default) as an external rule."
+    )
+  },
+  "signer-must-know": {
+    text: "The right person to sign off is someone who did the check and answers for the result, not the most senior person or whoever asked for the output.",
+    attestation: proposedBy(
+      "Objective 4.2 rests on it. Worded around doing the check and being accountable, the two things each track's wrong-signer example lacks."
+    )
+  },
+  "form-not-substance": {
+    text: "Software can check that a sign-off has a name and a date and hasn't lapsed. Only a person can judge whether its basis is real and whether the signer could have made the check.",
+    attestation: proposedBy(
+      "Checked against attestation-ledger 0.1.1: resolveStatus() reads source, by, verified and ttlDays, never basis or role, so a tool's name typed into 'by' resolves as attested. Lesson 4's reveal shows this with the real engine."
+    )
+  },
+  "l4-key-educators": {
+    text: "The answer key for the Lesson 4 educators sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
+    attestation: proposedBy(
+      "Written with the document. The people and sign-offs are fictional, so no outside source is needed: check each label against the sign-off as shown, and that the lapsed one is over two years old."
+    )
+  },
+  "l4-key-professionals": {
+    text: "The answer key for the Lesson 4 professionals sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
+    attestation: proposedBy(
+      "Written with the document. Fictional, so check each label against the sign-off as shown. The wrong-signer judgement assumes legal and data protection own retention periods, which is typical but worth a look."
+    )
+  },
+  "l4-key-students": {
+    text: "The answer key for the Lesson 4 students sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
+    attestation: proposedBy(
+      "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true."
+    )
   }
 };
