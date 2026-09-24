@@ -370,6 +370,16 @@ describe("lesson 4: the sign-off builder", () => {
     expect(doc.activeElement).toBe(by);
   });
 
+  // The sentence shows a date and a count; they must agree at any time of day.
+  it.each(["2026-09-24T00:30:00Z", "2026-09-24T12:30:00Z", "2026-09-24T23:30:00Z"])(
+    "counts days to the lapse date it shows, whatever the time of day (%s)",
+    (iso) => {
+      const now = new Date(iso);
+      const text = signoffStatus({ who: "person", by: "A", role: "", basis: "Checked it.", date: "2026-09-24" }, now).text;
+      expect(text).toBe("Attested. It lapses on 2028-09-23, in 730 days.");
+    }
+  );
+
   it("says why for every verdict, and flags a date in the future", () => {
     const now = new Date("2026-06-01");
     const base = { who: "person", by: "A", role: "", basis: "Checked the policy.", date: "2026-05-01" };

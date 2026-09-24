@@ -280,8 +280,11 @@ export function signoffStatus(fields, now = new Date()) {
     text = `Lapsed. It was checked ${age} days ago. Sign-offs here last two years, so it needs checking again.`;
   } else if (fields.date > isoDay(now)) text = "Attested, but the date is in the future. Nobody can have checked it then.";
   else {
-    const left = daysRemaining(draftRecord(fields), now);
-    text = `Attested. It lapses on ${isoDay(daysFrom(new Date(fields.date), TTL_DAYS))}, in ${left} days.`;
+    // Count whole calendar days to the date we show, so the two numbers always agree.
+    // (The engine counts to the current time of day, which drops a day after midday UTC.)
+    const lapse = isoDay(daysFrom(new Date(fields.date), TTL_DAYS));
+    const left = Math.round((Date.parse(lapse) - Date.parse(isoDay(now))) / DAY_MS);
+    text = `Attested. It lapses on ${lapse}, in ${left} day${left === 1 ? "" : "s"}.`;
   }
   if (status === STATUS.ATTESTED && !fields.basis.trim()) text += " The ledger accepted a sign-off with no basis. Would you?";
   return { status, text };
