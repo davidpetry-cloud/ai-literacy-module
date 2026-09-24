@@ -39,7 +39,7 @@ export const CLAIMS = {
     },
   "retrieval-still-generated": {
     text: "Some AI tools add a search or retrieval step that pulls in documents first. The answer is still generated text, and it can misstate or overstate what those documents say.",
-     attestation: {
+    attestation: {
     source: "practitioner",
     by: "David Petry",
     role: "Course author and UX lead",
@@ -56,20 +56,26 @@ export const CLAIMS = {
     source: "practitioner",
     by: "David Petry",
     role: "Course author and UX lead",
-    basis:  "Checked against Xiong et al. (2024), ICLR, 'Can LLMs Express Their Uncertainty?': verbalized confidence is overconfident, with many incorrect answers at high confidence; supports 'not a reliable signal', not 'no signal'.",
+    basis: "Checked against Xiong et al. (2024), ICLR, 'Can LLMs Express Their Uncertainty?': verbalized confidence is overconfident, with many incorrect answers at high confidence; supports 'not a reliable signal', not 'no signal'.",
     verified: "2026-09-24",
     ttlDays: 730,
       supersedes: { source: "model", model: 
     "claude-opus-5-5" },
       }
     },
-  
-  "risk-zones": {
+    "risk-zones": {
     text: "AI outputs are most likely to be wrong on specific numbers and dates, on citations and quotations, and on recent or niche information.",
-    attestation: proposedBy(
-      "These are the error types most often reported in practice and most easily demonstrated. Recent information falls outside or at the edge of training data; niche facts have few examples to learn from; citations and quotes need exact recall the model does not reliably have."
-    )
-  },
+    attestation:  {
+    source: "practitioner",
+    by: "David Petry",
+    role: "Course author and UX lead",
+    basis: "Checked against Kandpal et al. (2023), ICML (proceedings.mlr.press). Accuracy falls for facts that rarely appear in training data.",
+    verified: "2026-09-24",
+    ttlDays: 1095,
+      supersedes:  { source: "model", model:
+    "claude-opus-5-5" },    
+      }     
+    },
   "l1-key-educators": {
     text: "The answer key for the Lesson 1 educators passage is correct: each sentence's label matches its cited source, and the no-source sentence has no real study behind it.",
     attestation: proposedBy(
