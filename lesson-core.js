@@ -334,6 +334,7 @@ function signoffBuilder(items, now) {
         ${soField("so-basis", "What you checked it against", fields.basis)}
         <label for="so-date">Date checked<input id="so-date" type="date" value="${fields.date}"></label>
       </form>
+      <button type="button" class="btn" id="so-reset">Start again</button>
       <div class="so-result"><span id="so-badge">${statusBadge(s.status)}</span><p class="so-status" id="so-status" aria-live="polite">${esc(s.text)}</p></div>
       <div class="figure" id="timeline">${signoffTimeline(fields.date, now)}</div>`;
 }
@@ -362,6 +363,12 @@ function wireSignoff(doc, now) {
     doc.querySelector("#so-status").textContent = s.text;
     doc.querySelector("#timeline").innerHTML = signoffTimeline(fields.date, now);
   };
+  // Remember where it started, so "Start again" can put it back without a reload (user control).
+  const start = [...form.querySelectorAll("input")].map((el) => [el, el.type === "radio" ? el.checked : el.value]);
+  doc.querySelector("#so-reset").addEventListener("click", () => {
+    for (const [el, v] of start) el.type === "radio" ? (el.checked = v) : (el.value = v);
+    update();
+  });
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", (e) => e.preventDefault());
@@ -526,6 +533,7 @@ function checklistBuilder(stage, items) {
           ${stage.checks.map((c, i) => `<label><input type="checkbox" value="${esc(c.id)}"><span><b>${i + 1}.</b> ${esc(c.text)}</span></label>`).join("")}
         </fieldset>
       </form>
+      <button type="button" class="btn" id="ck-reset">Start again</button>
       <p class="so-status" id="ck-status" aria-live="polite">${esc(checklistStatus([], stage.checks, stage.limit).text)}</p>
       <div class="figure" id="ck-figure">${checklistView([], stage.checks, stage.limit)}</div>
       <div class="ck-mine"><h3 class="subhead">Your checklist</h3><div id="ck-mine"><p class="so-empty">Nothing ticked yet.</p></div></div>
@@ -534,6 +542,11 @@ function checklistBuilder(stage, items) {
 
 function wireChecklist(doc, stage, items) {
   const form = doc.querySelector("#ck-form");
+  doc.querySelector("#ck-reset").addEventListener("click", () => {
+    for (const b of form.querySelectorAll('input[type="checkbox"]')) b.checked = false;
+    form.querySelector("#ck-task").value = "";
+    form.dispatchEvent(new doc.defaultView.Event("change"));
+  });
   const update = () => {
     const ids = [...form.querySelectorAll('input[type="checkbox"]:checked')].map((i) => i.value);
     const status = checklistStatus(ids, stage.checks, stage.limit);
@@ -898,15 +911,22 @@ function pairExercise(pair, provenanceNote) {
       }).join("")}</ol>`;
 }
 
+// Show and hide, so a facilitator can run the activity again without reloading (user control).
+export const GRID_SHOW = "Show the finished grid";
+export const GRID_HIDE = "Hide the finished grid";
 function wireGrid(doc, draw) {
   const btn = doc.querySelector("#reveal-grid");
+  let shown = false;
   btn.addEventListener("click", () => {
     const grid = doc.querySelector("#grid");
-    grid.innerHTML = draw(true);
-    btn.remove();
-    // The button vanishes, so hand focus to what it revealed rather than dropping it on <body>.
-    grid.tabIndex = -1;
-    grid.focus();
+    shown = !shown;
+    grid.innerHTML = draw(shown);
+    btn.textContent = shown ? GRID_HIDE : GRID_SHOW;
+    // On show, hand focus to the grid so its new description is read; on hide, stay on the button.
+    if (shown) {
+      grid.tabIndex = -1;
+      grid.focus();
+    }
   });
 }
 
@@ -972,6 +992,9 @@ export function boot(doc) {
     win.history.replaceState(null, "", url);
     draw();
     doc.querySelector(`input[name="track"][value="${track}"]`)?.focus();
+    // The whole page re-rendered around the radio. Say so, for anyone who can't see it (context; WCAG 4.1.3).
+    const announce = doc.querySelector("#announce");
+    if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
   });
 
   draw();

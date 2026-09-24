@@ -83,7 +83,7 @@ describe.each(TRACK_IDS)("lesson 1, %s track", (track) => {
     const after = svg.getAttribute("aria-label");
     concreteData(track).forEach((_, i) => expect(after).toContain(`Sentence ${i + 1} is in`));
     expect(after).toContain("tone did not sort them");
-    expect(doc.querySelector("#reveal-grid")).toBeNull();
+    expect(doc.querySelector("#reveal-grid").textContent).toBe("Hide the finished grid");
   });
 
   it("ticks the alignment table once per objective per place it is taught or checked", () => {
@@ -248,7 +248,7 @@ describe.each(TRACK_IDS)("lesson 3, %s track", (track) => {
     usesData(track).forEach((u) => expect(after).toContain(`${u.label} gets a ${level(u.check)}.`));
     expect(after).toContain("the use decides the check");
     expect(svg.querySelectorAll(".g-mark")).toHaveLength(3);
-    expect(doc.querySelector("#reveal-grid")).toBeNull();
+    expect(doc.querySelector("#reveal-grid").textContent).toBe("Hide the finished grid");
     expect(doc.activeElement).toBe(doc.querySelector("#grid"));
   });
 
@@ -798,10 +798,80 @@ describe("page structure", () => {
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
   });
 
-  it("moves focus to the grid when the reveal button removes itself", () => {
+  it("moves focus to the grid when it is shown", () => {
     const doc = lessonDoc(TRACK_IDS[0]);
     doc.querySelector("#reveal-grid").click();
     expect(doc.activeElement).toBe(doc.querySelector("#grid"));
+  });
+});
+
+describe("user control and context fixes (UX audit, 2026-09-24)", () => {
+  // A facilitator can run the activity again without reloading.
+  it.each([[1, (t) => lessonDoc(t)], [3, (t) => lesson3Doc(t)], [6, (t) => lesson6Doc(t)]])(
+    "lesson %i: the grid can be hidden again, empty as before, with focus left on the button",
+    (n, make) => {
+      const doc = make(TRACK_IDS[0]);
+      const btn = doc.querySelector("#reveal-grid");
+      const empty = doc.querySelector("#grid svg").getAttribute("aria-label");
+      btn.click();
+      expect(btn.textContent).toBe("Hide the finished grid");
+      expect(doc.querySelectorAll("#grid svg .g-mark").length).toBeGreaterThan(0);
+      btn.focus();
+      btn.click();
+      expect(btn.textContent).toBe("Show the finished grid");
+      expect(doc.querySelectorAll("#grid svg .g-mark")).toHaveLength(0);
+      expect(doc.querySelector("#grid svg").getAttribute("aria-label")).toBe(empty);
+      expect(doc.activeElement).toBe(btn);
+      btn.click();
+      expect(doc.querySelectorAll("#grid svg .g-mark").length).toBeGreaterThan(0);
+    }
+  );
+
+  it("lesson 4: Start again puts the sign-off builder back where it began", () => {
+    const doc = lesson4Doc(TRACK_IDS[0]);
+    const startBy = doc.querySelector("#so-by").value;
+    const startStatus = doc.querySelector("#so-status").textContent;
+    setField(doc, "so-by", "");
+    const model = doc.querySelector('input[name="so-who"][value="model"]');
+    model.checked = true;
+    model.dispatchEvent(new doc.defaultView.Event("change", { bubbles: true }));
+    expect(doc.querySelector("#so-badge").textContent.trim()).toBe("Proposed");
+    doc.querySelector("#so-reset").click();
+    expect(doc.querySelector("#so-by").value).toBe(startBy);
+    expect(doc.querySelector('input[name="so-who"][value="person"]').checked).toBe(true);
+    expect(doc.querySelector("#so-status").textContent).toBe(startStatus);
+    expect(doc.querySelector("#so-badge").textContent.trim()).toBe("Lapsed");
+  });
+
+  it("lesson 5: Start again clears every check and the task, and says so", () => {
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    for (const id of ["c1", "c4", "c6"]) tick(doc, id);
+    const task = doc.querySelector("#ck-task");
+    task.value = "Weekly email";
+    task.dispatchEvent(new doc.defaultView.Event("input", { bubbles: true }));
+    doc.querySelector("#ck-reset").click();
+    expect(doc.querySelectorAll("#ck-form input:checked")).toHaveLength(0);
+    expect(task.value).toBe("");
+    expect(doc.querySelector("#ck-status").textContent).toContain("No checks yet");
+    expect(doc.querySelector("#ck-run").textContent).toContain("Tick a check to run it");
+    expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(0);
+  });
+
+  it.each(["index.html", "lesson.html"])("%s announces a track change in a live region outside the re-rendered area", async (name) => {
+    const { boot } = await import("../lesson-core.js");
+    const url = name === "lesson.html" ? "http://localhost/lesson.html?n=1&track=educators" : "http://localhost/index.html";
+    const dom = new JSDOM(readFileSync(new URL(`../${name}`, import.meta.url), "utf8").replace(/<script[\s\S]*?<\/script>/g, ""), { url });
+    const doc = dom.window.document;
+    const live = doc.querySelector("#announce");
+    expect(live.getAttribute("aria-live")).toBe("polite");
+    expect(live.closest("#top, #content")).toBeNull();
+    boot(doc);
+    expect(live.textContent).toBe("");
+    const radio = doc.querySelector('input[name="track"][value="professionals"]');
+    radio.checked = true;
+    radio.dispatchEvent(new dom.window.Event("change", { bubbles: true }));
+    expect(live.textContent).toBe("Now showing the Professionals track.");
+    expect(doc.activeElement).toBe(doc.querySelector('input[name="track"][value="professionals"]'));
   });
 });
 

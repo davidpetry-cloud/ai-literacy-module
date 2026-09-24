@@ -138,8 +138,10 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 - **Structure:** each page has one h1 and never skips a heading level. Lesson
   stages and sidebar boxes are h2, and their subheads are h3. Every control
   has a distinct accessible name: repeated visible text like "Reveal" gets
-  screen-reader-only context (`.sr`). A control that removes itself hands
-  focus to what it revealed.
+  screen-reader-only context (`.sr`). Reveal buttons toggle ("Show…" /
+  "Hide…") so an activity can be run again, and hand focus to what they
+  revealed. Builders have a "Start again" button. A change that re-renders
+  the page is announced in the static `#announce` live region.
 - **Shared wording:**
   - stage headings follow "Stage · Name": "Warm-up · Pre-check",
     "Concrete · …", "Check · Post-check";
