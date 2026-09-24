@@ -247,5 +247,53 @@ export const CLAIMS = {
       "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up. Revised 2026-09-24: the answer now keeps the request's word limit, the misread sentence ignores who the reminder is for, and the bias sentence is a default assumption about families rather than a contested group statistic.",
       "claude-sonnet-5"
     )
+  },
+  "usability-goals": {
+    text: "A screen's usability can be judged by five goals: learnability, efficiency, memorability, errors (how few, how bad, and how easy to recover from) and satisfaction.",
+    attestation: proposedBy(
+      "Nielsen's five quality components of usability; ISO 9241-11 defines usability through effectiveness, efficiency and satisfaction. David chose this set for Lesson 6 on 2026-09-24. Check the wording against Nielsen's 'Usability 101'."
+    )
+  },
+  "design-principles": {
+    text: "Seven design principles cover most of what makes a screen usable: user-centricity, consistency, hierarchy, context, user control, accessibility and usability. They are a teaching frame, not a standard list.",
+    attestation: proposedBy(
+      "David's set of seven (2026-09-24), drawn from widely taught sources such as Nielsen's ten heuristics and Norman's The Design of Everyday Things. Worded as a teaching frame so it doesn't claim to be a formal standard."
+    )
+  },
+  "context-principle": {
+    text: "A screen should always show people where they are and what just happened, for example with a message that confirms an action worked.",
+    attestation: proposedBy(
+      "Nielsen's first heuristic, 'visibility of system status'. Two of Lesson 6's three screens break it with a silent action, and check item p2 turns on it."
+    )
+  },
+  "user-control-principle": {
+    text: "People should be able to go back, undo and cancel, so that one mistake doesn't cost them their work.",
+    attestation: proposedBy(
+      "Nielsen's heuristic 'user control and freedom'. All three of Lesson 6's screens break it in a different way: a final booking, a delete with no undo, and no Back button."
+    )
+  },
+  "ai-ui-polish": {
+    text: "A screen built by an AI tool can look finished while missing things people need, such as confirmation messages, clear labels, undo and accessible error messages, unless the request asks for them.",
+    attestation: proposedBy(
+      "Follows from gaps-get-filled and prompt-parts: a model builds what the request describes and fills gaps with likely defaults, and visual polish is a likely default. 'Can' is deliberate. This rests on practice more than published study, so it needs David's own judgement."
+    )
+  },
+  "l6-key-educators": {
+    text: "The answer key for the Lesson 6 educators screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
+    attestation: proposedBy(
+      "Written with the screen, which is made up, so check it by using the screen beside the key. The goal for each problem and its place on the grid are judgements; the reveal names a main goal and allows a second."
+    )
+  },
+  "l6-key-professionals": {
+    text: "The answer key for the Lesson 6 professionals screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
+    attestation: proposedBy(
+      "Written with the screen, which is made up, so check it by using the screen beside the key. Placing the red-only required labels as 'few' users assumes colour-vision and screen-reader users are a minority of this form's users; the harm for them is still high."
+    )
+  },
+  "l6-key-students": {
+    text: "The answer key for the Lesson 6 students screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
+    attestation: proposedBy(
+      "Written with the screen, which is made up, so check it by using the screen beside the key. Twelve required fields is filed under usability (effort) rather than user-centricity; either is defensible, and the note explains the choice."
+    )
   }
 };
