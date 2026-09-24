@@ -390,19 +390,19 @@ export default {
       principles: ["usability-goals", "design-principles", "context-principle", "user-control-principle", "ai-ui-polish"],
       tables: [
         {
-          title: "Usability goals: how you know it works",
+          title: "Usability goals (Nielsen, 1993): how you know it works",
           head: ["Goal", "The question it asks"],
           rows: [
-            ["Learnability", "Can someone use it well the first time?"],
+            ["Learnability", "How quickly can a new user start getting things done?"],
             ["Efficiency", "Once they know it, how fast can they finish?"],
-            ["Memorability", "After time away, can they pick it up again?"],
-            ["Errors", "How many mistakes, how bad, and how easy to undo?"],
-            ["Satisfaction", "Is it pleasant to use, or frustrating?"]
+            ["Memorability", "After time away, can they use it without learning it again?"],
+            ["Errors", "Are mistakes few, easy to recover from, and never a disaster?"],
+            ["Satisfaction", "Is it pleasant to use?"]
           ]
         },
         {
-          title: "Design principles: how you get there",
-          head: ["Principle", "The question it asks", "Mainly helps"],
+          title: "Design principles (this course's set): how you get there",
+          head: ["Principle", "The question it asks", "Mainly helps (the course's view)"],
           rows: [
             ["User-centricity", "Is it built around the user's task and words?", "Satisfaction, learnability"],
             ["Consistency", "Does the same thing look and act the same everywhere?", "Learnability, memorability"],

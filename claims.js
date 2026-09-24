@@ -249,15 +249,15 @@ export const CLAIMS = {
     )
   },
   "usability-goals": {
-    text: "A screen's usability can be judged by five goals: learnability, efficiency, memorability, errors (how few, how bad, and how easy to recover from) and satisfaction.",
+    text: "Jakob Nielsen (1993) defines usability by five attributes: learnability, efficiency, memorability, errors (few of them, easy to recover from, and none catastrophic) and satisfaction. This course uses his five as its usability goals.",
     attestation: proposedBy(
-      "Nielsen's five quality components of usability; ISO 9241-11 defines usability through effectiveness, efficiency and satisfaction. David chose this set for Lesson 6 on 2026-09-24. Check the wording against Nielsen's 'Usability 101'."
+      "Source: Nielsen, J. (1993), Usability Engineering, Academic Press; restated in his 'Usability 101' (Nielsen Norman Group). Shneiderman's five measurable human factors in Designing the User Interface (time to learn, speed of performance, rate of errors, retention over time, subjective satisfaction) line up with the same five. Kept apart from two different frameworks: ISO 9241-11 defines usability by three measures (effectiveness, efficiency, satisfaction), and Preece, Rogers and Sharp's Interaction Design lists six usability goals plus separate user experience goals. Revised 2026-09-24 at David's request so his course's statements are credited to the right scholar."
     )
   },
   "design-principles": {
-    text: "Seven design principles cover most of what makes a screen usable: user-centricity, consistency, hierarchy, context, user control, accessibility and usability. They are a teaching frame, not a standard list.",
+    text: "This course teaches seven design principles: user-centricity, consistency, hierarchy, context, user control, accessibility and usability. They are the course's own teaching set, not a published standard, and which principle serves which goal is the course's mapping.",
     attestation: proposedBy(
-      "David's set of seven (2026-09-24), drawn from widely taught sources such as Nielsen's ten heuristics and Norman's The Design of Everyday Things. Worded as a teaching frame so it doesn't claim to be a formal standard."
+      "David's set of seven (2026-09-24). They draw on Nielsen's ten usability heuristics (1994, e.g. consistency and standards, visibility of system status, user control and freedom), Norman's The Design of Everyday Things (1988, revised 2013; e.g. feedback and constraints), user-centred design (ISO 9241-210), and WCAG for accessibility. Worded as the course's own set, so it isn't mistaken for any one scholar's list."
     )
   },
   "context-principle": {

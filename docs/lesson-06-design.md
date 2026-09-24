@@ -17,7 +17,7 @@ goes back into this file first.
 
 ## The two lists (David's, 2026-09-24)
 
-**Usability goals**: how you know a screen works (Nielsen's five components).
+**Usability goals**: how you know a screen works. These are Nielsen's five usability attributes (*Usability Engineering*, 1993), which match Shneiderman's five measurable factors. They are not ISO 9241-11's three measures or Preece, Rogers and Sharp's six goals; see `docs/ux-foundations.md`, "Where these come from". The principle-to-goal mapping below is the course's own.
 
 | Goal | The question it asks |
 |---|---|
