@@ -1,6 +1,6 @@
 # Lesson 6: UX/UI: judging what AI builds. Design
 
-**Status:** approved 2026-09-24. Build on **Opus** (it adds a new tool). Wording
+**Status:** approved 2026-09-24, defect lists and frame rules added and approved the same day. Build on **Opus** (it adds a new tool). Wording
 lives in `lessons/lesson-06.js` once built; this file is the plan. Any change
 goes back into this file first.
 
@@ -75,6 +75,40 @@ Order is shuffled per track.
 | Professionals | Expense-report form | The main action is lost among equal-weight controls (hierarchy). A deleted line item can't be undone (user control). |
 | Students | Club registration page | Errors shown only in red (accessibility). Jargon labels (user-centricity). |
 
+**Defect lists (approved 2026-09-24).** Each principle appears in exactly two
+tracks, so the three tracks together cover all seven. The part that works sits
+in a different position in each track. Each defect also carries how bad it is
+(low, medium, high) and how many users it hits (few, some, all) for the pictorial.
+
+| Track | Part | Principle | Harm | Reach |
+|---|---|---|---|---|
+| Educators | Title "Slot Allocation Module v2" | user-centricity | low | all |
+| Educators | Menu says "Book a slot", the button says "Reserve" | consistency | low | some |
+| Educators | "Your child's name" field | (works) | | |
+| Educators | "Bookings are final", no way to change one | user control | medium | some |
+| Educators | Big bold Cancel beside a small grey Reserve | hierarchy | medium | all |
+| Educators | Reserve empties the form, nothing confirms it | context | high | all |
+| Professionals | Submit lost among six equal buttons | hierarchy | medium | all |
+| Professionals | Date field with a calendar | (works) | | |
+| Professionals | The amount asked for three times | usability | low | all |
+| Professionals | Attach receipt shows no sign it worked | context | high | all |
+| Professionals | Required fields marked only in red | accessibility | high | few |
+| Professionals | Delete removes a line with no warning and no undo | user control | high | some |
+| Students | "Next", "Continue" and "Proceed" for the same step | consistency | low | all |
+| Students | 12 required fields to join a club | usability | medium | all |
+| Students | A field in error shown only by a red border | accessibility | high | few |
+| Students | Label "Enter UID per SIS" | user-centricity | medium | some |
+| Students | Email field | (works) | | |
+| Students | No Back button; going back clears your answers | user control | high | some |
+
+**Frame rules (approved 2026-09-24).** Each mock sits in an `iframe` with
+`sandbox="allow-scripts"` and no `allow-same-origin`, a `title`, and its content
+inline in `srcdoc` with no external URLs. It is designed at about 340px and
+reflows, so it never needs a sideways scroll. A "Text version of this screen"
+lists every numbered part in words, so the whole exercise works without the
+frame. The mocks are meant to be flawed and sit outside `ui-audit.js`; the tests
+check the frame markup instead.
+
 ## Pictorial: "What to fix first" (10 min; 6.3)
 
 A 3×3 grid: how bad a defect is (low, medium, high) against how many users it
@@ -105,6 +139,14 @@ version for every numbered part).
 - `user-control-principle`: users can go back, undo and cancel (Nielsen, user control and freedom).
 - `ai-ui-polish`: an AI-built screen can look finished while leaving out states, labels and accessibility unless asked. Needs David's judgement.
 - `l6-key-educators`, `l6-key-professionals`, `l6-key-students`.
+
+## Later: a lesson series (David, 2026-09-24)
+
+The goals and principles in the abstract stage also become their own set of
+lessons in the companion module ("UX/UI for AI builders"), for example one
+short lesson per goal or principle. Lesson 6 keeps them as the overview. The
+series is not designed yet; it starts at the backward-design gate. Lesson 6 is
+also meant as a reusable UX/UI foundation for David's other projects.
 
 ## Knock-on changes
 

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -585,6 +585,99 @@ describe("lesson 5: the checklist builder", () => {
   });
 });
 
+const lesson6 = getLesson(6);
+const screenData = (track) => lesson6.stages[0].tracks[track].screen;
+const lesson6Doc = (track) => lessonDoc(track, lesson6);
+
+describe.each(TRACK_IDS)("lesson 6, %s track", (track) => {
+  const doc = lesson6Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("frames the screen safely: sandboxed without same-origin, titled, inline, sized", () => {
+    const f = doc.querySelector("iframe.mock");
+    expect(f.getAttribute("sandbox")).toBe("allow-scripts");
+    expect(f.getAttribute("sandbox")).not.toContain("allow-same-origin");
+    expect(f.getAttribute("title")).toContain(screenData(track).title);
+    expect(f.hasAttribute("src")).toBe(false);
+    expect(f.getAttribute("srcdoc")).toBe(screenData(track).html);
+    expect(Number(f.getAttribute("height"))).toBe(screenData(track).height);
+  });
+
+  it("gives a text version with every part, closed, and says the screen is made up", () => {
+    const tv = doc.querySelector("details.textver");
+    expect(tv.open).toBe(false);
+    expect(tv.querySelector("summary").textContent).toBe("Text version of this screen");
+    expect([...tv.querySelectorAll("li")].map((l) => l.textContent)).toEqual(screenData(track).parts.map((p) => p.desc));
+    expect(doc.querySelector(".screen figcaption").textContent).toContain("made up");
+  });
+
+  it("lists the six parts, each with a closed reveal naming the principle and the goal", () => {
+    const items = doc.querySelectorAll('[data-stage="concrete"] ol.gaps > li');
+    expect(items).toHaveLength(6);
+    screenData(track).parts.forEach((p, i) => {
+      expect(items[i].querySelector("p").textContent).toBe(p.label);
+      expect(items[i].querySelector("details").open).toBe(false);
+      expect(items[i].querySelector(".k").textContent).toBe(PRINCIPLE_LABEL[p.principle]);
+      if (p.goal) expect(items[i].querySelector(".goal").textContent).toContain(p.goal);
+      else expect(items[i].querySelector(".goal")).toBeNull();
+    });
+  });
+
+  it("describes the empty grid, then places each problem and gives the fix order once revealed", () => {
+    const d = lesson6Doc(track);
+    expect(d.querySelector("#grid svg").getAttribute("aria-label")).toContain("Empty until revealed");
+    expect(d.querySelectorAll("#grid .g-mark")).toHaveLength(0);
+    d.querySelector("#reveal-grid").click();
+    const label = d.querySelector("#grid svg").getAttribute("aria-label");
+    const order = fixOrder(screenData(track).parts).map((p) => p.n);
+    expect(d.querySelectorAll("#grid svg .g-mark")).toHaveLength(5);
+    expect(label).toContain(`Fix in this order: ${order.join(", ")}.`);
+    expect(d.querySelector("#grid .fix-order").textContent).toContain(`problem ${order[0]}`);
+    expect(d.querySelector("#grid table caption").textContent).toBe(label);
+    expect(d.activeElement).toBe(d.querySelector("#grid"));
+  });
+
+  it("shows the goals and principles as reference tables in the abstract stage", () => {
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect(tables).toHaveLength(2);
+    expect([...tables[0].querySelectorAll("tbody th")].map((t) => t.textContent)).toEqual(["Learnability", "Efficiency", "Memorability", "Errors", "Satisfaction"]);
+    expect(tables[1].querySelectorAll("tbody tr")).toHaveLength(7);
+  });
+});
+
+describe("lesson 6: one core across tracks", () => {
+  const html = (t, sel) => lesson6Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("keeps the grid's controls, headings and script the same; only the problems change", () => {
+    const shared = (t) => {
+      const stage = lesson6Doc(t).querySelector('[data-stage="pictorial"]');
+      return ["#reveal-grid", ".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)
+        .concat([...stage.querySelectorAll("h2, h3")].map((h) => h.textContent)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+  });
+
+  it("orders fixes by harm, then by reach", () => {
+    const order = fixOrder([
+      { principle: "a", harm: "low", reach: "all" },
+      { principle: "fine" },
+      { principle: "b", harm: "high", reach: "few" },
+      { principle: "c", harm: "high", reach: "all" },
+      { principle: "d", harm: "medium", reach: "some" }
+    ]).map((p) => p.n);
+    expect(order).toEqual([4, 3, 5, 1]);
+  });
+});
+
 describe("narrow figures: the grid as a table", () => {
   const revealed = (doc) => { doc.querySelector("#reveal-grid").click(); return doc; };
   const cellsOf = (doc) => [...doc.querySelectorAll("#grid table.grid-alt tbody tr")].map((tr) => [...tr.querySelectorAll("td")].map((td) => td.textContent.replace(/\s+/g, " ").trim()));
@@ -619,7 +712,7 @@ describe("narrow figures: the grid as a table", () => {
 });
 
 describe("facilitator content is labelled and kept apart from what learners work on", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     for (const stage of doc.querySelectorAll('[data-stage="concrete"], [data-stage="pictorial"], [data-stage="abstract"]')) {
       const box = stage.querySelector(".facil");
@@ -631,7 +724,7 @@ describe("facilitator content is labelled and kept apart from what learners work
   });
 
   it("puts the answer-key card after the facilitator's steps, not between them and the exercise", () => {
-    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc, lesson5Doc]) {
+    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc, lesson5Doc, lesson6Doc]) {
       const stage = make(TRACK_IDS[0]).querySelector('[data-stage="concrete"]');
       const kids = [...stage.children];
       expect(kids.findIndex((e) => e.classList.contains("keyclaim"))).toBeGreaterThan(kids.findIndex((e) => e.classList.contains("facil")));
@@ -647,7 +740,7 @@ describe("facilitator content is labelled and kept apart from what learners work
 });
 
 describe("alignment table", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     const lesson = getLesson(n);
     expect([...doc.querySelectorAll(".align tbody th")].map((t) => t.textContent)).toEqual(["Warm-up (pre)", "Concrete", "Pictorial", "Abstract", "Check (post)"]);
@@ -684,7 +777,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 2 (${t})`, lesson2Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 3 (${t})`, lesson3Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 4 (${t})`, lesson4Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 5 (${t})`, lesson5Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 5 (${t})`, lesson5Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 6 (${t})`, lesson6Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -697,7 +791,8 @@ describe("page structure", () => {
     ["lesson 2", lesson2Doc(TRACK_IDS[0])],
     ["lesson 3", lesson3Doc(TRACK_IDS[0])],
     ["lesson 4", lesson4Doc(TRACK_IDS[0])],
-    ["lesson 5", lesson5Doc(TRACK_IDS[0])]
+    ["lesson 5", lesson5Doc(TRACK_IDS[0])],
+    ["lesson 6", lesson6Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);

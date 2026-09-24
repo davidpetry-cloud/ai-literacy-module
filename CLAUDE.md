@@ -203,7 +203,7 @@ Sonnet worked well.
 | 03 | done | built on Sonnet: passage pattern with source cards, plus the `check-scale` figure (`checkScale` in `lesson-core.js`) |
 | 04 | done | built on Opus: `sign-offs` exercise and the `sign-off` builder (`signoffStatus`, `signoffTimeline` in `lesson-core.js`), judged by the real ledger engine |
 | 05 | done | built on Sonnet: `classify` exercise (passage pattern, error-kind keys) and the `checklist` builder (`checklistStatus`, `checklistGrid` in `lesson-core.js`) |
-| 06 | Opus | the mock-screen frame is a new tool (`screen-frame`); design in `docs/lesson-06-design.md` |
+| 06 | done | built on Opus: `screen` exercise (a made-up AI-built screen in a sandboxed `iframe`, with a text version) and the `fix-first` grid (`fixFirstGrid`, `fixOrder` in `lesson-core.js`); abstract stages can carry reference `tables` |
 | 07 | Opus | the contrast checker is a new tool; design in `docs/lesson-07-design.md` |
 
 One lesson per session.
@@ -253,15 +253,15 @@ objectives 5.1 and 5.2 were reworded on 2026-09-24 to meet the objectives
 grade ceiling; the levels, verbs and meaning are unchanged, and David
 confirmed the new wording the same day.
 
-Lessons 6 and 7 were added on 2026-09-24 and have objectives only, approved
-by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
+Lesson 6 was built on 2026-09-24 and Lesson 7 has objectives only, both
+approved by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
 usability goals and the design principles by having learners judge AI-built
 screens. Lesson 7, "Accessible and mindful UX", covers WCAG by its four
 principles and levels A, AA and AAA, a contrast checker, and wellbeing
 (calmer defaults, natural pause points, auditing for addictive patterns). Both
 designs are approved in `docs/lesson-06-design.md` and
 `docs/lesson-07-design.md`. Both need Opus, because each adds a tool. The next
-step for each is `/build-lesson 6` or `/build-lesson 7`, one per session.
+step is `/build-lesson 7`.
 
 David decided on 2026-09-24 to keep them as Lessons 6 and 7 in this course
 for now, and later to lift them into a companion module, working title
@@ -269,6 +269,13 @@ for now, and later to lift them into a companion module, working title
 self-contained in its own data file and design doc, and its tools in
 `lesson-core.js` beside the others, with no Lesson 6 or 7 content hard-wired
 into the hub or the shared page layout.
+
+David also decided (2026-09-24) that Lesson 6 is a reusable UX/UI foundation
+for his other projects, and that its goals and principles become their own set
+of lessons in the companion module, for example one short lesson per goal or
+principle, while staying in Lesson 6's abstract stage as the overview. That
+series is not designed yet and goes through the backward-design gate like any
+lesson.
 
 All 35 claims are proposed and none are attested. David attests claims once
 the whole course is built, so he can see all of it first: give him every claim
