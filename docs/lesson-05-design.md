@@ -41,6 +41,21 @@ stored or sent. Carries 5.2.
 then run it over the concrete answer: which errors would each check catch, and
 which slip through. Carries 5.3 (with check item p3).
 
+**Revision, 2026-09-24 (Opus review, approved by David).**
+1. The students answer was exactly 60 words against "under 60 words", an unkeyed
+   misread. Every answer is now inside its limit, and a test holds that.
+2. Objective 5.3 now has practice with the tool: after building a checklist, the
+   builder runs it over the track's own five sentences and shows what each check
+   catches and what slips through. The pictorial stage targets 5.2 and 5.3.
+3. The three misreads now break different kinds of rule: a forbidden detail
+   (educators), plain words with no legal terms (professionals), and who the
+   message is for (students). A test holds that they differ.
+4. Two arguable keys fixed. The professionals No error sentence added "so we need
+   a legal basis", which the request never said; No error sentences now use only
+   the request's words, and a test holds that. The students bias sentence mixed a
+   contested group statistic with the bias; it is now a default assumption about
+   families ("Ask your mom or dad").
+
 **Decisions at approval:**
 1. `fine` is a fifth key, so the concrete stage has five items.
 2. The bias sentences are plain stereotypes, so the key is unarguable.

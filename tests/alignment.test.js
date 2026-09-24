@@ -311,6 +311,36 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
     it("puts each answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(set(t).claim);
     });
+
+    // The answer is judged against its own request, so it must keep the request's
+    // word limit, or it hides an extra misread the key doesn't mention.
+    it("keeps every answer inside its request's word limit", () => {
+      for (const t of TRACK_IDS) {
+        const limit = Number(set(t).request.match(/under (\d+) words/)?.[1]);
+        expect(limit, `${t} states a word limit`).toBeGreaterThan(0);
+        const words = set(t).items.reduce((n, i) => n + i.text.split(/\s+/).length, 0);
+        expect(words, `${t}: ${words} words, limit under ${limit}`).toBeLessThan(limit);
+      }
+    });
+
+    // A "No error" sentence may say only what the request said. Anything more is
+    // something the model added, which is the very thing the lesson teaches.
+    it("builds every 'No error' sentence only from words in the request", () => {
+      const STOP = new Set(["about", "there", "their", "these", "those", "which", "would", "could", "should", "other", "every", "after", "before"]);
+      const stems = (text) => text.toLowerCase().replace(/[’']/g, "'").match(/[a-z0-9$:]+/g) ?? [];
+      for (const t of TRACK_IDS) {
+        const request = new Set(stems(set(t).request).map((w) => w.slice(0, 5)));
+        const fine = set(t).items.find((i) => i.key === "fine").text;
+        const extra = stems(fine).filter((w) => w.length > 3 && !STOP.has(w) && !request.has(w.slice(0, 5)));
+        expect(extra, `${t}: "${fine}"`).toEqual([]);
+      }
+    });
+
+    it("varies the kind of rule each track's misread sentence breaks", () => {
+      const rules = TRACK_IDS.map((t) => set(t).items.find((i) => i.key === "misread").rule);
+      expect(new Set(rules).size).toBe(TRACK_IDS.length);
+      expect(new Set(rules.map((r) => r.split(" ").slice(0, 2).join(" "))).size, rules.join(" | ")).toBe(TRACK_IDS.length);
+    });
   });
 
   describe.runIf(lesson.stages.find((s) => s.kind === "pictorial").figure === "checklist")("pictorial stage: checklist", () => {

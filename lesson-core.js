@@ -381,6 +381,13 @@ const ERROR_WHERE = {
   misread: "the request",
   fine: "nothing, there is nothing to fix"
 };
+// Why a mistake of each kind got past a checklist.
+const MISS_WHY = {
+  fabrication: "No check looks up names, numbers or sources.",
+  outdated: "No check looks at the date behind a fact.",
+  bias: "No check asks who is left out.",
+  misread: "No check compares it with the request."
+};
 const joinList = (a) => (a.length < 2 ? a.join("") : a.length === 2 ? a.join(" and ") : `${a.slice(0, -1).join(", ")} and ${a.at(-1)}`);
 
 function classifyExercise(set, request, provenanceNote) {
@@ -479,7 +486,40 @@ export function checklistView(ids, checks, limit = 5) {
   return checklistGrid(ids, checks, limit) + gridTable(checklistLabel(status, checks.length), "Kind of error", ["Covered by"], rows, "Nothing yet");
 }
 
-function checklistBuilder(stage) {
+/**
+ * Run a checklist over an answer (objective 5.3). A mistake is caught when a
+ * ticked check finds its kind; a sentence with no error has nothing to catch.
+ */
+export function runChecklist(ids, checks, items) {
+  const chosen = checks.map((c, i) => ({ ...c, n: i + 1 })).filter((c) => ids.includes(c.id));
+  const results = items.map((it, i) => {
+    if (it.key === "fine") return { n: i + 1, key: it.key, outcome: "fine", by: [] };
+    const by = chosen.filter((c) => c.catches.includes(it.key)).map((c) => c.n);
+    return { n: i + 1, key: it.key, outcome: by.length ? "caught" : "missed", by };
+  });
+  const mistakes = results.filter((r) => r.outcome !== "fine");
+  const caught = mistakes.filter((r) => r.outcome === "caught");
+  const summary = !chosen.length
+    ? ""
+    : caught.length === mistakes.length
+      ? `On today's answer it catches all ${mistakes.length} mistakes.`
+      : `On today's answer it catches ${caught.length} of ${mistakes.length} mistakes.`;
+  return { results, caught: caught.length, total: mistakes.length, summary };
+}
+
+function runList(run) {
+  return `<ol class="ck-run">${run.results
+    .map((r) =>
+      r.outcome === "fine"
+        ? `<li><b class="k k-fine">No error</b> Nothing to catch.</li>`
+        : r.outcome === "caught"
+          ? `<li><b class="k k-${r.key}">${ERROR_LABEL[r.key]}</b> Caught by check${r.by.length > 1 ? "s" : ""} ${joinList(r.by.map(String))}.</li>`
+          : `<li><b class="k k-${r.key}">${ERROR_LABEL[r.key]}</b> <span class="ck-miss">Slips through.</span> ${MISS_WHY[r.key]}</li>`
+    )
+    .join("")}</ol>`;
+}
+
+function checklistBuilder(stage, items) {
   return `<form class="ck-form" id="ck-form" novalidate>
         <label for="ck-task">What do you use AI for every week?<input id="ck-task" type="text" autocomplete="off" value=""></label>
         <fieldset class="ck-list"><legend>Pick up to ${stage.limit} checks</legend>
@@ -488,16 +528,19 @@ function checklistBuilder(stage) {
       </form>
       <p class="so-status" id="ck-status" aria-live="polite">${esc(checklistStatus([], stage.checks, stage.limit).text)}</p>
       <div class="figure" id="ck-figure">${checklistView([], stage.checks, stage.limit)}</div>
-      <div class="ck-mine"><h3 class="subhead">Your checklist</h3><div id="ck-mine"><p class="so-empty">Nothing ticked yet.</p></div></div>`;
+      <div class="ck-mine"><h3 class="subhead">Your checklist</h3><div id="ck-mine"><p class="so-empty">Nothing ticked yet.</p></div></div>
+      <div class="ck-mine"><h3 class="subhead">Run it on today's answer</h3><p class="sense">Each line is a sentence from the concrete stage, in the same order.</p><div id="ck-run"><p class="so-empty">Tick a check to run it.</p></div></div>`;
 }
 
-function wireChecklist(doc, stage) {
+function wireChecklist(doc, stage, items) {
   const form = doc.querySelector("#ck-form");
   const update = () => {
     const ids = [...form.querySelectorAll('input[type="checkbox"]:checked')].map((i) => i.value);
     const status = checklistStatus(ids, stage.checks, stage.limit);
     const task = form.querySelector("#ck-task").value.trim();
-    doc.querySelector("#ck-status").textContent = status.text;
+    const run = runChecklist(ids, stage.checks, items);
+    doc.querySelector("#ck-status").textContent = run.summary ? `${status.text} ${run.summary}` : status.text;
+    doc.querySelector("#ck-run").innerHTML = ids.length ? runList(run) : `<p class="so-empty">Tick a check to run it.</p>`;
     doc.querySelector("#ck-figure").innerHTML = checklistView(ids, stage.checks, stage.limit);
     doc.querySelector("#ck-mine").innerHTML = status.chosen.length
       ? `${task ? `<p>For: ${esc(task)}</p>` : ""}<ol>${status.chosen.map((c) => `<li>${esc(c.text)}</li>`).join("")}</ol>`
@@ -644,7 +687,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     : isSignoff
       ? signoffBuilder(artefact.items, now)
       : isClassify
-        ? checklistBuilder(pictorial)
+        ? checklistBuilder(pictorial, artefact.items)
     : scale
       ? scaleFigure(artefact.uses)
       : `<div class="figure" id="grid">${confidenceView(artefact.sentences)}</div>
@@ -711,7 +754,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   if (isPair) wireCompare(doc, artefact);
   else if (isSignoff) wireSignoff(doc, now);
-  else if (isClassify) wireChecklist(doc, pictorial);
+  else if (isClassify) wireChecklist(doc, pictorial, artefact.items);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }

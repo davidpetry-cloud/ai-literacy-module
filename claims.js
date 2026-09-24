@@ -230,21 +230,21 @@ export const CLAIMS = {
   "l5-key-educators": {
     text: "The answer key for the Lesson 5 educators answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. Pluto's reclassification should be checked against IAU Resolution B5 (2006). The request and answer are made up, so check each other label against the sentence as shown.",
+      "Written with the answer. Pluto's reclassification should be checked against IAU Resolution B5 (2006). The request and answer are made up, so check each other label against the sentence as shown. Revised 2026-09-24: the request now names everything the No error sentence says.",
       "claude-sonnet-5"
     )
   },
   "l5-key-professionals": {
     text: "The answer key for the Lesson 5 professionals answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. Privacy Shield's invalidation should be checked against CJEU Case C-311/18 (2020) and the EU-US Data Privacy Framework decision (2023). The vendor and audit are made up.",
+      "Written with the answer. Privacy Shield's invalidation should be checked against CJEU Case C-311/18 (2020) and the EU-US Data Privacy Framework decision (2023). The misread sentence breaks the plain-words rule with a real reference, GDPR Article 46(2)(c) on Standard Contractual Clauses, which is correct in itself; check it. The vendor and audit are made up. Revised 2026-09-24: the No error sentence no longer adds a claim the request didn't make.",
       "claude-sonnet-5"
     )
   },
   "l5-key-students": {
     text: "The answer key for the Lesson 5 students answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up.",
+      "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up. Revised 2026-09-24: the answer now keeps the request's word limit, the misread sentence ignores who the reminder is for, and the bias sentence is a default assumption about families rather than a contested group statistic.",
       "claude-sonnet-5"
     )
   }

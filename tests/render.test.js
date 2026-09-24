@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -486,7 +486,7 @@ describe("lesson 5: the checklist builder", () => {
     const doc = lesson5Doc(TRACK_IDS[0]);
     for (const id of ["c1", "c2", "c3", "c4"]) tick(doc, id);
     expect(doc.querySelectorAll("#ck-figure .g-mark")).toHaveLength(4);
-    expect(doc.querySelector("#ck-status").textContent).toBe("Every kind of error has a check. You used 4 of 5.");
+    expect(doc.querySelector("#ck-status").textContent).toBe("Every kind of error has a check. You used 4 of 5. On today's answer it catches all 4 mistakes.");
     expect(doc.querySelector("#ck-figure svg").getAttribute("aria-label")).toContain("Every kind is covered.");
     expect([...doc.querySelectorAll("#ck-figure .g-stat")].map((t) => t.textContent)).toEqual(Array(4).fill("✓ Covered"));
   });
@@ -508,6 +508,37 @@ describe("lesson 5: the checklist builder", () => {
     expect(doc.querySelector("#ck-status").textContent).not.toContain("is short");
     tick(doc, "c6");
     expect(doc.querySelector("#ck-status").textContent).toContain("That's 6 checks. A checklist people use is short.");
+  });
+
+  it.each(TRACK_IDS)("runs the checklist over the %s track's own answer, sentence by sentence", (track) => {
+    const doc = lesson5Doc(track);
+    const items = classifyData(track).items;
+    expect(doc.querySelector("#ck-run").textContent).toContain("Tick a check to run it");
+    tick(doc, "c1");
+    const lines = [...doc.querySelectorAll("#ck-run li")];
+    expect(lines).toHaveLength(items.length);
+    items.forEach((it, i) => {
+      expect(lines[i].querySelector(".k").textContent).toBe(ERROR_LABEL[it.key]);
+      const want = it.key === "fine" ? "Nothing to catch" : it.key === "fabrication" ? "Caught by check 1" : "Slips through";
+      expect(lines[i].textContent, `${track} sentence ${i + 1}`).toContain(want);
+    });
+    expect(doc.querySelector("#ck-status").textContent).toContain("On today's answer it catches 1 of 4 mistakes.");
+    for (const id of ["c2", "c3", "c4"]) tick(doc, id);
+    expect([...doc.querySelectorAll("#ck-run .ck-miss")]).toHaveLength(0);
+    for (const id of ["c1", "c2", "c3", "c4"]) tick(doc, id, false);
+    expect(doc.querySelector("#ck-run").textContent).toContain("Tick a check to run it");
+  });
+
+  it("says why a mistake got through, and counts only real mistakes", () => {
+    const items = classifyData(TRACK_IDS[0]).items;
+    const run = runChecklist(["c6", "c7"], checksData, items);
+    expect(run.caught).toBe(0);
+    expect(run.total).toBe(4);
+    expect(run.results.find((r) => r.key === "fine").outcome).toBe("fine");
+    const doc = lesson5Doc(TRACK_IDS[0]);
+    tick(doc, "c6");
+    const bias = [...doc.querySelectorAll("#ck-run li")].find((l) => l.querySelector(".k").textContent === "Bias");
+    expect(bias.textContent).toContain("No check asks who is left out.");
   });
 
   it("prints the learner's checklist back, with the task they name", () => {

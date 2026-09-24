@@ -251,6 +251,8 @@ dl.so-line{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margi
 .ck-mine{margin:0 0 16px}
 .ck-mine ol{margin:0;padding-left:24px}
 .ck-mine p{margin:0 0 8px}
+.ck-run li{margin-bottom:8px}
+.ck-miss{font-weight:700;color:var(--exp)}
 .g-stat{font-size:15px;font-weight:600;text-anchor:start}
 .g-stat.ok{fill:var(--att-text)}
 .g-stat.gap{fill:var(--exp)}

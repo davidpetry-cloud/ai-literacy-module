@@ -118,7 +118,7 @@ export default {
             model: "claude-sonnet-5",
             claim: "l5-key-educators",
             request:
-              "Write a short note to parents about our Grade 5 planetarium trip. It's Thursday, the bus leaves at 9:00, and students bring a packed lunch. Tickets cost $8. Don't mention the cost. Keep it under 60 words.",
+              "Write a short note to parents. Our Grade 5 class visits the planetarium on Thursday. The bus leaves at 9:00, and students bring a packed lunch. Tickets cost $8. Don't mention the cost. Keep it under 60 words.",
             items: [
               {
                 text: "Our Grade 5 class visits the planetarium on Thursday, and the bus leaves at 9:00.",
@@ -140,7 +140,7 @@ export default {
                 note: "The number is right, but the request said not to mention the cost. This one only shows when you read the request."
               },
               {
-                text: "Mums can pack the lunches the night before to save the morning rush.",
+                text: "Mums can pack the lunches the night before.",
                 key: "bias",
                 source: null,
                 note: "It assumes mothers do the packing. Fathers, guardians and students who pack their own lunch are left out."
@@ -161,14 +161,14 @@ export default {
             model: "claude-sonnet-5",
             claim: "l5-key-professionals",
             request:
-              "Write a short blurb for the team newsletter on how we send EU customers' data to our US servers. Our cloud vendor is Nimbus Host. Don't name the vendor. Keep it under 70 words.",
+              "Write a short blurb for the team newsletter on how we send EU customers' data to our US servers, which are run by Nimbus Host. Use plain words, with no legal terms. Keep it under 70 words.",
             items: [
               {
-                text: "The data is held by our cloud vendor, Nimbus Host.",
+                text: "Each transfer relies on Standard Contractual Clauses under Article 46(2)(c) of the GDPR.",
                 key: "misread",
-                rule: "Don't name the vendor.",
+                rule: "Use plain words, with no legal terms.",
                 source: null,
-                note: "The name is right, but the request said not to use it. Only the request shows this one."
+                note: "The request asked for plain words. Clause names and article numbers are the legal terms it ruled out."
               },
               {
                 text: "A 2023 audit found that we had zero transfer incidents.",
@@ -177,10 +177,10 @@ export default {
                 note: "The request mentioned no audit. The year and the result were made up, and nothing on the page can back them."
               },
               {
-                text: "We send some EU customers' data to US servers, so we need a legal basis for those transfers.",
+                text: "We send EU customers' data to our US servers, which are run by Nimbus Host.",
                 key: "fine",
                 source: null,
-                note: "It only repeats what the request said and adds a rule that holds. Nothing here needs fixing."
+                note: "Every detail comes from the request. It adds nothing and breaks no rule."
               },
               {
                 text: "Those transfers are covered by the EU–US Privacy Shield.",
@@ -204,13 +204,13 @@ export default {
             model: "claude-sonnet-5",
             claim: "l5-key-students",
             request:
-              "Write a short reminder for the school newsletter about SAT registration. Juniors must register by the end of next week. Registration costs $68. Don't mention the cost. Keep it under 60 words.",
+              "Write a short reminder for the school newsletter about SAT registration. It is for juniors only. Juniors must register for the SAT by the end of next week. Keep it under 60 words.",
             items: [
               {
-                text: "Boys tend to do better on the math section, so girls should practise there.",
+                text: "Ask your mom or dad to check the form with you.",
                 key: "bias",
                 source: null,
-                note: "It assumes a group score tells you about each person. Girls are told what to do because of their group."
+                note: "It assumes every student lives with a mom and a dad. Many live with one parent, grandparents or carers."
               },
               {
                 text: "Juniors, register for the SAT by the end of next week.",
@@ -219,17 +219,17 @@ export default {
                 note: "It says what the request said, and nothing more. There is nothing to fix."
               },
               {
-                text: "Last year's juniors gained an average of 140 points after our school's prep workshop.",
+                text: "Last year's juniors gained 140 points after our prep workshop.",
                 key: "fabrication",
                 source: null,
                 note: "The request mentioned no workshop and no scores. The number was made up, and nothing on the page can back it."
               },
               {
-                text: "The $68 registration fee is due when you sign up.",
+                text: "All students, from freshmen to seniors, should sign up now.",
                 key: "misread",
-                rule: "Don't mention the cost.",
+                rule: "It is for juniors only.",
                 source: null,
-                note: "The fee is right, but the request said not to mention it. This one only shows when you read the request."
+                note: "The request said the reminder is for juniors only. This sentence tells the whole school to sign up."
               },
               {
                 text: "Bring two sharpened pencils, because the SAT is taken on paper.",
@@ -246,9 +246,10 @@ export default {
       kind: "pictorial",
       title: "Build a checklist that covers every kind",
       minutes: 10,
-      targets: ["5.2"],
+      targets: ["5.2", "5.3"],
       figure: "checklist",
       limit: 5,
+      // The builder runs the learner's checklist over this track's concrete answer (objective 5.3).
       checks: [
         {
           id: "c1",
@@ -303,12 +304,13 @@ export default {
         "Read the eight checks aloud. Ask which ones you could really do in two minutes.",
         "Learners tick up to five checks, one at a time. After each tick, read the status line aloud.",
         "Aim for a grid with no empty row. Then try to reach it with fewer ticks.",
+        "Read the run on today's answer. Which mistake got through, and which check would have caught it?",
         "Type the weekly task into the field. Read your checklist back."
       ],
       say: [
         ["Facilitator", "Look for an empty row. Which kind of mistake would get through your checklist?"],
         ["Expected", "\"I'll just tick all eight.\" Ask: would you really do eight checks every time?"],
-        ["Facilitator", "Some checks catch nothing. Why do they feel useful anyway?"]
+        ["Facilitator", "Now run it on today's answer. Did anything get past you?"]
       ],
       watch:
         "Learners tick \"read it again\" first, because it feels like checking. It catches none of the four kinds. Point at the empty grid when they tick it."
