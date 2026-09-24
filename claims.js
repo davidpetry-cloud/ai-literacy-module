@@ -76,12 +76,19 @@ export const CLAIMS = {
     "claude-opus-5-5" },    
       }     
     },
-  "l1-key-educators": {
+    "l1-key-educators": {
     text: "The answer key for the Lesson 1 educators passage is correct: each sentence's label matches its cited source, and the no-source sentence has no real study behind it.",
-    attestation: proposedBy(
-      "Written with the passage. Dunlosky et al. (2013) and Ebbinghaus (1885) should be checked against the originals before this is attested."
-    )
-  },
+    attestation: {
+    source: "practitioner",
+    by: "David Petry",
+    role: "Course author and UX lead",
+    basis: "Checked against Dunlosky, J. et al. (2013), Improving Students' Learning With Effective Learning Techniques, Psychological Science in the Public Interest 14(1), 4–58. doi:10.1177/1529100612453266. It rates practice testing high utility. Ebbinghaus published the forgetting curve in 1885 (Über das Gedächtnis), not the 1950s; the 2019 study is planted with no source; the last sentence can't be checked.",
+    verified: "2026-09-24",
+    ttlDays: 1095,
+      supersedes:  { source: "model", model:
+    "claude-opus-5-5" }, 
+      }
+    },
   "l1-key-professionals": {
     text: "The answer key for the Lesson 1 professionals passage is correct: each sentence's label matches its cited source, and the no-source sentence has no real survey behind it.",
     attestation: proposedBy(
