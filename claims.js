@@ -26,10 +26,17 @@ const proposedBy = (rationale, model = "claude-opus-5-5") => ({
 export const CLAIMS = {
   "model-predicts": {
     text: "A language model writes by repeatedly predicting a likely next piece of text, based on patterns learned from its training data. It does not look answers up in a stored table of facts.",
-    attestation: proposedBy(
-      "The standard description of how autoregressive language models generate text. Deliberately stated without technical vocabulary so a non-specialist can repeat it."
-    )
-  },
+    attestation: {
+    source: "practitioner",
+    by: "David Petry",
+    role: "Course author and UX lead",
+    basis: "Checked against Jurafsky & Martin, Speech and Language Processing, 3rd ed. draft (Aug 2026), ch. 7 'Transformers and Pretraining': generation is repeated next-token prediction from patterns learned in pretraining, not lookup in a table of facts.",
+    verified: "2026-09-24",
+    ttlDays: 1095,
+      supersedes: { source: "model", model: 
+    "claude-opus-5-5" },
+      }
+    },
   "retrieval-still-generated": {
     text: "Some AI tools add a search or retrieval step that pulls in documents first. The answer is still generated text, and it can misstate or overstate what those documents say.",
     attestation: proposedBy(
