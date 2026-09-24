@@ -4,6 +4,10 @@ David's standing UX/UI standard for every project. It comes from Lessons 6 and 7
 of the AI literacy course (`lessons/lesson-06.js`, `docs/lesson-07-design.md`),
 and is meant to be applied without being asked.
 
+A concise version, with every idea once and nothing repeated, is in
+[`ux-foundations-concise.md`](ux-foundations-concise.md). This full version keeps
+the worked explanations. Update both together.
+
 The course's own claims behind this list are still **Proposed** in `claims.js`
 until David attests them. Treat the list as a working standard, not a cited
 authority.
@@ -72,6 +76,35 @@ themes, and respect `prefers-reduced-motion`.
 - **Natural pause points:** an end to lists ("you're all caught up"), pages instead of endless scroll, a stopping cue before big actions.
 - **Audit for addictive patterns:** infinite scroll, autoplay, streak pressure, variable rewards, confirmshaming, hidden cancel or unsubscribe.
 - **Reward care, not harm:** designs shouldn't reward manipulating, ranking or shaming people. Healthy habits, empathy and self-care are practised everywhere, at a screen, on a playground or at home.
+
+## Human–AI interaction: designing with a model inside
+
+AI output is a spread of possible answers, not one fixed result. Use these
+nine themes whenever a screen shows, suggests or acts on model output. They
+decide when a product should suggest, ask or act, and how it keeps a person
+responsible for the result.
+
+The nine themes and their names follow the Human–AI section of
+[uxprinciples.design](https://uxprinciples.design/human-ai), which credits no
+sources. The questions and checks here are this standard's own wording, and the
+"Rests on" column names the published research each theme comes from (see
+"Where these come from").
+
+| Theme | The question it asks | In code, check that… | Rests on |
+|---|---|---|---|
+| Probabilistic foundation | Is the design built for answers that vary and can be wrong? | Nothing treats model output as a fixed fact; the same request can safely give a different answer | Amershi et al. (2019), G2; this course's Lesson 1 |
+| Expectation setting | Does the user know what the AI can and can't do before they rely on it? | The screen says an AI is involved, what it's for, and its known limits, up front | Amershi et al. (2019), G1–G2; PAIR, "Mental models" |
+| Calibrated trust | Does the user rely on it as much as it deserves, and no more? | Confidence or source is shown where it matters; weak output looks weak | Lee and See (2004); Parasuraman and Riley (1997) |
+| Transparency | Can the user see why it said or did that? | Sources, inputs or reasons are one step away, not buried and not flooding the screen | Amershi et al. (2019), G11; PAIR, "Explainability + trust" |
+| Control and agency | Can the user accept, reject, edit, undo or override easily? | Every AI action has a one-step undo or dismiss, and a way to turn the feature off | Horvitz (1999); Amershi et al. (2019), G7–G9, G17; Shneiderman (2022) |
+| Graceful failure | What happens when it's wrong, unsure or stuck? | Wrong, empty and uncertain results have a designed state and a way forward, such as retry, edit or reach a person | Amershi et al. (2019), G9–G10; PAIR, "Errors + graceful failure" |
+| Co-creation | Is the output a draft the user shapes, or a verdict they must accept? | Generated content arrives editable, and the user's changes are kept | Horvitz (1999), mixed-initiative interaction |
+| Responsible autonomy | Does independent action scale with stakes and reversibility? | The more costly or permanent an action, the more it asks first, and it only acts within permissions given | Parasuraman, Sheridan and Wickens (2000); Shneiderman (2022) |
+| Sustained reliance | Does it stay healthy to use over time? | Waits show progress; changes in behaviour, cost or quality are announced; the user keeps ownership of their work | Amershi et al. (2019), G12–G18 |
+
+These connect to the principles above. Control and agency is user control,
+graceful failure is context, and sustained reliance is wellbeing, each seen
+through a model that can be wrong.
 
 ## The principles in depth
 
@@ -143,13 +176,32 @@ Kept separate so that these statements aren't confused with other frameworks.
 - **ISO 9241-11 (1998, revised 2018).** Usability is effectiveness, efficiency and satisfaction in a context of use. That's three measures, not five.
 - **Preece, Rogers and Sharp, *Interaction Design*.** Six usability goals (effective, efficient, safe, good utility, easy to learn, easy to remember), with satisfaction and enjoyment kept apart as user experience goals.
 
-**The design principles are this course's own set**, drawing on:
-- Nielsen's ten usability heuristics (1994), for example visibility of system status, user control and freedom, and consistency and standards;
-- Norman, *The Design of Everyday Things* (1988, revised 2013), for example feedback and constraints;
-- user-centred design (ISO 9241-210);
-- WCAG for accessibility.
+**The design principles are this course's own set of eight, and each rests on
+foundational theory.** The grouping is the course's; the ideas are not.
+
+| Principle | Rests on |
+|---|---|
+| User-centricity | User-centred design: Norman and Draper (eds.), *User Centered System Design* (1986); ISO 9241-210 |
+| Consistency | Shneiderman, *Designing the User Interface* (1987 on), "strive for consistency"; Nielsen's heuristics (1994), "consistency and standards" |
+| Hierarchy | The Gestalt principles of perceptual organisation (Wertheimer, 1923), the basis of visual hierarchy |
+| Context | Norman, *The Design of Everyday Things* (1988; 2013), feedback and visibility; Nielsen (1994), "visibility of system status" |
+| User control | Nielsen (1994), "user control and freedom"; Shneiderman, "permit easy reversal of actions" and "keep users in control" |
+| Accessibility | *The Principles of Universal Design* (Center for Universal Design, NC State, 1997); W3C WCAG 2.2 |
+| Usability | Nielsen, *Usability Engineering* (1993); ISO 9241-11 |
+| Wellbeing (mindful UX) | Value sensitive design (Friedman, 1996); deceptive-design research (Brignull, 2010) |
 
 Which principle "mainly helps" which goal is this course's mapping, not a published one.
+
+**Human–AI interaction.** The nine themes follow the Human–AI section of
+uxprinciples.design (https://uxprinciples.design/human-ai; theme names used with
+credit, wording here is this standard's own). The research beneath them:
+- Amershi, S. et al. (2019), "Guidelines for Human-AI Interaction", *CHI 2019*: 18 guidelines (G1–G18) across four phases (initially, during interaction, when wrong, over time).
+- Horvitz, E. (1999), "Principles of Mixed-Initiative User Interfaces", *CHI 1999*.
+- Lee, J. D. and See, K. A. (2004), "Trust in Automation: Designing for Appropriate Reliance", *Human Factors* 46(1).
+- Parasuraman, R. and Riley, V. (1997), "Humans and Automation: Use, Misuse, Disuse, Abuse", *Human Factors* 39(2).
+- Parasuraman, R., Sheridan, T. B. and Wickens, C. D. (2000), "A Model for Types and Levels of Human Interaction with Automation", *IEEE Transactions on Systems, Man, and Cybernetics* 30(3).
+- Google PAIR, *People + AI Guidebook* (2019; updated 2021).
+- Shneiderman, B. (2022), *Human-Centered AI*, Oxford University Press.
 
 **Accessibility** is the W3C's WCAG 2.2 (2023): four principles (perceivable, operable, understandable, robust) and levels A, AA and AAA.
 
@@ -168,3 +220,12 @@ David attests them against the sources above.
 - [ ] Contrast checked in both themes; colour never the only cue
 - [ ] No sideways scroll at 320px; reduced motion respected
 - [ ] No addictive patterns; calm defaults
+
+If the screen shows, suggests or acts on AI output, also check:
+
+- [ ] It says an AI is involved, and what it can't do (expectation setting)
+- [ ] Sources or reasons are one step away (transparency)
+- [ ] Every AI action can be undone, dismissed or turned off (control and agency)
+- [ ] Wrong, empty and unsure results have a designed state and a way forward (graceful failure)
+- [ ] Generated content is editable, and the user's edits are kept (co-creation)
+- [ ] Costly or permanent actions ask first (responsible autonomy)

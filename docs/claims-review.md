@@ -99,7 +99,7 @@ safe as made-up examples.
 | Claim | Verdict | Check against |
 |---|---|---|
 | `usability-goals` | Sound | Nielsen (1993), *Usability Engineering*, ch. 2 |
-| `design-principles` | Revised | Your own set; draws on Nielsen's heuristics (1994), Norman, ISO 9241-210, WCAG |
+| `design-principles` | Revised (anchored) | One source per principle: Norman and Draper (1986); Shneiderman; Nielsen (1993, 1994); Wertheimer (1923); Norman (1988/2013); Principles of Universal Design (1997); WCAG 2.2; Friedman (1996) |
 | `context-principle` | Sound | Nielsen: visibility of system status |
 | `user-control-principle` | Sound | Nielsen: user control and freedom |
 | `ai-ui-polish` | Your judgement | Rests on practice; hedged with "can" |

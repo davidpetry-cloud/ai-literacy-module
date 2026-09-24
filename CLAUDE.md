@@ -28,7 +28,7 @@ scripts/serve.js   local preview on :8080
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
-docs/ux-foundations.md     David's portable UX/UI standard
+docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
 
 ## Design basis
