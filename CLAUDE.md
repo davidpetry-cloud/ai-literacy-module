@@ -163,7 +163,7 @@ plus headroom:
 No sentence anywhere may run over 35 words. If a lesson fails, rewrite it
 shorter and plainer. Never raise a ceiling to make a lesson pass.
 - **Tap targets:** buttons, header pills and radios are at least 44px tall;
-  inline disclosures (`<summary>`) at least 24px.
+  inline disclosures (`<summary>`) at least 44px.
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
   so re-rendering never removes it. New pages copy it from `lesson.html`.
 - **Each lesson has its own colour** (`--l1`…`--l5`) as a ribbon and outline,
@@ -201,7 +201,7 @@ Sonnet worked well.
 | 01 | done | pilot, built on Opus |
 | 02 | done | built on Opus with the prompt-comparison tool (`promptCompare` in `lesson-core.js`) |
 | 03 | done | built on Sonnet: passage pattern with source cards, plus the `check-scale` figure (`checkScale` in `lesson-core.js`) |
-| 04 | Opus | the attestation exercise is new, and it's the course's centrepiece |
+| 04 | done | built on Opus: `sign-offs` exercise and the `sign-off` builder (`signoffStatus`, `signoffTimeline` in `lesson-core.js`), judged by the real ledger engine |
 | 05 | Sonnet | checklist builder is simple; classification reuses the passage pattern |
 
 One lesson per session.
@@ -240,15 +240,16 @@ changes get their own commits, so `git log --oneline` reads as a build history.
 
 ## Status
 
-Lessons 1, 2 and 3 are built. Lesson 2 (2026-09-23) added a second exercise
-type, `prompt-pair`, with its own alignment rules, and the `prompt-compare`
-figure; its approved design is `docs/lesson-02-design.md`. Lesson 3
-(2026-09-23) reuses the passage exercise with citations and adds the
-`check-scale` figure: one passage, three uses, three levels of checking. The
-passage's `uses` feed the figure. Lessons 4–5 have objectives only; David
-approved them as written on 2026-09-23, so the next step for each is its
-warm-up and check items. All 20 claims are proposed and none are attested.
-David attests claims once all five lessons are built, so he can see the whole
-course first. Until then, don't prompt him to attest. When Lesson 5 ships,
-give him every claim grouped by lesson, with the source to check each
-against.
+Lessons 1–4 are built. Lesson 2 (2026-09-23) added the `prompt-pair`
+exercise and `prompt-compare` figure (`docs/lesson-02-design.md`). Lesson 3
+(2026-09-23) reuses the passage exercise and adds the `check-scale` figure.
+Lesson 4 (2026-09-24) adds the `sign-offs` exercise and the `sign-off`
+builder (`docs/lesson-04-design.md`). Its sign-offs are fictional,
+attestation-shaped lesson material stored with `daysAgo`, turned into ledger
+records at render time, and never written to `claims.js`; the alignment test
+checks that the real engine passes four of five. Lesson 5 has objectives
+only (approved 2026-09-23), so its next step is warm-up and check items. All
+27 claims are proposed and none are attested. David attests claims once all
+five lessons are built, so he can see the whole course first. Until then,
+don't prompt him to attest. When Lesson 5 ships, give him every claim grouped
+by lesson, with the source to check each against.

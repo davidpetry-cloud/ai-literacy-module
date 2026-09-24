@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -282,6 +282,139 @@ describe("lesson 3: the grid is one core across tracks", () => {
   });
 });
 
+const lesson4 = getLesson(4);
+const signoffData = (track) => lesson4.stages[0].tracks[track].signoffs.items;
+const lesson4Doc = (track) => lessonDoc(track, lesson4);
+const setField = (doc, id, value) => {
+  const el = doc.querySelector(`#${id}`);
+  el.value = value;
+  el.dispatchEvent(new doc.defaultView.Event("input", { bubbles: true }));
+};
+
+describe.each(TRACK_IDS)("lesson 4, %s track", (track) => {
+  const doc = lesson4Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows five sign-offs, each with signer, basis and date, answers closed, and says they're made up", () => {
+    const items = doc.querySelectorAll(".signoffs > ol > li");
+    expect(items).toHaveLength(5);
+    signoffData(track).forEach((d, i) => {
+      expect(items[i].querySelector("p").textContent).toBe(d.statement);
+      expect(items[i].querySelector(".so-line").textContent).toContain(d.by);
+    });
+    for (const d of doc.querySelectorAll(".signoffs details")) expect(d.open).toBe(false);
+    expect(doc.querySelector(".signoffs figcaption").textContent).toContain("made up");
+    expect(doc.querySelector(".signoffs figcaption").textContent).toContain("two years");
+  });
+
+  it("shows what the real ledger says beside each answer: four Attested, one Lapsed", () => {
+    const shown = [...doc.querySelectorAll(".so-ledger .badge")].map((b) => b.textContent.trim());
+    expect(shown.filter((s) => s === STATUS_LABEL.attested)).toHaveLength(4);
+    expect(shown.filter((s) => s === STATUS_LABEL.expired)).toHaveLength(1);
+    const keys = [...doc.querySelectorAll(".signoffs .k")].map((k) => k.textContent);
+    expect(keys).toEqual(signoffData(track).map((d) => SIGNOFF_LABEL[d.key]));
+  });
+
+  it("opens the builder on the track's lapsed sign-off, reading Lapsed", () => {
+    const lapsed = signoffData(track).find((d) => d.key === "lapsed");
+    expect(doc.querySelector('[data-stage="pictorial"] .req').textContent).toContain(lapsed.statement);
+    expect(doc.querySelector("#so-by").value).toBe(lapsed.by);
+    expect(doc.querySelector("#so-badge").textContent).toContain("Lapsed");
+    expect(doc.querySelector("#so-status").getAttribute("aria-live")).toBe("polite");
+  });
+});
+
+describe("lesson 4: the sign-off builder", () => {
+  const today = new Date().toISOString().slice(0, 10);
+
+  it("steps through Proposed, Lapsed and Attested as the fields change, using the real engine", () => {
+    const doc = lesson4Doc(TRACK_IDS[0]);
+    const badge = () => doc.querySelector("#so-badge").textContent.trim();
+    const status = () => doc.querySelector("#so-status").textContent;
+
+    const model = doc.querySelector('input[name="so-who"][value="model"]');
+    model.checked = true;
+    model.dispatchEvent(new doc.defaultView.Event("change", { bubbles: true }));
+    expect(badge()).toBe("Proposed");
+    expect(status()).toContain("AI tool");
+
+    const person = doc.querySelector('input[name="so-who"][value="person"]');
+    person.checked = true;
+    person.dispatchEvent(new doc.defaultView.Event("change", { bubbles: true }));
+    setField(doc, "so-date", "");
+    expect(badge()).toBe("Proposed");
+    expect(status()).toContain("no date");
+    expect(doc.querySelector("#timeline .so-empty")).not.toBeNull();
+
+    setField(doc, "so-date", today);
+    expect(badge()).toBe("Attested");
+    expect(status()).toMatch(/lapses on \d{4}-\d{2}-\d{2}, in 730 days/);
+
+    setField(doc, "so-basis", "");
+    expect(badge()).toBe("Attested");
+    expect(status()).toContain("no basis. Would you?");
+
+    setField(doc, "so-by", "");
+    expect(badge()).toBe("Proposed");
+    expect(status()).toContain("no name");
+  });
+
+  it("keeps focus in the field being typed in", () => {
+    const doc = lesson4Doc(TRACK_IDS[0]);
+    const by = doc.querySelector("#so-by");
+    by.focus();
+    setField(doc, "so-by", "Someone");
+    expect(doc.activeElement).toBe(by);
+  });
+
+  it("says why for every verdict, and flags a date in the future", () => {
+    const now = new Date("2026-06-01");
+    const base = { who: "person", by: "A", role: "", basis: "Checked the policy.", date: "2026-05-01" };
+    expect(signoffStatus(base, now)).toMatchObject({ status: "attested" });
+    expect(signoffStatus({ ...base, date: "2023-01-01" }, now)).toMatchObject({ status: "expired" });
+    expect(signoffStatus({ ...base, date: "2023-01-01" }, now).text).toContain("Lapsed. It was checked");
+    expect(signoffStatus({ ...base, date: "2027-01-01" }, now).text).toContain("in the future");
+    expect(signoffStatus({ ...base, who: "model" }, now).status).toBe("proposed");
+  });
+
+  it("describes the timeline in words, and gives the same points as a table", () => {
+    const html = signoffTimeline("2024-01-10", new Date("2026-06-01"));
+    const doc = new JSDOM(`<div>${html}</div>`).window.document;
+    const label = doc.querySelector("svg").getAttribute("aria-label");
+    expect(label).toContain("Checked on 2024-01-10");
+    expect(label).toContain("Lapses on 2026-01-09");
+    expect(label).toMatch(/after it lapsed/);
+    expect(doc.querySelector("table.grid-alt caption").textContent).toBe(label);
+    expect([...doc.querySelectorAll("tbody th")].map((t) => t.textContent)).toEqual(["Checked", "Today", "Lapses"]);
+  });
+
+  it("keeps the builder's controls, labels and script the same in every track", () => {
+    const shared = (t) => {
+      const stage = lesson4Doc(t).querySelector('[data-stage="pictorial"]');
+      return [...stage.querySelectorAll("label, legend, h2, h3")].map((e) => e.firstChild.textContent.trim())
+        .concat([".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+    expect(lesson4Doc(TRACK_IDS[0]).querySelector("#content script")).toBeNull();
+  });
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    const html = (t, sel) => lesson4Doc(t).querySelector(sel).innerHTML;
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("labels every field so a screen reader names it", () => {
+    const doc = lesson4Doc(TRACK_IDS[0]);
+    for (const input of doc.querySelectorAll("#so-form input")) expect(input.closest("label"), input.id || input.value).not.toBeNull();
+    expect(doc.querySelector("#so-form fieldset legend").textContent).toBe("Who is signing?");
+  });
+});
+
 describe("narrow figures: the grid as a table", () => {
   const revealed = (doc) => { doc.querySelector("#reveal-grid").click(); return doc; };
   const cellsOf = (doc) => [...doc.querySelectorAll("#grid table.grid-alt tbody tr")].map((tr) => [...tr.querySelectorAll("td")].map((td) => td.textContent.replace(/\s+/g, " ").trim()));
@@ -316,7 +449,7 @@ describe("narrow figures: the grid as a table", () => {
 });
 
 describe("facilitator content is labelled and kept apart from what learners work on", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     for (const stage of doc.querySelectorAll('[data-stage="concrete"], [data-stage="pictorial"], [data-stage="abstract"]')) {
       const box = stage.querySelector(".facil");
@@ -328,7 +461,7 @@ describe("facilitator content is labelled and kept apart from what learners work
   });
 
   it("puts the answer-key card after the facilitator's steps, not between them and the exercise", () => {
-    for (const make of [lessonDoc, lesson2Doc, lesson3Doc]) {
+    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc]) {
       const stage = make(TRACK_IDS[0]).querySelector('[data-stage="concrete"]');
       const kids = [...stage.children];
       expect(kids.findIndex((e) => e.classList.contains("keyclaim"))).toBeGreaterThan(kids.findIndex((e) => e.classList.contains("facil")));
@@ -344,7 +477,7 @@ describe("facilitator content is labelled and kept apart from what learners work
 });
 
 describe("alignment table", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     const lesson = getLesson(n);
     expect([...doc.querySelectorAll(".align tbody th")].map((t) => t.textContent)).toEqual(["Warm-up (pre)", "Concrete", "Pictorial", "Abstract", "Check (post)"]);
@@ -379,7 +512,8 @@ describe("page structure", () => {
     ["hub", hub],
     ...TRACK_IDS.map((t) => [`lesson 1 (${t})`, lessonDoc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 2 (${t})`, lesson2Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 3 (${t})`, lesson3Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 3 (${t})`, lesson3Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 4 (${t})`, lesson4Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -390,7 +524,8 @@ describe("page structure", () => {
     ["hub", hub],
     ["lesson 1", lessonDoc(TRACK_IDS[0])],
     ["lesson 2", lesson2Doc(TRACK_IDS[0])],
-    ["lesson 3", lesson3Doc(TRACK_IDS[0])]
+    ["lesson 3", lesson3Doc(TRACK_IDS[0])],
+    ["lesson 4", lesson4Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
