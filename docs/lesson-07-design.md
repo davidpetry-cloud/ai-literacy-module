@@ -1,6 +1,6 @@
 # Lesson 7: Accessible and mindful UX. Design
 
-**Status:** approved 2026-09-24. Build on **Opus** (it adds the contrast
+**Status:** approved 2026-09-24; defect lists, reduced-motion handling, checker reset and the tested worked example approved the same day. Build on **Opus** (it adds the contrast
 checker). Wording lives in `lessons/lesson-07.js` once built; this file is the
 plan. Any change goes back into this file first.
 
@@ -47,7 +47,7 @@ criteria can't be met for all content.
 | w2 | 7.2 | "Which is easier to read: light grey text on white, or black text on white? How would you prove it to someone who disagrees?" | Most say "just look at it." Note who asks for a number. |
 | w3 | 7.3 | "An app pings you when you haven't opened it for a day. Helpful or pushy? What would make it calmer?" | Answers split. Note who names a specific change, such as notifications off by default. |
 | p1 | 7.1 | "Name the four WCAG principles. What do levels A, AA and AAA add?" | **Reteach if** they list single criteria instead of principles, or think AAA is required. A pass: perceivable, operable, understandable, robust. A is the minimum, AA the usual target, AAA aspirational. |
-| p2 | 7.2 | "Light grey text (#999999) sits on a white background. Does it pass AA for normal text? What would you change?" | **Reteach if** they judge by eye, or say it passes. A pass says no: about 2.85:1 against 4.5:1. Darken the text. |
+| p2 | 7.2 | "Light grey text (#999999) sits on a white background. Does it pass AA for normal text? What would you change?" | **Reteach if** they judge by eye, or say it passes. A pass says no: about 2.84:1 against 4.5:1. Darken the text. |
 | p3 | 7.3 | "An AI-built page auto-plays a video, shows a streak counter, has a 22px close button, and shows errors only in red. Name two accessibility failures and two addictive patterns. Which do you fix first?" | **Reteach if** they mix the two kinds or say "all." A pass names the small target and red-only errors, and autoplay and the streak. It fixes first what blocks a person from using the page. |
 
 **Exit ticket:** Lesson 1's rating word for word. Open: "Which one thing will you
@@ -59,6 +59,50 @@ Each track gets an AI-built screen (same `screen-frame` tool as Lesson 6). Learn
 audit it: tag each numbered failure with a WCAG group (text and visuals, navigation
 and interaction, content clarity, mobile and device) and mark the addictive
 patterns. Each reveal names the criterion and level, and what to change.
+
+**Defect lists (approved 2026-09-24).** Each screen has six numbered parts:
+three accessibility failures, two addictive patterns and one part that works.
+All four WCAG groups are covered across the tracks, and the six patterns differ.
+
+| Track | Part | Kind | WCAG group · criterion · level, or pattern → calmer fix |
+|---|---|---|---|
+| Educators (reading tracker) | Grey instructions | WCAG | Text and visuals (Perceivable) · 1.4.3 · AA |
+| Educators | Icon-only buttons, no name | WCAG | Mobile and device (Robust) · 4.1.2 · A |
+| Educators | "Logging you out in 60 seconds", no way to extend | WCAG | Navigation and interaction (Operable) · 2.2.1 · A |
+| Educators | "Don't break your 12-day streak!" | Pattern | Streak pressure → a weekly goal, no streak |
+| Educators | Class leaderboard ranking every child | Pattern | Ranking people → private progress |
+| Educators | "This week's reading" heading | Works | |
+| Professionals (notification settings) | Errors shown only by a faint red border | WCAG | Text and visuals (Perceivable) · 1.4.1 · A |
+| Professionals | 20px Save button | WCAG | Navigation and interaction (Operable) · 2.5.8 · AA |
+| Professionals | "Invalid input", no hint | WCAG | Content clarity (Understandable) · 3.3.3 · AA |
+| Professionals | Every notification on, with badge counts | Pattern | Noisy defaults → off until asked |
+| Professionals | "No thanks, I like missing important updates" | Pattern | Confirmshaming → a plain "No thanks" |
+| Professionals | Page title and headings | Works | |
+| Students (study feed) | Carousel with no pause | WCAG | Navigation and interaction (Operable) · 2.2.2 · A |
+| Students | Layout needs sideways scrolling | WCAG | Mobile and device (Perceivable in the standard) · 1.4.10 · AA |
+| Students | Search box with only a placeholder | WCAG | Content clarity (Understandable) · 3.3.2 · A |
+| Students | Endless card feed | Pattern | Infinite scroll → "You're done for today" |
+| Students | "Mystery bonus! Keep swiping" | Pattern | Variable rewards → plain progress |
+| Students | "Log out" link | Works | |
+
+**Reduced motion (approved 2026-09-24).** The students carousel moves only when
+the learner's system allows motion (`prefers-reduced-motion: no-preference`). It
+still has no pause button, which is the failure. The text version describes it
+either way.
+
+**Checker starting pairs** (ratios measured): educators grey text #A0A6B0 on
+white, 2.44:1; professionals error border #F4A6A0 on white, 1.94:1;
+students placeholder #B0B0B0 on white, 2.16:1. Ratios are rounded down, so a
+pair never rounds up into a pass; p2's #999999 on white is 2.84:1. The checker's "nearest passing
+colour" moves the text colour toward black or white, whichever needs the
+smaller change, until it reaches the target.
+
+**Reset (approved 2026-09-24).** The checker has a "Reset to the screen's
+colours" button, applying the course's own user-control principle.
+
+**Worked example.** Each line of the course-site audit is backed by a test, so
+the page can't claim something false. The tall phone header is listed as a
+known usability cost, not a WCAG failure.
 
 ## Pictorial: the contrast checker (10 min; 7.2)
 

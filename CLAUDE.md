@@ -206,7 +206,7 @@ Sonnet worked well.
 | 04 | done | built on Opus: `sign-offs` exercise and the `sign-off` builder (`signoffStatus`, `signoffTimeline` in `lesson-core.js`), judged by the real ledger engine |
 | 05 | done | built on Sonnet: `classify` exercise (passage pattern, error-kind keys) and the `checklist` builder (`checklistStatus`, `checklistGrid` in `lesson-core.js`) |
 | 06 | done | built on Opus: `screen` exercise (a made-up AI-built screen in a sandboxed `iframe`, with a text version) and the `fix-first` grid (`fixFirstGrid`, `fixOrder` in `lesson-core.js`); abstract stages can carry reference `tables` |
-| 07 | Opus | the contrast checker is a new tool; design in `docs/lesson-07-design.md` |
+| 07 | done | built on Opus: `audit` exercise (Lesson 6's sandboxed screen with WCAG and pattern keys) and the `contrast` checker (`checkContrast`, `contrastRatio`, `nearestPassing` in `lesson-core.js`); its worked example audits this site, and each row is checked in `tests/ui.test.js` |
 
 One lesson per session.
 
@@ -255,15 +255,13 @@ objectives 5.1 and 5.2 were reworded on 2026-09-24 to meet the objectives
 grade ceiling; the levels, verbs and meaning are unchanged, and David
 confirmed the new wording the same day.
 
-Lesson 6 was built on 2026-09-24 and Lesson 7 has objectives only, both
-approved by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
+Lessons 6 and 7 were built on 2026-09-24, both approved by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
 usability goals and the design principles by having learners judge AI-built
 screens. Lesson 7, "Accessible and mindful UX", covers WCAG by its four
 principles and levels A, AA and AAA, a contrast checker, and wellbeing
 (calmer defaults, natural pause points, auditing for addictive patterns). Both
 designs are approved in `docs/lesson-06-design.md` and
-`docs/lesson-07-design.md`. Both need Opus, because each adds a tool. The next
-step is `/build-lesson 7`.
+`docs/lesson-07-design.md`. Both need Opus, because each adds a tool. All seven lessons are built.
 
 David decided on 2026-09-24 to keep them as Lessons 6 and 7 in this course
 for now, and later to lift them into a companion module, working title
@@ -279,7 +277,14 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-All 35 claims are proposed and none are attested. David attests claims once
-the whole course is built, so he can see all of it first: give him every claim
-grouped by lesson, with the source to check each against, when Lesson 7 ships.
-Don't prompt him to attest before then.
+All 50 claims are proposed and none are attested yet. The whole course is now
+built, so give David every claim grouped by lesson, with the source to check
+each against, once Lesson 7 ships. On 2026-09-24 he said he attests
+`usability-goals`; he writes that practitioner block himself, never a Claude
+session.
+
+Contrast ratios in the checker are rounded down, so a pair can never round up
+into a pass; lesson copy quotes the checker's numbers (2.44, 1.94, 2.16, and
+2.84 for #999999 on white). The sign-off builder counts whole calendar days to
+the lapse date it shows, because the ledger's own count drops a day after
+midday UTC.

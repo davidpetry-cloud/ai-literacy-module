@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -688,6 +688,134 @@ describe("lesson 6: one core across tracks", () => {
   });
 });
 
+const lesson7 = getLesson(7);
+const auditData = (track) => lesson7.stages[0].tracks[track].screen;
+const lesson7Doc = (track) => lessonDoc(track, lesson7);
+const typeInto = (doc, id, value) => {
+  const el = doc.querySelector(`#${id}`);
+  el.value = value;
+  el.dispatchEvent(new doc.defaultView.Event("input", { bubbles: true }));
+};
+
+describe.each(TRACK_IDS)("lesson 7, %s track", (track) => {
+  const doc = lesson7Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("frames the screen safely, with a text version of every part", () => {
+    const f = doc.querySelector("iframe.mock");
+    expect(f.getAttribute("sandbox")).toBe("allow-scripts");
+    expect(f.getAttribute("srcdoc")).toBe(auditData(track).html);
+    expect([...doc.querySelectorAll("details.textver li")].map((l) => l.textContent)).toEqual(auditData(track).parts.map((p) => p.desc));
+  });
+
+  it("reveals each part as an accessibility failure with its criterion and level, a pattern with its fix, or a part that works", () => {
+    const items = doc.querySelectorAll('[data-stage="concrete"] ol.gaps > li');
+    expect(items).toHaveLength(6);
+    auditData(track).parts.forEach((p, i) => {
+      const reveal = items[i].querySelector("details");
+      expect(reveal.open).toBe(false);
+      expect(reveal.querySelector(".k").textContent).toBe(AUDIT_LABEL[p.kind]);
+      if (p.kind === "wcag") expect(reveal.textContent).toContain(`${p.criterion} ${p.name} · Level ${p.level}`);
+      if (p.kind === "pattern") expect(reveal.textContent).toContain(`Calmer fix: ${p.fix}`);
+    });
+  });
+
+  it("starts the checker on the screen's failing pair, and says so in words", () => {
+    const c = auditData(track).contrast;
+    expect(doc.querySelector("#cc-fg").value).toBe(c.fg);
+    expect(doc.querySelector("#cc-bg").value).toBe(c.bg);
+    const status = doc.querySelector("#cc-status");
+    expect(status.getAttribute("aria-live")).toBe("polite");
+    expect(status.textContent).toMatch(/^\d+\.\d{2} to 1\. Fails /);
+    expect(doc.querySelector("#cc-use").disabled).toBe(false);
+    expect(doc.querySelector("#cc-figure svg").getAttribute("aria-label")).toContain(`${c.fg} on background ${c.bg}`);
+  });
+
+  it("makes the pair pass with the nearest passing colour, and Reset brings it back", () => {
+    const d = lesson7Doc(track);
+    const c = auditData(track).contrast;
+    d.querySelector("#cc-use").click();
+    const fixed = d.querySelector("#cc-fg").value;
+    expect(contrastRatio(fixed, c.bg)).toBeGreaterThanOrEqual(c.use === "ui" ? 3 : 4.5);
+    expect(d.querySelector("#cc-status").textContent).toContain("Passes");
+    expect(d.querySelector("#cc-use").disabled).toBe(true);
+    expect(d.querySelector("#cc-fg-pick").value).toBe(fixed.toLowerCase());
+    d.querySelector("#cc-reset").click();
+    expect(d.querySelector("#cc-fg").value).toBe(c.fg);
+    expect(d.querySelector("#cc-status").textContent).toContain("Fails");
+  });
+
+  it("shows the audit reference tables, and the course audit's known cost", () => {
+    const titles = [...doc.querySelectorAll('[data-stage="abstract"] h3.subhead')].map((h) => h.textContent);
+    expect(titles).toEqual(expect.arrayContaining(["WCAG 2.2 at a glance (W3C, 2023)", "The three levels", "Addictive patterns and calmer fixes", "This course, audited"]));
+    expect(doc.querySelector('[data-stage="abstract"]').textContent).toContain("Known cost");
+  });
+});
+
+describe("lesson 7: the contrast checker", () => {
+  it("measures by the WCAG formula, and rounds down so nothing rounds up into a pass", () => {
+    expect(contrastRatio("#000000", "#FFFFFF")).toBeCloseTo(21, 5);
+    expect(checkContrast("#999999", "#FFFFFF").text).toBe("2.84 to 1. Fails normal text, AA. The nearest colour that passes is #767676.");
+    expect(checkContrast("#767676", "#FFFFFF").text).toBe("4.54 to 1. Passes normal text, AA.");
+  });
+
+  it("marks every level pass or fail in words", () => {
+    const r = checkContrast("#767676", "#FFFFFF");
+    expect(Object.fromEntries(r.levels.map((l) => [l.id, l.pass]))).toEqual({ "text-aa": true, "large-aa": true, "ui-aa": true, "text-aaa": false, "large-aaa": true });
+  });
+
+  it("checks parts of the screen against 3 to 1, not 4.5", () => {
+    const r = checkContrast("#949494", "#FFFFFF", "ui");
+    expect(r.target.id).toBe("ui-aa");
+    expect(r.target.pass).toBe(true);
+    expect(r.suggestion).toBeNull();
+  });
+
+  it("finds the nearest passing colour on dark backgrounds too, by going lighter", () => {
+    const c = nearestPassing("#333333", "#000000", 4.5);
+    expect(contrastRatio(c, "#000000")).toBeGreaterThanOrEqual(4.5);
+    expect(parseInt(c.slice(1, 3), 16)).toBeGreaterThan(0x33);
+  });
+
+  it("reads short, long, lower-case and bare hex codes, and names the bad one in its message", () => {
+    expect(parseHex("abc")).toBe("#AABBCC");
+    expect(parseHex("#a0a6b0")).toBe("#A0A6B0");
+    expect(parseHex("#12")).toBeNull();
+    expect(checkContrast("red", "#FFFFFF").text).toBe("Enter the first colour as a hex code, like #1F2430.");
+    expect(checkContrast("#000", "nope").text).toBe("Enter the background as a hex code, like #1F2430.");
+  });
+
+  it("updates as a learner types, keeps the picker in step, and handles a bad code without breaking", () => {
+    const doc = lesson7Doc(TRACK_IDS[0]);
+    typeInto(doc, "cc-fg", "#1f2430");
+    expect(doc.querySelector("#cc-fg-pick").value).toBe("#1f2430");
+    expect(doc.querySelector("#cc-status").textContent).toContain("Passes");
+    typeInto(doc, "cc-fg", "#1f24");
+    expect(doc.querySelector("#cc-status").textContent).toContain("hex code");
+    expect(doc.querySelector("#cc-results").textContent).toContain("No results");
+    expect(doc.querySelector("#cc-use").disabled).toBe(true);
+  });
+
+  it("keeps the checker's controls and labels the same in every track; only the starting pair changes", () => {
+    const shared = (t) => {
+      const stage = lesson7Doc(t).querySelector('[data-stage="pictorial"]');
+      return [...stage.querySelectorAll("label, button, h2, h3, th[scope=col]")].map((e) => e.firstChild.textContent.trim())
+        .concat([".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+  });
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    const html = (t, sel) => lesson7Doc(t).querySelector(sel).innerHTML;
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+});
+
 describe("narrow figures: the grid as a table", () => {
   const revealed = (doc) => { doc.querySelector("#reveal-grid").click(); return doc; };
   const cellsOf = (doc) => [...doc.querySelectorAll("#grid table.grid-alt tbody tr")].map((tr) => [...tr.querySelectorAll("td")].map((td) => td.textContent.replace(/\s+/g, " ").trim()));
@@ -722,7 +850,7 @@ describe("narrow figures: the grid as a table", () => {
 });
 
 describe("facilitator content is labelled and kept apart from what learners work on", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc], [7, lesson7Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     for (const stage of doc.querySelectorAll('[data-stage="concrete"], [data-stage="pictorial"], [data-stage="abstract"]')) {
       const box = stage.querySelector(".facil");
@@ -734,7 +862,7 @@ describe("facilitator content is labelled and kept apart from what learners work
   });
 
   it("puts the answer-key card after the facilitator's steps, not between them and the exercise", () => {
-    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc, lesson5Doc, lesson6Doc]) {
+    for (const make of [lessonDoc, lesson2Doc, lesson3Doc, lesson4Doc, lesson5Doc, lesson6Doc, lesson7Doc]) {
       const stage = make(TRACK_IDS[0]).querySelector('[data-stage="concrete"]');
       const kids = [...stage.children];
       expect(kids.findIndex((e) => e.classList.contains("keyclaim"))).toBeGreaterThan(kids.findIndex((e) => e.classList.contains("facil")));
@@ -750,7 +878,7 @@ describe("facilitator content is labelled and kept apart from what learners work
 });
 
 describe("alignment table", () => {
-  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
+  it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc], [7, lesson7Doc]])("lesson %i: names each stage in words and each objective in the header", (n, make) => {
     const doc = make(TRACK_IDS[0]);
     const lesson = getLesson(n);
     expect([...doc.querySelectorAll(".align tbody th")].map((t) => t.textContent)).toEqual(["Warm-up (pre)", "Concrete", "Pictorial", "Abstract", "Check (post)"]);
@@ -788,7 +916,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 3 (${t})`, lesson3Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 4 (${t})`, lesson4Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 5 (${t})`, lesson5Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 6 (${t})`, lesson6Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 6 (${t})`, lesson6Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 7 (${t})`, lesson7Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -802,7 +931,8 @@ describe("page structure", () => {
     ["lesson 3", lesson3Doc(TRACK_IDS[0])],
     ["lesson 4", lesson4Doc(TRACK_IDS[0])],
     ["lesson 5", lesson5Doc(TRACK_IDS[0])],
-    ["lesson 6", lesson6Doc(TRACK_IDS[0])]
+    ["lesson 6", lesson6Doc(TRACK_IDS[0])],
+    ["lesson 7", lesson7Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
