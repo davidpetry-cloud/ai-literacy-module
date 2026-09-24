@@ -6,8 +6,8 @@ source of truth for wording.
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10. Same
 split as Lesson 4, since the builder needs the time.
 
-**Objectives** (approved 2026-09-23; 5.1 and 5.2 reworded 2026-09-24, see
-below): 5.1 analyze, classify an output error as a made-up detail, outdated
+**Objectives** (approved 2026-09-23; 5.1 and 5.2 reworded and confirmed by
+David 2026-09-24, see below): 5.1 analyze, classify an output error as a made-up detail, outdated
 information, bias, or a misread request; 5.2 create, assemble a personal
 checklist for checking their own regular AI use; 5.3 evaluate, critique an
 AI-assisted work product using that checklist.
@@ -16,7 +16,7 @@ AI-assisted work product using that checklist.
 12.2 against a ceiling of 11 for objectives, and the ceiling never moves.
 Only the words changed: "fabrication" became "a made-up detail", "instruction"
 became "request", and "verification ... recurring" became "checking ... regular".
-Levels, verbs and meaning are the same. Awaiting David's confirmation.
+Levels, verbs and meaning are the same. Confirmed by David 2026-09-24.
 
 **Concrete, exercise `classify`:** the passage pattern with a new key set. Each
 track gets a request (with facts and one rule) and an AI answer of five

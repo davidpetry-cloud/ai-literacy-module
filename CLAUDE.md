@@ -250,8 +250,8 @@ builder (`docs/lesson-04-design.md`); its sign-offs are fictional lesson
 material, never in `claims.js`. Lesson 5 (2026-09-24) adds the `classify`
 exercise and the `checklist` builder (`docs/lesson-05-design.md`). Its
 objectives 5.1 and 5.2 were reworded on 2026-09-24 to meet the objectives
-grade ceiling; the levels, verbs and meaning are unchanged, and David still
-needs to confirm the wording.
+grade ceiling; the levels, verbs and meaning are unchanged, and David
+confirmed the new wording the same day.
 
 Lessons 6 and 7 were added on 2026-09-24 and have objectives only, approved
 by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
@@ -262,6 +262,13 @@ principles and levels A, AA and AAA, a contrast checker, and wellbeing
 designs are approved in `docs/lesson-06-design.md` and
 `docs/lesson-07-design.md`. Both need Opus, because each adds a tool. The next
 step for each is `/build-lesson 6` or `/build-lesson 7`, one per session.
+
+David decided on 2026-09-24 to keep them as Lessons 6 and 7 in this course
+for now, and later to lift them into a companion module, working title
+"UX/UI for AI builders". Build them so that move stays cheap: each lesson
+self-contained in its own data file and design doc, and its tools in
+`lesson-core.js` beside the others, with no Lesson 6 or 7 content hard-wired
+into the hub or the shared page layout.
 
 All 35 claims are proposed and none are attested. David attests claims once
 the whole course is built, so he can see all of it first: give him every claim

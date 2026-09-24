@@ -86,6 +86,46 @@ or recorded.
 - `mindful-ux`: interfaces can steer people against their own interests through deceptive design, and a design that respects time, attention and choice avoids it. Sources: FTC, *Bringing Dark Patterns to Light* (2022); EU Digital Services Act, Article 25.
 - `l7-key-educators`, `l7-key-professionals`, `l7-key-students`.
 
+## Personal wellbeing (David, 2026-09-24)
+
+David's direction: healthy behavioural patterns are practised throughout life,
+whether with AI, on the playground, or in a child's or an adult's everyday
+surroundings. Practising empathy and self-care, and not enabling manipulative,
+exploitative or callous behaviour, matters in all of them.
+
+How the lesson carries it, without grading anyone's private habits:
+
+- **"Use it this week" (Kirkpatrick 3), every track.** The transfer task turns the
+  lesson's two practices on the learner's own use of AI: set one calmer default
+  on a tool they use (notifications, a time limit, no autoplay), and notice one
+  natural pause point, a moment where a break, or a person, would serve better
+  than another prompt. Tracks differ only in the setting:
+  - educators: their own use, and one habit to model for students;
+  - professionals: their own working day with AI tools;
+  - students: their own study and screen time, and how they treat others online.
+- **The addictive-pattern audit gains one question:** does the design reward
+  treating people as means, such as manipulation, status games or cruelty,
+  or does it reward care and empathy? Rage-bait, public ranking of people, and
+  prompts that shame others are the examples.
+- **Framing and relevance** say plainly that the same habits are built at a
+  screen, on a playground and at home, and that self-care and empathy come
+  first. Voice stays plain: no alarm about technology.
+- **Not assessed.** Objectives 7.1–7.3 stay as approved. The personal angle is
+  practice and reflection, not a graded item.
+
+**Language.** The lesson describes behaviours (manipulating, exploiting,
+ignoring others' feelings) and design patterns. It does not use "dark triad"
+or label people with personality terms. That is a research construct from
+personality psychology, and naming it would need its own attested claim
+(source: Paulhus and Williams, 2002, *Journal of Research in Personality*).
+If David wants the term on the page, add it as a claim first.
+
+**One new claim to propose at build time:** `wellbeing-habits`, that small,
+repeated defaults and cues shape habits, so calmer defaults and pause points
+support healthier use. Source to check: the habit-formation literature (for
+example Wood and Rünger, 2016, *Annual Review of Psychology*). Worded as
+"support", not "cause".
+
 ## Notes
 
 Nothing leaves the page. Example screens and products are fictional and unnamed.
