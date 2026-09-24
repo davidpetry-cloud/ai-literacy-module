@@ -18,7 +18,7 @@ course.js          SOURCE OF TRUTH: tracks, Bloom levels, evaluation plan, lesso
 lessons/lesson-NN.js   one lesson's data — objectives first, then everything else
 claims.js          every factual claim, as a ledger record
 lesson-core.js     renderer for both pages; no side effects on import
-index.html         hub: lessons, design basis, evaluation, claims ledger
+index.html         hub: course search, lessons, design basis, evaluation (Kirkpatrick levels, cool to warm), claims ledger
 lesson.html        one page for every lesson: lesson.html?n=1&track=educators
 course.css         tokens, fonts, header and themes from Singapore Math; status colours from live-sound-eq-sop
 theme-toggle.js    light/dark toggle, loaded in <head> before first paint
@@ -26,6 +26,9 @@ fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requ
 tests/             alignment · governance · render · ui · readability
 scripts/serve.js   local preview on :8080
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
+docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
+docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
+docs/ux-foundations.md     David's portable UX/UI standard
 ```
 
 ## Design basis
