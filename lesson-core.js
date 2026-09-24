@@ -55,11 +55,12 @@ function provenance(record, now) {
   return `<dl><dt>Attested by</dt><dd>${esc(a.by)}${a.role ? ` · ${esc(a.role)}` : ""}</dd><dt>Basis</dt><dd>${esc(a.basis)}</dd><dt>Verified</dt><dd>${esc(a.verified)} · ${lapse}</dd></dl>`;
 }
 
-export function claimCard(id, now = new Date(), { anchor = false } = {}) {
+export function claimCard(id, now = new Date(), { anchor = false, also = [] } = {}) {
   const record = CLAIMS[id];
   const status = resolveStatus(record, now);
+  const alsoIn = also.length ? `<span class="claim-also">Also used in Lesson ${also.join(", ")}</span>` : "";
   return `<div class="claim"${anchor ? ` id="claim-${esc(id)}"` : ""} data-claim="${esc(id)}" data-status="${status}">
-    <div class="claim-head">${statusBadge(status)}<span class="claim-id">${esc(id)}</span></div>
+    <div class="claim-head">${statusBadge(status)}<span class="claim-id">${esc(id)}</span> ${alsoIn}</div>
     <p>${esc(record.text)}</p>
     <details><summary>Who says so<span class="sr"> about: ${esc(record.text.split(" ").slice(0, 8).join(" "))}…</span></summary>${provenance(record, now)}</details>
   </div>`;
@@ -942,6 +943,43 @@ function trackPicker(current) {
 
 /* ---------- hub ---------- */
 
+/** Every lesson that cites each claim, in lesson order. */
+export function claimLessons() {
+  const out = {};
+  for (const l of COURSE.lessons.filter((x) => x.ready)) {
+    for (const s of l.stages) {
+      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen)?.claim)];
+      for (const id of ids.filter(Boolean)) if (!(out[id] ??= []).includes(l.n)) out[id].push(l.n);
+    }
+  }
+  return out;
+}
+
+/** The ledger, one collapsed group per lesson, so a reviewer can work through one lesson at a time (progressive disclosure).
+ *  Each claim sits under the first lesson that uses it, and says where else it is used. */
+function claimGroups(now) {
+  const uses = claimLessons();
+  return COURSE.lessons
+    .map((l) => {
+      const ids = Object.keys(CLAIMS).filter((id) => uses[id]?.[0] === l.n);
+      if (!ids.length) return "";
+      const c = tally(ids.map((id) => CLAIMS[id]), now);
+      const counts = ["attested", "proposed", "expired", "rejected"].filter((s) => c[s]).map((s) => `${c[s]} ${STATUS_LABEL[s].toLowerCase()}`).join(", ");
+      return `<details class="claim-group" data-lesson="${l.n}" id="claims-lesson-${l.n}">
+        <summary><span class="lesson-no">Lesson ${l.n}</span> <span class="cg-text"><span class="cg-title">${esc(l.title)}</span> <span class="cg-count">${ids.length} claim${ids.length === 1 ? "" : "s"}: ${counts}</span></span></summary>
+        <div class="claims">${ids.map((id) => claimCard(id, now, { anchor: true, also: uses[id].slice(1) })).join("")}</div>
+      </details>`;
+    })
+    .join("");
+}
+
+/** A link to a claim opens its group first, so the card is never hidden inside a closed one. */
+function openClaimGroup(doc, hash) {
+  if (!/^#claim-[a-z0-9-]+$/.test(hash ?? "")) return;
+  const group = doc.querySelector(hash)?.closest("details.claim-group");
+  if (group) group.open = true;
+}
+
 export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query = "", onQuery } = {}) {
   const counts = tally(Object.values(CLAIMS), now);
   const readyCount = COURSE.lessons.filter((l) => l.ready).length;
@@ -1009,10 +1047,13 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
     <section><h2>What this course claims, and who has signed it</h2>
       <p class="lede">A course on checking AI output should show which of its own claims are checked. Every factual claim below was proposed by a model and stays Proposed until a named person attests it. Attested claims lapse after two years unless re-checked.</p>
       <p class="tally">${["attested", "proposed", "expired", "rejected"].map((s) => `${statusBadge(s)} ${counts[s]}`).join(" ")}</p>
-      <div class="claims">${Object.keys(CLAIMS).map((id) => claimCard(id, now, { anchor: true })).join("")}</div>
+      <p class="lede">Grouped by the lesson that first uses each claim. Open a lesson to review its claims.</p>
+      <div class="claim-groups">${claimGroups(now)}</div>
     </section>`;
 
   wireSearch(doc, track, onQuery);
+  doc.querySelector("#search-results").addEventListener("click", (e) => openClaimGroup(doc, e.target.closest("a")?.getAttribute("href")));
+  openClaimGroup(doc, doc.defaultView?.location.hash);
 }
 
 /* ---------- lesson ---------- */
@@ -1277,6 +1318,8 @@ export function boot(doc) {
     if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
   });
 
+  win.addEventListener("hashchange", () => openClaimGroup(doc, win.location.hash));
   draw();
+  if (page === "hub" && win.location.hash) doc.getElementById(win.location.hash.slice(1))?.scrollIntoView();
   doc.body.dataset.ready = "true";
 }

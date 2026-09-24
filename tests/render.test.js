@@ -37,6 +37,21 @@ describe("hub", () => {
     }
   });
 
+  it("groups the ledger by lesson, collapsed, each claim under the first lesson that uses it", () => {
+    const groups = [...doc.querySelectorAll("details.claim-group")];
+    expect(groups.map((g) => g.dataset.lesson)).toEqual(COURSE.lessons.map((l) => String(l.n)));
+    for (const g of groups) {
+      expect(g.open, g.id).toBe(false);
+      // The number sits beside the colour, and the count is in words.
+      expect(g.querySelector("summary .lesson-no").textContent).toBe(`Lesson ${g.dataset.lesson}`);
+      expect(g.querySelector(".cg-count").textContent).toMatch(/^\d+ claims?: \d+ (attested|proposed)/);
+    }
+    expect(doc.querySelector("#claims-lesson-1 #claim-model-predicts")).not.toBeNull();
+    expect(doc.querySelector("#claims-lesson-3 #claim-risk-zones")).toBeNull();
+    expect(doc.querySelector("#claim-risk-zones .claim-also").textContent).toBe("Also used in Lesson 3");
+    expect(doc.querySelector("#claim-check-fits-stakes .claim-also").textContent).toBe("Also used in Lesson 4");
+  });
+
   it("never shows a model-sourced claim as attested", () => {
     for (const c of doc.querySelectorAll(".claim")) {
       if (CLAIMS[c.dataset.claim].attestation.source === "model") {
@@ -1086,8 +1101,12 @@ describe("course search on the hub", () => {
     search(d, "nielsen usability");
     const hrefs = [...d.querySelectorAll("#search-results a")].map((a) => a.getAttribute("href"));
     expect(hrefs).toContain("#claim-usability-goals");
-    // Every claim link lands on a real card on this page.
+    // Every claim link lands on a real card on this page, and following it opens the card's lesson group.
     for (const h of hrefs.filter((x) => x.startsWith("#"))) expect(d.querySelector(h), h).not.toBeNull();
+    const link = d.querySelector('#search-results a[href="#claim-usability-goals"]');
+    expect(d.querySelector("#claims-lesson-6").open).toBe(false);
+    link.click();
+    expect(d.querySelector("#claims-lesson-6").open).toBe(true);
   });
 
   it("forgives word forms: checker, checking and checks all find check", () => {
