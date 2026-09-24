@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex } from "../lesson-core.js";
-import { COURSE, TRACK_IDS, getLesson } from "../course.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus } from "../lesson-core.js";
+import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
 const page = (name) => new JSDOM(readFileSync(new URL(`../${name}`, import.meta.url), "utf8")).window.document;
@@ -1046,5 +1046,147 @@ describe("lessons that aren't ready", () => {
     const doc = page("lesson.html");
     renderLesson(doc, getLesson(99));
     expect(doc.querySelector("#content").textContent).toContain("no lesson with that number");
+  });
+});
+
+describe("course search on the hub", () => {
+  const hubDoc = (opts) => { const d = page("index.html"); renderHub(d, opts); return d; };
+  const search = (d, q) => {
+    const input = d.querySelector("#course-search");
+    input.value = q;
+    input.dispatchEvent(new d.defaultView.Event("input", { bubbles: true }));
+  };
+
+  it("has a labelled search box in a search landmark, and says what it searches", () => {
+    const d = hubDoc();
+    const input = d.querySelector("#course-search");
+    expect(d.querySelector(`label[for="course-search"]`).textContent).toBe("Search lessons, objectives, stages and claims");
+    expect(input.closest("form").getAttribute("role")).toBe("search");
+    expect(input.type).toBe("search");
+    expect(d.querySelector("#search-status").getAttribute("aria-live")).toBe("polite");
+    expect(d.querySelector("#search-status").textContent).toBe("Search every lesson, objective, stage and claim.");
+  });
+
+  it("indexes every ready lesson, its objectives and stages, and every claim, each with a link", () => {
+    const index = buildSearchIndex("students");
+    const ready = COURSE.lessons.filter((l) => l.ready);
+    expect(index.filter((e) => e.kind === "Lesson")).toHaveLength(ready.length);
+    expect(index.filter((e) => e.kind === "Claim")).toHaveLength(Object.keys(CLAIMS).length);
+    expect(index.filter((e) => e.kind === "Objective")).toHaveLength(ready.reduce((n, l) => n + l.objectives.length, 0));
+    for (const e of index) expect(e.href, e.where).toMatch(/^(lesson\.html\?n=\d&track=students(#[a-z-]+)?|#claim-[a-z0-9-]+)$/);
+  });
+
+  it("finds by every word in any order, ranks title matches first, and links to the right place", () => {
+    const d = hubDoc();
+    search(d, "contrast checker");
+    const items = [...d.querySelectorAll("#search-results li")];
+    expect(items.length).toBeGreaterThan(0);
+    expect(items[0].querySelector("a").textContent.toLowerCase()).toContain("contrast");
+    expect(d.querySelector("#search-status").textContent).toMatch(/^\d+ results? for "contrast checker"\.$/);
+    search(d, "nielsen usability");
+    const hrefs = [...d.querySelectorAll("#search-results a")].map((a) => a.getAttribute("href"));
+    expect(hrefs).toContain("#claim-usability-goals");
+    // Every claim link lands on a real card on this page.
+    for (const h of hrefs.filter((x) => x.startsWith("#"))) expect(d.querySelector(h), h).not.toBeNull();
+  });
+
+  it("forgives word forms: checker, checking and checks all find check", () => {
+    const index = buildSearchIndex();
+    for (const q of ["checker", "checking", "checks"]) expect(searchCourse(q, index).some((r) => r.title === "Check the contrast"), q).toBe(true);
+    expect(highlight("Check the contrast", "checker")).toBe("<mark>Check</mark> the contrast");
+  });
+
+  it("marks matches in bold as well as colour, and never injects the query as markup", () => {
+    expect(highlight("Check the contrast", "contrast")).toBe("Check the <mark>contrast</mark>");
+    const d = hubDoc();
+    search(d, "<img src=x onerror=alert(1)> claim");
+    expect(d.querySelector("#search-results img")).toBeNull();
+    expect(d.querySelector("#search-status").textContent).toContain("<img src=x onerror=alert(1)>");
+    const css = readFileSync(new URL("../course.css", import.meta.url), "utf8");
+    expect(css).toMatch(/mark\{[^}]*font-weight:700/);
+  });
+
+  it("gives each result link a name distinct from every other control on the page", () => {
+    const d = hubDoc();
+    search(d, "accessible");
+    const names = [...d.querySelectorAll("button, summary, a[href]")].map((e) => e.textContent.replace(/\s+/g, " ").trim());
+    expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
+  });
+
+  it("says what to do when nothing matches, or the query is too short", () => {
+    expect(searchStatus("zzqqxx", [])).toBe('No results for "zzqqxx". Try fewer words, or a different spelling.');
+    expect(searchStatus("a", [])).toBe("Type at least two letters.");
+    const d = hubDoc();
+    search(d, "zzqqxx");
+    expect(d.querySelectorAll("#search-results li")).toHaveLength(0);
+  });
+
+  it("shows at most twenty, and says how to narrow down", () => {
+    const d = hubDoc();
+    search(d, "the");
+    expect(d.querySelectorAll("#search-results li")).toHaveLength(20);
+    expect(d.querySelector("#search-status").textContent).toContain("add a word to narrow them down");
+  });
+
+  it("clears with one button and puts focus back in the box", () => {
+    const d = hubDoc();
+    search(d, "bias");
+    d.querySelector("#search-clear").click();
+    expect(d.querySelector("#course-search").value).toBe("");
+    expect(d.querySelectorAll("#search-results li")).toHaveLength(0);
+    expect(d.activeElement).toBe(d.querySelector("#course-search"));
+  });
+
+  it("keeps the query, and relinks results to the new track, when the track changes", async () => {
+    const { boot } = await import("../lesson-core.js");
+    const dom = new JSDOM(readFileSync(new URL("../index.html", import.meta.url), "utf8").replace(/<script[\s\S]*?<\/script>/g, ""), { url: "http://localhost/index.html" });
+    const d = dom.window.document;
+    boot(d);
+    search(d, "sign");
+    const radio = d.querySelector('input[name="track"][value="students"]');
+    radio.checked = true;
+    radio.dispatchEvent(new dom.window.Event("change", { bubbles: true }));
+    expect(d.querySelector("#course-search").value).toBe("sign");
+    const lessonLinks = [...d.querySelectorAll("#search-results a")].map((a) => a.getAttribute("href")).filter((h) => h.startsWith("lesson"));
+    expect(lessonLinks.length).toBeGreaterThan(0);
+    for (const h of lessonLinks) expect(h).toContain("track=students");
+  });
+
+  it("gives every lesson page the anchors that results point to", () => {
+    const d = lessonDoc(TRACK_IDS[0]);
+    expect(d.querySelector("#objectives")).not.toBeNull();
+    for (const k of ["warmup", "concrete", "pictorial", "abstract", "check"]) expect(d.querySelector(`#stage-${k}`), k).not.toBeNull();
+  });
+});
+
+describe("hub evaluation levels", () => {
+  it("shows the four levels in order, each with its number, name, who measures it, and a colour class", () => {
+    const d = page("index.html");
+    renderHub(d);
+    const items = [...d.querySelectorAll("ol.eval-levels > li")];
+    expect(items).toHaveLength(4);
+    items.forEach((li, i) => {
+      const n = i + 1;
+      expect(li.classList.contains(`lvl-${n}`)).toBe(true);
+      expect(li.querySelector("h3 .lvl-no").textContent).toBe(`Level ${n}`);
+      expect(li.querySelector("h3").textContent).toContain(EVALUATION[n].name);
+      expect(li.querySelector(".lvl-who").textContent).toBe(n < 4 ? "Built into every lesson" : "Measured by whoever adopts the course");
+    });
+  });
+});
+
+describe("attested claim cards count whole days", () => {
+  // A claim signed today with a 730-day review must say 730, at any hour.
+  it.each(["2026-09-24T00:30:00Z", "2026-09-24T12:30:00Z", "2026-09-24T23:30:00Z"])("counts to the lapse date, not the time of day (%s)", async (iso) => {
+    const { claimCard } = await import("../lesson-core.js");
+    const { CLAIMS: C } = await import("../claims.js");
+    const signed = Object.entries(C).find(([, v]) => v.attestation.source === "practitioner");
+    if (!signed) return;
+    const [id, rec] = signed;
+    const now = new Date(iso);
+    const d = new JSDOM(`<div>${claimCard(id, now)}</div>`).window.document;
+    const expected = Math.round((Date.parse(rec.attestation.verified) + (rec.attestation.ttlDays ?? 730) * 86400000 - Date.parse(iso.slice(0, 10))) / 86400000);
+    expect(d.querySelector("dl").textContent).toContain(`${expected} days until it lapses`);
+    if (rec.attestation.verified === iso.slice(0, 10)) expect(expected).toBe(rec.attestation.ttlDays ?? 730);
   });
 });

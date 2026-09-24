@@ -406,3 +406,22 @@ describe("Lesson 7 worked example: the course audits true", async () => {
 
   it.each(table.rows.map((r, i) => [r[0], table.verify[i]]).filter(([, v]) => v))("%s holds (%s)", (_, id) => CHECKS[id]());
 });
+
+// Hub Evaluation: four levels, cool to warm. Text sits on each level's pale tint,
+// and each accent stripe stands out from both the tint and the page.
+describe("Evaluation levels colour", () => {
+  const LEVELS = { 1: ["--peri", "--peri-pale"], 2: ["--teal", "--teal-pale"], 3: ["--prop", "--amber-pale"], 4: ["--rose", "--rose-pale"] };
+
+  it.each(Object.entries(LEVELS))("level %s uses its accent and tint tokens", (n, [accent, pale]) => {
+    const body = rules.find((r) => r.sel === `.lvl-${n}`)?.body;
+    expect(body).toContain(`--lvl:var(${accent})`);
+    expect(body).toContain(`--lvl-pale:var(${pale})`);
+  });
+
+  it.each(Object.entries(THEMES))("%s theme: text passes 4.5:1 on every tint, and every stripe 3:1 on the page", (_, theme) => {
+    for (const [, [accent, pale]] of Object.entries(LEVELS)) {
+      expect(contrast(theme, "--text", pale), `--text on ${pale}`).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(theme, accent, "--paper"), `${accent} on --paper`).toBeGreaterThanOrEqual(3);
+    }
+  });
+});

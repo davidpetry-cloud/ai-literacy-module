@@ -6,7 +6,7 @@
  * page to the published package on jsDelivr. In Node it resolves to the
  * installed devDependency. tests/governance.test.js keeps the two in step.
  */
-import { resolveStatus, daysRemaining, tally, STATUS, SOURCE } from "attestation-ledger";
+import { resolveStatus, tally, STATUS, SOURCE } from "attestation-ledger";
 import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson } from "./course.js";
 import { CLAIMS } from "./claims.js";
 
@@ -46,15 +46,19 @@ function provenance(record, now) {
   if (a.source === SOURCE.MODEL) {
     return `<dl><dt>Proposed by</dt><dd>${esc(a.model)} (a model)</dd><dt>Reasoning</dt><dd>${esc(a.rationale)}</dd><dt>Signed by</dt><dd>Nobody yet. Treat as unverified.</dd></dl>`;
   }
-  const left = daysRemaining(record, now);
-  const lapse = left < 0 ? `lapsed ${Math.abs(left)} days ago — re-check before relying on it` : `${left} days until it lapses`;
+  // Whole calendar days from today to the lapse date, so the count never drops a day after midday UTC
+  // (the ledger's daysRemaining counts to the current time of day).
+  const ttl = a.ttlDays ?? 730;
+  const lapseDay = Date.parse(a.verified) + ttl * 86400000;
+  const left = Math.round((lapseDay - Date.parse(now.toISOString().slice(0, 10))) / 86400000);
+  const lapse = left < 0 ? `lapsed ${Math.abs(left)} day${left === -1 ? "" : "s"} ago — re-check before relying on it` : `${left} day${left === 1 ? "" : "s"} until it lapses`;
   return `<dl><dt>Attested by</dt><dd>${esc(a.by)}${a.role ? ` · ${esc(a.role)}` : ""}</dd><dt>Basis</dt><dd>${esc(a.basis)}</dd><dt>Verified</dt><dd>${esc(a.verified)} · ${lapse}</dd></dl>`;
 }
 
-export function claimCard(id, now = new Date()) {
+export function claimCard(id, now = new Date(), { anchor = false } = {}) {
   const record = CLAIMS[id];
   const status = resolveStatus(record, now);
-  return `<div class="claim" data-claim="${esc(id)}" data-status="${status}">
+  return `<div class="claim"${anchor ? ` id="claim-${esc(id)}"` : ""} data-claim="${esc(id)}" data-status="${status}">
     <div class="claim-head">${statusBadge(status)}<span class="claim-id">${esc(id)}</span></div>
     <p>${esc(record.text)}</p>
     <details><summary>Who says so<span class="sr"> about: ${esc(record.text.split(" ").slice(0, 8).join(" "))}…</span></summary>${provenance(record, now)}</details>
@@ -828,6 +832,96 @@ function wireContrast(doc, pair) {
   update();
 }
 
+/* ---------- course search (hub): lessons, objectives, stages and claims ---------- */
+
+const STAGE_NAME = { warmup: "Warm-up", concrete: "Concrete", pictorial: "Pictorial", abstract: "Abstract", check: "Check" };
+const SEARCH_LIMIT = 20;
+
+/** Everything the search can find, each with a plain label and a link to the exact place. */
+export function buildSearchIndex(track = TRACK_IDS[0]) {
+  const out = [];
+  const page = (n, hash = "") => `lesson.html?n=${n}&track=${track}${hash}`;
+  for (const l of COURSE.lessons.filter((x) => x.ready)) {
+    out.push({ kind: "Lesson", where: `Lesson ${l.n}`, title: l.title, text: l.framing, href: page(l.n) });
+    for (const o of l.objectives) out.push({ kind: "Objective", where: `Lesson ${l.n} · Objective ${o.id}`, title: l.title, text: o.text, href: page(l.n, "#objectives") });
+    for (const s of l.stages) out.push({ kind: "Stage", where: `Lesson ${l.n} · ${STAGE_NAME[s.kind]}`, title: s.title, text: `${STAGE_NAME[s.kind]} stage of "${l.title}".`, href: page(l.n, `#stage-${s.kind}`) });
+  }
+  for (const [id, c] of Object.entries(CLAIMS)) out.push({ kind: "Claim", where: `Claim · ${id}`, title: id, text: c.text, href: `#claim-${id}` });
+  return out;
+}
+
+const words = (q) => [...new Set(String(q ?? "").toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [])].filter((w) => w.length >= 2);
+// Forgiving match: "checker", "checking" and "checks" also find "check" (usability: people type any form of a word).
+const stem = (w) => (w.length > 5 ? w.replace(/(ings?|ers?|ed|es|s)$/, "") : w.length > 3 ? w.replace(/s$/, "") : w);
+const has = (hay, w) => hay.includes(w) || hay.includes(stem(w));
+
+/** Every word must appear, in any order. Matches in the title rank first. */
+export function searchCourse(query, index) {
+  const ws = words(query);
+  if (!ws.length) return [];
+  return index
+    .map((e) => {
+      const title = e.title.toLowerCase(), all = `${title} ${e.text.toLowerCase()}`;
+      if (!ws.every((w) => has(all, w))) return null;
+      const score = ws.filter((w) => has(title, w)).length * 2 + (e.kind === "Lesson" ? 1 : 0);
+      return { ...e, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score);
+}
+
+/** Escape first, piece by piece, then mark the matches, so a query can never inject markup. */
+export function highlight(text, query, max = 170) {
+  const ws = words(query);
+  let t = String(text);
+  if (t.length > max && ws.length) {
+    const at = Math.max(0, t.toLowerCase().indexOf(ws[0]) - 40);
+    t = (at ? "…" : "") + t.slice(at, at + max).trim() + (at + max < t.length ? "…" : "");
+  }
+  if (!ws.length) return esc(t);
+  const alts = [...new Set(ws.flatMap((w) => [w, stem(w)]))].sort((x, y) => y.length - x.length);
+  const re = new RegExp(`(${alts.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "giu");
+  return t.split(re).map((part, i) => (i % 2 ? `<mark>${esc(part)}</mark>` : esc(part))).join("");
+}
+
+export function searchStatus(query, results) {
+  const q = String(query ?? "").trim();
+  if (!q) return "Search every lesson, objective, stage and claim.";
+  if (!words(q).length) return "Type at least two letters.";
+  if (!results.length) return `No results for "${q}". Try fewer words, or a different spelling.`;
+  const n = results.length;
+  return n > SEARCH_LIMIT
+    ? `${n} results for "${q}". Showing the first ${SEARCH_LIMIT}; add a word to narrow them down.`
+    : `${n} result${n === 1 ? "" : "s"} for "${q}".`;
+}
+
+function searchResults(query, results) {
+  return results
+    .slice(0, SEARCH_LIMIT)
+    // Hidden context keeps each link's name distinct from the lesson cards below, and says what it is.
+    .map((r) => `<li><a href="${esc(r.href)}">${highlight(r.title, query)}<span class="sr"> (search result: ${esc(r.where)})</span></a><span class="where">${esc(r.where)}</span><p>${highlight(r.text, query)}</p></li>`)
+    .join("");
+}
+
+function wireSearch(doc, track, onQuery) {
+  const input = doc.querySelector("#course-search");
+  const index = buildSearchIndex(track);
+  const run = () => {
+    const results = searchCourse(input.value, index);
+    doc.querySelector("#search-status").textContent = searchStatus(input.value, results);
+    doc.querySelector("#search-results").innerHTML = searchResults(input.value, results);
+    onQuery?.(input.value);
+  };
+  input.addEventListener("input", run);
+  doc.querySelector("#search-form").addEventListener("submit", (e) => e.preventDefault());
+  doc.querySelector("#search-clear").addEventListener("click", () => {
+    input.value = "";
+    run();
+    input.focus();
+  });
+  run();
+}
+
 /* ---------- shared pieces ---------- */
 
 function say(lines) {
@@ -848,7 +942,7 @@ function trackPicker(current) {
 
 /* ---------- hub ---------- */
 
-export function renderHub(doc, { track = TRACK_IDS[0], now = new Date() } = {}) {
+export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query = "", onQuery } = {}) {
   const counts = tally(Object.values(CLAIMS), now);
   const readyCount = COURSE.lessons.filter((l) => l.ready).length;
 
@@ -881,6 +975,14 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date() } = {}) 
     .join("");
 
   doc.querySelector("#content").innerHTML = `
+    <section class="search" aria-labelledby="search-h"><h2 id="search-h">Search the course</h2>
+      <form role="search" id="search-form" class="search-form">
+        <label for="course-search">Search lessons, objectives, stages and claims</label>
+        <div class="search-row"><input id="course-search" type="search" autocomplete="off" spellcheck="false" value="${esc(query)}"><button type="button" class="btn" id="search-clear">Clear search</button></div>
+      </form>
+      <p class="so-status" id="search-status" aria-live="polite"></p>
+      <ol class="search-results" id="search-results"></ol>
+    </section>
     <section><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p><div class="cards">${lessons}</div></section>
 
     <section><h2>How it's built</h2>
@@ -894,16 +996,23 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date() } = {}) 
     </section>
 
     <section><h2>Evaluation</h2>
-      <dl class="eval">${Object.entries(EVALUATION)
-        .map(([n, e]) => `<dt>Level ${n} · ${esc(e.name)}</dt><dd>${esc(e.how)}</dd>`)
-        .join("")}</dl>
+      <p class="lede">Four levels, after Kirkpatrick. Each builds on the one before, from how learners react on the day to what changes for the school or team.</p>
+      <ol class="eval-levels">${Object.entries(EVALUATION)
+        .map(
+          ([n, e]) => `<li class="lvl lvl-${n}"><h3><span class="lvl-no">Level ${n}</span> ${esc(e.name)}</h3><p class="lvl-who">${
+            Number(n) < 4 ? "Built into every lesson" : "Measured by whoever adopts the course"
+          }</p><p>${esc(e.how)}</p></li>`
+        )
+        .join("")}</ol>
     </section>
 
     <section><h2>What this course claims, and who has signed it</h2>
       <p class="lede">A course on checking AI output should show which of its own claims are checked. Every factual claim below was proposed by a model and stays Proposed until a named person attests it. Attested claims lapse after two years unless re-checked.</p>
       <p class="tally">${["attested", "proposed", "expired", "rejected"].map((s) => `${statusBadge(s)} ${counts[s]}`).join(" ")}</p>
-      <div class="claims">${Object.keys(CLAIMS).map((id) => claimCard(id, now)).join("")}</div>
+      <div class="claims">${Object.keys(CLAIMS).map((id) => claimCard(id, now, { anchor: true })).join("")}</div>
     </section>`;
+
+  wireSearch(doc, track, onQuery);
 }
 
 /* ---------- lesson ---------- */
@@ -984,7 +1093,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
 
   content.innerHTML = `
-    <div class="obj"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
+    <div class="obj" id="objectives"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
       .map((o) => `<li><span class="oid">${esc(o.id)}</span> ${esc(o.text)} <span class="bloom">${esc(o.bloom)}</span></li>`)
       .join("")}</ul><p class="legend">Boxes marked <b>Facilitator</b> are for whoever leads the session. Everything else is for learners.</p></div>
 
@@ -995,14 +1104,14 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         <p><b>Confidence:</b> ${esc(lesson.arcs.confidence)}</p></div>
     </section>
 
-    <section class="block w" data-stage="warmup"><h2>Warm-up · Pre-check <span class="mins">${lesson.warmup.minutes} min</span></h2>
+    <section class="block w" data-stage="warmup" id="stage-warmup"><h2>Warm-up · Pre-check <span class="mins">${lesson.warmup.minutes} min</span></h2>
       <p class="sense">Record answers — they are the "before" for the post-check.</p>
       <ol class="probs">${lesson.warmup.items
         .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="expect"><b>Facilitator · Expect</b>${esc(i.expected)}</div></li>`)
         .join("")}</ol>
     </section>
 
-    <section class="block c" data-stage="concrete"><h2>Concrete · ${esc(concrete.title)} <span class="mins">${concrete.minutes} min</span></h2>
+    <section class="block c" data-stage="concrete" id="stage-concrete"><h2>Concrete · ${esc(concrete.title)} <span class="mins">${concrete.minutes} min</span></h2>
       <p class="stage-meta">${targets(concrete.targets)}</p>
       <p class="context">${esc(art.context)}</p>
       ${concreteBody}
@@ -1010,20 +1119,20 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       <div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(artefact.claim, now)}</div>
     </section>
 
-    <section class="block p" data-stage="pictorial"><h2>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h2>
+    <section class="block p" data-stage="pictorial" id="stage-pictorial"><h2>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h2>
       <p class="stage-meta">${targets(pictorial.targets)}</p>
       ${pictorialBody}
       ${facil(pictorial.moves, pictorial.say, pictorial.watch)}
     </section>
 
-    <section class="block a" data-stage="abstract"><h2>Abstract · ${esc(abstract.title)} <span class="mins">${abstract.minutes} min</span></h2>
+    <section class="block a" data-stage="abstract" id="stage-abstract"><h2>Abstract · ${esc(abstract.title)} <span class="mins">${abstract.minutes} min</span></h2>
       <p class="stage-meta">${targets(abstract.targets)}</p>
       ${refTables(abstract.tables)}
       <div class="claims">${abstract.principles.map((id) => claimCard(id, now)).join("")}</div>
       ${facil(abstract.moves, abstract.say, abstract.watch)}
     </section>
 
-    <section class="block w" data-stage="check"><h2>Check · Post-check <span class="mins">${lesson.check.minutes} min</span></h2>
+    <section class="block w" data-stage="check" id="stage-check"><h2>Check · Post-check <span class="mins">${lesson.check.minutes} min</span></h2>
       <p class="sense">Compare with the warm-up answers, objective by objective.</p>
       <ol class="probs">${lesson.check.items
         .map((i) => `<li>${esc(i.prompt)} ${targets(i.targets)}<div class="crit"><b>Facilitator · Reteach if</b>${esc(i.crit)}</div></li>`)
@@ -1147,8 +1256,10 @@ export function boot(doc) {
   const page = doc.body.dataset.page;
   let track = readTrack(win);
 
+  // The hub re-renders on a track change; keep what the learner typed in the search box (user control).
+  let query = "";
   const draw = () => {
-    if (page === "hub") renderHub(doc, { track });
+    if (page === "hub") renderHub(doc, { track, query, onQuery: (q) => (query = q) });
     else renderLesson(doc, getLesson(new URLSearchParams(win.location.search).get("n")), { track });
   };
 
