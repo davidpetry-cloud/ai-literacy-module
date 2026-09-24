@@ -4,7 +4,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A five-lesson AI literacy course for three audiences — educators, professionals
+A seven-lesson AI literacy course for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -166,7 +166,7 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   inline disclosures (`<summary>`) at least 44px.
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
   so re-rendering never removes it. New pages copy it from `lesson.html`.
-- **Each lesson has its own colour** (`--l1`…`--l5`) as a ribbon and outline,
+- **Each lesson has its own colour** (`--l1`…`--l7`) as a ribbon and outline,
   always paired with the lesson number. Lessons in design get a dashed outline.
 
 ## Voice
@@ -203,6 +203,8 @@ Sonnet worked well.
 | 03 | done | built on Sonnet: passage pattern with source cards, plus the `check-scale` figure (`checkScale` in `lesson-core.js`) |
 | 04 | done | built on Opus: `sign-offs` exercise and the `sign-off` builder (`signoffStatus`, `signoffTimeline` in `lesson-core.js`), judged by the real ledger engine |
 | 05 | done | built on Sonnet: `classify` exercise (passage pattern, error-kind keys) and the `checklist` builder (`checklistStatus`, `checklistGrid` in `lesson-core.js`) |
+| 06 | Opus | the mock-screen frame is a new tool (`screen-frame`); design in `docs/lesson-06-design.md` |
+| 07 | Opus | the contrast checker is a new tool; design in `docs/lesson-07-design.md` |
 
 One lesson per session.
 
@@ -249,9 +251,19 @@ material, never in `claims.js`. Lesson 5 (2026-09-24) adds the `classify`
 exercise and the `checklist` builder (`docs/lesson-05-design.md`). Its
 objectives 5.1 and 5.2 were reworded on 2026-09-24 to meet the objectives
 grade ceiling; the levels, verbs and meaning are unchanged, and David still
-needs to confirm the wording. All 35 claims are proposed and none are
-attested. David attests claims once all five lessons are built, so he can see
-the whole course first, and that point has now been reached: give him every
-claim grouped by lesson, with the source to check each against. An additional
-lesson on UX/UI design principles and usability goals is planned. It has no
-objectives yet, so the first step is to draft them for David to approve.
+needs to confirm the wording.
+
+Lessons 6 and 7 were added on 2026-09-24 and have objectives only, approved
+by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
+usability goals and the design principles by having learners judge AI-built
+screens. Lesson 7, "Accessible and mindful UX", covers WCAG by its four
+principles and levels A, AA and AAA, a contrast checker, and wellbeing
+(calmer defaults, natural pause points, auditing for addictive patterns). Both
+designs are approved in `docs/lesson-06-design.md` and
+`docs/lesson-07-design.md`. Both need Opus, because each adds a tool. The next
+step for each is `/build-lesson 6` or `/build-lesson 7`, one per session.
+
+All 35 claims are proposed and none are attested. David attests claims once
+the whole course is built, so he can see all of it first: give him every claim
+grouped by lesson, with the source to check each against, when Lesson 7 ships.
+Don't prompt him to attest before then.
