@@ -250,9 +250,15 @@ export const CLAIMS = {
   },
   "usability-goals": {
     text: "Jakob Nielsen (1993) defines usability by five attributes: learnability, efficiency, memorability, errors (few of them, easy to recover from, and none catastrophic) and satisfaction. This course uses his five as its usability goals.",
-    attestation: proposedBy(
-      "Source: Nielsen, J. (1993), Usability Engineering, Academic Press; restated in his 'Usability 101' (Nielsen Norman Group). Shneiderman's five measurable human factors in Designing the User Interface (time to learn, speed of performance, rate of errors, retention over time, subjective satisfaction) line up with the same five. Kept apart from two different frameworks: ISO 9241-11 defines usability by three measures (effectiveness, efficiency, satisfaction), and Preece, Rogers and Sharp's Interaction Design lists six usability goals plus separate user experience goals. Revised 2026-09-24 at David's request so his course's statements are credited to the right scholar."
-    )
+     attestation: {
+   source: "practitioner",
+   by: "David Petry",
+   role: "Course author and UX lead",
+   basis: "Checked against Nielsen, J. (1993), Usability Engineering, Academic Press, ch. 2 'What Is Usability?': five attributes, with errors defined as few, easy to recover from and none catastrophic. Cross-checked with Nielsen Norman Group, 'Usability 101'.",
+   verified: "2026-09-24",
+   ttlDays: 730,
+   supersedes: { source: "model", model: "claude-opus-5-5" }
+ }
   },
   "design-principles": {
     text: "This course teaches eight design principles: user-centricity, consistency, hierarchy, context, user control, accessibility and usability in Lesson 6, and wellbeing (mindful UX) in Lesson 7. They are the course's own teaching set, not a published standard, and which principle serves which goal is the course's mapping.",
