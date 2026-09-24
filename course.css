@@ -213,7 +213,7 @@ ol.probs li{margin-bottom:16px}
 .part-context{--pc:var(--amber);--pp:var(--amber-pale)}
 .part-constraints{--pc:var(--rose);--pp:var(--rose-pale)}
 .part-format{--pc:var(--teal);--pp:var(--teal-pale)}
-.req{font-family:var(--serif);font-size:var(--fs-md);color:var(--ink-2);margin:0 0 12px}
+.req{font-family:var(--serif);font-size:var(--fs-md);color:var(--ink-2);margin:0 0 12px;max-width:var(--measure-serif)}
 .cmp-label{font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;color:var(--muted);margin:12px 0 4px}
 .pair .cmp-label:first-child{margin-top:0}
 ol.gaps{margin:0 0 16px;padding-left:24px}
@@ -239,6 +239,21 @@ dl.so-line{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margi
 .tl-axis{stroke:var(--edge);stroke-width:2}
 .tl-live{stroke:var(--ink-3);stroke-width:6;stroke-linecap:round}
 .tl-today{stroke:var(--ink);stroke-width:2;stroke-dasharray:4 4}
+/* checklist builder (Lesson 5) */
+.k-fabrication{color:var(--exp)} .k-outdated{color:var(--prop)} .k-bias{color:var(--rej)} .k-misread{color:var(--teal-text)} .k-fine{color:var(--att-text)}
+.ck-form{display:grid;gap:12px;margin:0 0 16px;max-width:var(--measure)}
+.ck-form > label{display:grid;gap:4px;font-weight:600;color:var(--ink)}
+.ck-form input[type="text"]{font:inherit;font-size:var(--fs-base);font-weight:400;color:var(--text);background:var(--card);border:2px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;min-height:44px}
+.ck-list{border:2px solid var(--edge);border-radius:var(--r-md);padding:4px 16px 8px;margin:0;display:grid;gap:0}
+.ck-list legend{font-weight:600;color:var(--ink);padding:0 8px}
+.ck-list label{display:flex;align-items:center;gap:12px;min-height:44px;color:var(--text)}
+.ck-list input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--btn-bg)}
+.ck-mine{margin:0 0 16px}
+.ck-mine ol{margin:0;padding-left:24px}
+.ck-mine p{margin:0 0 8px}
+.g-stat{font-size:15px;font-weight:600;text-anchor:start}
+.g-stat.ok{fill:var(--att-text)}
+.g-stat.gap{fill:var(--exp)}
 dl.levels{margin:0 0 16px}
 .levels div{margin-bottom:8px}
 .levels dt{font-weight:700;color:var(--ink)}

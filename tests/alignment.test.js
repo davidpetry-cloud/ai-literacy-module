@@ -16,7 +16,9 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify"];
+const ERROR_KEYS = ["fabrication", "outdated", "bias", "misread", "fine"];
+const KINDS = ["fabrication", "outdated", "bias", "misread"];
 const SIGNOFF_KEYS = ["sound", "not-a-person", "no-basis", "wrong-signer", "lapsed"];
 const exerciseOf = (lesson) => lesson.stages.find((s) => s.kind === "concrete").exercise ?? "passage";
 // Verbs that name an internal state rather than something you can observe.
@@ -129,7 +131,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -248,6 +250,101 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each pair's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(pair(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "classify")("concrete stage: classify", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const set = (t) => concrete.tracks[t].classify;
+
+    it("has a context, a request and five answer sentences for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(set(t).request, t).toBeTruthy();
+        expect(set(t).items, t).toHaveLength(5);
+        for (const i of set(t).items) {
+          expect(i.text, t).toBeTruthy();
+          expect(i.note, i.text).toBeTruthy();
+        }
+      }
+    });
+
+    it("records where every request and answer came from", () => {
+      for (const t of TRACK_IDS) {
+        expect(["planted", "captured"], t).toContain(set(t).provenance);
+        expect(set(t).model, t).toBeTruthy();
+        if (set(t).provenance === "captured") expect(Number.isNaN(new Date(set(t).captured).getTime()), `${t} capture date`).toBe(false);
+      }
+    });
+
+    it("uses each key exactly once per track, so 'mark everything' loses", () => {
+      for (const t of TRACK_IDS) expect(set(t).items.map((i) => i.key).sort(), t).toEqual([...ERROR_KEYS].sort());
+    });
+
+    it("cites a source for the outdated sentence and for no other", () => {
+      for (const t of TRACK_IDS) {
+        for (const i of set(t).items) {
+          if (i.key === "outdated") expect(i.source, `${t} outdated`).toBeTruthy();
+          else expect(i.source, `${t} ${i.key}`).toBeNull();
+        }
+      }
+    });
+
+    it("gives the misread sentence a rule that appears word for word in the request", () => {
+      for (const t of TRACK_IDS) {
+        for (const i of set(t).items) {
+          if (i.key === "misread") expect(set(t).request, `${t} rule`).toContain(i.rule);
+          else expect(i.rule, `${t} ${i.key}`).toBeUndefined();
+        }
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => set(t).items.map((i) => i.key).join());
+      for (const o of orders) expect(o).not.toBe(ERROR_KEYS.join());
+      expect(new Set(orders).size, "every track uses the same order").toBe(TRACK_IDS.length);
+      for (const p of [0, 1, 2, 3, 4]) {
+        expect(new Set(TRACK_IDS.map((t) => set(t).items[p].key)).size, `position ${p} is the same in every track`).toBeGreaterThan(1);
+      }
+    });
+
+    it("puts each answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(set(t).claim);
+    });
+  });
+
+  describe.runIf(lesson.stages.find((s) => s.kind === "pictorial").figure === "checklist")("pictorial stage: checklist", () => {
+    const stage = lesson.stages.find((s) => s.kind === "pictorial");
+
+    it("offers a fixed bank of checks, each with an id, a text and a list of kinds it finds", () => {
+      expect(stage.checks.length).toBeGreaterThanOrEqual(6);
+      expect(new Set(stage.checks.map((c) => c.id)).size).toBe(stage.checks.length);
+      for (const c of stage.checks) {
+        expect(c.text, c.id).toBeTruthy();
+        expect(Array.isArray(c.catches), c.id).toBe(true);
+        for (const k of c.catches) expect(KINDS, c.id).toContain(k);
+      }
+    });
+
+    it("has a check that catches each of the four kinds", () => {
+      for (const k of KINDS) expect(stage.checks.some((c) => c.catches.includes(k)), k).toBe(true);
+    });
+
+    it("includes checks that feel useful but catch none, each saying why", () => {
+      const weak = stage.checks.filter((c) => c.catches.length === 0);
+      expect(weak.length).toBeGreaterThanOrEqual(2);
+      for (const c of weak) expect(c.note, c.id).toBeTruthy();
+    });
+
+    it("has a limit shorter than the bank, so a learner has to choose", () => {
+      expect(stage.limit).toBeGreaterThanOrEqual(KINDS.length);
+      expect(stage.limit).toBeLessThan(stage.checks.length);
+    });
+
+    it("can reach full coverage within the limit, and can't by ticking everything that only feels useful", () => {
+      const best = KINDS.map((k) => stage.checks.find((c) => c.catches.includes(k)).id);
+      expect(new Set(best).size).toBeLessThanOrEqual(stage.limit);
+      expect(stage.checks.filter((c) => c.catches.length === 0).flatMap((c) => c.catches)).toEqual([]);
     });
   });
 

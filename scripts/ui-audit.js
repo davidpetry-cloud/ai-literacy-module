@@ -4,7 +4,8 @@
 // comparison in turn, and checks every visible text element against the
 // background it actually sits on, after any opacity. It also checks the edges
 // of controls and grid cells (3:1), content hidden behind a sideways scroll,
-// aria-labels that drop the visible words, and disclosures with no arrow.
+// SVG text that runs off the drawing, aria-labels that drop the visible
+// words, and disclosures with no arrow.
 const rgb = (s) => (s.match(/[\d.]+/g) || []).map(Number);
 const lum = ([r, g, b]) => {
   const f = (v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -158,6 +159,15 @@ export async function audit() {
     .filter((e) => e.getClientRects().length && e.hasAttribute("aria-label") && !e.getAttribute("aria-label").toLowerCase().includes(visibleText(e)))
     .map((e) => `${e.tagName.toLowerCase()} "${visibleText(e)}" is named "${e.getAttribute("aria-label")}"`);
 
+  // Text drawn in an SVG must sit inside the drawing, or the edge cuts it off.
+  result.svgTextClipped = [...document.querySelectorAll("svg[viewBox] text")]
+    .filter((t) => t.getClientRects().length)
+    .filter((t) => {
+      const vb = t.ownerSVGElement.viewBox.baseVal, b = t.getBBox();
+      return b.x < -0.5 || b.x + b.width > vb.width + 0.5;
+    })
+    .map((t) => `"${t.textContent.trim()}" runs past the edge`);
+
   // A disclosure must show an arrow, whatever display it uses.
   result.summariesWithoutArrow = [...document.querySelectorAll("summary")]
     .filter((e) => e.getClientRects().length && !/^["'][▸▾]/.test(getComputedStyle(e, "::before").content))
@@ -169,7 +179,7 @@ export async function audit() {
     !result.light.contrastFails.length && !result.dark.contrastFails.length &&
     !result.light.under12_8px.length && !result.horizontalScroll && !result.smallTargets.length &&
     !result.light.nonTextFails.length && !result.dark.nonTextFails.length &&
-    !result.hiddenByScroll.length && !result.labelMismatch.length && !result.summariesWithoutArrow.length &&
+    !result.hiddenByScroll.length && !result.svgTextClipped.length && !result.labelMismatch.length && !result.summariesWithoutArrow.length &&
     !result.headingSkips.length && result.h1Count === 1 && !result.duplicateNames.length && !result.longLines.length;
   return result;
 }

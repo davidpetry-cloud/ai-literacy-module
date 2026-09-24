@@ -36,6 +36,11 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.classify) {
+    // The request and answer read as passage text; the notes and the rule quoted from the request are the key.
+    const c = art.classify;
+    return { passage: [c.request, ...c.items.map((i) => i.text)], key: c.items.flatMap((i) => [i.note, i.rule]).filter(Boolean) };
+  }
   if (art.signoffs) {
     // The document and its sign-offs read as passage text; the notes are the answer key.
     const items = art.signoffs.items;
@@ -64,7 +69,9 @@ export function textRoles(lesson, tracks) {
     objectives: lesson.objectives.map((o) => o.text),
     framing: [lesson.framing],
     learnerPrompts: [...lesson.warmup.items, ...lesson.check.items].map((i) => i.prompt)
-      .concat(lesson.check.exit.rating, lesson.check.exit.open),
+      .concat(lesson.check.exit.rating, lesson.check.exit.open)
+      // A checklist builder's options are learner text too.
+      .concat(lesson.stages.flatMap((s) => s.checks ?? []).flatMap((c) => [c.text, c.note]).filter(Boolean)),
     facilitator: [
       ...lesson.stages.flatMap((s) => [...s.moves, ...s.say.map(([, line]) => line), s.watch]),
       ...lesson.warmup.items.map((i) => i.expected),

@@ -84,8 +84,8 @@ function confidenceLabel(placed, revealed) {
 }
 
 /** The same grid as a table, for figures too narrow to draw it. Only one of the two is ever shown. */
-function gridTable(caption, corner, cols, rows) {
-  const cell = (marks) => `<td>${marks.map((m) => `<span class="tmark"><span class="sr">${m.word} </span>${m.n}</span>`).join("")}</td>`;
+function gridTable(caption, corner, cols, rows, empty = "") {
+  const cell = (marks) => `<td>${marks.length ? marks.map((m) => `<span class="tmark"><span class="sr">${m.word} </span>${m.n}</span>`).join("") : empty}</td>`;
   return `<table class="grid-alt"><caption class="sr">${esc(caption)}</caption><thead><tr><th scope="col">${corner}</th>${cols
     .map((c) => `<th scope="col">${c}</th>`)
     .join("")}</tr></thead><tbody>${rows.map((r) => `<tr><th scope="row">${esc(r.label)}</th>${r.cells.map(cell).join("")}</tr>`).join("")}</tbody></table>`;
@@ -367,6 +367,147 @@ function wireSignoff(doc, now) {
   form.addEventListener("submit", (e) => e.preventDefault());
 }
 
+/* ---------- classify + checklist (Lesson 5): name the mistake, then build the checks that catch it ---------- */
+
+export const KINDS = ["fabrication", "outdated", "bias", "misread"];
+export const ERROR_LABEL = { fabrication: "Fabrication", outdated: "Outdated", bias: "Bias", misread: "Misread request", fine: "No error" };
+const KIND_PLAIN = { fabrication: "fabrication", outdated: "outdated information", bias: "bias", misread: "a misread request" };
+const KIND_ROW = { fabrication: "Fabrication", outdated: "Outdated", bias: "Bias", misread: "Misread" };
+// Each kind has its own place to look, which is why each needs its own check.
+const ERROR_WHERE = {
+  fabrication: "a source you can find",
+  outdated: "the date behind the fact",
+  bias: "who is left out",
+  misread: "the request",
+  fine: "nothing, there is nothing to fix"
+};
+const joinList = (a) => (a.length < 2 ? a.join("") : a.length === 2 ? a.join(" and ") : `${a.slice(0, -1).join(", ")} and ${a.at(-1)}`);
+
+function classifyExercise(set, request, provenanceNote) {
+  return `<figure class="passage classify">
+        <p class="cmp-label">The request</p>
+        <p class="req">“${esc(set.request)}”</p>
+        <p class="cmp-label">What came back</p>
+        <ol>${set.items
+          .map(
+            (it, i) => `<li><p>${esc(it.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for sentence ${i + 1}</span></summary><p><b class="k k-${it.key}">${ERROR_LABEL[it.key]}</b> ${esc(it.note)}</p>${
+              it.rule ? `<p class="src">The request said: “${esc(it.rule)}”</p>` : ""
+            }<p class="src">Where to look: ${ERROR_WHERE[it.key]}.</p>${it.source ? `<p class="src">Source card: ${esc(it.source)}</p>` : ""}</details></li>`
+          )
+          .join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>`;
+}
+
+/**
+ * What a set of ticked checks adds up to. Coverage is by kind of error: a
+ * check "covers" a kind if it really finds it. A check that finds none of the
+ * four still feels like checking, so the status names it.
+ */
+export function checklistStatus(ids, checks, limit = 5) {
+  const chosen = checks.map((c, i) => ({ ...c, n: i + 1 })).filter((c) => ids.includes(c.id));
+  const first = new Map();
+  const repeats = [];
+  for (const c of chosen) {
+    const fresh = c.catches.filter((k) => !first.has(k));
+    if (c.catches.length && !fresh.length) repeats.push({ n: c.n, of: first.get(c.catches[0]) });
+    for (const k of fresh) first.set(k, c.n);
+  }
+  const coverBy = Object.fromEntries(KINDS.map((k) => [k, chosen.filter((c) => c.catches.includes(k)).map((c) => c.n)]));
+  const covered = KINDS.filter((k) => coverBy[k].length);
+  const gaps = KINDS.filter((k) => !coverBy[k].length);
+  const weak = chosen.filter((c) => !c.catches.length);
+  const over = chosen.length > limit;
+
+  let text;
+  if (!chosen.length) text = `No checks yet. Pick up to ${limit}.`;
+  else {
+    const parts = [];
+    if (!covered.length) parts.push("None of these checks catches any of the four kinds.");
+    else if (!gaps.length) parts.push("Every kind of error has a check.");
+    else parts.push(`This covers ${joinList(covered.map((k) => KIND_PLAIN[k]))}. Nothing catches ${joinList(gaps.map((k) => KIND_PLAIN[k]))}.`);
+    for (const c of weak) parts.push(`Check ${c.n} catches none of the four kinds. ${c.note}`.trim());
+    for (const r of repeats) parts.push(`Check ${r.n} repeats check ${r.of}.`);
+    if (over) parts.push(`That's ${chosen.length} checks. A checklist people use is short.`);
+    else if (!gaps.length) parts.push(`You used ${chosen.length} of ${limit}.`);
+    text = parts.join(" ");
+  }
+  return { chosen, covered, gaps, weak, repeats, over, coverBy, text };
+}
+
+function checklistLabel(status, count) {
+  let label = `Grid with four rows, the kinds of error, and ${count} columns, the checks.`;
+  if (!status.chosen.length) return `${label} Empty until you pick checks.`;
+  label += " " + KINDS.map((k) => {
+    const by = status.coverBy[k];
+    const name = k === "misread" ? "A misread request" : KIND_ROW[k] === "Outdated" ? "Outdated information" : KIND_ROW[k];
+    return by.length ? `${name} is covered by check${by.length > 1 ? "s" : ""} ${joinList(by.map(String))}.` : `${name} is not covered.`;
+  }).join(" ");
+  if (!status.gaps.length) label += " Every kind is covered.";
+  return label;
+}
+
+export function checklistGrid(ids, checks, limit = 5) {
+  const status = checklistStatus(ids, checks, limit);
+  const x0 = 130, y0 = 44, cw = 46, rh = 52, statW = 148;
+  const w = x0 + cw * checks.length + statW, h = y0 + rh * KINDS.length + 8;
+  const label = checklistLabel(status, checks.length);
+  const cells = [];
+  checks.forEach((_, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${c + 1}</text>`));
+  KINDS.forEach((k, r) => {
+    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${KIND_ROW[k]}</text>`);
+    checks.forEach((_, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell"/>`));
+    if (status.chosen.length) {
+      const ok = status.coverBy[k].length > 0;
+      cells.push(`<text x="${x0 + cw * checks.length + 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-stat ${ok ? "ok" : "gap"}">${ok ? "✓ Covered" : "✕ Not covered"}</text>`);
+    }
+  });
+  const marks = status.chosen
+    .flatMap((c) => KINDS.map((k, r) => (c.catches.includes(k) ? { c, r } : null)).filter(Boolean))
+    .map(({ c, r }) => {
+      const cx = x0 + (c.n - 1) * cw + cw / 2, cy = y0 + r * rh + rh / 2;
+      return `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${c.n}</text></g>`;
+    })
+    .join("");
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${cells.join("")}${marks}</svg>`;
+}
+
+/** Drawing plus table, as in the other figures: CSS shows whichever fits the width. */
+export function checklistView(ids, checks, limit = 5) {
+  const status = checklistStatus(ids, checks, limit);
+  const rows = KINDS.map((k) => ({ label: KIND_ROW[k], cells: [status.coverBy[k].map((n) => ({ word: "Check", n }))] }));
+  return checklistGrid(ids, checks, limit) + gridTable(checklistLabel(status, checks.length), "Kind of error", ["Covered by"], rows, "Nothing yet");
+}
+
+function checklistBuilder(stage) {
+  return `<form class="ck-form" id="ck-form" novalidate>
+        <label for="ck-task">What do you use AI for every week?<input id="ck-task" type="text" autocomplete="off" value=""></label>
+        <fieldset class="ck-list"><legend>Pick up to ${stage.limit} checks</legend>
+          ${stage.checks.map((c, i) => `<label><input type="checkbox" value="${esc(c.id)}"><span><b>${i + 1}.</b> ${esc(c.text)}</span></label>`).join("")}
+        </fieldset>
+      </form>
+      <p class="so-status" id="ck-status" aria-live="polite">${esc(checklistStatus([], stage.checks, stage.limit).text)}</p>
+      <div class="figure" id="ck-figure">${checklistView([], stage.checks, stage.limit)}</div>
+      <div class="ck-mine"><h3 class="subhead">Your checklist</h3><div id="ck-mine"><p class="so-empty">Nothing ticked yet.</p></div></div>`;
+}
+
+function wireChecklist(doc, stage) {
+  const form = doc.querySelector("#ck-form");
+  const update = () => {
+    const ids = [...form.querySelectorAll('input[type="checkbox"]:checked')].map((i) => i.value);
+    const status = checklistStatus(ids, stage.checks, stage.limit);
+    const task = form.querySelector("#ck-task").value.trim();
+    doc.querySelector("#ck-status").textContent = status.text;
+    doc.querySelector("#ck-figure").innerHTML = checklistView(ids, stage.checks, stage.limit);
+    doc.querySelector("#ck-mine").innerHTML = status.chosen.length
+      ? `${task ? `<p>For: ${esc(task)}</p>` : ""}<ol>${status.chosen.map((c) => `<li>${esc(c.text)}</li>`).join("")}</ol>`
+      : `<p class="so-empty">Nothing ticked yet.</p>`;
+  };
+  form.addEventListener("input", update);
+  form.addEventListener("change", update);
+  form.addEventListener("submit", (e) => e.preventDefault());
+}
+
 /* ---------- shared pieces ---------- */
 
 function say(lines) {
@@ -466,7 +607,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const exercise = concrete.exercise ?? "passage";
   const isPair = exercise === "prompt-pair";
   const isSignoff = exercise === "sign-offs";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs }[exercise];
+  const isClassify = exercise === "classify";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify }[exercise];
 
   header.dataset.lesson = lesson.n;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
@@ -483,7 +625,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isSignoff
+      ? isClassify
+        ? `Written by ${esc(artefact.model)} for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
+        : isSignoff
         ? `Written by ${esc(artefact.model)} for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
         : `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
       : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
@@ -491,12 +635,16 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     ? pairExercise(artefact, provenanceNote)
     : isSignoff
       ? signoffExercise(artefact, provenanceNote, now)
-      : passageExercise(artefact, provenanceNote);
+      : isClassify
+        ? classifyExercise(artefact, null, provenanceNote)
+        : passageExercise(artefact, provenanceNote);
   const scale = pictorial.figure === "check-scale";
   const pictorialBody = isPair
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
     : isSignoff
       ? signoffBuilder(artefact.items, now)
+      : isClassify
+        ? checklistBuilder(pictorial)
     : scale
       ? scaleFigure(artefact.uses)
       : `<div class="figure" id="grid">${confidenceView(artefact.sentences)}</div>
@@ -563,6 +711,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   if (isPair) wireCompare(doc, artefact);
   else if (isSignoff) wireSignoff(doc, now);
+  else if (isClassify) wireChecklist(doc, pictorial);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }

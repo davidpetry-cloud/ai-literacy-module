@@ -182,8 +182,9 @@ describe("type", () => {
   });
 
   it("keeps diagram labels at 12.8px+ even at the diagram's narrowest", async () => {
-    const { confidenceGrid, checkScale, signoffTimeline } = await import("../lesson-core.js");
-    const viewBoxWidth = Math.max(...[confidenceGrid([]), checkScale([]), signoffTimeline("2026-01-01")].map((svg) => Number(svg.match(/viewBox="0 0 ([\d.]+)/)[1])));
+    const { confidenceGrid, checkScale, signoffTimeline, checklistGrid } = await import("../lesson-core.js");
+    const eight = Array.from({ length: 8 }, (_, i) => ({ id: `c${i}`, catches: [] }));
+    const viewBoxWidth = Math.max(...[confidenceGrid([]), checkScale([]), signoffTimeline("2026-01-01"), checklistGrid([], eight)].map((svg) => Number(svg.match(/viewBox="0 0 ([\d.]+)/)[1])));
     const minWidth = Number(rules.find((r) => r.sel === "svg.grid").body.match(/min-width:(\d+)px/)[1]);
     for (const r of beforePrint.filter((r) => svgText.test(r.sel) && r.body.includes("font-size"))) {
       const px = Number(r.body.match(/font-size:(\d+)px/)[1]);
@@ -344,7 +345,7 @@ describe("consistency", () => {
     const capped = screenRules.find((r) => r.sel.startsWith(":where(.block"));
     expect(capped?.body).toContain("max-width:var(--measure)");
     expect(capped.sel).toBe(":where(.block, .obj, .claim, .card, .sidebox) :where(p, li, dd)");
-    for (const sel of [".relevance", ".passage li > p"]) {
+    for (const sel of [".relevance", ".passage li > p", ".req"]) {
       expect(rules.find((r) => r.sel === sel)?.body, sel).toContain("max-width:var(--measure-serif)");
     }
   });
