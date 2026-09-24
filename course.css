@@ -264,10 +264,25 @@ iframe.mock{display:block;width:100%;max-width:360px;border:2px solid var(--edge
 .goal{font-weight:600}
 .k-user-centricity{color:var(--teal-text)} .k-consistency{color:var(--ink-3)} .k-hierarchy{color:var(--prop)} .k-context{color:var(--exp)} .k-user-control{color:var(--rej)} .k-accessibility{color:var(--att-text)} .k-usability{color:var(--ink-2)}
 .fix-order{font-weight:600;color:var(--ink-2);margin:0 0 12px}
-table.ref{border-collapse:collapse;width:100%;margin:0 0 16px;font-size:var(--fs-sm)}
+table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.1);margin:0 0 16px;font-size:var(--fs-sm)}
 .ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
 .ref thead th{color:var(--ink-3)}
 .ref tbody th{color:var(--ink);font-weight:600}
+/* audit + contrast checker (Lesson 7) */
+.k-wcag{color:var(--exp)} .k-pattern{color:var(--prop)}
+.cc-form{display:grid;gap:12px;margin:0 0 12px;max-width:var(--measure)}
+.cc-pair{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.cc-pair label{display:grid;gap:4px;font-weight:600;color:var(--ink)}
+.cc-pair input[type="text"]{font:inherit;font-size:var(--fs-base);font-weight:400;color:var(--text);background:var(--card);border:2px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;min-height:44px;width:12ch}
+.cc-pair input[type="color"]{width:64px;min-height:44px;padding:4px;border:2px solid var(--edge);border-radius:var(--r-md);background:var(--card)}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px}
+.row-btns .btn{margin-bottom:12px}
+.btn:disabled{cursor:not-allowed;background:var(--card);color:var(--ink-3)}
+svg.cc-sample{display:block;width:100%;max-width:360px;height:auto;font-family:var(--sans)}
+.cc-frame{stroke:var(--edge);stroke-width:2}
+.cc-empty{fill:var(--card)}
+.pf{display:inline-block;font-weight:700;background:var(--card);padding:2px 8px;border-radius:var(--r-sm);border:1.5px solid currentColor}
+.pf.pass{color:var(--att-text)} .pf.fail{color:var(--exp)}
 dl.levels{margin:0 0 16px}
 .levels div{margin-bottom:8px}
 .levels dt{font-weight:700;color:var(--ink)}

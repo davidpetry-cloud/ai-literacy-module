@@ -354,3 +354,55 @@ describe("consistency", () => {
     expect(css).not.toContain("--mono");
   });
 });
+
+// Lesson 7's worked example audits this course. Each row names a check, and this
+// runs it, so the lesson can't tell learners something about the site that isn't true.
+describe("Lesson 7 worked example: the course audits true", async () => {
+  const { getLesson } = await import("../course.js");
+  const table = getLesson(7).stages.find((s) => s.kind === "abstract").tables.find((t) => t.verify);
+  const minHeight = (sel) => Number(rules.find((r) => r.sel === sel)?.body.match(/min-height:(\d+)px/)?.[1] ?? 0);
+  const site = ["index.html", "lesson.html", "lesson-core.js", "course.css", "theme-toggle.js"].map((f) => [f, read(f)]);
+
+  const CHECKS = {
+    contrast: () => {
+      for (const [name, theme] of Object.entries(THEMES)) {
+        for (const [fg, bgs] of Object.entries(PAIRS)) for (const bg of bgs) expect(contrast(theme, fg, bg), `${name} ${fg} on ${bg}`).toBeGreaterThanOrEqual(4.5);
+      }
+    },
+    focus: () => {
+      expect(rules.find((r) => r.sel === ":focus-visible").body).toContain("outline:3px solid var(--focus)");
+      for (const [name, theme] of Object.entries(THEMES)) {
+        for (const bg of ["--card", "--paper"]) expect(contrast(theme, "--focus", bg), `${name} ${bg}`).toBeGreaterThanOrEqual(3);
+      }
+    },
+    targets: () => {
+      for (const sel of [".btn", ".key summary", ".claim details summary"]) expect(minHeight(sel), sel).toBeGreaterThanOrEqual(44);
+    },
+    reflow: () => {
+      expect(css).toMatch(/@container \(max-width:\d+px\)\{\s*svg\.grid\{display:none\}\s*table\.grid-alt\{display:table\}/);
+    },
+    motion: () => {
+      expect(css).toMatch(/@media \(prefers-reduced-motion:reduce\)\{\*\{animation:none!important;transition:none!important\}\}/);
+    },
+    status: () => {
+      for (const page of ["index.html", "lesson.html"]) expect(read(page)).toMatch(/id="announce"[^>]*aria-live="polite"|aria-live="polite"[^>]*id="announce"/);
+      expect(read("lesson-core.js").match(/aria-live="polite"/g).length).toBeGreaterThanOrEqual(3);
+    },
+    calm: () => {
+      for (const [f, text] of site) {
+        expect(text, f).not.toMatch(/\bautoplay\b|<video|<audio|new Notification|Notification\.requestPermission|setInterval\(/);
+      }
+    }
+  };
+
+  it("names a known check, or none, for every row", () => {
+    expect(table.verify).toHaveLength(table.rows.length);
+    for (const v of table.verify) if (v !== null) expect(Object.keys(CHECKS)).toContain(v);
+    // Exactly one row is an honest known cost, and it says so.
+    const known = table.rows.filter((_, i) => table.verify[i] === null);
+    expect(known).toHaveLength(1);
+    expect(known[0][0]).toBe("Known cost");
+  });
+
+  it.each(table.rows.map((r, i) => [r[0], table.verify[i]]).filter(([, v]) => v))("%s holds (%s)", (_, id) => CHECKS[id]());
+});

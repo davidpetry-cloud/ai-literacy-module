@@ -591,18 +591,32 @@ const REACH_LABEL = { few: "Hits few", some: "Hits some", all: "Hits all" };
  * It is meant to be flawed, so it stays out of the page's own audit; the text
  * version beside it carries the same parts in words.
  */
-function screenExercise(screen, provenanceNote) {
+function principleReveal(p) {
+  const goal = p.goal ? ` <span class="goal">Goal that suffers: ${GOAL_LABEL[p.goal]}${p.also ? `, and ${GOAL_LABEL[p.also]}` : ""}.</span>` : "";
+  return `<b class="k k-${p.principle}">${PRINCIPLE_LABEL[p.principle]}</b>${goal} ${esc(p.note)}`;
+}
+
+/** Lesson 7's key: a WCAG failure, an addictive pattern, or the part that works. */
+export const AUDIT_LABEL = { wcag: "Accessibility", pattern: "Addictive pattern", fine: "Works well" };
+function auditReveal(p) {
+  if (p.kind === "wcag") {
+    return `<b class="k k-wcag">${AUDIT_LABEL.wcag}</b> <span class="goal">${esc(p.group)} (WCAG: ${esc(p.principle)}) · ${esc(p.criterion)} ${esc(p.name)} · Level ${esc(p.level)}.</span> ${esc(p.note)}`;
+  }
+  if (p.kind === "pattern") {
+    return `<b class="k k-pattern">${AUDIT_LABEL.pattern}</b> <span class="goal">${esc(p.pattern)}. Calmer fix: ${esc(p.fix)}</span> ${esc(p.note)}`;
+  }
+  return `<b class="k k-fine">${AUDIT_LABEL.fine}</b> ${esc(p.note)}`;
+}
+
+function screenExercise(screen, provenanceNote, reveal = principleReveal, ask = "Name what each numbered part breaks, or say it works") {
   return `<figure class="passage screen">
         <iframe class="mock" title="${esc(screen.title)}: a made-up screen, as if built by AI" sandbox="allow-scripts" height="${Number(screen.height)}" srcdoc="${esc(screen.html)}"></iframe>
         <details class="key textver"><summary>Text version of this screen</summary><ol>${screen.parts.map((p) => `<li>${esc(p.desc)}</li>`).join("")}</ol></details>
         <figcaption>${provenanceNote}</figcaption>
       </figure>
-      <h3 class="subhead">Name what each numbered part breaks, or say it works</h3>
+      <h3 class="subhead">${ask}</h3>
       <ol class="gaps">${screen.parts
-        .map((p, i) => {
-          const goal = p.goal ? ` <span class="goal">Goal that suffers: ${GOAL_LABEL[p.goal]}${p.also ? `, and ${GOAL_LABEL[p.also]}` : ""}.</span>` : "";
-          return `<li><p>${esc(p.label)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for part ${i + 1}</span></summary><p><b class="k k-${p.principle}">${PRINCIPLE_LABEL[p.principle]}</b>${goal} ${esc(p.note)}</p></details></li>`;
-        })
+        .map((p, i) => `<li><p>${esc(p.label)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for part ${i + 1}</span></summary><p>${reveal(p)}</p></details></li>`)
         .join("")}</ol>`;
 }
 
@@ -666,6 +680,152 @@ function refTables(tables = []) {
         .join("")}</tbody></table>`
     )
     .join("");
+}
+
+/* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
+
+export const CONTRAST_LEVELS = [
+  { id: "text-aa", label: "Normal text, AA", need: 4.5 },
+  { id: "large-aa", label: "Large text, AA", need: 3 },
+  { id: "ui-aa", label: "Parts of the screen, AA", need: 3 },
+  { id: "text-aaa", label: "Normal text, AAA", need: 7 },
+  { id: "large-aaa", label: "Large text, AAA", need: 4.5 }
+];
+
+/** "#abc" or "abc" or "#aabbcc" → "#AABBCC", or null if it isn't a colour. */
+export function parseHex(v) {
+  const m = String(v ?? "").trim().match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (!m) return null;
+  const h = m[1].length === 3 ? [...m[1]].map((c) => c + c).join("") : m[1];
+  return `#${h.toUpperCase()}`;
+}
+const rgbOf = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const luminance = (rgb) => {
+  const [r, g, b] = rgb.map((v) => v / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const hexOf = (rgb) => `#${rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("").toUpperCase()}`;
+
+/** WCAG contrast ratio of two hex colours, 1 to 21. */
+export function contrastRatio(a, b) {
+  const [x, y] = [luminance(rgbOf(a)), luminance(rgbOf(b))];
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+}
+
+/**
+ * The nearest colour to `fg` that reaches `need` against `bg`: move toward black
+ * or white, whichever needs the smaller change. Null if neither end can reach it.
+ */
+export function nearestPassing(fg, bg, need) {
+  if (contrastRatio(fg, bg) >= need) return fg;
+  const from = rgbOf(fg);
+  let best = null;
+  for (const end of [[0, 0, 0], [255, 255, 255]]) {
+    if (contrastRatio(hexOf(end), bg) < need) continue;
+    let lo = 0, hi = 1;
+    for (let i = 0; i < 24; i++) {
+      const mid = (lo + hi) / 2;
+      const c = hexOf(from.map((v, k) => v + (end[k] - v) * mid));
+      if (contrastRatio(c, bg) >= need) hi = mid;
+      else lo = mid;
+    }
+    let c = hexOf(from.map((v, k) => v + (end[k] - v) * hi));
+    // Rounding to whole channels can land just short; step once more toward the end if so.
+    if (contrastRatio(c, bg) < need) c = hexOf(rgbOf(c).map((v, k) => v + Math.sign(end[k] - v)));
+    if (!best || hi < best.t) best = { t: hi, c };
+  }
+  return best?.c ?? null;
+}
+
+const fmt = (r) => (Math.floor(r * 100) / 100).toFixed(2);
+
+/** What the checker says about a pair: each level, and the sentence read aloud. */
+export function checkContrast(fgIn, bgIn, use = "text") {
+  const fg = parseHex(fgIn), bg = parseHex(bgIn);
+  if (!fg || !bg) {
+    return { valid: false, text: `Enter ${!fg ? "the first colour" : "the background"} as a hex code, like #1F2430.` };
+  }
+  const ratio = contrastRatio(fg, bg);
+  const levels = CONTRAST_LEVELS.map((l) => ({ ...l, pass: ratio >= l.need }));
+  const key = use === "ui" ? "ui-aa" : "text-aa";
+  const target = levels.find((l) => l.id === key);
+  const suggestion = target.pass ? null : nearestPassing(fg, bg, target.need);
+  // Rounded down, so a pair can never round up into a pass.
+  let text = `${fmt(ratio)} to 1. ${target.pass ? "Passes" : "Fails"} ${target.label[0].toLowerCase()}${target.label.slice(1)}.`;
+  if (suggestion) text += ` The nearest colour that passes is ${suggestion}.`;
+  return { valid: true, fg, bg, ratio, levels, target, suggestion, text };
+}
+
+function contrastSample(fg, bg) {
+  const ok = parseHex(fg) && parseHex(bg);
+  const r = ok ? checkContrast(fg, bg) : null;
+  const label = ok ? `Sample: colour ${parseHex(fg)} on background ${parseHex(bg)}, ${fmt(r.ratio)} to 1.` : "Sample: not shown until both colours are valid hex codes.";
+  return `<svg class="cc-sample" viewBox="0 0 320 110" role="img" aria-label="${esc(label)}">${
+    ok
+      ? `<rect x="1" y="1" width="318" height="108" rx="8" fill="${parseHex(bg)}" class="cc-frame"/><text x="20" y="46" fill="${parseHex(fg)}" font-size="16">Sample text, 16 pixels</text><text x="20" y="86" fill="${parseHex(fg)}" font-size="24" font-weight="700">Large text</text>`
+      : `<rect x="1" y="1" width="318" height="108" rx="8" class="cc-frame cc-empty"/>`
+  }</svg>`;
+}
+
+function contrastTable(r) {
+  if (!r.valid) return `<p class="so-empty">No results until both colours are valid.</p>`;
+  return `<table class="ref cc-results"><thead><tr><th scope="col">Use and level</th><th scope="col">Needs</th><th scope="col">Result</th></tr></thead><tbody>${r.levels
+    .map((l) => `<tr><th scope="row">${l.label}</th><td>${l.need} to 1</td><td><span class="pf ${l.pass ? "pass" : "fail"}">${l.pass ? "✓ Pass" : "✕ Fail"}</span></td></tr>`)
+    .join("")}</tbody></table>`;
+}
+
+function contrastChecker(pair) {
+  const r = checkContrast(pair.fg, pair.bg, pair.use);
+  return `<p class="cmp-label">From the screen</p>
+      <p>Part ${Number(pair.part)}: ${esc(pair.what)}. It needs at least ${r.target.need} to 1, because it is ${pair.use === "ui" ? "a part of the screen people need to see" : "text"}.</p>
+      <form class="cc-form" id="cc-form" novalidate data-use="${esc(pair.use)}">
+        <div class="cc-pair"><label for="cc-fg">Colour (hex)<input id="cc-fg" type="text" autocomplete="off" spellcheck="false" value="${esc(pair.fg)}"></label><label for="cc-fg-pick">Pick the colour<input id="cc-fg-pick" type="color" value="${esc(pair.fg.toLowerCase())}"></label></div>
+        <div class="cc-pair"><label for="cc-bg">Background (hex)<input id="cc-bg" type="text" autocomplete="off" spellcheck="false" value="${esc(pair.bg)}"></label><label for="cc-bg-pick">Pick the background<input id="cc-bg-pick" type="color" value="${esc(pair.bg.toLowerCase())}"></label></div>
+      </form>
+      <p class="so-status" id="cc-status" aria-live="polite">${esc(r.text)}</p>
+      <div class="row-btns"><button type="button" class="btn" id="cc-use">Use the nearest passing colour</button><button type="button" class="btn" id="cc-reset">Reset to the screen's colours</button></div>
+      <div class="figure" id="cc-figure">${contrastSample(pair.fg, pair.bg)}</div>
+      <div id="cc-results">${contrastTable(r)}</div>`;
+}
+
+function wireContrast(doc, pair) {
+  const $ = (id) => doc.querySelector(`#${id}`);
+  const update = () => {
+    const r = checkContrast($("cc-fg").value, $("cc-bg").value, pair.use);
+    $("cc-status").textContent = r.text;
+    $("cc-figure").innerHTML = contrastSample($("cc-fg").value, $("cc-bg").value);
+    $("cc-results").innerHTML = contrastTable(r);
+    $("cc-use").disabled = !r.suggestion;
+    return r;
+  };
+  // Typing a valid hex moves the picker; the picker writes the hex.
+  for (const [text, pick] of [["cc-fg", "cc-fg-pick"], ["cc-bg", "cc-bg-pick"]]) {
+    $(text).addEventListener("input", () => {
+      const h = parseHex($(text).value);
+      if (h) $(pick).value = h.toLowerCase();
+      update();
+    });
+    $(pick).addEventListener("input", () => {
+      $(text).value = $(pick).value.toUpperCase();
+      update();
+    });
+  }
+  $("cc-use").addEventListener("click", () => {
+    const r = checkContrast($("cc-fg").value, $("cc-bg").value, pair.use);
+    if (!r.suggestion) return;
+    $("cc-fg").value = r.suggestion;
+    $("cc-fg-pick").value = r.suggestion.toLowerCase();
+    update();
+  });
+  $("cc-reset").addEventListener("click", () => {
+    $("cc-fg").value = pair.fg;
+    $("cc-bg").value = pair.bg;
+    $("cc-fg-pick").value = pair.fg.toLowerCase();
+    $("cc-bg-pick").value = pair.bg.toLowerCase();
+    update();
+  });
+  $("cc-form").addEventListener("submit", (e) => e.preventDefault());
+  update();
 }
 
 /* ---------- shared pieces ---------- */
@@ -769,7 +929,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isSignoff = exercise === "sign-offs";
   const isClassify = exercise === "classify";
   const isScreen = exercise === "screen";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen }[exercise];
+  const isAudit = exercise === "audit";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen }[exercise];
 
   header.dataset.lesson = lesson.n;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
@@ -786,7 +947,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isScreen
+      ? isScreen || isAudit
         ? `Written by ${esc(artefact.model)} for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
         : isClassify
         ? `Written by ${esc(artefact.model)} for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
@@ -800,6 +961,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ? signoffExercise(artefact, provenanceNote, now)
       : isScreen
         ? screenExercise(artefact, provenanceNote)
+        : isAudit
+        ? screenExercise(artefact, provenanceNote, auditReveal, "For each numbered part: an accessibility failure, an addictive pattern, or it works")
         : isClassify
         ? classifyExercise(artefact, null, provenanceNote)
         : passageExercise(artefact, provenanceNote);
@@ -808,7 +971,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
     : isSignoff
       ? signoffBuilder(artefact.items, now)
-      : isScreen
+      : isAudit
+        ? contrastChecker(artefact.contrast)
+        : isScreen
         ? `<div class="figure" id="grid">${fixFirstView(artefact.parts)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
         : isClassify
@@ -882,6 +1047,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isSignoff) wireSignoff(doc, now);
   else if (isClassify) wireChecklist(doc, pictorial, artefact.items);
   else if (isScreen) wireGrid(doc, (revealed) => fixFirstView(artefact.parts, { revealed }));
+  else if (isAudit) wireContrast(doc, artefact.contrast);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }

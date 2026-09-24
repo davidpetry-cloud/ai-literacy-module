@@ -16,7 +16,9 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit"];
+const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
+const WCAG_GROUPS = ["Text and visuals", "Navigation and interaction", "Content clarity", "Mobile and device"];
 const PRINCIPLES = ["user-centricity", "consistency", "hierarchy", "context", "user-control", "accessibility", "usability"];
 const GOALS = ["learnability", "efficiency", "memorability", "errors", "satisfaction"];
 const ERROR_KEYS = ["fabrication", "outdated", "bias", "misread", "fine"];
@@ -133,7 +135,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -252,6 +254,104 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each pair's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(pair(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "audit")("concrete stage: audit", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const screen = (t) => concrete.tracks[t].screen;
+    const hexRe = /^#[0-9A-F]{6}$/;
+
+    it("has a context, a titled screen and six numbered parts for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(screen(t).title, t).toBeTruthy();
+        expect(screen(t).parts, t).toHaveLength(6);
+        for (const [i, p] of screen(t).parts.entries()) {
+          for (const f of ["label", "desc", "note"]) expect(p[f], `${t} part ${i + 1} ${f}`).toBeTruthy();
+          expect(screen(t).html, `${t} marks part ${i + 1}`).toContain(`<span class="n">${i + 1}</span>`);
+        }
+        expect(["planted", "captured"], t).toContain(screen(t).provenance);
+        expect(screen(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("keeps every screen self-contained: no external URLs, no loaded scripts or styles", () => {
+      for (const t of TRACK_IDS) {
+        expect(screen(t).html, t).not.toMatch(/https?:\/\/|\/\/[a-z]/i);
+        expect(screen(t).html, t).not.toMatch(/<script[^>]+src=|<link[^>]+href=|<img|@import/i);
+      }
+    });
+
+    // Anything that moves must stop for learners who ask their device for less motion.
+    it("moves only when the learner's device allows motion", () => {
+      for (const t of TRACK_IDS) {
+        const html = screen(t).html;
+        if (!/animation|@keyframes/.test(html)) continue;
+        expect(html, t).toMatch(/@media \(prefers-reduced-motion:no-preference\)\{[^}]*animation/);
+        expect(html.replace(/@media \(prefers-reduced-motion:no-preference\)\{[^}]*\}\}/g, ""), t).not.toMatch(/animation\s*:/);
+      }
+    });
+
+    it("keys three accessibility failures, two patterns and one part that works", () => {
+      for (const t of TRACK_IDS) {
+        const kinds = screen(t).parts.map((p) => p.kind);
+        expect(kinds.filter((k) => k === "wcag"), t).toHaveLength(3);
+        expect(kinds.filter((k) => k === "pattern"), t).toHaveLength(2);
+        expect(kinds.filter((k) => k === "fine"), t).toHaveLength(1);
+      }
+    });
+
+    it("names the WCAG principle, group, criterion and level for every failure", () => {
+      for (const t of TRACK_IDS) {
+        for (const p of screen(t).parts.filter((x) => x.kind === "wcag")) {
+          expect(WCAG_PRINCIPLES, `${t} ${p.label}`).toContain(p.principle);
+          expect(WCAG_GROUPS, `${t} ${p.label}`).toContain(p.group);
+          expect(p.criterion, `${t} ${p.label}`).toMatch(/^[1-4]\.\d+\.\d+$/);
+          // The criterion's first number is its WCAG principle, whatever group the course teaches it under.
+          expect(WCAG_PRINCIPLES[Number(p.criterion[0]) - 1], `${t} ${p.criterion}`).toBe(p.principle);
+          expect(p.name, `${t} ${p.label}`).toBeTruthy();
+          expect(["A", "AA"], `${t} ${p.label}`).toContain(p.level);
+        }
+      }
+    });
+
+    it("gives every pattern a calmer fix, and no pattern twice across the course", () => {
+      const patterns = TRACK_IDS.flatMap((t) => screen(t).parts.filter((p) => p.kind === "pattern"));
+      for (const p of patterns) {
+        expect(p.pattern, p.label).toBeTruthy();
+        expect(p.fix, p.label).toBeTruthy();
+      }
+      expect(new Set(patterns.map((p) => p.pattern)).size).toBe(patterns.length);
+    });
+
+    it("covers all four WCAG groups across the tracks", () => {
+      const groups = new Set(TRACK_IDS.flatMap((t) => screen(t).parts.filter((p) => p.kind === "wcag").map((p) => p.group)));
+      for (const g of WCAG_GROUPS) expect(groups, g).toContain(g);
+    });
+
+    it("starts the contrast checker on a pair from the screen that really fails its target", async () => {
+      const { contrastRatio } = await import("../lesson-core.js");
+      for (const t of TRACK_IDS) {
+        const c = screen(t).contrast;
+        expect(c.fg, t).toMatch(hexRe);
+        expect(c.bg, t).toMatch(hexRe);
+        expect(["text", "ui"], t).toContain(c.use);
+        expect(contrastRatio(c.fg, c.bg), t).toBeLessThan(c.use === "ui" ? 3 : 4.5);
+        expect(screen(t).parts[c.part - 1], `${t} part ${c.part}`).toBeTruthy();
+        expect(screen(t).html, `${t} uses the pair on the screen`).toContain(c.fg);
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const fine = TRACK_IDS.map((t) => screen(t).parts.findIndex((p) => p.kind === "fine"));
+      expect(new Set(fine).size, "the part that works is in the same place in every track").toBe(TRACK_IDS.length);
+      const orders = TRACK_IDS.map((t) => screen(t).parts.map((p) => p.kind).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+    });
+
+    it("puts each screen's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(screen(t).claim);
     });
   });
 
