@@ -257,6 +257,17 @@ dl.so-line{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margi
 .g-stat{font-size:15px;font-weight:600;text-anchor:start}
 .g-stat.ok{fill:var(--att-text)}
 .g-stat.gap{fill:var(--exp)}
+/* screens (Lesson 6): a made-up AI-built screen in a sandboxed frame */
+iframe.mock{display:block;width:100%;max-width:360px;border:2px solid var(--edge);border-radius:var(--r-md);background:var(--card);margin:0 0 12px}
+.textver{margin:0 0 12px}
+.textver ol{margin:4px 0 0;padding-left:24px}
+.goal{font-weight:600}
+.k-user-centricity{color:var(--teal-text)} .k-consistency{color:var(--ink-3)} .k-hierarchy{color:var(--prop)} .k-context{color:var(--exp)} .k-user-control{color:var(--rej)} .k-accessibility{color:var(--att-text)} .k-usability{color:var(--ink-2)}
+.fix-order{font-weight:600;color:var(--ink-2);margin:0 0 12px}
+table.ref{border-collapse:collapse;width:100%;margin:0 0 16px;font-size:var(--fs-sm)}
+.ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.ref thead th{color:var(--ink-3)}
+.ref tbody th{color:var(--ink);font-weight:600}
 dl.levels{margin:0 0 16px}
 .levels div{margin-bottom:8px}
 .levels dt{font-weight:700;color:var(--ink)}

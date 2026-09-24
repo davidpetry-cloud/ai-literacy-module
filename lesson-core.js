@@ -551,6 +551,107 @@ function wireChecklist(doc, stage, items) {
   form.addEventListener("submit", (e) => e.preventDefault());
 }
 
+/* ---------- screens (Lesson 6): use an AI-built screen, name what it breaks, decide what to fix first ---------- */
+
+export const PRINCIPLE_LABEL = {
+  "user-centricity": "User-centricity",
+  consistency: "Consistency",
+  hierarchy: "Hierarchy",
+  context: "Context",
+  "user-control": "User control",
+  accessibility: "Accessibility",
+  usability: "Usability",
+  fine: "Works well"
+};
+export const GOAL_LABEL = { learnability: "learnability", efficiency: "efficiency", memorability: "memorability", errors: "errors", satisfaction: "satisfaction" };
+export const HARM = ["high", "medium", "low"];
+export const REACH = ["few", "some", "all"];
+const HARM_LABEL = { high: "High harm", medium: "Medium harm", low: "Low harm" };
+const REACH_LABEL = { few: "Hits few", some: "Hits some", all: "Hits all" };
+
+/**
+ * The mock screen sits in a sandboxed frame: scripts may run so it can be used,
+ * but it has no access to this page, and its content is inline with no URLs.
+ * It is meant to be flawed, so it stays out of the page's own audit; the text
+ * version beside it carries the same parts in words.
+ */
+function screenExercise(screen, provenanceNote) {
+  return `<figure class="passage screen">
+        <iframe class="mock" title="${esc(screen.title)}: a made-up screen, as if built by AI" sandbox="allow-scripts" height="${Number(screen.height)}" srcdoc="${esc(screen.html)}"></iframe>
+        <details class="key textver"><summary>Text version of this screen</summary><ol>${screen.parts.map((p) => `<li>${esc(p.desc)}</li>`).join("")}</ol></details>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>
+      <h3 class="subhead">Name what each numbered part breaks, or say it works</h3>
+      <ol class="gaps">${screen.parts
+        .map((p, i) => {
+          const goal = p.goal ? ` <span class="goal">Goal that suffers: ${GOAL_LABEL[p.goal]}${p.also ? `, and ${GOAL_LABEL[p.also]}` : ""}.</span>` : "";
+          return `<li><p>${esc(p.label)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for part ${i + 1}</span></summary><p><b class="k k-${p.principle}">${PRINCIPLE_LABEL[p.principle]}</b>${goal} ${esc(p.note)}</p></details></li>`;
+        })
+        .join("")}</ol>`;
+}
+
+/** The problems in the order to fix them: worst harm first, then widest reach. */
+export function fixOrder(parts) {
+  return parts
+    .map((p, i) => ({ ...p, n: i + 1 }))
+    .filter((p) => p.principle !== "fine")
+    .sort((a, b) => HARM.indexOf(a.harm) - HARM.indexOf(b.harm) || REACH.indexOf(b.reach) - REACH.indexOf(a.reach) || a.n - b.n);
+}
+
+function fixLabel(parts, revealed) {
+  let label = "Grid with three rows, how bad the problem is: high, medium and low harm, and three columns, how many users it hits: few, some and all.";
+  if (!revealed) return `${label} Empty until revealed.`;
+  const placed = parts.map((p, i) => ({ ...p, n: i + 1 })).filter((p) => p.principle !== "fine");
+  label += " " + placed.map((p) => `Problem ${p.n} is ${p.harm} harm and hits ${p.reach} users.`).join(" ");
+  label += ` Fix in this order: ${fixOrder(parts).map((p) => p.n).join(", ")}. Fix first means the top right: high harm that hits everyone.`;
+  return label;
+}
+
+export function fixFirstGrid(parts, { revealed = false } = {}) {
+  const x0 = 150, y0 = 44, cw = 150, rh = 80, w = x0 + cw * REACH.length + 8, h = y0 + rh * HARM.length + 8;
+  const cells = [];
+  REACH.forEach((r, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${REACH_LABEL[r]}</text>`));
+  HARM.forEach((hm, r) => {
+    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${HARM_LABEL[hm]}</text>`);
+    REACH.forEach((_, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell"/>`));
+  });
+  const placed = parts.map((p, i) => ({ ...p, n: i + 1 })).filter((p) => p.principle !== "fine");
+  const marks = revealed
+    ? placed
+        .map((p) => {
+          const row = HARM.indexOf(p.harm), col = REACH.indexOf(p.reach);
+          const peers = placed.filter((q) => q.harm === p.harm && q.reach === p.reach);
+          const k = peers.indexOf(p);
+          const cx = x0 + col * cw + cw / 2 + (k - (peers.length - 1) / 2) * 36, cy = y0 + row * rh + rh / 2;
+          return `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${p.n}</text></g>`;
+        })
+        .join("")
+    : "";
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(fixLabel(parts, revealed))}">${cells.join("")}${marks}</svg>`;
+}
+
+/** Drawing plus table, as in the other figures, and the fix order in words once revealed. */
+export function fixFirstView(parts, { revealed = false } = {}) {
+  const placed = parts.map((p, i) => ({ ...p, n: i + 1 })).filter((p) => p.principle !== "fine");
+  const rows = HARM.map((hm) => ({
+    label: HARM_LABEL[hm],
+    cells: REACH.map((r) => (revealed ? placed.filter((p) => p.harm === hm && p.reach === r).map((p) => ({ word: "Problem", n: p.n })) : []))
+  }));
+  const order = revealed ? `<p class="fix-order">Fix in this order: ${fixOrder(parts).map((p) => `problem ${p.n}`).join(", ")}.</p>` : "";
+  return fixFirstGrid(parts, { revealed }) + gridTable(fixLabel(parts, revealed), "Harm", REACH.map((r) => REACH_LABEL[r]), rows) + order;
+}
+
+/** Reference tables for an abstract stage, such as goals and principles. */
+function refTables(tables = []) {
+  return tables
+    .map(
+      (t) => `<h3 class="subhead">${esc(t.title)}</h3><table class="ref"><thead><tr>${t.head.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${t.rows
+        .map((r) => `<tr><th scope="row">${esc(r[0])}</th>${r.slice(1).map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`)
+        .join("")}</tbody></table>`
+    )
+    .join("");
+}
+
 /* ---------- shared pieces ---------- */
 
 function say(lines) {
@@ -651,7 +752,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isPair = exercise === "prompt-pair";
   const isSignoff = exercise === "sign-offs";
   const isClassify = exercise === "classify";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify }[exercise];
+  const isScreen = exercise === "screen";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen }[exercise];
 
   header.dataset.lesson = lesson.n;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
@@ -668,7 +770,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isClassify
+      ? isScreen
+        ? `Written by ${esc(artefact.model)} for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
+        : isClassify
         ? `Written by ${esc(artefact.model)} for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
         : isSignoff
         ? `Written by ${esc(artefact.model)} for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
@@ -678,7 +782,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     ? pairExercise(artefact, provenanceNote)
     : isSignoff
       ? signoffExercise(artefact, provenanceNote, now)
-      : isClassify
+      : isScreen
+        ? screenExercise(artefact, provenanceNote)
+        : isClassify
         ? classifyExercise(artefact, null, provenanceNote)
         : passageExercise(artefact, provenanceNote);
   const scale = pictorial.figure === "check-scale";
@@ -686,7 +792,10 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
     : isSignoff
       ? signoffBuilder(artefact.items, now)
-      : isClassify
+      : isScreen
+        ? `<div class="figure" id="grid">${fixFirstView(artefact.parts)}</div>
+      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
+        : isClassify
         ? checklistBuilder(pictorial, artefact.items)
     : scale
       ? scaleFigure(artefact.uses)
@@ -728,6 +837,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
     <section class="block a" data-stage="abstract"><h2>Abstract · ${esc(abstract.title)} <span class="mins">${abstract.minutes} min</span></h2>
       <p class="stage-meta">${targets(abstract.targets)}</p>
+      ${refTables(abstract.tables)}
       <div class="claims">${abstract.principles.map((id) => claimCard(id, now)).join("")}</div>
       ${facil(abstract.moves, abstract.say, abstract.watch)}
     </section>
@@ -755,6 +865,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   if (isPair) wireCompare(doc, artefact);
   else if (isSignoff) wireSignoff(doc, now);
   else if (isClassify) wireChecklist(doc, pictorial, artefact.items);
+  else if (isScreen) wireGrid(doc, (revealed) => fixFirstView(artefact.parts, { revealed }));
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }

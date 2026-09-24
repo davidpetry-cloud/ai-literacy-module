@@ -36,6 +36,11 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.screen) {
+    // What the learner looks at and the text version read as passage text; the reveals are the key.
+    const parts = art.screen.parts;
+    return { passage: parts.flatMap((p) => [p.label, p.desc]), key: parts.map((p) => p.note) };
+  }
   if (art.classify) {
     // The request and answer read as passage text; the notes and the rule quoted from the request are the key.
     const c = art.classify;
@@ -71,7 +76,9 @@ export function textRoles(lesson, tracks) {
     learnerPrompts: [...lesson.warmup.items, ...lesson.check.items].map((i) => i.prompt)
       .concat(lesson.check.exit.rating, lesson.check.exit.open)
       // A checklist builder's options are learner text too.
-      .concat(lesson.stages.flatMap((s) => s.checks ?? []).flatMap((c) => [c.text, c.note]).filter(Boolean)),
+      .concat(lesson.stages.flatMap((s) => s.checks ?? []).flatMap((c) => [c.text, c.note]).filter(Boolean))
+      // Reference tables are for learners too; each cell is read as a sentence.
+      .concat(lesson.stages.flatMap((s) => s.tables ?? []).flatMap((t) => t.rows.flatMap((r) => r.slice(1).map((c) => (/[.?!]$/.test(c) ? c : `${c}.`))))),
     facilitator: [
       ...lesson.stages.flatMap((s) => [...s.moves, ...s.say.map(([, line]) => line), s.watch]),
       ...lesson.warmup.items.map((i) => i.expected),

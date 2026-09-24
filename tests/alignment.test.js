@@ -16,7 +16,9 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen"];
+const PRINCIPLES = ["user-centricity", "consistency", "hierarchy", "context", "user-control", "accessibility", "usability"];
+const GOALS = ["learnability", "efficiency", "memorability", "errors", "satisfaction"];
 const ERROR_KEYS = ["fabrication", "outdated", "bias", "misread", "fine"];
 const KINDS = ["fabrication", "outdated", "bias", "misread"];
 const SIGNOFF_KEYS = ["sound", "not-a-person", "no-basis", "wrong-signer", "lapsed"];
@@ -131,7 +133,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -250,6 +252,82 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each pair's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(pair(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "screen")("concrete stage: screen", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const screen = (t) => concrete.tracks[t].screen;
+
+    it("has a context, a titled screen and six numbered parts for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(screen(t).title, t).toBeTruthy();
+        expect(screen(t).parts, t).toHaveLength(6);
+        for (const [i, p] of screen(t).parts.entries()) {
+          for (const f of ["label", "desc", "note"]) expect(p[f], `${t} part ${i + 1} ${f}`).toBeTruthy();
+          // Every part is numbered on the screen, so learners can find it.
+          expect(screen(t).html, `${t} marks part ${i + 1}`).toContain(`<span class="n">${i + 1}</span>`);
+        }
+      }
+    });
+
+    it("records where every screen came from", () => {
+      for (const t of TRACK_IDS) {
+        expect(["planted", "captured"], t).toContain(screen(t).provenance);
+        expect(screen(t).model, t).toBeTruthy();
+      }
+    });
+
+    // The frame is meant to be flawed, and sits outside the page audit. What it may not do is reach out.
+    it("keeps every screen self-contained: no external URLs, no loaded scripts or styles", () => {
+      for (const t of TRACK_IDS) {
+        const html = screen(t).html;
+        expect(html, t).not.toMatch(/https?:\/\/|\/\/[a-z]/i);
+        expect(html, t).not.toMatch(/<script[^>]+src=|<link[^>]+href=|<img|@import/i);
+        expect(screen(t).height, t).toBeGreaterThan(200);
+      }
+    });
+
+    it("has five parts that each break a different principle, and one that works", () => {
+      for (const t of TRACK_IDS) {
+        const keys = screen(t).parts.map((p) => p.principle);
+        expect(keys.filter((k) => k === "fine"), t).toHaveLength(1);
+        const broken = keys.filter((k) => k !== "fine");
+        expect(new Set(broken).size, t).toBe(5);
+        for (const k of broken) expect(PRINCIPLES, `${t} ${k}`).toContain(k);
+      }
+    });
+
+    it("covers every principle across the three tracks", () => {
+      const used = new Set(TRACK_IDS.flatMap((t) => screen(t).parts.map((p) => p.principle)));
+      for (const p of PRINCIPLES) expect(used, p).toContain(p);
+    });
+
+    it("names a goal, a harm and a reach for every problem, and none for the part that works", () => {
+      for (const t of TRACK_IDS) {
+        for (const p of screen(t).parts) {
+          if (p.principle === "fine") {
+            for (const f of ["goal", "also", "harm", "reach"]) expect(p[f], `${t} fine ${f}`).toBeUndefined();
+            continue;
+          }
+          expect(GOALS, `${t} ${p.label}`).toContain(p.goal);
+          if (p.also) expect(GOALS.filter((g) => g !== p.goal), `${t} ${p.label}`).toContain(p.also);
+          expect(["high", "medium", "low"], `${t} ${p.label}`).toContain(p.harm);
+          expect(["few", "some", "all"], `${t} ${p.label}`).toContain(p.reach);
+        }
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const fine = TRACK_IDS.map((t) => screen(t).parts.findIndex((p) => p.principle === "fine"));
+      expect(new Set(fine).size, "the part that works is in the same place in every track").toBe(TRACK_IDS.length);
+      const orders = TRACK_IDS.map((t) => screen(t).parts.map((p) => p.principle).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+    });
+
+    it("puts each screen's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(screen(t).claim);
     });
   });
 
