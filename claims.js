@@ -52,10 +52,18 @@ export const CLAIMS = {
     },
     "fluency-not-evidence": {
     text: "How confident an AI output sounds is not a reliable signal of whether it is correct.",
-    attestation: proposedBy(
-      "Models produce correct and incorrect statements in the same register; Lesson 1's passages are built to show it. Stated as 'not a reliable signal' rather than 'no signal', which would overclaim."
-    )
-  },
+    attestation: {
+    source: "practitioner",
+    by: "David Petry",
+    role: "Course author and UX lead",
+    basis:  "Checked against Xiong et al. (2024), ICLR, 'Can LLMs Express Their Uncertainty?': verbalized confidence is overconfident, with many incorrect answers at high confidence; supports 'not a reliable signal', not 'no signal'.",
+    verified: "2026-09-24",
+    ttlDays: 730,
+      supersedes: { source: "model", model: 
+    "claude-opus-5-5" },
+      }
+    },
+  
   "risk-zones": {
     text: "AI outputs are most likely to be wrong on specific numbers and dates, on citations and quotations, and on recent or niche information.",
     attestation: proposedBy(
