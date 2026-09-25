@@ -15,6 +15,10 @@ import lesson05 from "./lessons/lesson-05.js";
 import lesson06 from "./lessons/lesson-06.js";
 import lesson07 from "./lessons/lesson-07.js";
 import lesson08 from "./lessons/lesson-08.js";
+import lesson09 from "./lessons/lesson-09.js";
+import lesson10 from "./lessons/lesson-10.js";
+import lesson11 from "./lessons/lesson-11.js";
+import lesson12 from "./lessons/lesson-12.js";
 
 /** One core, three contexts. Only the concrete stage and ARCS relevance vary. */
 export const TRACKS = {
@@ -67,9 +71,9 @@ export const EVALUATION = {
 export const COURSE = {
   title: "AI Literacy — Using AI Well",
   framing:
-    "Eight lessons on working with AI the way a careful professional works with any source: knowing what it is, asking it well, checking what it says, deciding who signs off, judging the screens it builds, and keeping people at the center.",
+    "Twelve lessons on working with AI the way a careful professional works with any source: knowing what it is, asking it well, checking what it says, deciding who signs off, judging the screens it builds, keeping people at the center, and recognizing manipulation, from people and from AI.",
   minutes: 45,
-  lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08]
+  lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09, lesson10, lesson11, lesson12]
 };
 
 export function getLesson(n) {

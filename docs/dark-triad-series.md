@@ -1,7 +1,10 @@
 # Recognising exploitative behaviour (the Dark Triad). Series plan
 
-**Status:** direction agreed 2026-09-25; nothing designed beyond draft
-objectives. Each lesson goes through the backward-design gate like any other:
+**Status:** objectives approved by David 2026-09-25. The series is **Lessons
+9–12 of this course** (his choice), each self-contained so it can move to its
+own module later. Three objectives were added or reworded to his direction the
+same day (9.4, 10.3, 12.3) and await his confirmation of the wording; the files
+are `lessons/lesson-09.js` to `lesson-12.js`, all `ready: false`. Each lesson goes through the backward-design gate like any other:
 objectives first, approved by David, then assessments, then activities.
 
 **David's direction (2026-09-25):** teach people to recognise behaviour rooted in
@@ -87,15 +90,60 @@ The seatbelt picture is a candidate for the series' ARCS attention hook.
 All four sources were checked to exist on 2026-09-25. Each finding the lessons
 use becomes a `source: "model"` claim for David to attest.
 
-## Draft objectives, first lesson
+## Objectives (approved 2026-09-25; new wording marked)
 
-- D.1 *(understand)*: Describe the three Dark Triad traits as research measures
-  on a scale, not diagnoses.
-- D.2 *(analyze)*: Tell exploitative patterns apart from ordinary conflict in a
-  scenario (for example flattery that turns into demands, taking credit,
-  testing boundaries, cutting someone off from others).
-- D.3 *(apply)*: Choose a protective response, such as a boundary, a written
-  record, or a trusted person or reporting route, without labelling the person.
+**Lesson 9 · What the Dark Triad is, and isn't**
+- 9.1 *(understand)*: Describe the three Dark Triad traits as research
+  measures on a scale, not diagnoses.
+- 9.2 *(understand)*: Explain how people high in these traits tend to get
+  others to do what they want, using the research.
+- 9.3 *(analyze)*: Tell a research finding about a group apart from a
+  judgement about one person.
+- 9.4 *(understand)*, **new**: Explain what research says about where these
+  traits come from, such as genes, upbringing and life events, and how they
+  link to addiction.
+
+**Lesson 10 · Spot the pattern, in person and online**
+- 10.1 *(analyze)*: Tell the difference between being used and an ordinary
+  disagreement, face to face and online.
+- 10.2 *(analyze)*: Find a pattern that repeats across situations, instead of
+  judging from one incident. (The one idea borrowed from the FBI's BAU.)
+- 10.3 *(evaluate)*, **reworded**: Trust how a person makes you feel over time
+  as a signal, and check it against what they actually do.
+
+**Lesson 11 · When AI manipulates**
+- 11.1 *(understand)*: Explain three ways an AI ends up manipulating people: it
+  is rewarded for it, it learns to please, and it copies human writing.
+- 11.2 *(analyze)*: Spot manipulation in an AI chat, such as flattery, guilt
+  when you leave, or pressure to stay.
+- 11.3 *(evaluate)*: Judge who benefits from a manipulative AI feature, and who
+  is responsible for it.
+
+**Lesson 12 · Protect yourself and your gifts**
+- 12.1 *(apply)*: Choose a safe response, such as a boundary, a written record,
+  or a trusted person, without labeling anyone.
+- 12.2 *(create)*: Plan how to protect your own work and ideas from someone who
+  takes credit for them or uses them.
+- 12.3 *(apply)*, **new**: Recognize gaslighting, and use a written record and a
+  trusted person to hold on to what really happened.
+
+## David's additions (2026-09-25), with the evidence
+
+| Addition | Evidence (checked 2026-09-25) | How the lessons use it |
+|---|---|---|
+| Trust your intuition: how does the person make you feel? | Lay raters picked up interpersonal features of psychopathy from 5–10 second clips, moderately (Fowler, Lilienfeld & Patrick, 2009, *Psychological Assessment* 21(1), 68–78). But narcissists are liked **more** at first sight, through grooming and confident display, and the charm fades (Back, Schmukle & Egloff, 2010, *JPSP* 98, 132–145). | 10.3: the feeling is a real signal, strongest **over time**. Notice feeling confused, guilty, drained or on edge around someone. A great first impression isn't proof either way. |
+| Genes and environment | Twin study: all three traits show genetic and environmental influence; heritabilities .31 to .72; Machiavellianism is the most shaped by environment (Vernon et al., 2008, *Personality and Individual Differences* 44, 445–452). | 9.4: traits come from both. That explains behaviour; it doesn't excuse it, and it isn't destiny. |
+| Addiction | Review of links between the Dark Triad and substance and behavioural addictions (Jauk & Dieterich, 2019, *Frontiers in Psychiatry* 10:662). | 9.4: the traits are **linked** to addiction, worded as a link, not a cause. Ties back to Lesson 7's addictive design. |
+| Gaslighting | Gaslighting is abuse aimed at making a person seem or feel "crazy", and it draws on stereotypes and unequal power (Sweet, 2019, *American Sociological Review* 84(5), 851–875). | 12.3: a written record and a trusted person help you hold on to what really happened. |
+| Dealing with personality disorders | Narcissistic and antisocial personality disorders are clinical diagnoses made by trained clinicians. The Dark Triad is subclinical, measured in ordinary people (Paulhus & Williams, 2002). | 9.1 and 12.1: the lessons say the difference plainly. The strategies (boundaries, records, trusted people, limiting contact, professional help) work on the behaviour, diagnosed or not. Learners never diagnose. |
+
+**Students track:** same objectives; the scenarios are about the learner's own
+safety and choices (grooming, peer pressure, online exploitation), and the
+trusted person is an adult. No scenario asks a student to judge a classmate.
+
+**Evidence still to find before S2 and S4 are designed:** research on specific
+exploitative behaviours (the trait studies alone don't list them), and
+safeguarding guidance for the students track.
 
 **The AI link:** exploiters now use AI too: scams, cloned voices, and
 "companion" apps built to win trust. That keeps the series inside AI literacy.

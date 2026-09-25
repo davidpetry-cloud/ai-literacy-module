@@ -34,7 +34,7 @@ const contrast = (theme, a, b) => {
   const [x, y] = [lum(hexIn(theme, a)), lum(hexIn(theme, b))];
   return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 };
-const LESSONS = Object.keys(light).filter((t) => /^l\d$/.test(t)).map((t) => `--${t}`);
+const LESSONS = Object.keys(light).filter((t) => /^l\d+$/.test(t)).map((t) => `--${t}`);
 const LIGHT_SURFACES = ["--card", "--paper", "--peri-pale", "--amber-pale", "--rose-pale"];
 
 // Which text colours may sit on which surfaces. Adding a pairing here is a

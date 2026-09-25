@@ -4,7 +4,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-An eight-lesson AI literacy course for three audiences — educators, professionals
+A twelve-lesson AI literacy course (Lessons 9–12 in design) for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -213,6 +213,7 @@ Sonnet worked well.
 | 06 | done | built on Opus: `screen` exercise (a made-up AI-built screen in a sandboxed `iframe`, with a text version) and the `fix-first` grid (`fixFirstGrid`, `fixOrder` in `lesson-core.js`); abstract stages can carry reference `tables` |
 | 07 | done | built on Opus: `audit` exercise (Lesson 6's sandboxed screen with WCAG and pattern keys) and the `contrast` checker (`checkContrast`, `contrastRatio`, `nearestPassing` in `lesson-core.js`); its worked example audits this site, and each row is checked in `tests/ui.test.js` |
 | 08 | done | built on Opus: `judge` exercise (a made-up AI product page, keep / change / stop and what it touches) and the `control` grid (`controlGrid`, `controlView` in `lesson-core.js`), after Shneiderman's human control × automation framework |
+| 09–12 | design | the Dark Triad series (`docs/dark-triad-series.md`): objectives only, `ready: false`. Recognising behaviour, not labelling people |
 
 One lesson per session.
 
