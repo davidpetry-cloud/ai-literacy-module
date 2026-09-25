@@ -498,5 +498,65 @@ export const CLAIMS = {
     attestation: proposedBy(
       "The post is made up. Check sentence 2 against Paulhus and Williams (2002). Sentence 3 is wrong on two counts: the traits are subclinical, and disorders are diagnosed by clinicians, not from posts. The notes steer students away from labeling people they know."
     )
+  },
+  "coercive-control-pattern": {
+    text: "Controlling abuse is best understood as a pattern of behavior over time, such as isolating someone, monitoring them, controlling their money or independence, threats and humiliation, rather than as single incidents. The law in England defines the offence by behavior that is repeated or continuous.",
+    attestation: proposedBy(
+      "Stark (2007), Coercive Control: How Men Entrap Women in Personal Life, Oxford University Press. Home Office (April 2023), Controlling or Coercive Behaviour Statutory Guidance Framework, under the Serious Crime Act 2015, section 76 ('repeatedly or continuously'); it lists isolating, exploiting, depriving of independence, threats, humiliation and intimidation, and counts online messages and tracking as evidence."
+    )
+  },
+  "grooming-stages": {
+    text: "Grooming tends to follow stages: choosing a target, gaining access and isolating them, building trust with attention, gifts and secrets, then pushing boundaries step by step. Early steps can look innocent, and the same tactics, including flattery, bribes and threats, are used online.",
+    attestation: proposedBy(
+      "Winters and Jeglic (2017), 'Stages of sexual grooming: Recognizing potentially predatory behaviors of child molesters', Deviant Behavior 38(6), 724-733. Whittle, Hamilton-Giachritsis, Beech and Collings (2013), 'A review of online grooming: Characteristics and concerns', Aggression and Violent Behavior 18(1), 62-70."
+    )
+  },
+  "scam-stages": {
+    text: "Romance and trust scammers usually build a relationship and trust before they ask for money, and a small early 'win' can keep people in the scam.",
+    attestation: proposedBy(
+      "Whitty (2013), 'The Scammers Persuasive Techniques Model: Development of a stage model to explain the online dating romance scam', British Journal of Criminology 53(4), 665-684: interviews with 20 victims; grooming before any financial request; the near-win phenomenon."
+    )
+  },
+  "dark-tetrad": {
+    text: "Some researchers add a fourth trait, everyday sadism (enjoying others' pain), to the Dark Triad, making the Dark Tetrad. In lab studies, people higher in it chose to hurt others more, even when it took effort.",
+    attestation: proposedBy(
+      "Buckels, Jones and Paulhus (2013), 'Behavioral confirmation of everyday sadism', Psychological Science 24(11), 2201-2209 (a bug-killing task, and working for the chance to hurt an innocent person). Paulhus (2014), 'Toward a taxonomy of dark personalities', Current Directions in Psychological Science 23(6), 421-426. Added at David's request (2026-09-25)."
+    )
+  },
+  "online-harm-traits": {
+    text: "The dark traits show up online too: trolling is linked to sadism, psychopathy and Machiavellianism, with sadism the strongest predictor, and cyberbullying is linked to all three Dark Triad traits, with psychopathy the strongest.",
+    attestation: proposedBy(
+      "Buckels, Trapnell and Paulhus (2014), 'Trolls just want to have fun', Personality and Individual Differences 67, 97-102 (1,215 respondents). Goodboy and Martin (2015), 'The personality profile of a cyberbully: Examining the Dark Triad', Computers in Human Behavior 49, 1-4 (227 college students). Correlational, self-report."
+    )
+  },
+  "work-harm-traits": {
+    text: "Across 245 samples, harmful behavior at work (counterproductive work behavior) rose with all three Dark Triad traits.",
+    attestation: proposedBy(
+      "O'Boyle, Forsyth, Banks and McDaniel (2012), 'A meta-analysis of the Dark Triad and work behavior: A social exchange perspective', Journal of Applied Psychology 97(3), 557-579 (245 samples, N = 43,907). The links were moderated by context such as authority and culture."
+    )
+  },
+  "gut-feeling-evidence": {
+    text: "People can pick up some signs of dark traits quickly: untrained raters detected features of psychopathy from clips of a few seconds. But first impressions can mislead, because people high in narcissism tend to be liked more at first meeting.",
+    attestation: proposedBy(
+      "Fowler, Lilienfeld and Patrick (2009), 'Detecting psychopathy from thin slices of behavior', Psychological Assessment 21(1), 68-78 (moderate accuracy; inmate sample). Back, Schmukle and Egloff (2010), 'Why are narcissists so charming at first sight?', Journal of Personality and Social Psychology 98, 132-145. Supports 10.3: trust the feeling as a signal, strongest over time. Suggested by David (2026-09-25)."
+    )
+  },
+  "l10-key-educators": {
+    text: "The answer key for the Lesson 10 educators thread is reasonable: each moment's label (ordinary or warning sign) and pattern follow from the research on controlling behavior.",
+    attestation: proposedBy(
+      "The thread is made up. Check weeks 4 to 6 against the Home Office guidance (isolating, checking, threats) and week 2 against the flattery-then-request pattern. Judgements, not facts: attest that they are reasonable."
+    )
+  },
+  "l10-key-professionals": {
+    text: "The answer key for the Lesson 10 professionals thread is reasonable: each moment's label (ordinary or warning sign) and pattern follow from the research on trust scams and controlling behavior.",
+    attestation: proposedBy(
+      "The thread is made up. Check the order (secrecy, access to money, trust then a request, a deadline) against Whitty (2013)."
+    )
+  },
+  "l10-key-students": {
+    text: "The answer key for the Lesson 10 students thread is reasonable: each moment's label (ordinary or warning sign) and pattern follow from the research on grooming, and the last moment directs the learner to a trusted adult.",
+    attestation: proposedBy(
+      "The thread is made up and stops before any abuse. Check the steps (flattery and gifts, secrecy from parents, moving to a private app, a request for a private photo) against Winters and Jeglic (2017), Whittle et al. (2013) and the eSafety Commissioner's advice for young people. The ordinary moments model open, caring adults and peers."
+    )
   }
 };

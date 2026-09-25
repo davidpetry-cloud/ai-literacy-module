@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1081,6 +1081,76 @@ describe("lesson 9: one core across tracks, and the overlap figure", () => {
   });
 });
 
+const lesson10 = getLesson(10);
+const lesson10Doc = (track) => lessonDoc(track, lesson10);
+const threadData = (track) => lesson10.stages[0].tracks[track].thread;
+
+describe.each(TRACK_IDS)("lesson 10, %s track", (track) => {
+  const doc = lesson10Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows six dated moments with where they happened, each with a closed reveal in words", () => {
+    const items = doc.querySelectorAll('[data-stage="concrete"] .thread li');
+    expect(items).toHaveLength(6);
+    threadData(track).moments.forEach((m, i) => {
+      expect(items[i].querySelector(".when").textContent).toBe(`${m.when} · ${m.where === "online" ? "Online" : "Face to face"}`);
+      expect(items[i].querySelector("details").open).toBe(false);
+      expect(items[i].querySelector(".k").textContent).toBe(THREAD_LABEL[m.key]);
+      if (m.key === "warning") expect(items[i].querySelector(".goal").textContent).toBe(`Pattern: ${PATTERN_LABEL[m.pattern]}.`);
+      else expect(items[i].querySelector(".goal")).toBeNull();
+    });
+    expect(doc.querySelector(".thread figcaption").textContent).toContain("made up");
+  });
+
+  it("puts the safeguarding reminder first in the facilitator's moves", () => {
+    expect(doc.querySelector('[data-stage="concrete"] .moves li').textContent).toContain("safeguarding route");
+  });
+
+  it("describes the empty timeline, then places every moment and feeling, and can hide it again", () => {
+    const d = lesson10Doc(track);
+    expect(d.querySelector("#grid svg").getAttribute("aria-label")).toContain("Empty until revealed");
+    d.querySelector("#reveal-grid").click();
+    const label = d.querySelector("#grid svg").getAttribute("aria-label");
+    const ms = threadData(track).moments;
+    expect(d.querySelectorAll("#grid svg .g-mark")).toHaveLength(ms.filter((m) => m.key === "warning").length);
+    expect(d.querySelectorAll("#grid svg .g-plain")).toHaveLength(ms.filter((m) => m.key === "ordinary").length);
+    ms.forEach((m) => expect(label).toContain(`Felt ${m.feeling.toLowerCase()}.`));
+    expect(label).toContain("the repeat is the pattern");
+    expect(d.querySelector("#grid table caption").textContent).toBe(label);
+    d.querySelector("#reveal-grid").click();
+    expect(d.querySelectorAll("#grid .g-mark")).toHaveLength(0);
+  });
+
+  it("shows the six patterns and the Dark Tetrad as reference tables", () => {
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect(tables).toHaveLength(2);
+    expect(tables[0].querySelectorAll("tbody tr")).toHaveLength(6);
+    expect([...tables[1].querySelectorAll("tbody th")].map((t) => t.textContent)).toEqual(["Narcissism", "Machiavellianism", "Psychopathy", "Everyday sadism"]);
+  });
+});
+
+describe("lesson 10: one core across tracks", () => {
+  const html = (t, sel) => lesson10Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("keeps the timeline's controls, headings and script the same; only the moments change", () => {
+    const shared = (t) => {
+      const stage = lesson10Doc(t).querySelector('[data-stage="pictorial"]');
+      return ["#reveal-grid", ".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)
+        .concat([...stage.querySelectorAll("h2, h3")].map((h) => h.textContent)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -1096,7 +1166,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 6 (${t})`, lesson6Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 7 (${t})`, lesson7Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 8 (${t})`, lesson8Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 9 (${t})`, lesson9Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 9 (${t})`, lesson9Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 10 (${t})`, lesson10Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -1113,7 +1184,8 @@ describe("page structure", () => {
     ["lesson 6", lesson6Doc(TRACK_IDS[0])],
     ["lesson 7", lesson7Doc(TRACK_IDS[0])],
     ["lesson 8", lesson8Doc(TRACK_IDS[0])],
-    ["lesson 9", lesson9Doc(TRACK_IDS[0])]
+    ["lesson 9", lesson9Doc(TRACK_IDS[0])],
+    ["lesson 10", lesson10Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
@@ -1254,7 +1326,7 @@ describe("course search on the hub", () => {
     expect(index.filter((e) => e.kind === "Lesson")).toHaveLength(ready.length);
     expect(index.filter((e) => e.kind === "Claim")).toHaveLength(Object.keys(CLAIMS).length);
     expect(index.filter((e) => e.kind === "Objective")).toHaveLength(ready.reduce((n, l) => n + l.objectives.length, 0));
-    for (const e of index) expect(e.href, e.where).toMatch(/^(lesson\.html\?n=\d&track=students(#[a-z-]+)?|#claim-[a-z0-9-]+)$/);
+    for (const e of index) expect(e.href, e.where).toMatch(/^(lesson\.html\?n=\d+&track=students(#[a-z-]+)?|#claim-[a-z0-9-]+)$/);
   });
 
   it("finds by every word in any order, ranks title matches first, and links to the right place", () => {

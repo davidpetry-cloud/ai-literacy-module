@@ -197,7 +197,7 @@ three answer keys.
 safety and choices (grooming, peer pressure, online exploitation), and the
 trusted person is an adult. No scenario asks a student to judge a classmate.
 
-## Lesson 10 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+## Lesson 10 design (approved by David and built on Opus, 2026-09-25)
 
 **Dark Tetrad: yes** (David, 2026-09-25). Lesson 10 adds everyday sadism as a
 fourth trait, from Buckels, Jones & Paulhus (2013), "Behavioral confirmation
@@ -254,6 +254,16 @@ this.)
 your school's or organization's safeguarding route before you teach it.
 
 **Model:** Opus, for the new exercise and figure.
+
+**As built:** the `thread` exercise and the `pattern` figure (`patternTimeline`,
+`patternView`, `THREAD_LABEL`, `PATTERN_LABEL` in `lesson-core.js`). Warning
+signs are filled circles and ordinary moments open, dashed ones, so shape as well
+as words tells them apart. Feelings stay at nine letters or fewer (tested) so
+they don't collide under the timeline. The tests also require that the students
+thread ends with a trusted adult and "not your fault". Ten claims proposed:
+`coercive-control-pattern`, `grooming-stages`, `scam-stages`, `dark-tetrad`,
+`online-harm-traits`, `work-harm-traits`, `gut-feeling-evidence`, and the three
+answer keys.
 
 ## Research for Lessons 10 and 12 (2026-09-25)
 

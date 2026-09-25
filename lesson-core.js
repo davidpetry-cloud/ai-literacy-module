@@ -828,6 +828,80 @@ function wireOverlap(doc, data) {
   });
 }
 
+/* ---------- thread (Lesson 10): ordinary or a warning sign, and the pattern over time ---------- */
+
+export const THREAD_LABEL = { ordinary: "Ordinary", warning: "Warning sign" };
+export const PATTERN_LABEL = {
+  flattery: "Flattery or gifts",
+  secrecy: "Secrecy",
+  isolating: "Cutting you off",
+  checking: "Checking up on you",
+  pressure: "Pressure or threats",
+  request: "Asking for something"
+};
+export const SETTINGS = ["face to face", "online"];
+const SETTING_LABEL = { "face to face": "Face to face", online: "Online" };
+
+function threadReveal(m) {
+  const pattern = m.key === "warning" ? ` <span class="goal">Pattern: ${PATTERN_LABEL[m.pattern]}.</span>` : "";
+  return `<b class="k k-${m.key}">${THREAD_LABEL[m.key]}</b>${pattern} ${esc(m.note)}`;
+}
+
+function threadExercise(thread, provenanceNote) {
+  return `<figure class="passage thread">
+        <ol>${thread.moments
+          .map((m, i) => `<li><p class="when">${esc(m.when)} · ${SETTING_LABEL[m.where]}</p><p>${esc(m.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for moment ${i + 1}</span></summary><p>${threadReveal(m)}</p></details></li>`)
+          .join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>`;
+}
+
+function patternLabel(moments, revealed) {
+  let label = `Timeline with two rows, face to face and online, and ${moments.length} weeks across.`;
+  if (!revealed) return `${label} Empty until revealed.`;
+  label += " " + moments.map((m, i) => `Week ${i + 1}, ${m.where}: ${m.key === "warning" ? `warning sign, ${PATTERN_LABEL[m.pattern].toLowerCase()}` : "ordinary"}. Felt ${m.feeling.toLowerCase()}.`).join(" ");
+  const warn = moments.filter((m) => m.key === "warning");
+  label += ` ${warn.length} warning signs across ${new Set(warn.map((m) => m.where)).size === 2 ? "both settings" : "one setting"}: one moment is a moment, the repeat is the pattern.`;
+  return label;
+}
+
+export function patternTimeline(moments, { revealed = false } = {}) {
+  const x0 = 140, cw = 84, y0 = 40, rh = 70, w = x0 + cw * moments.length + 8, h = y0 + rh * 2 + 50;
+  const parts = [];
+  moments.forEach((_, i) => parts.push(`<text x="${x0 + i * cw + cw / 2}" y="26" class="g-col">Week ${i + 1}</text>`));
+  SETTINGS.forEach((st, r) => {
+    parts.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${SETTING_LABEL[st]}</text>`);
+    moments.forEach((_, c) => parts.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell"/>`));
+  });
+  parts.push(`<text x="${x0 - 12}" y="${y0 + rh * 2 + 32}" class="g-row">Felt</text>`);
+  if (revealed) {
+    moments.forEach((m, i) => {
+      const cx = x0 + i * cw + cw / 2, cy = y0 + SETTINGS.indexOf(m.where) * rh + rh / 2;
+      parts.push(
+        m.key === "warning"
+          ? `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${i + 1}</text></g>`
+          : `<g class="g-plain"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${i + 1}</text></g>`
+      );
+      parts.push(`<text x="${cx}" y="${y0 + rh * 2 + 32}" class="g-col g-feel">${esc(m.feeling)}</text>`);
+    });
+  }
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(patternLabel(moments, revealed))}">${parts.join("")}</svg>`;
+}
+
+/** Drawing plus table, as in the other figures, and the point in words once revealed. */
+export function patternView(moments, { revealed = false } = {}) {
+  const cell = (m, i, st) => (revealed && m.where === st ? `<span class="tmark"><span class="sr">Moment </span>${i + 1}</span> ${m.key === "warning" ? PATTERN_LABEL[m.pattern] : THREAD_LABEL.ordinary}` : "");
+  const table = `<table class="grid-alt"><caption class="sr">${esc(patternLabel(moments, revealed))}</caption><thead><tr><th scope="col">Where</th>${moments
+    .map((_, i) => `<th scope="col">Week ${i + 1}</th>`)
+    .join("")}</tr></thead><tbody>${SETTINGS.map((st) => `<tr><th scope="row">${SETTING_LABEL[st]}</th>${moments.map((m, i) => `<td>${cell(m, i, st)}</td>`).join("")}</tr>`).join("")}<tr><th scope="row">Felt</th>${moments
+    .map((m) => `<td>${revealed ? esc(m.feeling) : ""}</td>`)
+    .join("")}</tr></tbody></table>`;
+  const note = revealed
+    ? `<p class="fix-order">Filled circles are warning signs; open circles are ordinary moments. One moment is a moment. The repeat, in more than one place, is the pattern, and the feelings got worse along with it.</p>`
+    : "";
+  return patternTimeline(moments, { revealed }) + table + note;
+}
+
 /* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
 
 export const CONTRAST_LEVELS = [
@@ -1089,7 +1163,7 @@ export function claimLessons() {
   const out = {};
   for (const l of COURSE.lessons.filter((x) => x.ready)) {
     for (const s of l.stages) {
-      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen)?.claim)];
+      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread)?.claim)];
       for (const id of ids.filter(Boolean)) if (!(out[id] ??= []).includes(l.n)) out[id].push(l.n);
     }
   }
@@ -1223,7 +1297,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isScreen = exercise === "screen";
   const isAudit = exercise === "audit";
   const isJudge = exercise === "judge";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen }[exercise];
+  const isThread = exercise === "thread";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread }[exercise];
 
   header.dataset.lesson = lesson.n;
   // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
@@ -1242,7 +1317,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isJudge
+      ? isThread
+        ? `Written by ${esc(artefact.model)} for this lesson. The people and what happens are made up.`
+        : isJudge
         ? `Written by ${esc(artefact.model)} for this lesson. The product, its features and its company are made up.`
         : isScreen || isAudit
         ? `Written by ${esc(artefact.model)} for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
@@ -1260,6 +1337,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? screenExercise(artefact, provenanceNote)
         : isAudit
         ? screenExercise(artefact, provenanceNote, auditReveal, "For each numbered part: an accessibility failure, an addictive pattern, or it works")
+        : isThread
+        ? threadExercise(artefact, provenanceNote)
         : isJudge
         ? screenExercise(artefact, provenanceNote, judgeReveal, "For each numbered feature: keep, change or stop, and what it touches most")
         : isClassify
@@ -1273,6 +1352,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ? signoffBuilder(artefact.items, now)
       : isAudit
         ? contrastChecker(artefact.contrast)
+        : isThread
+        ? `<div class="figure" id="grid">${patternView(artefact.moments)}</div>
+      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
         : isJudge
         ? `<div class="figure" id="grid">${controlView(artefact.parts)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
@@ -1354,6 +1436,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isScreen) wireGrid(doc, (revealed) => fixFirstView(artefact.parts, { revealed }));
   else if (isAudit) wireContrast(doc, artefact.contrast);
   else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
+  else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }));
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));

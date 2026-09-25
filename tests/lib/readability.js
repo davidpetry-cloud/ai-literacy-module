@@ -36,6 +36,10 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.thread) {
+    const ms = art.thread.moments;
+    return { passage: ms.map((m) => m.text), key: ms.map((m) => m.note) };
+  }
   if (art.screen) {
     // What the learner looks at and the text version read as passage text; the reveals are the key.
     const parts = art.screen.parts;

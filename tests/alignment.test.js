@@ -16,7 +16,7 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread"];
 const VERDICTS = ["keep", "change", "stop"];
 const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
@@ -137,7 +137,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -500,6 +500,68 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each page's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(screen(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "thread")("concrete stage: thread", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const thread = (t) => concrete.tracks[t].thread;
+    const PATTERNS = ["flattery", "secrecy", "isolating", "checking", "pressure", "request"];
+
+    it("has a context and six dated moments for every track, with where they happened", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(thread(t).moments, t).toHaveLength(6);
+        for (const m of thread(t).moments) {
+          for (const f of ["when", "text", "note", "feeling"]) expect(m[f], `${t} ${f}`).toBeTruthy();
+          expect(["face to face", "online"], t).toContain(m.where);
+          // Feelings sit side by side under the timeline, so each stays short enough not to collide.
+          expect(m.feeling.length, `${t} ${m.feeling}`).toBeLessThanOrEqual(9);
+        }
+        expect(["planted", "captured"], t).toContain(thread(t).provenance);
+        expect(thread(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("keys every moment ordinary or warning, and names a pattern only for a warning", () => {
+      for (const t of TRACK_IDS) {
+        for (const m of thread(t).moments) {
+          expect(["ordinary", "warning"], m.text).toContain(m.key);
+          if (m.key === "warning") expect(PATTERNS, m.text).toContain(m.pattern);
+          else expect(m.pattern, m.text).toBeUndefined();
+        }
+      }
+    });
+
+    it("has at least two ordinary moments and three warning signs per track, so learners tell them apart", () => {
+      for (const t of TRACK_IDS) {
+        const keys = thread(t).moments.map((m) => m.key);
+        expect(keys.filter((k) => k === "ordinary").length, t).toBeGreaterThanOrEqual(2);
+        expect(keys.filter((k) => k === "warning").length, t).toBeGreaterThanOrEqual(3);
+      }
+    });
+
+    it("shows the patterns face to face and online, across the tracks", () => {
+      const warn = TRACK_IDS.flatMap((t) => thread(t).moments.filter((m) => m.key === "warning"));
+      expect(new Set(warn.map((m) => m.where))).toEqual(new Set(["face to face", "online"]));
+      for (const t of TRACK_IDS) expect(new Set(thread(t).moments.map((m) => m.where)).size, t).toBe(2);
+      expect(new Set(warn.map((m) => m.pattern)).size).toBeGreaterThanOrEqual(5);
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => thread(t).moments.map((m) => m.key).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+    });
+
+    // Safeguarding: the students track always ends by sending the learner to a trusted adult.
+    it("ends the students thread with a trusted adult, and says it isn't their fault", () => {
+      const last = thread("students").moments.at(-1).note;
+      expect(last).toMatch(/trusted adult/);
+      expect(last).toMatch(/not your fault/);
+    });
+
+    it("puts each thread's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(thread(t).claim);
     });
   });
 
