@@ -974,6 +974,114 @@ export function gainsView(chat, { revealed = false } = {}) {
   return gainsFigure(chat, { revealed }) + table + note;
 }
 
+/* ---------- respond and plan (Lesson 12): safe or risky, and a plan with a record, support and a boundary ---------- */
+
+export const RESPONSE_LABEL = { safe: "Safe", risky: "Risky" };
+export const NEEDS = ["record", "support", "boundary"];
+const NEED_LABEL = { record: "A record", support: "Support", boundary: "A boundary" };
+const NEED_PLAIN = { record: "a record", support: "support", boundary: "a boundary" };
+
+function respondExercise(respond, provenanceNote) {
+  return `<figure class="passage respond">
+        <ol class="situations">${respond.situations
+          .map(
+            (sit, i) => `<li><p class="situation">${esc(sit.text)}</p><ol class="responses">${sit.responses
+              .map(
+                (r, j) => `<li><p>${esc(r.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for situation ${i + 1}, response ${String.fromCharCode(97 + j)}</span></summary><p><b class="k k-${r.key}">${RESPONSE_LABEL[r.key]}</b> ${esc(r.note)}</p></details></li>`
+              )
+              .join("")}</ol></li>`
+          )
+          .join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>
+      <h3 class="subhead">For each response: safe or risky, and why?</h3>`;
+}
+
+export function planStatus(ids, steps) {
+  const chosen = steps.map((st, i) => ({ ...st, n: i + 1 })).filter((st) => ids.includes(st.id));
+  const coverBy = Object.fromEntries(NEEDS.map((k) => [k, chosen.filter((st) => st.meets.includes(k)).map((st) => st.n)]));
+  const covered = NEEDS.filter((k) => coverBy[k].length), gaps = NEEDS.filter((k) => !coverBy[k].length);
+  const weak = chosen.filter((st) => !st.meets.length);
+  let text;
+  if (!chosen.length) text = "Nothing ticked yet. Pick the steps for your plan.";
+  else {
+    const parts = [];
+    if (!covered.length) parts.push("None of these steps gives you a record, support or a boundary.");
+    else if (!gaps.length) parts.push("Your plan has a record, support and a boundary.");
+    else parts.push(`This gives you ${joinList(covered.map((k) => NEED_PLAIN[k]))}. Nothing gives you ${joinList(gaps.map((k) => NEED_PLAIN[k]))} yet.`);
+    for (const st of weak) parts.push(`Step ${st.n}: ${st.note}`);
+    text = parts.join(" ");
+  }
+  return { chosen, coverBy, covered, gaps, weak, text };
+}
+
+function planLabel(status, count) {
+  let label = `Grid with three rows, what a plan needs: a record, support and a boundary, and ${count} columns, the steps.`;
+  if (!status.chosen.length) return `${label} Empty until you pick steps.`;
+  label += " " + NEEDS.map((k) => {
+    const by = status.coverBy[k];
+    return by.length ? `${NEED_LABEL[k]}: covered by step${by.length > 1 ? "s" : ""} ${joinList(by.map(String))}.` : `${NEED_LABEL[k]}: missing.`;
+  }).join(" ");
+  return label;
+}
+
+export function planGrid(ids, steps) {
+  const status = planStatus(ids, steps);
+  const x0 = 130, y0 = 44, cw = 46, rh = 52, statW = 148, w = x0 + cw * steps.length + statW, h = y0 + rh * NEEDS.length + 8;
+  const cells = [];
+  steps.forEach((_, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${c + 1}</text>`));
+  NEEDS.forEach((k, r) => {
+    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${NEED_LABEL[k]}</text>`);
+    steps.forEach((_, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell"/>`));
+    if (status.chosen.length) {
+      const ok = status.coverBy[k].length > 0;
+      cells.push(`<text x="${x0 + cw * steps.length + 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-stat ${ok ? "ok" : "gap"}">${ok ? "✓ Covered" : "✕ Missing"}</text>`);
+    }
+  });
+  const marks = status.chosen
+    .flatMap((st) => NEEDS.map((k, r) => (st.meets.includes(k) ? { st, r } : null)).filter(Boolean))
+    .map(({ st, r }) => {
+      const cx = x0 + (st.n - 1) * cw + cw / 2, cy = y0 + r * rh + rh / 2;
+      return `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${st.n}</text></g>`;
+    })
+    .join("");
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(planLabel(status, steps.length))}">${cells.join("")}${marks}</svg>`;
+}
+
+export function planView(ids, steps) {
+  const status = planStatus(ids, steps);
+  const rows = NEEDS.map((k) => ({ label: NEED_LABEL[k], cells: [status.coverBy[k].map((n) => ({ word: "Step", n }))] }));
+  return planGrid(ids, steps) + gridTable(planLabel(status, steps.length), "What a plan needs", ["Covered by"], rows, "Missing");
+}
+
+// Nothing typed, nothing sent: the plan lives only on this page, and Start again clears it.
+function planBuilder(stage) {
+  return `<form class="ck-form" id="pl-form" novalidate>
+        <fieldset class="ck-list"><legend>Pick the steps for your plan</legend>
+          ${stage.steps.map((st, i) => `<label><input type="checkbox" value="${esc(st.id)}"><span><b>${i + 1}.</b> ${esc(st.text)}</span></label>`).join("")}
+        </fieldset>
+      </form>
+      <button type="button" class="btn" id="pl-reset">Start again</button>
+      <p class="so-status" id="pl-status" aria-live="polite">${esc(planStatus([], stage.steps).text)}</p>
+      <div class="figure" id="pl-figure">${planView([], stage.steps)}</div>`;
+}
+
+function wirePlan(doc, stage) {
+  const form = doc.querySelector("#pl-form");
+  const update = () => {
+    const ids = [...form.querySelectorAll('input[type="checkbox"]:checked')].map((i) => i.value);
+    doc.querySelector("#pl-status").textContent = planStatus(ids, stage.steps).text;
+    doc.querySelector("#pl-figure").innerHTML = planView(ids, stage.steps);
+  };
+  doc.querySelector("#pl-reset").addEventListener("click", () => {
+    for (const b of form.querySelectorAll('input[type="checkbox"]')) b.checked = false;
+    update();
+    form.querySelector("input").focus();
+  });
+  form.addEventListener("change", update);
+  form.addEventListener("submit", (e) => e.preventDefault());
+}
+
 /* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
 
 export const CONTRAST_LEVELS = [
@@ -1235,7 +1343,7 @@ export function claimLessons() {
   const out = {};
   for (const l of COURSE.lessons.filter((x) => x.ready)) {
     for (const s of l.stages) {
-      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat)?.claim)];
+      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat ?? t.respond)?.claim)];
       for (const id of ids.filter(Boolean)) if (!(out[id] ??= []).includes(l.n)) out[id].push(l.n);
     }
   }
@@ -1371,7 +1479,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isJudge = exercise === "judge";
   const isThread = exercise === "thread";
   const isChat = exercise === "chat";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat }[exercise];
+  const isRespond = exercise === "respond";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat, respond: art.respond }[exercise];
 
   header.dataset.lesson = lesson.n;
   // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
@@ -1390,7 +1499,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isChat
+      ? isRespond
+        ? `Written by ${esc(artefact.model)} for this lesson. The situations and the people in them are made up.`
+        : isChat
         ? `Written by ${esc(artefact.model)} for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
         : isThread
         ? `Written by ${esc(artefact.model)} for this lesson. The people and what happens are made up.`
@@ -1412,6 +1523,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? screenExercise(artefact, provenanceNote)
         : isAudit
         ? screenExercise(artefact, provenanceNote, auditReveal, "For each numbered part: an accessibility failure, an addictive pattern, or it works")
+        : isRespond
+        ? respondExercise(artefact, provenanceNote)
         : isChat
         ? chatExercise(artefact, provenanceNote) + `<h3 class="subhead">For each reply: helpful, or which move is it?</h3>`
         : isThread
@@ -1429,6 +1542,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ? signoffBuilder(artefact.items, now)
       : isAudit
         ? contrastChecker(artefact.contrast)
+        : isRespond
+        ? planBuilder(pictorial)
         : isChat
         ? `<div class="figure" id="grid">${gainsView(artefact)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
@@ -1518,6 +1633,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
   else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }));
   else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }));
+  else if (isRespond) wirePlan(doc, pictorial);
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));

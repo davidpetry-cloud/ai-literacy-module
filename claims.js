@@ -594,5 +594,53 @@ export const CLAIMS = {
     attestation: proposedBy(
       "The chat is made up. Check replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asks the student to use a parent's card) as a pushing-a-product move aimed at a child, against UNICEF's requirement to keep children safe."
     )
+  },
+  "gaslighting-defined": {
+    text: "Gaslighting is a form of psychological abuse that tries to make a person seem, or feel, 'crazy', so they doubt their own memory and judgement. It often draws on stereotypes and unequal power.",
+    attestation: proposedBy(
+      "Sweet (2019), 'The Sociology of Gaslighting', American Sociological Review 84(5), 851-875 (studied through domestic violence; argues it is sociological as well as psychological). The lesson's advice (a written record, a trusted person) is practical guidance that follows from the definition, not a finding of the paper."
+    )
+  },
+  "never-promise-secrecy": {
+    text: "Statutory guidance for schools in England says staff should never promise a child that they will not tell anyone about a report of abuse, and should involve the designated safeguarding lead.",
+    attestation: proposedBy(
+      "Department for Education, Keeping Children Safe in Education (September 2026), Part one, paragraph 14 (read in the source on 2026-09-25): 'Staff should never promise a child that they will not tell anyone about a report of any form of abuse'. Paragraph 15 covers reassuring victims that they are taken seriously. Guidance for England; other countries have their own. Re-check against each new edition: ttlDays 365."
+    )
+  },
+  "mandated-reporting-us": {
+    text: "Every US state and territory has laws that require certain people, including teachers, to report suspected child abuse or neglect. The procedures vary by state.",
+    attestation: proposedBy(
+      "Child Welfare Information Gateway (US Department of Health and Human Services), 'Mandatory Reporting of Child Abuse and Neglect' and the Mandated Reporting topic page (childwelfare.gov). Law that changes: ttlDays 365."
+    )
+  },
+  "sextortion-advice": {
+    text: "The FBI advises people targeted by sextortion not to pay, to block the person without deleting the profile or messages, to get help and report it, and says it is not the victim's fault. For people under 18, NCMEC's Take It Down service can help remove images.",
+    attestation: proposedBy(
+      "FBI, 'FBI and Partners Issue National Public Safety Alert on Financial Sextortion Schemes' (press release) and the FBI Sextortion pages (fbi.gov/sextortion); NCMEC Take It Down (takeitdown.ncmec.org). US guidance; FBI IC3 also warns against paid 'removal' services (PSA, April 2023). Re-check yearly: ttlDays 365."
+    )
+  },
+  "child-helplines": {
+    text: "Child Helpline International is a global network of 155 child helplines in 133 countries, and its website lists how to reach them.",
+    attestation: proposedBy(
+      "Child Helpline International (childhelplineinternational.org), network figures as described in 2026. Numbers change as members join: ttlDays 365."
+    )
+  },
+  "l12-key-educators": {
+    text: "The answer key for the Lesson 12 educators situations is reasonable: each response's label (safe or risky) follows from the lesson's guidance, and the disclosure situation follows Keeping Children Safe in Education.",
+    attestation: proposedBy(
+      "The situations are made up. Situation 3 must match KCSIE 2026 paragraph 14 (never promise secrecy; involve the safeguarding lead). The other keys are judgements: attest that they are reasonable."
+    )
+  },
+  "l12-key-professionals": {
+    text: "The answer key for the Lesson 12 professionals situations is reasonable: each response's label (safe or risky) follows from the lesson's guidance on records, support and boundaries.",
+    attestation: proposedBy(
+      "The situations are made up. Judgements, not facts: check that each safe response gives a record, support or a boundary, and that no safe response labels anyone."
+    )
+  },
+  "l12-key-students": {
+    text: "The answer key for the Lesson 12 students situations is reasonable: the threat situation follows the FBI's advice (don't pay; block but don't delete; tell a trusted adult), and every situation points to a trusted adult.",
+    attestation: proposedBy(
+      "The situations are made up and stop short of any abuse. Check situation 1 against the FBI's national alert on financial sextortion and NCMEC's Take It Down. The tests require a trusted adult in every students situation."
+    )
   }
 };

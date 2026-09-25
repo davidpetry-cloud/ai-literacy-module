@@ -16,7 +16,7 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond"];
 const VERDICTS = ["keep", "change", "stop"];
 const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
@@ -137,7 +137,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -618,6 +618,76 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each chat's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(chat(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "respond")("concrete stage: respond", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const pictorial = lesson.stages.find((s) => s.kind === "pictorial");
+    const respond = (t) => concrete.tracks[t].respond;
+
+    it("has a context and three situations of three responses for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(respond(t).situations, t).toHaveLength(3);
+        for (const x of respond(t).situations) {
+          expect(x.text, t).toBeTruthy();
+          expect(x.responses, t).toHaveLength(3);
+          for (const r of x.responses) {
+            expect(["safe", "risky"], r.text).toContain(r.key);
+            expect(r.note, r.text).toBeTruthy();
+          }
+        }
+        expect(["planted", "captured"], t).toContain(respond(t).provenance);
+        expect(respond(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("gives every situation at least one safe and one risky response", () => {
+      for (const t of TRACK_IDS) {
+        for (const x of respond(t).situations) {
+          const keys = x.responses.map((r) => r.key);
+          expect(keys, x.text).toContain("safe");
+          expect(keys, x.text).toContain("risky");
+        }
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => respond(t).situations.map((x) => x.responses.map((r) => r.key).join()).join("|"));
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+      for (const t of TRACK_IDS) expect(new Set(respond(t).situations.map((x) => x.responses.findIndex((r) => r.key === "safe"))).size, t).toBeGreaterThan(1);
+    });
+
+    // Safeguarding, held by the tests: the disclosure key follows KCSIE, and students always have a trusted adult.
+    it("never lets a promise of secrecy be safe, and routes a disclosure to the safeguarding lead", () => {
+      const all = TRACK_IDS.flatMap((t) => respond(t).situations.flatMap((x) => x.responses));
+      for (const r of all.filter((x) => /promise to keep it secret/i.test(x.text))) expect(r.key, r.text).toBe("risky");
+      expect(all.some((r) => r.key === "safe" && /safeguarding lead/.test(r.text))).toBe(true);
+    });
+
+    it("points every students situation to a trusted adult, never to paying, and says it's not their fault", () => {
+      for (const x of respond("students").situations) expect(x.responses.map((r) => `${r.text} ${r.note}`).join(" "), x.text).toMatch(/trusted adult/);
+      const students = respond("students").situations.flatMap((x) => x.responses);
+      for (const r of students.filter((x) => /^Pay/.test(x.text))) expect(r.key).toBe("risky");
+      expect(students.map((r) => r.note).join(" ")).toMatch(/not your fault/);
+    });
+
+    it("labels no one in a safe response", () => {
+      const safe = TRACK_IDS.flatMap((t) => respond(t).situations.flatMap((x) => x.responses.filter((r) => r.key === "safe")));
+      for (const r of safe) expect(r.text, r.text).not.toMatch(/narcissist|psychopath|fraud|sadist/i);
+    });
+
+    it("builds a plan from steps that each give a record, support or a boundary, plus one that gives none", () => {
+      const steps = pictorial.steps;
+      for (const need of ["record", "support", "boundary"]) expect(steps.some((st) => st.meets.includes(need)), need).toBe(true);
+      const weak = steps.filter((st) => !st.meets.length);
+      expect(weak).toHaveLength(1);
+      expect(weak[0].note).toBeTruthy();
+    });
+
+    it("puts each track's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(respond(t).claim);
     });
   });
 

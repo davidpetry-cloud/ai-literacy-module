@@ -1,6 +1,6 @@
 # Recognising exploitative behaviour (the Dark Triad). Series plan
 
-**Status:** objectives approved by David 2026-09-25. The series is **Lessons
+**Status:** all four lessons built and live-ready, 2026-09-25. Objectives approved by David 2026-09-25. The series is **Lessons
 9–12 of this course** (his choice), each self-contained so it can move to its
 own module later. Three objectives were added or reworded to his direction the
 same day (9.4, 10.3, 12.3); he confirmed the wording the same day. The files
@@ -324,7 +324,7 @@ claims proposed: `ai-companion-farewells` (a working paper, flagged),
 `sycophancy-preference`, `darkbench-patterns`, and three answer keys; the
 abstract also cites Lesson 1's `model-predicts`.
 
-## Lesson 12 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+## Lesson 12 design (approved by David and built on Opus, 2026-09-25)
 
 **Confirmed first (2026-09-25):** the FBI's national alert on financial
 sextortion says to block the person but not delete the profile or messages,
@@ -385,6 +385,18 @@ worries you.
 your route before you teach it. Never promise to keep abuse secret.
 
 **Model:** Opus, for the new exercise and builder.
+
+**As built:** the `respond` exercise and the `plan` builder (`planStatus`,
+`planGrid`, `planView`, `RESPONSE_LABEL`, `NEEDS` in `lesson-core.js`). The
+builder has one step that gives nothing ("Call them out in public") so learners
+see why. Tests hold the safeguarding lines: a promise of secrecy is never safe;
+a disclosure goes to the safeguarding lead; every students situation names a
+trusted adult; paying is never safe; no safe response labels anyone; the builder
+has no text box and sends nothing. Eight claims proposed: `gaslighting-defined`,
+`never-promise-secrecy`, `mandated-reporting-us`, `sextortion-advice`,
+`child-helplines`, and three answer keys.
+
+**The series is complete** (Lessons 9–12, built 2026-09-25).
 
 ## Research for Lessons 10 and 12 (2026-09-25)
 

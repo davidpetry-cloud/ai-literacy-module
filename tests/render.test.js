@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1218,6 +1218,89 @@ describe("lesson 11: one core across tracks", () => {
   });
 });
 
+const lesson12 = getLesson(12);
+const lesson12Doc = (track) => lessonDoc(track, lesson12);
+const respondData = (track) => lesson12.stages[0].tracks[track].respond;
+const planSteps = lesson12.stages[1].steps;
+const tickPlan = (d, ids) => {
+  for (const b of d.querySelectorAll('#pl-form input[type="checkbox"]')) b.checked = ids.includes(b.value);
+  d.querySelector("#pl-form").dispatchEvent(new d.defaultView.Event("change"));
+};
+
+describe.each(TRACK_IDS)("lesson 12, %s track", (track) => {
+  const doc = lesson12Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows three situations, each with three lettered responses and a closed reveal in words", () => {
+    const sits = doc.querySelectorAll('[data-stage="concrete"] .respond .situations > li');
+    expect(sits).toHaveLength(3);
+    respondData(track).situations.forEach((x, i) => {
+      expect(sits[i].querySelector(".situation").textContent).toBe(x.text);
+      const rs = sits[i].querySelectorAll(".responses > li");
+      expect(rs).toHaveLength(3);
+      x.responses.forEach((r, j) => {
+        expect(rs[j].querySelector("details").open).toBe(false);
+        expect(rs[j].querySelector(".k").textContent).toBe(RESPONSE_LABEL[r.key]);
+      });
+    });
+    expect(doc.querySelector(".respond figcaption").textContent).toContain("made up");
+  });
+
+  it("puts the safeguarding reminder first in the facilitator's moves", () => {
+    expect(doc.querySelector('[data-stage="concrete"] .moves li').textContent).toContain("Never promise to keep abuse secret");
+  });
+
+  it("builds a plan: says what's missing, then when all three parts are covered, and starts again", () => {
+    const d = lesson12Doc(track);
+    expect(d.querySelector("#pl-status").textContent).toBe("Nothing ticked yet. Pick the steps for your plan.");
+    expect(d.querySelector("#pl-figure svg").getAttribute("aria-label")).toContain("Empty until you pick steps");
+    tickPlan(d, ["write"]);
+    expect(d.querySelector("#pl-status").textContent).toBe("This gives you a record. Nothing gives you support and a boundary yet.");
+    tickPlan(d, ["write", "tell", "no"]);
+    expect(d.querySelector("#pl-status").textContent).toBe("Your plan has a record, support and a boundary.");
+    expect(d.querySelector("#pl-figure svg").getAttribute("aria-label")).toContain("Support: covered by step 5.");
+    d.querySelector("#pl-reset").click();
+    expect([...d.querySelectorAll('#pl-form input[type="checkbox"]')].some((b) => b.checked)).toBe(false);
+    expect(d.querySelector("#pl-status").textContent).toBe("Nothing ticked yet. Pick the steps for your plan.");
+    expect(d.activeElement).toBe(d.querySelector("#pl-form input"));
+  });
+
+  it("explains why calling someone out gives no protection", () => {
+    const d = lesson12Doc(track);
+    tickPlan(d, ["callout"]);
+    expect(d.querySelector("#pl-status").textContent).toContain("gives you no record, support or boundary");
+  });
+
+  it("collects nothing: the builder has no text box and sends nothing", () => {
+    expect(doc.querySelectorAll('[data-stage="pictorial"] input[type="text"], [data-stage="pictorial"] textarea')).toHaveLength(0);
+    expect(doc.querySelector("#pl-form").getAttribute("action")).toBeNull();
+  });
+
+  it("shows gaslighting, protecting your work, and where to get help, as reference tables", () => {
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect(tables).toHaveLength(3);
+    expect(doc.querySelector('[data-stage="abstract"]').textContent).toContain("practical advice, not a research finding");
+  });
+});
+
+describe("lesson 12: one core across tracks", () => {
+  const html = (t, sel) => lesson12Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, pictorial, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="pictorial"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("covers all three needs only when each is met", () => {
+    expect(planStatus(["write", "copies"], planSteps).gaps).toEqual(["support", "boundary"]);
+    expect(planStatus(["protect", "report"], planSteps).gaps).toEqual([]);
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -1235,7 +1318,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 8 (${t})`, lesson8Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 9 (${t})`, lesson9Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 10 (${t})`, lesson10Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 11 (${t})`, lesson11Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 11 (${t})`, lesson11Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 12 (${t})`, lesson12Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -1254,7 +1338,8 @@ describe("page structure", () => {
     ["lesson 8", lesson8Doc(TRACK_IDS[0])],
     ["lesson 9", lesson9Doc(TRACK_IDS[0])],
     ["lesson 10", lesson10Doc(TRACK_IDS[0])],
-    ["lesson 11", lesson11Doc(TRACK_IDS[0])]
+    ["lesson 11", lesson11Doc(TRACK_IDS[0])],
+    ["lesson 12", lesson12Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
