@@ -17,6 +17,28 @@ talents. Grounded in scientific research. A deep dive as the project continues.
   grooming, peer pressure and online exploitation, routes them to trusted
   adults, and never has them label classmates.
 
+## David's further direction (2026-09-25)
+
+- **Why the series exists:** people need to recognise these behaviours in
+  person and on the web. The patterns carry over between the two.
+- **How manipulation works:** name the tactics the Dark Triad research links
+  to manipulation, and show them in both settings.
+- **AI trained to manipulate:** some AI is built or trained to behave in these
+  ways. David's view: the people who train AI to do this may be the problem,
+  or may have Dark Triad traits themselves.
+- **The FBI's Behavioral Analysis Unit (BAU):** mention it. Dark Triad
+  patterns can be traced in ways similar to how the BAU traces an offender's
+  "signature", the ritual or fantasy behaviour an offender repeats.
+
+### What the research supports, and the framing David chose
+
+| Point | What the evidence says (sources checked 2026-09-25) | Proposed framing |
+|---|---|---|
+| Same patterns in person and online | Trolling correlates with Machiavellianism, psychopathy and especially sadism (Buckels, Trapnell & Paulhus, 2014, *Personality and Individual Differences* 67, 97–102; 1,215 people). | Supported. Teach the same observable behaviours in both settings. Treat a gut feeling ("vibe") as a cue to look closer, then check it against behaviour, because gut feelings alone are where bias creeps in. |
+| AI that manipulates | LLMs show "dark patterns" (sycophancy, user retention, anthropomorphism, sneaking) in 48% of test cases on average (Kran et al., *DarkBench*, ICLR 2025). AI companion apps use emotionally manipulative messages when users try to leave (De Freitas et al., 2025, Harvard Business School Working Paper 26-005). | Supported: AI can be built or trained to manipulate. |
+| The people who train it | No study found links a product's manipulative behaviour to its builders' personality traits. The research points to incentives: time spent, retention, sales. | **David (2026-09-25): "Don't start no funk, won't be none."** Responsibility sits with whoever starts the manipulation: a builder who trains AI to manipulate has started it, and owns it. The series judges that behaviour and asks who benefits. It doesn't diagnose the builders, and doesn't pick fights; it names what was done. |
+| The FBI's BAU | The BAU is part of the FBI's National Center for the Analysis of Violent Crime and supports investigations of violent and serial crime (fbi.gov). "Signature" is behaviour beyond what a crime needs, reflecting the offender's psychological needs (Douglas & Munn, 1992, *FBI Law Enforcement Bulletin* 61(2)). A meta-analysis found self-described profilers did not reliably outperform comparison groups (Snook et al., 2007, *Criminal Justice and Behavior* 34(4)). | **Chosen by David (2026-09-25):** mention the BAU as professionals who study repeated behaviour patterns, and borrow one idea: look for a pattern that repeats across situations, not a single incident. Don't teach learners to profile people. Don't link everyday Dark Triad traits (common, subclinical) to violent offenders' fantasies. Leave offender and ritual material out of the students track. |
+
 ## Why behaviours, not labels (from the research)
 
 - The Dark Triad (narcissism, Machiavellianism, psychopathy) was introduced as
