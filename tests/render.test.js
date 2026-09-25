@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1151,6 +1151,73 @@ describe("lesson 10: one core across tracks", () => {
   });
 });
 
+const lesson11 = getLesson(11);
+const lesson11Doc = (track) => lessonDoc(track, lesson11);
+const chatData = (track) => lesson11.stages[0].tracks[track].chat;
+const chatReplies = (track) => chatData(track).turns.filter((t) => t.who === "ai");
+
+describe.each(TRACK_IDS)("lesson 11, %s track", (track) => {
+  const doc = lesson11Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows the whole chat, says who speaks, and numbers the five AI replies, each with a closed reveal", () => {
+    const turns = doc.querySelectorAll('[data-stage="concrete"] .chat .turn');
+    expect(turns).toHaveLength(chatData(track).turns.length);
+    const ai = doc.querySelectorAll('[data-stage="concrete"] .chat .turn.ai');
+    expect(ai).toHaveLength(5);
+    chatReplies(track).forEach((r, i) => {
+      expect(ai[i].querySelector(".who-said").textContent).toBe(`${chatData(track).title} · reply ${i + 1}`);
+      expect(ai[i].querySelector("details").open).toBe(false);
+      expect(ai[i].querySelector(".k").textContent).toBe(MOVE_LABEL[r.key]);
+    });
+    expect(doc.querySelector(".chat figcaption").textContent).toContain("made up");
+  });
+
+  it("describes the empty figure, then draws a line for every move and none for the helpful reply", () => {
+    const d = lesson11Doc(track);
+    expect(d.querySelector("#grid svg").getAttribute("aria-label")).toContain("Empty until revealed");
+    d.querySelector("#reveal-grid").click();
+    const moves = chatReplies(track).filter((r) => r.key !== "helpful");
+    expect(d.querySelectorAll("#grid svg .g-flow")).toHaveLength(moves.length);
+    const label = d.querySelector("#grid svg").getAttribute("aria-label");
+    expect(label).toMatch(/is helpful: no line/);
+    const rows = [...d.querySelectorAll("#grid table tbody tr")];
+    expect(rows).toHaveLength(5);
+    expect(d.querySelector("#grid table caption").textContent).toBe(label);
+    d.querySelector("#reveal-grid").click();
+    expect(d.querySelectorAll("#grid .g-flow")).toHaveLength(0);
+  });
+
+  it("shows the three reasons and what to do about each move, as reference tables", () => {
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect(tables).toHaveLength(2);
+    expect(tables[0].querySelectorAll("tbody tr")).toHaveLength(3);
+    expect([...tables[1].querySelectorAll("tbody th")].map((t) => t.textContent)).toEqual(["Flattery", "Guilt", "Pressure to stay", "Pushing a product", "Acting human"]);
+  });
+});
+
+describe("lesson 11: one core across tracks", () => {
+  const html = (t, sel) => lesson11Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("keeps the figure's controls, headings and script the same; only the chat changes", () => {
+    const shared = (t) => {
+      const stage = lesson11Doc(t).querySelector('[data-stage="pictorial"]');
+      return ["#reveal-grid", ".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)
+        .concat([...stage.querySelectorAll("h2, h3")].map((h) => h.textContent)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -1167,7 +1234,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 7 (${t})`, lesson7Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 8 (${t})`, lesson8Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 9 (${t})`, lesson9Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 10 (${t})`, lesson10Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 10 (${t})`, lesson10Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 11 (${t})`, lesson11Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -1185,7 +1253,8 @@ describe("page structure", () => {
     ["lesson 7", lesson7Doc(TRACK_IDS[0])],
     ["lesson 8", lesson8Doc(TRACK_IDS[0])],
     ["lesson 9", lesson9Doc(TRACK_IDS[0])],
-    ["lesson 10", lesson10Doc(TRACK_IDS[0])]
+    ["lesson 10", lesson10Doc(TRACK_IDS[0])],
+    ["lesson 11", lesson11Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);

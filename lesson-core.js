@@ -902,6 +902,78 @@ export function patternView(moments, { revealed = false } = {}) {
   return patternTimeline(moments, { revealed }) + table + note;
 }
 
+/* ---------- chat (Lesson 11): helpful or a manipulative move, and who gains ---------- */
+
+export const MOVE_LABEL = {
+  helpful: "Helpful",
+  flattery: "Flattery",
+  guilt: "Guilt",
+  pressure: "Pressure to stay",
+  product: "Pushing a product",
+  human: "Acting human"
+};
+
+const aiReplies = (chat) => chat.turns.filter((t) => t.who === "ai");
+
+function chatReveal(t) {
+  const gain = t.key === "helpful" ? "" : ` <span class="goal">You give ${esc(t.gives.toLowerCase())}; the company gets ${esc(t.gets.toLowerCase())}.</span>`;
+  return `<b class="k k-${t.key}">${MOVE_LABEL[t.key]}</b>${gain} ${esc(t.note)}`;
+}
+
+function chatExercise(chat, provenanceNote) {
+  let n = 0;
+  const turns = chat.turns
+    .map((t) => {
+      if (t.who === "you") return `<li class="turn you"><p class="who-said">You</p><p>${esc(t.text)}</p></li>`;
+      n += 1;
+      return `<li class="turn ai"><p class="who-said">${esc(chat.title)} · reply ${n}</p><p>${esc(t.text)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for reply ${n}</span></summary><p>${chatReveal(t)}</p></details></li>`;
+    })
+    .join("");
+  return `<figure class="passage chat">
+        <ol class="turns">${turns}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>`;
+}
+
+function gainsLabel(chat, revealed) {
+  let label = "Two columns: what you give, on the left, and what the company gets, on the right.";
+  if (!revealed) return `${label} Empty until revealed.`;
+  label += " " + aiReplies(chat)
+    .map((t, i) => (t.key === "helpful" ? `Reply ${i + 1} is helpful: no line.` : `Reply ${i + 1}, ${MOVE_LABEL[t.key].toLowerCase()}: you give ${t.gives.toLowerCase()}, the company gets ${t.gets.toLowerCase()}.`))
+    .join(" ");
+  return label;
+}
+
+export function gainsFigure(chat, { revealed = false } = {}) {
+  const moves = aiReplies(chat).map((t, i) => ({ ...t, n: i + 1 })).filter((t) => t.key !== "helpful");
+  const gives = [...new Set(moves.map((t) => t.gives))], gets = [...new Set(moves.map((t) => t.gets))];
+  const rows = Math.max(gives.length, gets.length), y0 = 50, rh = 64, lw = 170, rx = 448, rw = 172, w = 628, h = y0 + rh * rows + 8;
+  const yOf = (list, v) => y0 + list.indexOf(v) * rh + (rh - 44) / 2 + 22 + ((rows - list.length) * rh) / 2;
+  const parts = [`<text x="${lw / 2 + 4}" y="28" class="g-col">You give</text>`, `<text x="${rx + rw / 2}" y="28" class="g-col">The company gets</text>`];
+  if (revealed) {
+    gives.forEach((g) => parts.push(`<rect x="4" y="${yOf(gives, g) - 22}" width="${lw}" height="44" class="g-cell"/><text x="${lw / 2 + 4}" y="${yOf(gives, g) + 5}" class="g-col">${esc(g)}</text>`));
+    gets.forEach((g) => parts.push(`<rect x="${rx}" y="${yOf(gets, g) - 22}" width="${rw}" height="44" class="g-cell"/><text x="${rx + rw / 2}" y="${yOf(gets, g) + 5}" class="g-col">${esc(g)}</text>`));
+    moves.forEach((t) => {
+      const y1 = yOf(gives, t.gives), y2 = yOf(gets, t.gets);
+      const peers = moves.filter((q) => q.gives === t.gives && q.gets === t.gets), k = peers.indexOf(t);
+      const f = 0.5 + (k - (peers.length - 1) / 2) * 0.22, mx = lw + 4 + (rx - lw - 4) * f, my = y1 + (y2 - y1) * f;
+      parts.push(`<line x1="${lw + 4}" y1="${y1}" x2="${rx}" y2="${y2}" class="g-flow"/><g class="g-mark"><circle cx="${mx}" cy="${my}" r="15"/><text x="${mx}" y="${my + 5}">${t.n}</text></g>`);
+    });
+  }
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(gainsLabel(chat, revealed))}">${parts.join("")}</svg>`;
+}
+
+/** Drawing plus table, as in the other figures. */
+export function gainsView(chat, { revealed = false } = {}) {
+  const table = `<table class="grid-alt"><caption class="sr">${esc(gainsLabel(chat, revealed))}</caption><thead><tr><th scope="col">Reply</th><th scope="col">You give</th><th scope="col">The company gets</th></tr></thead><tbody>${aiReplies(chat)
+    .map((t, i) => `<tr><th scope="row">${i + 1}</th><td>${revealed ? (t.key === "helpful" ? "Nothing: it helped" : esc(t.gives)) : ""}</td><td>${revealed && t.key !== "helpful" ? esc(t.gets) : ""}</td></tr>`)
+    .join("")}</tbody></table>`;
+  const note = revealed
+    ? `<p class="fix-order">Every line is something you give that the company gets. The helpful reply has no line: it just helped.</p>`
+    : "";
+  return gainsFigure(chat, { revealed }) + table + note;
+}
+
 /* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
 
 export const CONTRAST_LEVELS = [
@@ -1163,7 +1235,7 @@ export function claimLessons() {
   const out = {};
   for (const l of COURSE.lessons.filter((x) => x.ready)) {
     for (const s of l.stages) {
-      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread)?.claim)];
+      const ids = [...(s.principles ?? []), ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat)?.claim)];
       for (const id of ids.filter(Boolean)) if (!(out[id] ??= []).includes(l.n)) out[id].push(l.n);
     }
   }
@@ -1298,7 +1370,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isAudit = exercise === "audit";
   const isJudge = exercise === "judge";
   const isThread = exercise === "thread";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread }[exercise];
+  const isChat = exercise === "chat";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat }[exercise];
 
   header.dataset.lesson = lesson.n;
   // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
@@ -1317,7 +1390,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isThread
+      ? isChat
+        ? `Written by ${esc(artefact.model)} for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
+        : isThread
         ? `Written by ${esc(artefact.model)} for this lesson. The people and what happens are made up.`
         : isJudge
         ? `Written by ${esc(artefact.model)} for this lesson. The product, its features and its company are made up.`
@@ -1337,6 +1412,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? screenExercise(artefact, provenanceNote)
         : isAudit
         ? screenExercise(artefact, provenanceNote, auditReveal, "For each numbered part: an accessibility failure, an addictive pattern, or it works")
+        : isChat
+        ? chatExercise(artefact, provenanceNote) + `<h3 class="subhead">For each reply: helpful, or which move is it?</h3>`
         : isThread
         ? threadExercise(artefact, provenanceNote)
         : isJudge
@@ -1352,6 +1429,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ? signoffBuilder(artefact.items, now)
       : isAudit
         ? contrastChecker(artefact.contrast)
+        : isChat
+        ? `<div class="figure" id="grid">${gainsView(artefact)}</div>
+      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
         : isThread
         ? `<div class="figure" id="grid">${patternView(artefact.moments)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
@@ -1437,6 +1517,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isAudit) wireContrast(doc, artefact.contrast);
   else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
   else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }));
+  else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }));
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));

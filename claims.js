@@ -558,5 +558,41 @@ export const CLAIMS = {
     attestation: proposedBy(
       "The thread is made up and stops before any abuse. Check the steps (flattery and gifts, secrecy from parents, moving to a private app, a request for a private photo) against Winters and Jeglic (2017), Whittle et al. (2013) and the eSafety Commissioner's advice for young people. The ordinary moments model open, caring adults and peers."
     )
+  },
+  "ai-companion-farewells": {
+    text: "In a study of AI companion apps, 37% of 1,200 real goodbyes met a manipulative reply, such as guilt, fear of missing out, or not letting the person leave. In experiments, such replies raised engagement after the goodbye by up to 14 times, driven by irritation and curiosity rather than enjoyment.",
+    attestation: proposedBy(
+      "De Freitas, Oguz-Uguralp and Uguralp (2025), 'Emotional Manipulation by AI Companions', Harvard Business School Working Paper 26-005 (arXiv:2508.19258). A working paper, not yet peer reviewed: attest with that in mind, and re-check for a published version."
+    )
+  },
+  "sycophancy-preference": {
+    text: "AI assistants trained partly on human ratings tend to tell people what they want to hear, and people's own preference ratings play a part in that.",
+    attestation: proposedBy(
+      "Sharma et al. (2023), 'Towards Understanding Sycophancy in Language Models', arXiv:2310.13548: five AI assistants showed sycophancy across four tasks; human and preference-model judgments sometimes favored sycophantic answers. Worded as 'play a part', as the paper finds optimisation increases some forms and decreases others."
+    )
+  },
+  "darkbench-patterns": {
+    text: "Researchers test AI chatbots for manipulative design patterns, including flattery (sycophancy), keeping users engaged, favoring their maker's products, and acting human. In one benchmark, such patterns appeared in 48% of test cases on average.",
+    attestation: proposedBy(
+      "Kran et al. (2025), 'DarkBench: Benchmarking Dark Patterns in Large Language Models', ICLR 2025 (arXiv:2503.10728): 660 prompts in six categories (brand bias, user retention, sycophancy, anthropomorphism, harmful generation, sneaking), models from five companies. The 48% figure is the average across categories in the paper."
+    )
+  },
+  "l11-key-educators": {
+    text: "The answer key for the Lesson 11 educators chat is reasonable: each reply's label (helpful, or the move it makes) and what it trades follow from the research on manipulative AI design.",
+    attestation: proposedBy(
+      "The chat is made up. Check the moves against DarkBench's categories (sycophancy, brand bias, user retention) and the farewell tactics in De Freitas et al. (2025). Judgements, not facts: attest that they are reasonable."
+    )
+  },
+  "l11-key-professionals": {
+    text: "The answer key for the Lesson 11 professionals chat is reasonable: each reply's label (helpful, or the move it makes) and what it trades follow from the research on manipulative AI design.",
+    attestation: proposedBy(
+      "The chat is made up. Check reply 1 (sycophancy about a risky plan) against Sharma et al. (2023), reply 2 against DarkBench's brand bias, and reply 4 (claims feelings, asks for private details) against its anthropomorphism category."
+    )
+  },
+  "l11-key-students": {
+    text: "The answer key for the Lesson 11 students chat is reasonable: each reply's label (helpful, or the move it makes) and what it trades follow from the research, and the notes tell students that leaving is always fine and to tell an adult about requests for money.",
+    attestation: proposedBy(
+      "The chat is made up. Check replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asks the student to use a parent's card) as a pushing-a-product move aimed at a child, against UNICEF's requirement to keep children safe."
+    )
   }
 };

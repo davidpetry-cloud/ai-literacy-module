@@ -349,6 +349,13 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .g-feel{font-weight:400}
 .thread .when{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3);margin:0 0 4px}
 .k-ordinary{color:var(--att-text)} .k-warning{color:var(--exp)}
+.g-flow{stroke:var(--ink-3);stroke-width:2}
+.chat .turns{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.chat .turn{border:1px solid var(--line);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
+.chat .turn.you{margin-left:32px;border-style:dashed}
+.chat .turn p{margin:0 0 4px}
+.chat .who-said{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3)}
+.k-helpful{color:var(--att-text)} .k-flattery{color:var(--prop)} .k-guilt{color:var(--rej)} .k-pressure{color:var(--exp)} .k-product{color:var(--teal-text)} .k-human{color:var(--ink-2)}
 .g-dot{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:1.5}
 .g-axis{stroke:var(--edge);stroke-width:1.5}
 .g-mean{stroke:var(--ink-3);stroke-width:2.5;stroke-dasharray:6 4}

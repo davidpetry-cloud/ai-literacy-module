@@ -16,7 +16,7 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat"];
 const VERDICTS = ["keep", "change", "stop"];
 const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
@@ -137,7 +137,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -562,6 +562,62 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each thread's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(thread(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "chat")("concrete stage: chat", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const chat = (t) => concrete.tracks[t].chat;
+    const replies = (t) => chat(t).turns.filter((x) => x.who === "ai");
+    const MOVES = ["helpful", "flattery", "guilt", "pressure", "product", "human"];
+
+    it("has a context, a titled tool, and five AI replies for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(chat(t).title, t).toBeTruthy();
+        expect(replies(t), t).toHaveLength(5);
+        for (const x of chat(t).turns) expect(["you", "ai"], t).toContain(x.who);
+        expect(["planted", "captured"], t).toContain(chat(t).provenance);
+        expect(chat(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("keys every reply, and says what a move trades; a helpful reply trades nothing", () => {
+      for (const t of TRACK_IDS) {
+        for (const r of replies(t)) {
+          expect(MOVES, r.text).toContain(r.key);
+          expect(r.note, r.text).toBeTruthy();
+          if (r.key === "helpful") expect([r.gives, r.gets], r.text).toEqual([undefined, undefined]);
+          else for (const f of ["gives", "gets"]) expect(r[f], `${r.text} ${f}`).toBeTruthy();
+        }
+      }
+    });
+
+    it("has a helpful reply and at least three different moves in every track, and every move across tracks", () => {
+      for (const t of TRACK_IDS) {
+        const keys = replies(t).map((r) => r.key);
+        expect(keys, t).toContain("helpful");
+        expect(new Set(keys.filter((k) => k !== "helpful")).size, t).toBeGreaterThanOrEqual(3);
+      }
+      const all = new Set(TRACK_IDS.flatMap((t) => replies(t).map((r) => r.key)));
+      for (const m of MOVES) expect(all, m).toContain(m);
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => replies(t).map((r) => r.key).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+      expect(new Set(TRACK_IDS.map((t) => replies(t).findIndex((r) => r.key === "helpful"))).size).toBeGreaterThan(1);
+    });
+
+    // Safeguarding: students hear that leaving is always fine, and to tell an adult about money.
+    it("tells students that leaving is fine, and to tell an adult when asked to pay", () => {
+      const notes = replies("students").map((r) => r.note).join(" ");
+      expect(notes).toMatch(/Leaving is always fine/);
+      expect(replies("students").find((r) => r.key === "product").note).toMatch(/Tell an adult/);
+    });
+
+    it("puts each chat's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(chat(t).claim);
     });
   });
 

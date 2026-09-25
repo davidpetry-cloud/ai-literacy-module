@@ -265,7 +265,7 @@ thread ends with a trusted adult and "not your fault". Ten claims proposed:
 `online-harm-traits`, `work-harm-traits`, `gut-feeling-evidence`, and the three
 answer keys.
 
-## Lesson 11 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+## Lesson 11 design (approved by David and built on Opus, 2026-09-25)
 
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
 
@@ -313,6 +313,16 @@ when you leave, or push you to stay? Turn off what you can, say goodbye, and
 leave.
 
 **Model:** Opus, for the new exercise and figure.
+
+**As built:** the `chat` exercise and the `gains` figure (`gainsFigure`,
+`gainsView`, `MOVE_LABEL` in `lesson-core.js`). Each track trades at least
+three of: your trust, money, time, attention, evening, or private details; the
+professionals chat is the one where "your words become data". Tests require a
+helpful reply in every track, all six move kinds across the tracks, and, for
+students, "Leaving is always fine" and "Tell an adult" when asked to pay. Six
+claims proposed: `ai-companion-farewells` (a working paper, flagged),
+`sycophancy-preference`, `darkbench-patterns`, and three answer keys; the
+abstract also cites Lesson 1's `model-predicts`.
 
 ## Research for Lessons 10 and 12 (2026-09-25)
 

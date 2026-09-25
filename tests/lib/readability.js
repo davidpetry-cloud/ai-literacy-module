@@ -36,6 +36,10 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.chat) {
+    const ts = art.chat.turns;
+    return { passage: ts.map((t) => t.text), key: ts.filter((t) => t.who === "ai").map((t) => t.note) };
+  }
   if (art.thread) {
     const ms = art.thread.moments;
     return { passage: ms.map((m) => m.text), key: ms.map((m) => m.note) };

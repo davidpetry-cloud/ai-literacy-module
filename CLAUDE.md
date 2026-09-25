@@ -7,7 +7,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A twelve-lesson AI literacy course (Lessons 11–12 in design) for three audiences — educators, professionals
+A twelve-lesson AI literacy course (Lesson 12 in design) for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -218,7 +218,8 @@ Sonnet worked well.
 | 08 | done | built on Opus: `judge` exercise (a made-up AI product page, keep / change / stop and what it touches) and the `control` grid (`controlGrid`, `controlView` in `lesson-core.js`), after Shneiderman's human control × automation framework |
 | 09 | done | built on Opus: first of the Dark Triad series. Lesson 1's passage exercise (a made-up popular article per track) and the new `overlap` figure (`overlapPlot`, `overlapView`, `overlapPick` in `lesson-core.js`) |
 | 10 | done | built on Opus: the `thread` exercise (dated moments, face to face and online, ordinary or warning sign and its pattern) and the `pattern` timeline (`patternTimeline`, `patternView` in `lesson-core.js`); adds the Dark Tetrad |
-| 11–12 | design | the rest of the Dark Triad series (`docs/dark-triad-series.md`): objectives approved, `ready: false`. Recognizing behavior, not labeling people |
+| 11 | done | built on Opus: the `chat` exercise (a made-up AI chat; each reply helpful or a manipulative move) and the `gains` figure (what you give, what the company gets; `gainsFigure`, `gainsView` in `lesson-core.js`) |
+| 12 | design | the last of the Dark Triad series (`docs/dark-triad-series.md`): objectives approved, `ready: false`. Recognizing behavior, not labeling people |
 
 One lesson per session.
 
@@ -299,7 +300,7 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-There are 80 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25). David attests them
+There are 86 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, and Lesson 11 six). David attests them
 himself, one lesson at a time, writing each practitioner block by hand; never a
 Claude session. By 2026-09-25 he had attested six, five of them in Lesson 1.
 
