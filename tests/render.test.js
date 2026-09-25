@@ -39,7 +39,8 @@ describe("hub", () => {
 
   it("groups the ledger by lesson, collapsed, each claim under the first lesson that uses it", () => {
     const groups = [...doc.querySelectorAll("details.claim-group")];
-    expect(groups.map((g) => g.dataset.lesson)).toEqual(COURSE.lessons.map((l) => String(l.n)));
+    // A lesson still in design cites no claims yet, so it has no group.
+    expect(groups.map((g) => g.dataset.lesson)).toEqual(COURSE.lessons.filter((l) => l.ready).map((l) => String(l.n)));
     for (const g of groups) {
       expect(g.open, g.id).toBe(false);
       // The number sits beside the colour, and the count is in words.

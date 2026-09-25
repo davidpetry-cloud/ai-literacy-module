@@ -4,7 +4,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A seven-lesson AI literacy course for three audiences — educators, professionals
+An eight-lesson AI literacy course (Lesson 8 in design) for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -28,6 +28,8 @@ scripts/serve.js   local preview on :8080
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
+docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) plan, sources checked, objectives awaiting approval
+docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
 
@@ -210,6 +212,7 @@ Sonnet worked well.
 | 05 | done | built on Sonnet: `classify` exercise (passage pattern, error-kind keys) and the `checklist` builder (`checklistStatus`, `checklistGrid` in `lesson-core.js`) |
 | 06 | done | built on Opus: `screen` exercise (a made-up AI-built screen in a sandboxed `iframe`, with a text version) and the `fix-first` grid (`fixFirstGrid`, `fixOrder` in `lesson-core.js`); abstract stages can carry reference `tables` |
 | 07 | done | built on Opus: `audit` exercise (Lesson 6's sandboxed screen with WCAG and pattern keys) and the `contrast` checker (`checkContrast`, `contrastRatio`, `nearestPassing` in `lesson-core.js`); its worked example audits this site, and each row is checked in `tests/ui.test.js` |
+| 08 | design | Human-Centered AI: dignity, children's rights, wisdom, relationships; objectives only (`ready: false`). Opus if it needs a new tool |
 
 One lesson per session.
 
@@ -265,6 +268,15 @@ principles and levels A, AA and AAA, a contrast checker, and wellbeing
 (calmer defaults, natural pause points, auditing for addictive patterns). Both
 designs are approved in `docs/lesson-06-design.md` and
 `docs/lesson-07-design.md`. Both need Opus, because each adds a tool. All seven lessons are built.
+
+**Lesson 8, "Human-Centered AI" (2026-09-25):** David asked for a section on
+human dignity, children's rights, wisdom, ethics and human relationships, with
+UNESCO as a source, all grounded in research. It is Lesson 8 of this course.
+Its objectives are drafted in `lessons/lesson-08.js` and await his approval;
+the plan and checked sources are in `docs/lesson-08-design.md`. He also wants a
+later deep-dive series on recognising Dark Triad behaviour, framed as
+behaviours, not labels, for all three tracks with the students track adapted
+for safeguarding (`docs/dark-triad-series.md`). Lesson 8 does not use the term.
 
 David decided on 2026-09-24 to keep them as Lessons 6 and 7 in this course
 for now, and later to lift them into a companion module, working title
