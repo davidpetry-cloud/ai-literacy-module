@@ -197,6 +197,64 @@ three answer keys.
 safety and choices (grooming, peer pressure, online exploitation), and the
 trusted person is an adult. No scenario asks a student to judge a classmate.
 
+## Lesson 10 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+
+**Dark Tetrad: yes** (David, 2026-09-25). Lesson 10 adds everyday sadism as a
+fourth trait, from Buckels, Jones & Paulhus (2013), "Behavioral confirmation
+of everyday sadism", *Psychological Science* 24(11), 2201–2209, and Paulhus
+(2014), "Toward a taxonomy of dark personalities", *Current Directions in
+Psychological Science* 23(6), 421–426. It sits in the abstract stage, tied to
+the online evidence: sadism was the strongest predictor of trolling (Buckels et
+al., 2014).
+
+**Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
+
+**Warm-up** surfaces three beliefs: fast kindness and gifts are a good sign;
+one moment tells you what someone is like; an uneasy feeling should be ignored.
+**Check** has one item per objective.
+
+**Concrete · Follow the thread (12 min), 10.1 and 10.2.** A new exercise: a
+made-up run of moments over several weeks, some face to face and some online,
+shown as a dated timeline. Six moments per track. Learners mark each one
+**ordinary** or **warning sign**, and for a warning sign, name the pattern:
+flattery then a request, secrecy, cutting you off, checking up on you, pressure
+or threats. At least two moments are ordinary, including a real disagreement,
+so learners practise telling the two apart.
+- Educators: a new colleague over one term.
+- Professionals: a new business contact who builds trust, then asks for money
+  (after Whitty's scam model).
+- Students: an online friend from a game chat. Flattery and in-game gifts,
+  "don't tell your parents", a move to a private app, then a request for a
+  private photo. It stops there; the answer key's last line is always: tell a
+  trusted adult, and it's not your fault.
+
+**Pictorial · The pattern over time (10 min), 10.2 and 10.3.** A new figure: a
+timeline with two rows, face to face and online, and the weeks across. Revealed,
+the warning signs from the thread land on it, and the picture shows the same
+pattern repeating across both settings. A second line under the timeline shows
+how the learner might have felt at each point (flattered, then confused, then on
+edge), linking 10.3's gut feeling to what happened. SVG and a table, with the
+usual show and hide toggle.
+
+**Abstract · What the pattern looks like (8 min), 10.1, 10.2 and 10.3.**
+Reference tables:
+- patterns and their sources: coercive control (Stark, 2007; Home Office,
+  2023), grooming stages (Winters & Jeglic, 2017; Whittle et al., 2013), trust
+  scams (Whitty, 2013);
+- online and at work: trolling and the Dark Tetrad (Buckels et al., 2014),
+  cyberbullying (Goodboy & Martin, 2015), work (O'Boyle et al., 2012);
+- your gut feeling: a real signal, strongest over time; first impressions can
+  flatter (Fowler et al., 2009; Back et al., 2010).
+
+**Use it this week:** if something feels off, write down what happened and when.
+One moment is a moment; a written record shows the pattern. (Lesson 12 builds on
+this.)
+
+**Facilitator note (safeguarding):** this lesson can prompt a disclosure. Know
+your school's or organization's safeguarding route before you teach it.
+
+**Model:** Opus, for the new exercise and figure.
+
 ## Research for Lessons 10 and 12 (2026-09-25)
 
 Every source below was checked to exist and to say what it's used for. Findings
@@ -248,6 +306,5 @@ usernames) before blocking.
 
 ## Still open
 
-- Whether to mention the Dark Tetrad (adds everyday sadism; Buckels, Jones &
-  Paulhus, 2013). Buckels et al. (2014) found sadism the strongest predictor of
-  trolling, which makes a case for mentioning it in Lesson 10.
+- Confirm the NSPCC warning-signs wording and the FBI's advice on keeping
+  evidence before Lesson 12 is written.
