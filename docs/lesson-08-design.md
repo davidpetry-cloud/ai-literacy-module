@@ -1,7 +1,8 @@
 # Lesson 8: Human-Centered AI. Design
 
-**Status:** objectives drafted 2026-09-25, **awaiting David's approval**. Nothing
-downstream (warm-up, check, stages) is written until he approves them. Wording
+**Status:** objectives approved by David 2026-09-25. Warm-up and check written
+the same day (in `lessons/lesson-08.js`). **Stage design below awaits David's
+approval** before the stages are built. Wording
 lives in `lessons/lesson-08.js`; this file is the plan. Any change goes back
 into this file first.
 
@@ -12,10 +13,11 @@ research and published frameworks, and every factual claim goes through
 `claims.js` like the rest of the course. Placement: Lesson 8 of this course
 (David, 2026-09-25).
 
-**Model:** Opus if the concrete stage needs a new tool (see "Open questions");
-Sonnet if it reuses an existing exercise.
+**Model:** Opus. The pictorial stage adds a tool (the control-and-automation grid).
 
-## Objectives (drafts, in `lessons/lesson-08.js`)
+**Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
+
+## Objectives (approved 2026-09-25, in `lessons/lesson-08.js`)
 
 - 8.1 *(understand)*: Explain what Human-Centered AI means, using human dignity
   and children's rights as UNESCO and the United Nations describe them.
@@ -62,21 +64,66 @@ course's wellbeing principle already cites.
   university students use generative AI, and that 59% of people globally say AI
   products offer more benefits than drawbacks, while 52% say they make them
   nervous. `ttlDays: 365`.
+- `hcai-framework`: Shneiderman (2020, 2022) proposes designing for high human
+  control and high automation together, avoiding too much of either.
 - `l8-key-educators`, `l8-key-professionals`, `l8-key-students` once the
   exercise exists.
 
-## Open questions for David (after the objectives)
+## Warm-up and check (written 2026-09-25)
 
-1. **Concrete stage.** An idea: a set of short, fictional AI uses (a homework
-   helper, an AI "friend" app, a hiring screen, a grading tool), different per
-   track. Learners judge each with the 8.2 questions and mark keep, change or
-   stop. This could reuse the `classify` exercise from Lesson 5, or need a
-   small new one.
-2. **Children in the students track.** Students may be minors. Their examples
-   should be about their own rights and choices, never about judging other
-   children.
-3. **Voice.** The course stance holds: no hype in either direction. The lesson
-   doesn't say AI is bad for dignity; it gives questions to ask of any use.
+Each objective has one pre and one post item. The warm-ups surface three
+misconceptions: that Human-Centered AI means AI that *seems* human; that a use is
+fine if it helps; and that a job should go to the AI if the AI is faster.
+
+## Stages (proposed, awaiting approval)
+
+**Concrete · Judge the app (12 min), 8.2.** Each track gets a made-up product
+page for an AI tool, as if a company had published it, with five numbered
+features. It's shown in the sandboxed frame Lessons 6 and 7 use, with a text
+version. Learners mark each feature **keep**, **change** or **stop**, and name
+what it touches: **dignity**, **children** or **relationships**. At least one
+feature is good as it is.
+- Educators: an AI homework helper sold to schools.
+- Professionals: an AI screening tool for job applications.
+- Students: an AI "study buddy" and chat app.
+
+The answer key is a claim (`l8-key-*`), and the keys vary by position across
+tracks, as the tests require.
+
+**Pictorial · Who stays in control? (10 min), 8.2 and 8.3.** Shneiderman's
+two-dimensional framework (2020, *International Journal of Human-Computer
+Interaction* 36(6), 495–504; and the 2022 book) as a grid: **human control**
+(low to high) against **automation** (low to high). Each feature from the concrete
+stage is placed on it. The picture shows that the aim is **high control and high
+automation together**, and names the two ways to go wrong: too much automation,
+where no one can step in, and too much human control, where people do by hand
+what a tool could do safely. Drawn twice, as SVG and as a table, with a toggle to
+reveal the finished grid, like Lesson 6's fix-first grid.
+
+**Abstract · Put people first (8 min), 8.1.** The ideas and their sources, in a
+reference table:
+- **dignity:** UNESCO's Recommendation (2021);
+- **children's rights:** UN General Comment No. 25 (2021) and UNICEF's nine
+  requirements (2021);
+- **relationships:** Holt-Lunstad et al. (2010);
+- **wisdom, the four questions for judging any use:** Grossmann et al. (2020):
+  balance viewpoints, be humble about what you know, fit the context, take
+  several perspectives;
+- **how widely AI is used:** Stanford HAI's AI Index (2026), for why it matters now.
+
+The stage says plainly which ideas come from agreed frameworks (dignity, rights)
+and which from research findings (relationships, wisdom).
+
+**Use it this week (transfer, Kirkpatrick 3).** Pick one AI use near you and
+ask the four wisdom questions. Decide where a person must stay, and tell one
+person why. Tracks differ only in the setting: a classroom tool, a workplace
+tool, or an app the learner uses.
+
+**Children in the students track.** Students may be minors. Their examples are
+about their own rights and choices, never about judging other children.
+
+**Voice.** The course stance holds: no hype in either direction. The lesson
+doesn't say AI is bad for dignity; it gives questions to ask of any use.
 
 ## Notes
 
