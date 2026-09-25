@@ -27,7 +27,7 @@ You may share and adapt the content for any purpose, including commercially,
 as long as you give credit, link to the licence, and say whether you changed
 anything. For example:
 
-> Adapted from *AI Literacy — Using AI Well* by David Petry,
+> Adapted from *Human-Centered AI Literacy* by David Petry,
 > https://davidpetry-cloud.github.io/ai-literacy-module/, licensed under
 > CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Changes: …
 

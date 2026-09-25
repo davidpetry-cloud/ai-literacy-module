@@ -976,6 +976,17 @@ describe.each(TRACK_IDS)("lesson 8, %s track", (track) => {
   });
 });
 
+describe("page titles (WCAG 2.4.2)", () => {
+  it("names the course on the hub, and each lesson in its own tab", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    expect(hub.title).toBe(COURSE.title);
+    expect(hub.querySelector("h1").textContent).toBe(COURSE.title);
+    expect(lessonDoc(TRACK_IDS[0]).title).toBe(`Lesson 1: ${getLesson(1).title} — ${COURSE.title}`);
+    expect(lesson8Doc(TRACK_IDS[0]).title).toBe(`Lesson 8: Human-Centered AI — ${COURSE.title}`);
+  });
+});
+
 describe("lesson 8: one core across tracks", () => {
   const html = (t, sel) => lesson8Doc(t).querySelector(sel).innerHTML;
 

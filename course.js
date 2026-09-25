@@ -69,7 +69,8 @@ export const EVALUATION = {
 };
 
 export const COURSE = {
-  title: "AI Literacy — Using AI Well",
+  title: "Human-Centered AI Literacy",
+  tagline: "Using AI well, and protecting the people it touches.",
   framing:
     "Twelve lessons on working with AI the way a careful professional works with any source: knowing what it is, asking it well, checking what it says, deciding who signs off, judging the screens it builds, keeping people at the center, and recognizing manipulation, from people and from AI.",
   minutes: 45,

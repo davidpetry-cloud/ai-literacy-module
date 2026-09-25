@@ -1,9 +1,13 @@
-# AI Literacy — Using AI Well
+# Human-Centered AI Literacy
 
-Five lessons on working with AI the way a careful professional works with any
-source: knowing what it is, asking it well, checking what it says, and deciding
-who signs off. There are three audience tracks: educators, professionals and
-students.
+Using AI well, and protecting the people it touches.
+
+Twelve lessons on working with AI the way a careful professional works with any
+source: knowing what it is, asking it well, checking what it says, deciding who
+signs off, judging the screens it builds, keeping people at the center, and
+recognizing manipulation, from people and from AI. Lessons 9–12, the Dark Triad
+series, are in design. There are three audience tracks: educators,
+professionals and students.
 
 Designed by David Petry.
 

@@ -1,4 +1,7 @@
-# AI Literacy — Using AI Well — project rules
+# Human-Centered AI Literacy — project rules
+
+Renamed from "AI Literacy — Using AI Well" on 2026-09-25 (David). The repository
+and the GitHub Pages address keep the old name, so shared links still work.
 
 Read this before touching anything. It is the contract, not a summary.
 

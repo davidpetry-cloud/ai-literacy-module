@@ -1049,7 +1049,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
 
   doc.querySelector("#top").innerHTML = `
     <h1>${esc(COURSE.title)}</h1>
-    <p class="sub">${esc(COURSE.framing)}</p>
+    <p class="sub"><b>${esc(COURSE.tagline)}</b> ${esc(COURSE.framing)}</p>
     <div class="facts">
       <span><b>${COURSE.lessons.length}</b> lessons</span>
       <span><b>${COURSE.minutes}</b> minutes each</span>
@@ -1129,6 +1129,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   if (!lesson || !lesson.ready) {
     delete header.dataset.lesson;
+    doc.title = `Lesson not available — ${COURSE.title}`;
     top.innerHTML = `<h1>Lesson not available</h1>`;
     content.innerHTML = `<p>${lesson ? `Lesson ${lesson.n} is still in design.` : "There is no lesson with that number."} <a href="index.html">Back to the course overview</a>.</p>`;
     side.innerHTML = "";
@@ -1147,6 +1148,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen }[exercise];
 
   header.dataset.lesson = lesson.n;
+  // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
+  doc.title = `Lesson ${lesson.n}: ${lesson.title} — ${COURSE.title}`;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
   top.innerHTML = `
     <p class="eyebrow"><span class="lesson-no">Lesson ${lesson.n}</span> ${esc(TRACKS[track].label)}</p>
