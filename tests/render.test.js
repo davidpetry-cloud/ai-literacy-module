@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, lessonNav } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -989,6 +989,40 @@ describe("reference tables reflow at 320px (WCAG 1.4.10)", () => {
       expect([...list.querySelectorAll("dt")].map((d) => d.textContent)).toEqual(t.rows.map((r) => r[0]));
       expect(list.querySelectorAll("dd")).toHaveLength(t.rows.length * (t.head.length - 1));
     });
+  });
+});
+
+describe("lesson navigation", () => {
+  const nav = (n, track = "students") => lessonDoc(track, getLesson(n)).querySelector("nav.lesson-nav");
+
+  it("leads from the first lesson to the next, with no previous link", () => {
+    const d = nav(1);
+    expect(d.querySelector(".prev")).toBeNull();
+    expect(d.querySelector(".next").getAttribute("href")).toBe("lesson.html?n=2&track=students");
+    expect(d.querySelector(".next").textContent).toBe(`Next: Lesson 2, ${getLesson(2).title} →`);
+  });
+
+  it("links both ways from a middle lesson, keeping the track", () => {
+    const d = nav(6, "educators");
+    expect(d.querySelector(".prev").getAttribute("href")).toBe("lesson.html?n=5&track=educators");
+    expect(d.querySelector(".next").getAttribute("href")).toBe("lesson.html?n=7&track=educators");
+  });
+
+  it("leads from the last lesson back to the course overview", () => {
+    const d = nav(12);
+    expect(d.querySelector(".next").getAttribute("href")).toBe("index.html?track=students");
+    expect(d.querySelector(".next").textContent).toBe("Back to all lessons →");
+  });
+
+  it("skips lessons that aren't ready", () => {
+    const fake = { n: 1 };
+    const html = lessonNav(fake, "students");
+    for (const l of COURSE.lessons.filter((x) => !x.ready)) expect(html).not.toContain(`n=${l.n}&`);
+  });
+
+  it("sits after the transfer block, as the last thing in the lesson", () => {
+    const doc = lessonDoc("students", getLesson(4));
+    expect(doc.querySelector("#content").lastElementChild.matches("nav.lesson-nav")).toBe(true);
   });
 });
 

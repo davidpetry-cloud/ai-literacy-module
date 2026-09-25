@@ -227,6 +227,11 @@ ol.probs li{margin-bottom:16px}
 .figure{overflow-x:auto;margin-bottom:12px;container-type:inline-size}
 .btn{font-family:var(--sans);font-weight:600;font-size:var(--fs-sm);background:var(--btn-bg);color:var(--on-dark);border:2px solid var(--btn-edge);border-radius:var(--r-md);padding:8px 16px;cursor:pointer;margin-bottom:16px;min-height:44px}
 .btn:hover{background:var(--btn-bg-hover)}
+/* Next lesson is the main action; previous is quieter (hierarchy). Both are 44px targets. */
+.lesson-nav{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;margin:24px 0 0}
+.lesson-nav a{min-height:44px;display:inline-flex;align-items:center;font-family:var(--sans);font-weight:600}
+.lesson-nav .prev{color:var(--ink-2);font-size:var(--fs-sm)}
+.lesson-nav .next{margin:0 0 0 auto;text-decoration:none}
 
 /* prompt pairs (Lesson 2): each part has a pale surface, a border in its own
    hue AND a written label, so colour is never the only cue. */

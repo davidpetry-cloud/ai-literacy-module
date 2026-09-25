@@ -1624,7 +1624,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     <section class="block transfer"><h2>Use it this week</h2>
       <p>${esc(lesson.transfer[track])}</p>
       <p class="sense">Follow up in two weeks: bring one AI output you used and show what you checked.</p>
-    </section>`;
+    </section>
+    ${lessonNav(lesson, track)}`;
 
   side.innerHTML = `
     <div class="sidebox"><h2>Alignment</h2>${alignmentTable(lesson)}</div>
@@ -1645,6 +1646,19 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
+}
+
+/** Previous and next ready lessons, keeping the reader's track. The last lesson leads back to the course overview. */
+export function lessonNav(lesson, track) {
+  const ready = COURSE.lessons.filter((l) => l.ready).sort((a, b) => a.n - b.n);
+  const prev = [...ready].reverse().find((l) => l.n < lesson.n);
+  const next = ready.find((l) => l.n > lesson.n);
+  const href = (l) => `lesson.html?n=${l.n}&amp;track=${esc(track)}`;
+  const back = prev ? `<a class="prev" href="${href(prev)}"><span aria-hidden="true">← </span>Previous: Lesson ${prev.n}, ${esc(prev.title)}</a>` : "";
+  const fwd = next
+    ? `<a class="btn next" href="${href(next)}">Next: Lesson ${next.n}, ${esc(next.title)}<span aria-hidden="true"> →</span></a>`
+    : `<a class="btn next" href="index.html?track=${esc(track)}">Back to all lessons<span aria-hidden="true"> →</span></a>`;
+  return `<nav class="lesson-nav" aria-label="Lessons">${back}${fwd}</nav>`;
 }
 
 function passageExercise(passage, provenanceNote) {
