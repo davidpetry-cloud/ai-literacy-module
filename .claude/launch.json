@@ -4,8 +4,11 @@
     {
       "name": "ai-literacy-preview",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["scripts/serve.js"],
-      "port": 8080
+      "runtimeArgs": [
+        "scripts/serve.js"
+      ],
+      "port": 8080,
+      "autoPort": true
     }
   ]
 }
