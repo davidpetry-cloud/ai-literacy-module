@@ -324,6 +324,68 @@ claims proposed: `ai-companion-farewells` (a working paper, flagged),
 `sycophancy-preference`, `darkbench-patterns`, and three answer keys; the
 abstract also cites Lesson 1's `model-predicts`.
 
+## Lesson 12 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+
+**Confirmed first (2026-09-25):** the FBI's national alert on financial
+sextortion says to block the person but not delete the profile or messages,
+because they help law enforcement; don't pay; get help (fbi.gov press release).
+NSPCC Learning's grooming page lists signs such as secrecy about time online,
+unexplained gifts, a relationship with a much older person, and sudden changes
+in behavior, and notes they can look like ordinary teenage behavior.
+
+**Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
+
+**Warm-up** surfaces three beliefs: the answer is to confront or call someone
+out; nothing protects an idea once shared; if someone insists it didn't happen,
+you're probably wrong. **Check** has one item per objective.
+
+**Concrete · What would you do? (12 min), 12.1 and 12.3.** A new exercise: three
+short, made-up situations per track, each with three possible responses.
+Learners mark each response **safe** or **risky**, and say why. Every situation
+has at least one safe and one risky response. Risky ones are the ones people
+reach for: calling someone a name in public, paying to make it stop, deleting
+everything, keeping it secret.
+- Educators: a colleague who takes credit and then says "that's not what
+  happened" (gaslighting); a parent who pressures you in private messages; a
+  student who tells you something worrying and asks you to keep it secret (the
+  key follows *Keeping Children Safe in Education*: never promise secrecy,
+  involve the safeguarding lead).
+- Professionals: a manager who presents your work as theirs; a contact who
+  pushes for your password; a colleague who says you "imagined" a conversation.
+- Students: someone online who threatens to share a photo unless you pay (the
+  key follows the FBI: don't pay, save and block, tell a trusted adult, and Take
+  It Down can help remove images); a friend who copies your project and says it
+  was theirs; someone who keeps saying "you're too sensitive, that never
+  happened". Every key ends with a trusted adult and "it's not your fault".
+
+**Pictorial · Build your plan (10 min), 12.1, 12.2 and 12.3.** A new builder,
+like Lesson 5's checklist: learners tick the steps for their own plan from a
+short list (write it down with dates; keep copies; set a boundary; limit
+contact; tell someone you trust; report it; protect your work before sharing).
+The builder shows which of three needs the plan covers, **a record**,
+**support** and **a boundary**, in words and shape, and what's missing. It
+collects nothing and sends nothing; a "Start again" button clears it.
+
+**Abstract · Protect yourself and your gifts (8 min), 12.1, 12.2 and 12.3.**
+Reference tables:
+- gaslighting: what it is (Sweet, 2019) and what helps (a record, a trusted
+  person);
+- protecting your work: dated drafts, shared documents with history, agreeing
+  credit before you start, sharing with more than one person. Practical advice,
+  not a research finding, and the table says so;
+- where to get help: a trusted person; at school, the safeguarding lead; online
+  threats: don't pay, save and block, report (FBI, NCMEC's Take It Down for
+  under-18s); any country: Child Helpline International's directory.
+
+**Use it this week:** start one written record, or protect one piece of work
+before you share it. Students: tell an adult you trust about anything that
+worries you.
+
+**Facilitator note (safeguarding):** this lesson can prompt a disclosure. Know
+your route before you teach it. Never promise to keep abuse secret.
+
+**Model:** Opus, for the new exercise and builder.
+
 ## Research for Lessons 10 and 12 (2026-09-25)
 
 Every source below was checked to exist and to say what it's used for. Findings
@@ -375,5 +437,5 @@ usernames) before blocking.
 
 ## Still open
 
-- Confirm the NSPCC warning-signs wording and the FBI's advice on keeping
-  evidence before Lesson 12 is written.
+Nothing. NSPCC's warning signs and the FBI's advice on keeping evidence were
+confirmed on 2026-09-25 (see Lesson 12 design).
