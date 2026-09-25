@@ -5,7 +5,7 @@
  * labeling people. Objectives only (backward design); plan, sources and
  * David's decisions in docs/dark-triad-series.md. Self-contained, so the series
  * can move to its own module later.
- * S2. 10.3 reworded at David's request on 2026-09-25 (trust your gut feeling); awaiting his confirmation of the wording.
+ * S2. 10.3 reworded at David's request on 2026-09-25 (trust your gut feeling); David confirmed the wording the same day.
  */
 
 export default {
@@ -13,6 +13,7 @@ export default {
   slug: "spot-the-pattern",
   title: "Spot the pattern, in person and online",
   ready: false,
+  objectivesApproved: "2026-09-25",
   framing:
     "The same ways of using people show up face to face and online. This lesson helps you trust what your gut tells you, and check it against a pattern of behavior.",
   objectives: [

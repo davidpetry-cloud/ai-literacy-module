@@ -3,7 +3,7 @@
 **Status:** objectives approved by David 2026-09-25. The series is **Lessons
 9–12 of this course** (his choice), each self-contained so it can move to its
 own module later. Three objectives were added or reworded to his direction the
-same day (9.4, 10.3, 12.3) and await his confirmation of the wording; the files
+same day (9.4, 10.3, 12.3); he confirmed the wording the same day. The files
 are `lessons/lesson-09.js` to `lesson-12.js`, all `ready: false`. Each lesson goes through the backward-design gate like any other:
 objectives first, approved by David, then assessments, then activities.
 
@@ -90,7 +90,7 @@ The seatbelt picture is a candidate for the series' ARCS attention hook.
 All four sources were checked to exist on 2026-09-25. Each finding the lessons
 use becomes a `source: "model"` claim for David to attest.
 
-## Objectives (approved 2026-09-25; new wording marked)
+## Objectives (all approved 2026-09-25; new wording marked)
 
 **Lesson 9 · What the Dark Triad is, and isn't**
 - 9.1 *(understand)*: Describe the three Dark Triad traits as research
@@ -136,6 +136,53 @@ use becomes a `source: "model"` claim for David to attest.
 | Addiction | Review of links between the Dark Triad and substance and behavioural addictions (Jauk & Dieterich, 2019, *Frontiers in Psychiatry* 10:662). | 9.4: the traits are **linked** to addiction, worded as a link, not a cause. Ties back to Lesson 7's addictive design. |
 | Gaslighting | Gaslighting is abuse aimed at making a person seem or feel "crazy", and it draws on stereotypes and unequal power (Sweet, 2019, *American Sociological Review* 84(5), 851–875). | 12.3: a written record and a trusted person help you hold on to what really happened. |
 | Dealing with personality disorders | Narcissistic and antisocial personality disorders are clinical diagnoses made by trained clinicians. The Dark Triad is subclinical, measured in ordinary people (Paulhus & Williams, 2002). | 9.1 and 12.1: the lessons say the difference plainly. The strategies (boundaries, records, trusted people, limiting contact, professional help) work on the behaviour, diagnosed or not. Learners never diagnose. |
+
+## Lesson 9 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+
+**Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
+
+**Warm-up** surfaces four beliefs: you either are a narcissist or you aren't; a
+person using you would seem creepy; a study about a group tells you about one
+person; people are born, or made, that way. **Check** has one item per
+objective, with its reteach signal.
+
+**Concrete · Read the article (12 min), 9.1 and 9.3.** The passage exercise from
+Lesson 1: a made-up popular article about the Dark Triad, four sentences, each
+marked correct, wrong, no source, or nothing to check. The page says it's made
+up, with errors planted on purpose.
+- Educators: a staff newsletter piece, "Toxic personalities in schools".
+- Professionals: a business magazine piece, "Dark personalities at work".
+- Students: a social media post, "Signs someone is a narcissist". The key's
+  notes point out that the post invites you to label people you know, and says
+  why that's not what the research does.
+
+Planted, per track in different positions: *correct* (these traits are measured
+with questionnaires, and most people score in the middle), *wrong* (the Dark
+Triad is a diagnosis doctors use), *no source* (an invented survey figure), and
+*nothing to check* ("everyone has met someone like this").
+
+**Pictorial · Groups overlap (10 min), 9.1 and 9.3.** A new figure: made-up scores
+for two groups on one trait scale, drawn as dots. The group averages differ a
+little, but most people in the two groups overlap. A learner picks any dot, and
+the figure asks: "Which group is this person in?" Usually you can't tell. That
+is why a finding about a group can't tell you about one person. The figure says
+the data is made up for illustration. Drawn as SVG and as a table; the
+description names the averages and how much the groups overlap.
+
+**Abstract · What the research shows (8 min), 9.1, 9.2 and 9.4.** Reference tables:
+- the three traits in plain words, and the tactics each is linked to:
+  compliments and favours (soft), threats (hard) (Jonason, Slomski & Partyka,
+  2012, *Personality and Individual Differences* 52, 449–453);
+- trait or disorder: traits are measured in ordinary people (Paulhus &
+  Williams, 2002; Jones & Paulhus, 2014); personality disorders are diagnosed by
+  clinicians (American Psychiatric Association, *DSM-5-TR*, 2022; to check);
+- where traits come from: genes and environment (Vernon et al., 2008);
+- the addiction link (Jauk & Dieterich, 2019).
+
+**Use it this week:** notice one moment when you (or a post, or an article) put
+a label on someone. Replace the label with what the person actually did.
+
+**Model:** Opus, for the new overlap figure.
 
 **Students track:** same objectives; the scenarios are about the learner's own
 safety and choices (grooming, peer pressure, online exploitation), and the

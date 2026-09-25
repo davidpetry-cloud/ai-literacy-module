@@ -5,7 +5,7 @@
  * labeling people. Objectives only (backward design); plan, sources and
  * David's decisions in docs/dark-triad-series.md. Self-contained, so the series
  * can move to its own module later.
- * S4. 12.3 added at David's request on 2026-09-25; awaiting his confirmation of the wording.
+ * S4. 12.3 added at David's request on 2026-09-25; David confirmed the wording the same day.
  */
 
 export default {
@@ -13,6 +13,7 @@ export default {
   slug: "protect-your-gifts",
   title: "Protect yourself and your gifts",
   ready: false,
+  objectivesApproved: "2026-09-25",
   framing:
     "Knowing the signs is half of it. This lesson is the other half: what to do, how to keep hold of what really happened, and how to protect your work and your talents.",
   objectives: [
