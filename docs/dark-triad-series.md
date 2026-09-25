@@ -197,19 +197,57 @@ three answer keys.
 safety and choices (grooming, peer pressure, online exploitation), and the
 trusted person is an adult. No scenario asks a student to judge a classmate.
 
-**Evidence still to find before S2 and S4 are designed:** research on specific
-exploitative behaviours (the trait studies alone don't list them), and
-safeguarding guidance for the students track.
+## Research for Lessons 10 and 12 (2026-09-25)
+
+Every source below was checked to exist and to say what it's used for. Findings
+become `source: "model"` claims when the lessons are built.
+
+### Lesson 10: specific behaviors, in person and online
+
+| Behavior pattern | Evidence | Use in Lesson 10 |
+|---|---|---|
+| **Coercive control**: isolating someone, monitoring them (online too), controlling their money or independence, threats, humiliation | Stark (2007), *Coercive Control*, Oxford University Press: abuse as an ongoing **pattern** of control, not single incidents. England's statutory guidance on controlling or coercive behaviour (Home Office, April 2023, under the Serious Crime Act 2015, s.76) requires behavior that is "repeatedly or continuously" done, and lists isolating, exploiting, depriving of independence, threats, humiliation and intimidation; online messages and tracking apps count as evidence. | 10.1 and 10.2. A second, stronger anchor for "a pattern across situations" (with the BAU idea): the law itself looks for the pattern. |
+| **Grooming**: choosing a target, getting access and isolating them, building trust with attention, gifts and secrets, then pushing boundaries bit by bit | Winters & Jeglic (2017), "Stages of Sexual Grooming", *Deviant Behavior* 38(6), 724–733: early grooming looks innocent. Whittle et al. (2013), "A review of online grooming", *Aggression and Violent Behavior* 18(1), 62–70: online groomers use flattery, bribes and threats. | 10.1 and 10.2: the same stages in person and online. The students track frames it as adults or strangers contacting *them*. |
+| **Romance and trust scams** | Whitty (2013), "The Scammers Persuasive Techniques Model", *British Journal of Criminology* 53(4), 665–684: scammers groom victims before any request for money; a "near win" keeps people in. | 10.1, educators and professionals: building trust first, then asking. |
+| **Harm online** | Trolling correlates with sadism, psychopathy and Machiavellianism (Buckels et al., 2014). Cyberbullying relates to all three traits, with psychopathy the unique predictor (Goodboy & Martin, 2015, *Computers in Human Behavior* 49, 1–4; 227 students). | 10.1: the traits show up online as well as in person. |
+| **At work** | Meta-analysis of 245 samples (N = 43,907): counterproductive work behavior rises with all three traits (O'Boyle et al., 2012, *Journal of Applied Psychology* 97(3), 557–579). | 10.1, professionals track. |
+| **Love bombing** (too much attention and affection early on, to gain control) | Evidence is thin: one undergraduate study (Strutzenberg et al., 2017, University of Arkansas; 484 students) found it correlated with narcissism. | Mention only as early research, if at all. Not a core claim. |
+| **Gut feeling** | Fowler et al. (2009); Back et al. (2010), above. | 10.3. |
+
+### Lesson 12 and the students track: keeping children safe
+
+**Design rules** for every lesson in the series (and Lesson 12 especially):
+
+1. **Learners' own situations only.** No scenario asks a student to judge a
+   classmate, friend or family member.
+2. **Every scenario ends with a person to tell.** For students, a trusted
+   adult. The page says: telling is the right thing, and it's not your fault.
+3. **The page collects nothing.** No text box for disclosures, nothing sent
+   anywhere. Help routes are links and names only.
+4. **A facilitator note before Lessons 10 and 12:** these lessons can prompt a
+   disclosure. Know your safeguarding route before you teach them.
+
+**Sources for the guidance:**
+
+| Guidance | Source (checked 2026-09-25) | Use |
+|---|---|---|
+| Staff must never promise a child to keep abuse secret; reassure them they are taken seriously; involve the designated safeguarding lead | Department for Education (England), *Keeping Children Safe in Education*, September 2026, Part one, paragraphs 14–15 (read in the source) | Educators track, facilitator notes |
+| In the US, every state has mandated-reporting laws, and teachers are among the mandated reporters; procedures vary by state | Child Welfare Information Gateway, "Mandatory Reporting of Child Abuse and Neglect" (childwelfare.gov) | Educators track: follow your school's policy |
+| Sextortion: stop, don't pay, tell a trusted adult, report; remove images with Take It Down (under 18) or StopNCII (adults); beware "help" that charges a fee | FBI, "Sextortion" (fbi.gov/sextortion); NCMEC CyberTipline and Take It Down; FBI IC3 public service announcement, April 2023 | 12.1, all tracks, students especially |
+| Grooming online: someone who gets very close very fast, uses flattery, gifts or promises, or asks for private photos | eSafety Commissioner (Australia), "Unsafe contact and grooming" pages for young people and parents | Students track wording |
+| Tell a trusted adult if something online makes you upset, uncomfortable or scared | UNICEF Parenting, "How to keep your child safe online" | Students track wording |
+| Help in any country | Child Helpline International: a directory of 155 child helplines in 133 countries (childhelplineinternational.org) | One link, rather than a list of numbers that can go out of date |
+
+**Still to confirm before writing Lesson 12:** the exact wording of NSPCC's
+"Grooming: recognising the signs" page, if its warning signs are used in the
+educators track; and whether the FBI advises keeping evidence (messages,
+usernames) before blocking.
 
 **The AI link:** exploiters now use AI too: scams, cloned voices, and
 "companion" apps built to win trust. That keeps the series inside AI literacy.
 
-## To research before designing
+## Still open
 
-- The evidence base for specific exploitative behaviours (the example patterns
-  in D.2 need their own sources, not just the trait literature).
-- Safeguarding guidance for the students track (for example national child
-  protection guidance), and how the page points to help without collecting
-  anything.
 - Whether to mention the Dark Tetrad (adds everyday sadism; Buckels, Jones &
-  Paulhus, 2013). Not checked yet.
+  Paulhus, 2013). Buckels et al. (2014) found sadism the strongest predictor of
+  trolling, which makes a case for mentioning it in Lesson 10.
