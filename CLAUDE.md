@@ -7,7 +7,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A twelve-lesson AI literacy course (Lessons 9–12 in design) for three audiences — educators, professionals
+A twelve-lesson AI literacy course (Lessons 10–12 in design) for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -216,7 +216,8 @@ Sonnet worked well.
 | 06 | done | built on Opus: `screen` exercise (a made-up AI-built screen in a sandboxed `iframe`, with a text version) and the `fix-first` grid (`fixFirstGrid`, `fixOrder` in `lesson-core.js`); abstract stages can carry reference `tables` |
 | 07 | done | built on Opus: `audit` exercise (Lesson 6's sandboxed screen with WCAG and pattern keys) and the `contrast` checker (`checkContrast`, `contrastRatio`, `nearestPassing` in `lesson-core.js`); its worked example audits this site, and each row is checked in `tests/ui.test.js` |
 | 08 | done | built on Opus: `judge` exercise (a made-up AI product page, keep / change / stop and what it touches) and the `control` grid (`controlGrid`, `controlView` in `lesson-core.js`), after Shneiderman's human control × automation framework |
-| 09–12 | design | the Dark Triad series (`docs/dark-triad-series.md`): objectives only, `ready: false`. Recognising behaviour, not labelling people |
+| 09 | done | built on Opus: first of the Dark Triad series. Lesson 1's passage exercise (a made-up popular article per track) and the new `overlap` figure (`overlapPlot`, `overlapView`, `overlapPick` in `lesson-core.js`) |
+| 10–12 | design | the rest of the Dark Triad series (`docs/dark-triad-series.md`): objectives approved, `ready: false`. Recognizing behavior, not labeling people |
 
 One lesson per session.
 
@@ -297,7 +298,7 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-There are 60 claims (Lesson 8 added ten on 2026-09-25). David attests them
+There are 70 claims (Lessons 8 and 9 each added ten on 2026-09-25). David attests them
 himself, one lesson at a time, writing each practitioner block by hand; never a
 Claude session. By 2026-09-25 he had attested six, five of them in Lesson 1.
 

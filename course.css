@@ -344,6 +344,12 @@ ul.cmp-out{list-style:none;margin:0;padding:0}
 
 svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .g-cell{fill:var(--card);stroke:var(--edge);stroke-width:1.5}
+.g-dot{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:1.5}
+.g-axis{stroke:var(--edge);stroke-width:1.5}
+.g-mean{stroke:var(--ink-3);stroke-width:2.5;stroke-dasharray:6 4}
+.g-meanlabel{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:start}
+.g-pick{fill:none;stroke:var(--focus);stroke-width:3}
+.grid-alt .picked{outline:3px solid var(--focus);outline-offset:-3px}
 .g-cell.g-aim{stroke:var(--teal);stroke-width:4;stroke-dasharray:8 5}
 .g-col{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:middle}
 .g-row{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:end}

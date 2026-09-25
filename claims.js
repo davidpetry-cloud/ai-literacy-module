@@ -438,5 +438,65 @@ export const CLAIMS = {
     attestation: proposedBy(
       "The product is made up. Location and contacts (UNICEF requirements 4 and 5, privacy and safety; General Comment 25), night-time streak alerts (wellbeing, as in Lesson 7), and an app that says 'you don't need anyone else' (relationships). The key speaks to the student about their own choices, never about judging other children."
     )
+  },
+  "dark-triad-construct": {
+    text: "The Dark Triad is a research idea, introduced in 2002, for three overlapping traits: narcissism, Machiavellianism and psychopathy. They are studied as subclinical traits in ordinary people, not as illnesses.",
+    attestation: proposedBy(
+      "Paulhus and Williams (2002), 'The Dark Triad of personality: Narcissism, Machiavellianism, and psychopathy', Journal of Research in Personality 36, 556-563. Their samples were students, and they describe the traits as subclinical and overlapping but distinct."
+    )
+  },
+  "dark-triad-measure": {
+    text: "Researchers usually measure the three traits with questionnaires, such as the 27-item Short Dark Triad, which gives each person a score on each trait rather than a yes-or-no answer.",
+    attestation: proposedBy(
+      "Jones and Paulhus (2014), 'Introducing the Short Dark Triad (SD3): A brief measure of dark personality traits', Assessment 21(1), 28-41: four studies, N = 1,063, three subscales of nine items. 'Scales everyone sits somewhere on' is the plain-language version of dimensional scoring."
+    )
+  },
+  "dark-triad-tactics": {
+    text: "At work, people higher in psychopathy and Machiavellianism are more likely to use hard tactics such as threats, and people higher in Machiavellianism and narcissism are more likely to use soft tactics such as compliments.",
+    attestation: proposedBy(
+      "Jonason, Slomski and Partyka (2012), 'The Dark Triad at work: How toxic employees get their way', Personality and Individual Differences 52, 449-453. Correlations in groups; Jonason and Webster (2012, PAID 52, 521-526) add that these traits go with varied tactics, so there is no single sign."
+    )
+  },
+  "trait-not-diagnosis": {
+    text: "Dark Triad scores are not diagnoses. Personality disorders, such as narcissistic or antisocial personality disorder, are diagnosed by trained clinicians using clinical criteria.",
+    attestation: proposedBy(
+      "Paulhus and Williams (2002) for the traits as subclinical; American Psychiatric Association, DSM-5-TR (2022), for personality disorders as clinical diagnoses with set criteria. The DSM-5-TR section on personality disorders should be checked before attesting."
+    )
+  },
+  "dark-triad-origins": {
+    text: "A twin study found that genes and environment both shape the three traits, and that Machiavellianism is the most shaped by environment.",
+    attestation: proposedBy(
+      "Vernon, Villani, Vickers and Harris (2008), 'A behavioral genetic investigation of the Dark Triad and the Big 5', Personality and Individual Differences 44, 445-452: 278 adult twins; heritabilities from .31 to .72; only Machiavellianism showed shared-environment effects. One study of modest size: worded as 'a twin study found'."
+    )
+  },
+  "dark-triad-addiction": {
+    text: "Research links the Dark Triad traits to addictive behavior, both with substances and with activities such as gambling. It is a link, not proof that one causes the other.",
+    attestation: proposedBy(
+      "Jauk and Dieterich (2019), 'Addiction and the Dark Triad of Personality', Frontiers in Psychiatry 10:662, a mini review of substance and non-substance addictions. Worded as a link; the review integrates correlational and clinical evidence. Suggested by David (2026-09-25)."
+    )
+  },
+  "group-not-individual": {
+    text: "A finding about a group's average can't tell you what one person in that group is like or does. Two groups can differ on average while most of their members overlap.",
+    attestation: proposedBy(
+      "A point of statistical reasoning rather than an empirical finding. The classic related paper is Robinson (1950), 'Ecological correlations and the behavior of individuals', American Sociological Review 15(3), 351-357. The lesson's dot plot uses made-up data to show it."
+    )
+  },
+  "l9-key-educators": {
+    text: "The answer key for the Lesson 9 educators article is correct: each sentence's label matches its cited source, and the survey figure has no real source behind it.",
+    attestation: proposedBy(
+      "The article is made up. Check sentence 2 against Paulhus and Williams (2002) and sentence 3 against Jones and Paulhus (2014). The 2022 survey is planted."
+    )
+  },
+  "l9-key-professionals": {
+    text: "The answer key for the Lesson 9 professionals article is correct: each sentence's label matches its cited source, and the report figure has no real source behind it.",
+    attestation: proposedBy(
+      "The article is made up. Check sentence 1 against Jonason, Slomski and Partyka (2012) and sentence 4 against Vernon et al. (2008). The 2023 report is planted."
+    )
+  },
+  "l9-key-students": {
+    text: "The answer key for the Lesson 9 students post is correct: each sentence's label matches its cited source, and the 'one in three' figure has no real source behind it.",
+    attestation: proposedBy(
+      "The post is made up. Check sentence 2 against Paulhus and Williams (2002). Sentence 3 is wrong on two counts: the traits are subclinical, and disorders are diagnosed by clinicians, not from posts. The notes steer students away from labeling people they know."
+    )
   }
 };

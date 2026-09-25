@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1006,6 +1006,81 @@ describe("lesson 8: one core across tracks", () => {
   });
 });
 
+const lesson9 = getLesson(9);
+const lesson9Doc = (track) => lessonDoc(track, lesson9);
+const overlapData = lesson9.stages[1].overlap;
+
+describe.each(TRACK_IDS)("lesson 9, %s track", (track) => {
+  const doc = lesson9Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("shows the track's made-up article, each sentence with a closed reveal, and says errors were planted", () => {
+    const sentences = lesson9.stages[0].tracks[track].passage.sentences;
+    const items = doc.querySelectorAll('[data-stage="concrete"] .passage li');
+    expect(items).toHaveLength(sentences.length);
+    sentences.forEach((x, i) => expect(items[i].querySelector("p").textContent).toBe(x.text));
+    expect([...doc.querySelectorAll('[data-stage="concrete"] .passage details')].every((d) => !d.open)).toBe(true);
+    expect(doc.querySelector(".passage figcaption").textContent).toContain("planted on purpose");
+  });
+
+  it("describes the dot plot with both averages, says the data is made up, and has a table of the same counts", () => {
+    const label = doc.querySelector("#grid svg").getAttribute("aria-label");
+    expect(label).toContain("made-up");
+    expect(label).toContain("average 2.75");
+    expect(label).toContain("average 3.25");
+    const rows = [...doc.querySelectorAll("#grid table tbody tr")].map((r) => [...r.querySelectorAll("td")].map((c) => Number(c.textContent)));
+    expect(rows).toEqual(overlapData.groups.map((g) => g.counts));
+    expect(doc.querySelector("#grid .fix-order").textContent).toContain("made up");
+  });
+
+  it("picks one person at a time, marks their score in both views, and says what the score can't tell you", () => {
+    const d = lesson9Doc(track);
+    expect(d.querySelectorAll("#grid .g-pick")).toHaveLength(0);
+    d.querySelector("#ov-pick").click();
+    expect(d.querySelectorAll("#grid .g-pick")).toHaveLength(overlapData.groups.length);
+    expect(d.querySelectorAll("#grid table .picked").length).toBeGreaterThan(0);
+    expect(d.querySelector("#ov-status").textContent).toBe(overlapPick(overlapData, overlapData.picks[0]));
+    expect(d.querySelector("#ov-status").textContent).toContain("can't tell you which group");
+    expect(d.querySelector("#ov-pick").textContent).toBe("Pick another person");
+    d.querySelector("#ov-pick").click();
+    expect(d.querySelector("#grid svg").getAttribute("aria-label")).toContain(`Picked score: ${overlapData.picks[1].toFixed(1)}.`);
+  });
+
+  it("shows the three traits and what the research can't tell you, as reference tables", () => {
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect(tables).toHaveLength(2);
+    expect([...tables[0].querySelectorAll("tbody th")].map((t) => t.textContent)).toEqual(["Narcissism", "Machiavellianism", "Psychopathy"]);
+  });
+});
+
+describe("lesson 9: one core across tracks, and the overlap figure", () => {
+  const html = (t, sel) => lesson9Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, pictorial, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="pictorial"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("computes the averages from the counts, and has groups that really overlap", () => {
+    const [a, b] = overlapData.groups;
+    expect(overlapMean(overlapData.steps, a.counts)).toBe(2.75);
+    expect(overlapMean(overlapData.steps, b.counts)).toBe(3.25);
+    const shared = overlapData.steps.filter((_, i) => a.counts[i] && b.counts[i]);
+    expect(shared.length).toBeGreaterThanOrEqual(overlapData.steps.length - 2);
+    // Every score it picks is on the scale.
+    for (const p of overlapData.picks) expect(overlapData.steps).toContain(p);
+  });
+
+  it("still says what the score can't tell you when only one group has people there", () => {
+    expect(overlapPick(overlapData, 1)).toContain("Only one group has people here");
+    expect(overlapPick(overlapData, 1)).toContain("doesn't tell you what this person does");
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -1020,7 +1095,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 5 (${t})`, lesson5Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 6 (${t})`, lesson6Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 7 (${t})`, lesson7Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 8 (${t})`, lesson8Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 8 (${t})`, lesson8Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 9 (${t})`, lesson9Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -1036,7 +1112,8 @@ describe("page structure", () => {
     ["lesson 5", lesson5Doc(TRACK_IDS[0])],
     ["lesson 6", lesson6Doc(TRACK_IDS[0])],
     ["lesson 7", lesson7Doc(TRACK_IDS[0])],
-    ["lesson 8", lesson8Doc(TRACK_IDS[0])]
+    ["lesson 8", lesson8Doc(TRACK_IDS[0])],
+    ["lesson 9", lesson9Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);

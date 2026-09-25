@@ -750,6 +750,84 @@ export function controlView(parts, { revealed = false } = {}) {
   return controlGrid(parts, { revealed }) + gridTable(controlLabel(parts, revealed), "Control", AUTOMATION.map((a) => AUTOMATION_LABEL[a]), rows) + note;
 }
 
+/* ---------- groups overlap (Lesson 9): a finding about groups can't sort one person ---------- */
+
+const score1 = (x) => x.toFixed(1);
+/** Group average from counts at each step of the scale. */
+export function overlapMean(steps, counts) {
+  const n = counts.reduce((a, b) => a + b, 0);
+  return steps.reduce((sum, v, i) => sum + v * counts[i], 0) / n;
+}
+
+/** What one picked score says, and doesn't say, about which group a person is in. */
+export function overlapPick(data, score) {
+  const i = data.steps.indexOf(score);
+  const [a, b] = data.groups.map((g) => g.counts[i]);
+  const [la, lb] = data.groups.map((g) => g.short);
+  const who = `This person scores ${score1(score)}. ${la}: ${a} ${a === 1 ? "person" : "people"} score that. ${lb}: ${b}.`;
+  return a && b
+    ? `${who} Both groups have people here, so the score can't tell you which group this person is in, or what they do.`
+    : `${who} Only one group has people here. Even so, the score doesn't tell you what this person does.`;
+}
+
+function overlapLabel(data, picked) {
+  const [ga, gb] = data.groups;
+  const shared = data.steps.filter((_, i) => ga.counts[i] && gb.counts[i]);
+  let label = `Dot plot of made-up scores for two groups of ${ga.counts.reduce((x, y) => x + y, 0)} people each, on a ${data.scale}. ${ga.label}: average ${overlapMean(data.steps, ga.counts).toFixed(2)}. ${gb.label}: average ${overlapMean(data.steps, gb.counts).toFixed(2)}. Both groups have people at every score from ${score1(shared[0])} to ${score1(shared[shared.length - 1])}.`;
+  if (picked != null) label += ` Picked score: ${score1(picked)}.`;
+  return label;
+}
+
+export function overlapPlot(data, picked = null) {
+  const x0 = 180, cw = 48, r = 9, rowH = 130, top = 8, w = x0 + cw * data.steps.length + 16, h = top + rowH * 2 + 36;
+  const xOf = (v) => x0 + (data.steps.indexOf(v) + 0.5) * cw;
+  const xAt = (v) => x0 + ((v - data.steps[0]) / (data.steps[1] - data.steps[0]) + 0.5) * cw;
+  const parts = [];
+  data.groups.forEach((g, gi) => {
+    // Each row: the average's label at the top, dots stacked up from the axis below it.
+    const base = top + rowH * (gi + 1) - 14;
+    parts.push(`<text x="${x0 - 12}" y="${base - 30}" class="g-row">${esc(g.short)}</text>`);
+    parts.push(`<line x1="${x0}" x2="${w - 16}" y1="${base + 12}" y2="${base + 12}" class="g-axis"/>`);
+    if (picked != null) parts.push(`<rect x="${xOf(picked) - cw / 2 + 2}" y="${base - 84}" width="${cw - 4}" height="${96}" class="g-pick"/>`);
+    g.counts.forEach((c, i) => {
+      for (let k = 0; k < c; k++) parts.push(`<circle cx="${xOf(data.steps[i])}" cy="${base - k * (2 * r + 3)}" r="${r}" class="g-dot"/>`);
+    });
+    const m = overlapMean(data.steps, g.counts);
+    parts.push(`<line x1="${xAt(m)}" x2="${xAt(m)}" y1="${base - 100}" y2="${base + 12}" class="g-mean"/>`);
+    parts.push(`<text x="${xAt(m) + 6}" y="${base - 94}" class="g-meanlabel">Average ${m.toFixed(2)}</text>`);
+  });
+  data.steps.forEach((v) => parts.push(`<text x="${xOf(v)}" y="${top + rowH * 2 + 26}" class="g-col">${score1(v)}</text>`));
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(overlapLabel(data, picked))}">${parts.join("")}</svg>`;
+}
+
+/** Drawing plus table (same counts), and the picked score in words. */
+export function overlapView(data, picked = null) {
+  const table = `<table class="grid-alt"><caption class="sr">${esc(overlapLabel(data, picked))}</caption><thead><tr><th scope="col">Score</th>${data.steps
+    .map((v) => `<th scope="col"${v === picked ? ' class="picked"' : ""}>${score1(v)}</th>`)
+    .join("")}</tr></thead><tbody>${data.groups
+    .map((g) => `<tr><th scope="row">${esc(g.short)}</th>${g.counts.map((c, i) => `<td${data.steps[i] === picked ? ' class="picked"' : ""}>${c}</td>`).join("")}</tr>`)
+    .join("")}</tbody></table>`;
+  return overlapPlot(data, picked) + table + `<p class="fix-order">${esc(data.note)}</p>`;
+}
+
+function overlapFigure(data) {
+  return `<div class="figure" id="grid">${overlapView(data)}</div>
+      <div class="so-result"><button type="button" class="btn" id="ov-pick">Pick a person</button><p class="so-status" id="ov-status" aria-live="polite">Pick a person, then say which group you think they're in.</p></div>`;
+}
+
+// Each press picks the next score in a fixed list, so the activity runs the same way every time.
+function wireOverlap(doc, data) {
+  const btn = doc.querySelector("#ov-pick");
+  let i = -1;
+  btn.addEventListener("click", () => {
+    i = (i + 1) % data.picks.length;
+    const score = data.picks[i];
+    doc.querySelector("#grid").innerHTML = overlapView(data, score);
+    doc.querySelector("#ov-status").textContent = overlapPick(data, score);
+    btn.textContent = "Pick another person";
+  });
+}
+
 /* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
 
 export const CONTRAST_LEVELS = [
@@ -1188,6 +1266,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? classifyExercise(artefact, null, provenanceNote)
         : passageExercise(artefact, provenanceNote);
   const scale = pictorial.figure === "check-scale";
+  const overlap = pictorial.figure === "overlap";
   const pictorialBody = isPair
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
     : isSignoff
@@ -1202,6 +1281,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
         : isClassify
         ? checklistBuilder(pictorial, artefact.items)
+    : overlap
+      ? overlapFigure(pictorial.overlap)
     : scale
       ? scaleFigure(artefact.uses)
       : `<div class="figure" id="grid">${confidenceView(artefact.sentences)}</div>
@@ -1273,6 +1354,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isScreen) wireGrid(doc, (revealed) => fixFirstView(artefact.parts, { revealed }));
   else if (isAudit) wireContrast(doc, artefact.contrast);
   else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
+  else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }

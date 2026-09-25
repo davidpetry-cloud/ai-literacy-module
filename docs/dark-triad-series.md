@@ -137,7 +137,7 @@ use becomes a `source: "model"` claim for David to attest.
 | Gaslighting | Gaslighting is abuse aimed at making a person seem or feel "crazy", and it draws on stereotypes and unequal power (Sweet, 2019, *American Sociological Review* 84(5), 851–875). | 12.3: a written record and a trusted person help you hold on to what really happened. |
 | Dealing with personality disorders | Narcissistic and antisocial personality disorders are clinical diagnoses made by trained clinicians. The Dark Triad is subclinical, measured in ordinary people (Paulhus & Williams, 2002). | 9.1 and 12.1: the lessons say the difference plainly. The strategies (boundaries, records, trusted people, limiting contact, professional help) work on the behaviour, diagnosed or not. Learners never diagnose. |
 
-## Lesson 9 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+## Lesson 9 design (approved by David and built on Opus, 2026-09-25)
 
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
 
@@ -183,6 +183,15 @@ description names the averages and how much the groups overlap.
 a label on someone. Replace the label with what the person actually did.
 
 **Model:** Opus, for the new overlap figure.
+
+**As built:** the passage exercise with a new `overlap` figure (`overlapPlot`,
+`overlapView`, `overlapPick` in `lesson-core.js`); its data lives in the
+pictorial stage of `lessons/lesson-09.js`, shared by every track. "Pick a person"
+steps through a fixed list of scores, so the activity runs the same way each
+time. Ten claims proposed: `dark-triad-construct`, `dark-triad-measure`,
+`dark-triad-tactics`, `trait-not-diagnosis` (DSM-5-TR still to check),
+`dark-triad-origins`, `dark-triad-addiction`, `group-not-individual`, and the
+three answer keys.
 
 **Students track:** same objectives; the scenarios are about the learner's own
 safety and choices (grooming, peer pressure, online exploitation), and the
