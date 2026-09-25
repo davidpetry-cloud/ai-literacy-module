@@ -4,7 +4,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-An eight-lesson AI literacy course (Lesson 8 in design) for three audiences — educators, professionals
+An eight-lesson AI literacy course for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -28,7 +28,7 @@ scripts/serve.js   local preview on :8080
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
-docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) plan, sources checked, objectives awaiting approval
+docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
@@ -212,7 +212,7 @@ Sonnet worked well.
 | 05 | done | built on Sonnet: `classify` exercise (passage pattern, error-kind keys) and the `checklist` builder (`checklistStatus`, `checklistGrid` in `lesson-core.js`) |
 | 06 | done | built on Opus: `screen` exercise (a made-up AI-built screen in a sandboxed `iframe`, with a text version) and the `fix-first` grid (`fixFirstGrid`, `fixOrder` in `lesson-core.js`); abstract stages can carry reference `tables` |
 | 07 | done | built on Opus: `audit` exercise (Lesson 6's sandboxed screen with WCAG and pattern keys) and the `contrast` checker (`checkContrast`, `contrastRatio`, `nearestPassing` in `lesson-core.js`); its worked example audits this site, and each row is checked in `tests/ui.test.js` |
-| 08 | design | Human-Centered AI: dignity, children's rights, wisdom, relationships; objectives only (`ready: false`). Opus if it needs a new tool |
+| 08 | done | built on Opus: `judge` exercise (a made-up AI product page, keep / change / stop and what it touches) and the `control` grid (`controlGrid`, `controlView` in `lesson-core.js`), after Shneiderman's human control × automation framework |
 
 One lesson per session.
 
@@ -272,8 +272,9 @@ designs are approved in `docs/lesson-06-design.md` and
 **Lesson 8, "Human-Centered AI" (2026-09-25):** David asked for a section on
 human dignity, children's rights, wisdom, ethics and human relationships, with
 UNESCO as a source, all grounded in research. It is Lesson 8 of this course.
-Its objectives are drafted in `lessons/lesson-08.js` and await his approval;
-the plan and checked sources are in `docs/lesson-08-design.md`. He also wants a
+He approved its objectives and stage design on 2026-09-25, and it was built
+the same day; the plan and checked sources are in `docs/lesson-08-design.md`.
+Its ten claims are proposed, awaiting his attestation. He also wants a
 later deep-dive series on recognising Dark Triad behaviour, framed as
 behaviours, not labels, for all three tracks with the students track adapted
 for safeguarding (`docs/dark-triad-series.md`). Lesson 8 does not use the term.
@@ -292,11 +293,9 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-All 50 claims are proposed and none are attested yet. The whole course is now
-built, so give David every claim grouped by lesson, with the source to check
-each against, once Lesson 7 ships. On 2026-09-24 he said he attests
-`usability-goals`; he writes that practitioner block himself, never a Claude
-session.
+There are 60 claims (Lesson 8 added ten on 2026-09-25). David attests them
+himself, one lesson at a time, writing each practitioner block by hand; never a
+Claude session. By 2026-09-25 he had attested six, five of them in Lesson 1.
 
 Contrast ratios in the checker are rounded down, so a pair can never round up
 into a pass; lesson copy quotes the checker's numbers (2.44, 1.94, 2.16, and

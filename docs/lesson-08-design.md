@@ -1,8 +1,8 @@
 # Lesson 8: Human-Centered AI. Design
 
-**Status:** objectives approved by David 2026-09-25. Warm-up and check written
-the same day (in `lessons/lesson-08.js`). **Stage design below awaits David's
-approval** before the stages are built. Wording
+**Status:** objectives and stage design approved by David 2026-09-25, and built
+the same day on Opus (`ready: true`). Its ten claims are proposed, awaiting
+David's attestation. Wording
 lives in `lessons/lesson-08.js`; this file is the plan. Any change goes back
 into this file first.
 
@@ -75,7 +75,7 @@ Each objective has one pre and one post item. The warm-ups surface three
 misconceptions: that Human-Centered AI means AI that *seems* human; that a use is
 fine if it helps; and that a job should go to the AI if the AI is faster.
 
-## Stages (proposed, awaiting approval)
+## Stages (approved and built 2026-09-25)
 
 **Concrete · Judge the app (12 min), 8.2.** Each track gets a made-up product
 page for an AI tool, as if a company had published it, with five numbered
@@ -98,7 +98,11 @@ stage is placed on it. The picture shows that the aim is **high control and high
 automation together**, and names the two ways to go wrong: too much automation,
 where no one can step in, and too much human control, where people do by hand
 what a tool could do safely. Drawn twice, as SVG and as a table, with a toggle to
-reveal the finished grid, like Lesson 6's fix-first grid.
+reveal the finished grid, like Lesson 6's fix-first grid. Built as the `judge`
+exercise and the `control` figure (`controlGrid`, `controlView` in
+`lesson-core.js`). The aim square has a dashed outline rather than a fill,
+because a fill dropped the grid lines below 3:1. The tests hold the key to the
+framework: every kept feature has high human control, and every stopped one low.
 
 **Abstract · Put people first (8 min), 8.1.** The ideas and their sources, in a
 reference table:

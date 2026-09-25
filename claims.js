@@ -378,5 +378,65 @@ export const CLAIMS = {
     attestation: proposedBy(
       "Written with the screen, which is made up. Check against WCAG 2.2: 2.2.2 (A; the carousel runs longer than 5 seconds with no pause), 1.4.10 (AA; filed under Perceivable, taught in the mobile and device group), 3.3.2 (A). The placeholder was measured at 2.16:1 (rounded down, as the checker does)."
     )
+  },
+  "human-dignity-unesco": {
+    text: "UNESCO's Recommendation on the Ethics of Artificial Intelligence, adopted by its 193 member states in November 2021, puts respect for human rights and human dignity at its core, with human oversight of AI systems.",
+    attestation: proposedBy(
+      "Check against the Recommendation itself (unesco.org, 'Recommendation on the Ethics of Artificial Intelligence', 2021): the values section lists respect, protection and promotion of human rights, fundamental freedoms and human dignity first; human oversight and determination is one of its principles. Normative, not empirical: a framework agreed by states."
+    )
+  },
+  "children-digital-rights": {
+    text: "The UN Committee on the Rights of the Child's General Comment No. 25 (2021) says children's rights apply in the digital environment, and sets out what states should do to respect, protect and fulfil them there.",
+    attestation: proposedBy(
+      "Check against General Comment No. 25 (2021), CRC/C/GC/25, on the OHCHR site. Drafted after consultation that included over 700 children and young people in 27 countries. Normative: an authoritative interpretation of the Convention on the Rights of the Child."
+    )
+  },
+  "child-centred-ai": {
+    text: "UNICEF's Policy Guidance on AI for Children (version 2.0, 2021) sets nine requirements for AI that affects children, including supporting their development and wellbeing, protecting their data and privacy, and keeping them safe.",
+    attestation: proposedBy(
+      "Check the list of nine requirements in UNICEF Innocenti, 'Policy guidance on AI for children 2.0' (November 2021). The three named here are requirements 1, 4 and 5. Normative guidance, developed with the Government of Finland."
+    )
+  },
+  "hcai-framework": {
+    text: "Ben Shneiderman's Human-Centered AI framework treats human control and computer automation as two separate scales, and argues for designs with high levels of both, avoiding too much of either.",
+    attestation: proposedBy(
+      "Shneiderman (2020), 'Human-Centered Artificial Intelligence: Reliable, Safe & Trustworthy', International Journal of Human-Computer Interaction 36(6), 495-504 (arXiv:2002.04087), and his book Human-Centered AI (Oxford University Press, 2022). The lesson's three-by-three grid is a teaching simplification of his two-dimensional framework."
+    )
+  },
+  "relationships-health": {
+    text: "Across 148 studies of 308,849 people, those with stronger social relationships had about 50% higher odds of survival over the study periods, an effect comparable to well-known risk factors such as smoking.",
+    attestation: proposedBy(
+      "Holt-Lunstad, Smith and Layton (2010), 'Social Relationships and Mortality Risk: A Meta-analytic Review', PLoS Medicine 7(7): e1000316 (OR = 1.50, 95% CI 1.42 to 1.59). Observational data: worded as 'had higher odds', not 'caused'. Used to say why relationships are worth protecting from substitution."
+    )
+  },
+  "wisdom-model": {
+    text: "Research on wisdom converges on a common model: balancing viewpoints, humility about what you know, adapting to context, and taking several perspectives, applied with a moral aim.",
+    attestation: proposedBy(
+      "Grossmann et al. (2020), 'The Science of Wisdom in a Polarized World: Knowns and Unknowns', Psychological Inquiry 31(2), 103-133: the 'common wisdom model' of perspectival metacognition grounded in moral aspirations. The lesson's four questions are a plain-language teaching version of it."
+    )
+  },
+  "ai-index-adoption": {
+    text: "Stanford HAI's AI Index 2026 reports that about 4 in 5 university students use generative AI, and that globally 59% of people say AI products offer more benefits than drawbacks, while 52% say AI products make them nervous.",
+    attestation: proposedBy(
+      "Stanford Institute for Human-Centered Artificial Intelligence, The 2026 AI Index Report (hai.stanford.edu/ai-index/2026-ai-index-report), public opinion and education chapters. Figures change every edition: attest with ttlDays 365 and re-check against the newest report. Suggested as a source by David (2026-09-25)."
+    )
+  },
+  "l8-key-educators": {
+    text: "The answer key for the Lesson 8 educators product page is reasonable: each feature's verdict (keep, change or stop), what it touches most, and where it sits on the control grid follow from the lesson's questions.",
+    attestation: proposedBy(
+      "The product is made up, so check the key against the page and the lesson's own sources: marks sent home with no teacher check (a judgement about a child with no one answerable), chats kept forever (UNICEF requirement 4, data and privacy), a 'buddy' that discourages asking the teacher (relationships). These are judgements, not facts: attest that they are reasonable, or propose a different verdict."
+    )
+  },
+  "l8-key-professionals": {
+    text: "The answer key for the Lesson 8 professionals product page is reasonable: each feature's verdict (keep, change or stop), what it touches most, and where it sits on the control grid follow from the lesson's questions.",
+    attestation: proposedBy(
+      "The product is made up. 'Stop' for scoring faces and voices rests on dignity and on people being unable to see or challenge the score; the EU AI Act (2024) also prohibits emotion recognition in workplaces, with exceptions, which could be checked and added. 'Change' for auto-reject asks for a person to review, in line with UNESCO's human oversight principle."
+    )
+  },
+  "l8-key-students": {
+    text: "The answer key for the Lesson 8 students product page is reasonable: each feature's verdict (keep, change or stop), what it touches most, and where it sits on the control grid follow from the lesson's questions.",
+    attestation: proposedBy(
+      "The product is made up. Location and contacts (UNICEF requirements 4 and 5, privacy and safety; General Comment 25), night-time streak alerts (wellbeing, as in Lesson 7), and an app that says 'you don't need anyone else' (relationships). The key speaks to the student about their own choices, never about judging other children."
+    )
   }
 };

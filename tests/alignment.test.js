@@ -16,7 +16,9 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge"];
+const VERDICTS = ["keep", "change", "stop"];
+const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
 const WCAG_GROUPS = ["Text and visuals", "Navigation and interaction", "Content clarity", "Mobile and device"];
 const PRINCIPLES = ["user-centricity", "consistency", "hierarchy", "context", "user-control", "accessibility", "usability"];
@@ -135,7 +137,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -427,6 +429,76 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
     });
 
     it("puts each screen's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(screen(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "judge")("concrete stage: judge", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const screen = (t) => concrete.tracks[t].screen;
+
+    it("has a context, a titled product page and five numbered features for every track", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(screen(t).title, t).toBeTruthy();
+        expect(screen(t).parts, t).toHaveLength(5);
+        for (const [i, p] of screen(t).parts.entries()) {
+          for (const f of ["label", "desc", "note"]) expect(p[f], `${t} ${i + 1} ${f}`).toBeTruthy();
+          expect(screen(t).html, `${t} marks feature ${i + 1}`).toContain(`<span class="n">${i + 1}</span>`);
+        }
+        expect(["planted", "captured"], t).toContain(screen(t).provenance);
+        expect(screen(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("keeps every page self-contained: no external URLs, no loaded scripts or styles", () => {
+      for (const t of TRACK_IDS) {
+        expect(screen(t).html, t).not.toMatch(/https?:\/\/|\/\/[a-z]/i);
+        expect(screen(t).html, t).not.toMatch(/<script[^>]+src=|<link[^>]+href=|<img|@import/i);
+        expect(screen(t).height, t).toBeGreaterThan(200);
+      }
+    });
+
+    it("gives every feature a verdict, what it touches, and a place on the control grid", () => {
+      for (const t of TRACK_IDS) {
+        for (const p of screen(t).parts) {
+          expect(VERDICTS, `${t} ${p.label}`).toContain(p.verdict);
+          expect(TOUCHES, `${t} ${p.label}`).toContain(p.touches);
+          expect(["high", "some", "low"], `${t} ${p.label}`).toContain(p.control);
+          expect(["low", "some", "high"], `${t} ${p.label}`).toContain(p.automation);
+        }
+      }
+    });
+
+    it("uses all three verdicts in every track, and touches all three ideas across the tracks", () => {
+      for (const t of TRACK_IDS) expect(new Set(screen(t).parts.map((p) => p.verdict)), t).toEqual(new Set(VERDICTS));
+      const touched = new Set(TRACK_IDS.flatMap((t) => screen(t).parts.map((p) => p.touches)));
+      for (const x of TOUCHES) expect(touched, x).toContain(x);
+    });
+
+    // The picture teaches Shneiderman's point, so the key must agree with it.
+    it("keeps only features that leave people in control, and stops only ones that don't", () => {
+      for (const t of TRACK_IDS) {
+        for (const p of screen(t).parts) {
+          if (p.verdict === "keep") expect(p.control, `${t} ${p.label}`).toBe("high");
+          if (p.verdict === "stop") expect(p.control, `${t} ${p.label}`).toBe("low");
+        }
+      }
+    });
+
+    it("puts at least one kept feature in the aim: high control and high automation", () => {
+      const aim = TRACK_IDS.flatMap((t) => screen(t).parts.filter((p) => p.verdict === "keep" && p.control === "high" && p.automation === "high"));
+      expect(aim.length).toBeGreaterThan(0);
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => screen(t).parts.map((p) => p.verdict).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+      const keeps = TRACK_IDS.map((t) => screen(t).parts.map((p, i) => (p.verdict === "keep" ? i : -1)).filter((i) => i >= 0).join());
+      expect(new Set(keeps).size, "the kept features sit in the same places in every track").toBe(TRACK_IDS.length);
+    });
+
+    it("puts each page's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(screen(t).claim);
     });
   });

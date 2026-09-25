@@ -687,6 +687,69 @@ function refTables(tables = []) {
     .join("");
 }
 
+/* ---------- judge (Lesson 8): keep, change or stop; and who stays in control ---------- */
+
+export const VERDICT_LABEL = { keep: "Keep", change: "Change", stop: "Stop" };
+export const TOUCHES = ["dignity", "children", "relationships"];
+export const CONTROL = ["high", "some", "low"];
+export const AUTOMATION = ["low", "some", "high"];
+const CONTROL_LABEL = { high: "High human control", some: "Some human control", low: "Low human control" };
+const AUTOMATION_LABEL = { low: "Little automation", some: "Some automation", high: "High automation" };
+
+function judgeReveal(p) {
+  return `<b class="k k-${p.verdict}">${VERDICT_LABEL[p.verdict]}</b> <span class="goal">Touches ${esc(p.touches)} most.</span> ${esc(p.note)}`;
+}
+
+/**
+ * Shneiderman's two-dimensional framework (2020, 2022) as a grid: human control
+ * up the side, automation across the top. The aim is the top right, both high.
+ */
+function controlLabel(parts, revealed) {
+  let label = "Grid with three rows, how much the people affected stay in control: high, some and low, and three columns, how much the AI does on its own: little, some and high. The aim is the top right: high human control and high automation together.";
+  if (!revealed) return `${label} Empty until revealed.`;
+  label += " " + parts.map((p, i) => `Feature ${i + 1} has ${p.control} human control and ${p.automation === "low" ? "little" : p.automation} automation.`).join(" ");
+  const aim = parts.map((p, i) => ({ ...p, n: i + 1 })).filter((p) => p.control === "high" && p.automation === "high").map((p) => p.n);
+  label += aim.length ? ` In the aim, top right: feature${aim.length > 1 ? "s" : ""} ${aim.join(" and ")}.` : " No feature reaches the top right.";
+  return label;
+}
+
+export function controlGrid(parts, { revealed = false } = {}) {
+  const x0 = 170, y0 = 44, cw = 150, rh = 80, w = x0 + cw * AUTOMATION.length + 8, h = y0 + rh * CONTROL.length + 8;
+  const cells = [];
+  AUTOMATION.forEach((a, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${AUTOMATION_LABEL[a]}</text>`));
+  CONTROL.forEach((ct, r) => {
+    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${CONTROL_LABEL[ct]}</text>`);
+    AUTOMATION.forEach((a, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell${ct === "high" && a === "high" ? " g-aim" : ""}"/>`));
+  });
+  const placed = parts.map((p, i) => ({ ...p, n: i + 1 }));
+  const marks = revealed
+    ? placed
+        .map((p) => {
+          const row = CONTROL.indexOf(p.control), col = AUTOMATION.indexOf(p.automation);
+          const peers = placed.filter((q) => q.control === p.control && q.automation === p.automation);
+          const k = peers.indexOf(p);
+          const cx = x0 + col * cw + cw / 2 + (k - (peers.length - 1) / 2) * 36, cy = y0 + row * rh + rh / 2;
+          return `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${p.n}</text></g>`;
+        })
+        .join("")
+    : "";
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(controlLabel(parts, revealed))}">${cells.join("")}${marks}</svg>`;
+}
+
+/** Drawing plus table, and in words where the kept features landed. */
+export function controlView(parts, { revealed = false } = {}) {
+  const placed = parts.map((p, i) => ({ ...p, n: i + 1 }));
+  const rows = CONTROL.map((ct) => ({
+    label: CONTROL_LABEL[ct],
+    cells: AUTOMATION.map((a) => (revealed ? placed.filter((p) => p.control === ct && p.automation === a).map((p) => ({ word: "Feature", n: p.n })) : []))
+  }));
+  const kept = placed.filter((p) => p.verdict === "keep").map((p) => p.n);
+  const note = revealed
+    ? `<p class="fix-order">The features worth keeping (${kept.join(" and ")}) all leave people in control. The aim is the top right: the AI does a lot, and people can still see it, change it and stop it.</p>`
+    : `<p class="fix-order">The aim is the top right: high human control and high automation together. On the drawing, that square has a dashed outline.</p>`;
+  return controlGrid(parts, { revealed }) + gridTable(controlLabel(parts, revealed), "Control", AUTOMATION.map((a) => AUTOMATION_LABEL[a]), rows) + note;
+}
+
 /* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
 
 export const CONTRAST_LEVELS = [
@@ -1080,7 +1143,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isClassify = exercise === "classify";
   const isScreen = exercise === "screen";
   const isAudit = exercise === "audit";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen }[exercise];
+  const isJudge = exercise === "judge";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen }[exercise];
 
   header.dataset.lesson = lesson.n;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
@@ -1097,7 +1161,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   const provenanceNote =
     artefact.provenance === "planted"
-      ? isScreen || isAudit
+      ? isJudge
+        ? `Written by ${esc(artefact.model)} for this lesson. The product, its features and its company are made up.`
+        : isScreen || isAudit
         ? `Written by ${esc(artefact.model)} for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
         : isClassify
         ? `Written by ${esc(artefact.model)} for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
@@ -1113,6 +1179,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? screenExercise(artefact, provenanceNote)
         : isAudit
         ? screenExercise(artefact, provenanceNote, auditReveal, "For each numbered part: an accessibility failure, an addictive pattern, or it works")
+        : isJudge
+        ? screenExercise(artefact, provenanceNote, judgeReveal, "For each numbered feature: keep, change or stop, and what it touches most")
         : isClassify
         ? classifyExercise(artefact, null, provenanceNote)
         : passageExercise(artefact, provenanceNote);
@@ -1123,6 +1191,9 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ? signoffBuilder(artefact.items, now)
       : isAudit
         ? contrastChecker(artefact.contrast)
+        : isJudge
+        ? `<div class="figure" id="grid">${controlView(artefact.parts)}</div>
+      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
         : isScreen
         ? `<div class="figure" id="grid">${fixFirstView(artefact.parts)}</div>
       <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
@@ -1198,6 +1269,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isClassify) wireChecklist(doc, pictorial, artefact.items);
   else if (isScreen) wireGrid(doc, (revealed) => fixFirstView(artefact.parts, { revealed }));
   else if (isAudit) wireContrast(doc, artefact.contrast);
+  else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }

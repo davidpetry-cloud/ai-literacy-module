@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -920,6 +920,81 @@ describe("track switching changes context, not the core", () => {
   });
 });
 
+const lesson8 = getLesson(8);
+const judgeData = (track) => lesson8.stages[0].tracks[track].screen;
+const lesson8Doc = (track) => lessonDoc(track, lesson8);
+
+describe.each(TRACK_IDS)("lesson 8, %s track", (track) => {
+  const doc = lesson8Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+  });
+
+  it("frames the product page safely, with a text version, and says it is made up", () => {
+    const f = doc.querySelector("iframe.mock");
+    expect(f.getAttribute("sandbox")).toBe("allow-scripts");
+    expect(f.getAttribute("srcdoc")).toBe(judgeData(track).html);
+    expect([...doc.querySelectorAll("details.textver li")].map((l) => l.textContent)).toEqual(judgeData(track).parts.map((p) => p.desc));
+    expect(doc.querySelector(".screen figcaption").textContent).toContain("made up");
+  });
+
+  it("lists the five features, each with a closed reveal naming the verdict in words and what it touches", () => {
+    const items = doc.querySelectorAll('[data-stage="concrete"] ol.gaps > li');
+    expect(items).toHaveLength(5);
+    judgeData(track).parts.forEach((p, i) => {
+      expect(items[i].querySelector("p").textContent).toBe(p.label);
+      expect(items[i].querySelector("details").open).toBe(false);
+      expect(items[i].querySelector(".k").textContent).toBe(VERDICT_LABEL[p.verdict]);
+      expect(items[i].querySelector(".goal").textContent).toBe(`Touches ${p.touches} most.`);
+    });
+  });
+
+  it("describes the empty grid and its aim, then places every feature once revealed, and can hide it again", () => {
+    const d = lesson8Doc(track);
+    const label0 = d.querySelector("#grid svg").getAttribute("aria-label");
+    expect(label0).toContain("Empty until revealed");
+    expect(label0).toContain("The aim is the top right");
+    expect(d.querySelectorAll("#grid .g-mark")).toHaveLength(0);
+    expect(d.querySelectorAll("#grid .g-aim")).toHaveLength(1);
+    d.querySelector("#reveal-grid").click();
+    const label = d.querySelector("#grid svg").getAttribute("aria-label");
+    expect(d.querySelectorAll("#grid svg .g-mark")).toHaveLength(5);
+    judgeData(track).parts.forEach((p, i) => expect(label).toContain(`Feature ${i + 1} has ${p.control} human control`));
+    expect(d.querySelector("#grid table caption").textContent).toBe(label);
+    expect(d.activeElement).toBe(d.querySelector("#grid"));
+    d.querySelector("#reveal-grid").click();
+    expect(d.querySelectorAll("#grid .g-mark")).toHaveLength(0);
+    expect(d.querySelector("#reveal-grid").textContent).toBe("Show the finished grid");
+  });
+
+  it("shows what Human-Centered AI protects, and the four wisdom questions, as reference tables", () => {
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect(tables).toHaveLength(2);
+    expect([...tables[0].querySelectorAll("tbody th")].map((t) => t.textContent)).toEqual(["Dignity", "Children's rights", "Relationships", "People in control"]);
+    expect(tables[1].querySelectorAll("tbody tr")).toHaveLength(4);
+  });
+});
+
+describe("lesson 8: one core across tracks", () => {
+  const html = (t, sel) => lesson8Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("keeps the grid's controls, headings and script the same; only the features change", () => {
+    const shared = (t) => {
+      const stage = lesson8Doc(t).querySelector('[data-stage="pictorial"]');
+      return ["#reveal-grid", ".moves", ".say", ".watch"].map((s) => stage.querySelector(s).outerHTML)
+        .concat([...stage.querySelectorAll("h2, h3")].map((h) => h.textContent)).join("\n");
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -933,7 +1008,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 4 (${t})`, lesson4Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 5 (${t})`, lesson5Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 6 (${t})`, lesson6Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 7 (${t})`, lesson7Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 7 (${t})`, lesson7Doc(t)]),
+    ...TRACK_IDS.map((t) => [`lesson 8 (${t})`, lesson8Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -948,7 +1024,8 @@ describe("page structure", () => {
     ["lesson 4", lesson4Doc(TRACK_IDS[0])],
     ["lesson 5", lesson5Doc(TRACK_IDS[0])],
     ["lesson 6", lesson6Doc(TRACK_IDS[0])],
-    ["lesson 7", lesson7Doc(TRACK_IDS[0])]
+    ["lesson 7", lesson7Doc(TRACK_IDS[0])],
+    ["lesson 8", lesson8Doc(TRACK_IDS[0])]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);

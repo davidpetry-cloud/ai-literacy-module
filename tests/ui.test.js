@@ -186,9 +186,9 @@ describe("type", () => {
   });
 
   it("keeps diagram labels at 12.8px+ even at the diagram's narrowest", async () => {
-    const { confidenceGrid, checkScale, signoffTimeline, checklistGrid, fixFirstGrid } = await import("../lesson-core.js");
+    const { confidenceGrid, checkScale, signoffTimeline, checklistGrid, fixFirstGrid, controlGrid } = await import("../lesson-core.js");
     const eight = Array.from({ length: 8 }, (_, i) => ({ id: `c${i}`, catches: [] }));
-    const viewBoxWidth = Math.max(...[confidenceGrid([]), checkScale([]), signoffTimeline("2026-01-01"), checklistGrid([], eight), fixFirstGrid([])].map((svg) => Number(svg.match(/viewBox="0 0 ([\d.]+)/)[1])));
+    const viewBoxWidth = Math.max(...[confidenceGrid([]), checkScale([]), signoffTimeline("2026-01-01"), checklistGrid([], eight), fixFirstGrid([]), controlGrid([])].map((svg) => Number(svg.match(/viewBox="0 0 ([\d.]+)/)[1])));
     const minWidth = Number(rules.find((r) => r.sel === "svg.grid").body.match(/min-width:(\d+)px/)[1]);
     for (const r of beforePrint.filter((r) => svgText.test(r.sel) && r.body.includes("font-size"))) {
       const px = Number(r.body.match(/font-size:(\d+)px/)[1]);

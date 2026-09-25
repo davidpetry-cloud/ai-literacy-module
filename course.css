@@ -25,7 +25,7 @@
   --text:#16283C; --muted:#5B7189;
   --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#6A7183;
   /* one colour per lesson, readable as text on a card; always paired with the lesson number */
-  --l1:#1F6FB2; --l2:#6D4BB0; --l3:#0F7A80; --l4:#8A6A00; --l5:#B8561A; --l6:#5C7A10; --l7:#5C3317; --l8:#A3285F; --on-lc:#FFFFFF;
+  --l1:#1F6FB2; --l2:#6D4BB0; --l3:#0F7A80; --l4:#8A6A00; --l5:#B8561A; --l6:#5C7A10; --l7:#5C3317; --l8:#2E7D32; --on-lc:#FFFFFF;
   /* type scale: every font-size uses one of these (tests/ui.test.js) */
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
@@ -53,7 +53,7 @@
   --paper:#0F151C; --card:#1A222B; --line:#2B3641;
   --text:#DCE6EE; --muted:#93A7BC;
   --att:#3FB271; --att-text:#5CCB8A; --prop:#D9A441; --exp:#EE8A74; --rej:#A9B0C0;
-  --l1:#6FA8E0; --l2:#B39AEB; --l3:#4FC3C9; --l4:#E3C04F; --l5:#EE9A5C; --l6:#B3CF5A; --l7:#C99A7A; --l8:#F08DBA; --on-lc:#0B1622;
+  --l1:#6FA8E0; --l2:#B39AEB; --l3:#4FC3C9; --l4:#E3C04F; --l5:#EE9A5C; --l6:#B3CF5A; --l7:#C99A7A; --l8:#81C784; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
 }
@@ -289,6 +289,7 @@ table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.
 .ref tbody th{color:var(--ink);font-weight:600}
 /* audit + contrast checker (Lesson 7) */
 .k-wcag{color:var(--exp)} .k-pattern{color:var(--prop)}
+.k-keep{color:var(--att-text)} .k-change{color:var(--prop)} .k-stop{color:var(--rej)}
 .cc-form{display:grid;gap:12px;margin:0 0 12px;max-width:var(--measure)}
 .cc-pair{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
 .cc-pair label{display:grid;gap:4px;font-weight:600;color:var(--ink)}
@@ -342,6 +343,7 @@ ul.cmp-out{list-style:none;margin:0;padding:0}
 
 svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .g-cell{fill:var(--card);stroke:var(--edge);stroke-width:1.5}
+.g-cell.g-aim{stroke:var(--teal);stroke-width:4;stroke-dasharray:8 5}
 .g-col{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:middle}
 .g-row{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:end}
 .g-mark circle{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:2}
@@ -395,7 +397,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --teal:#1F8A7D;--teal-text:#136155;--teal-pale:#DCEFEB;--amber:#E4A03C;--amber-pale:#FAEDD6;
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
-    --l1:#1F6FB2;--l2:#6D4BB0;--l3:#0F7A80;--l4:#8A6A00;--l5:#B8561A;--l6:#5C7A10;--l7:#5C3317;--l8:#A3285F;--on-lc:#fff;
+    --l1:#1F6FB2;--l2:#6D4BB0;--l3:#0F7A80;--l4:#8A6A00;--l5:#B8561A;--l6:#5C7A10;--l7:#5C3317;--l8:#2E7D32;--on-lc:#fff;
     --edge:#666;--btn-edge:#0F2338;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}
