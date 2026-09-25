@@ -121,6 +121,10 @@ describe("colour usage", () => {
     for (const r of rules) expect(r.body, r.sel).not.toMatch(/(?:^|;)\s*opacity\s*:/);
   });
 
+  it("wraps long unbroken strings in a claim's provenance (DOIs, URLs), so an open card never scrolls sideways on a phone", () => {
+    expect(rules.find((r) => r.sel === ".claim dd").body).toContain("overflow-wrap:anywhere");
+  });
+
   it("marks a rejected claim with a strike-through in a passing colour, not a fade", () => {
     const body = rules.find((r) => r.sel === '.claim[data-status="rejected"] > p').body;
     expect(body).toContain("line-through");
