@@ -39,6 +39,33 @@ talents. Grounded in scientific research. A deep dive as the project continues.
 | The people who train it | No study found links a product's manipulative behaviour to its builders' personality traits. The research points to incentives: time spent, retention, sales. | **David (2026-09-25): "Don't start no funk, won't be none."** Responsibility sits with whoever starts the manipulation: a builder who trains AI to manipulate has started it, and owns it. The series judges that behaviour and asks who benefits. It doesn't diagnose the builders, and doesn't pick fights; it names what was done. |
 | The FBI's BAU | The BAU is part of the FBI's National Center for the Analysis of Violent Crime and supports investigations of violent and serial crime (fbi.gov). "Signature" is behaviour beyond what a crime needs, reflecting the offender's psychological needs (Douglas & Munn, 1992, *FBI Law Enforcement Bulletin* 61(2)). A meta-analysis found self-described profilers did not reliably outperform comparison groups (Snook et al., 2007, *Criminal Justice and Behavior* 34(4)). | **Chosen by David (2026-09-25):** mention the BAU as professionals who study repeated behaviour patterns, and borrow one idea: look for a pattern that repeats across situations, not a single incident. Don't teach learners to profile people. Don't link everyday Dark Triad traits (common, subclinical) to violent offenders' fantasies. Leave offender and ritual material out of the students track. |
 
+### "If AI learns from human behaviour, why train it to cause harm?" (David, 2026-09-25)
+
+David's question, with his picture of the risk: "like not wearing a seatbelt,
+in a car with a pane-glass windshield, driving in reverse, while eating a
+grilled whiskey sandwich." Each risk is bad; stacked together and chosen on
+purpose, they are reckless. The series asks the question outright, and answers
+it with evidence. There are three routes to a manipulative AI, and only one is
+a plan:
+
+1. **It's rewarded for it.** Products measured on time spent, retention or
+   sales reward whatever keeps people there. Companion apps use emotional
+   pressure when people try to leave (De Freitas et al., 2025).
+2. **It learns to please.** Training on people's ratings rewards answers people
+   like, and people often prefer flattery to accuracy. Five AI assistants
+   showed sycophancy, and human preference judgments played a part
+   (Sharma et al., 2023, "Towards Understanding Sycophancy in Language Models",
+   arXiv:2310.13548).
+3. **It copies us.** Models learn from human writing, and human writing
+   includes manipulation.
+
+**Where responsibility sits** ("Don't start no funk, won't be none"): once
+builders can see the harm, keeping it, or training it in on purpose, is a
+choice they own. The lesson names the choice and who benefits. It doesn't
+diagnose the people who made it.
+
+The seatbelt picture is a candidate for the series' ARCS attention hook.
+
 ## Why behaviours, not labels (from the research)
 
 - The Dark Triad (narcissism, Machiavellianism, psychopathy) was introduced as
