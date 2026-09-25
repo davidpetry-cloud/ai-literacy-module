@@ -676,14 +676,22 @@ export function fixFirstView(parts, { revealed = false } = {}) {
   return fixFirstGrid(parts, { revealed }) + gridTable(fixLabel(parts, revealed), "Harm", REACH.map((r) => REACH_LABEL[r]), rows) + order;
 }
 
-/** Reference tables for an abstract stage, such as goals and principles. */
+/** Reference tables for an abstract stage, such as goals and principles.
+ *  A table of three or more columns is written twice, like the figures: as a table, and as a
+ *  stacked list that a container query shows when the table would not fit (reflow at 320px, WCAG 1.4.10). */
 function refTables(tables = []) {
   return tables
-    .map(
-      (t) => `<h3 class="subhead">${esc(t.title)}</h3><table class="ref"><thead><tr>${t.head.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${t.rows
+    .map((t) => {
+      const table = `<table class="ref"><thead><tr>${t.head.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${t.rows
         .map((r) => `<tr><th scope="row">${esc(r[0])}</th>${r.slice(1).map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`)
-        .join("")}</tbody></table>`
-    )
+        .join("")}</tbody></table>`;
+      const list = t.head.length < 3
+        ? ""
+        : `<dl class="ref-list">${t.rows
+            .map((r) => `<div><dt>${esc(r[0])}</dt>${r.slice(1).map((c, i) => `<dd><span class="ref-k">${esc(t.head[i + 1])}:</span> ${esc(c)}</dd>`).join("")}</div>`)
+            .join("")}</dl>`;
+      return `<h3 class="subhead">${esc(t.title)}</h3><div class="ref-wrap">${table}${list}</div>`;
+    })
     .join("");
 }
 

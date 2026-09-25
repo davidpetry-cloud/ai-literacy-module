@@ -976,6 +976,22 @@ describe.each(TRACK_IDS)("lesson 8, %s track", (track) => {
   });
 });
 
+describe("reference tables reflow at 320px (WCAG 1.4.10)", () => {
+  // Wide tables are written twice, like the figures; CSS shows the list when the table won't fit.
+  it.each(COURSE.lessons.filter((l) => l.ready).map((l) => [l.n, l]))("lesson %i: every table of three or more columns has a matching stacked list", (n, lesson) => {
+    const doc = lessonDoc(TRACK_IDS[0], lesson);
+    const abstract = lesson.stages.find((s) => s.kind === "abstract");
+    const wraps = doc.querySelectorAll('[data-stage="abstract"] .ref-wrap');
+    expect(wraps).toHaveLength((abstract.tables ?? []).length);
+    (abstract.tables ?? []).forEach((t, i) => {
+      const list = wraps[i].querySelector(".ref-list");
+      if (t.head.length < 3) return expect(list).toBeNull();
+      expect([...list.querySelectorAll("dt")].map((d) => d.textContent)).toEqual(t.rows.map((r) => r[0]));
+      expect(list.querySelectorAll("dd")).toHaveLength(t.rows.length * (t.head.length - 1));
+    });
+  });
+});
+
 describe("page titles (WCAG 2.4.2)", () => {
   it("names the course on the hub, and each lesson in its own tab", () => {
     const hub = page("index.html");

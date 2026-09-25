@@ -125,6 +125,14 @@ describe("colour usage", () => {
     expect(rules.find((r) => r.sel === ".claim dd").body).toContain("overflow-wrap:anywhere");
   });
 
+  it("lets the prompt comparison's columns shrink below 280px, so it reflows at 320px", () => {
+    expect(rules.find((r) => r.sel === ".cmp").body).toContain("minmax(min(100%,280px),1fr)");
+  });
+
+  it("swaps wide reference tables for a stacked list in a narrow container", () => {
+    expect(css).toMatch(/@container \(max-width:440px\)\{\.ref-wrap table\.ref\{display:none\}\.ref-wrap \.ref-list\{display:block\}\}/);
+  });
+
   it("marks a rejected claim with a strike-through in a passing colour, not a fade", () => {
     const body = rules.find((r) => r.sel === '.claim[data-status="rejected"] > p').body;
     expect(body).toContain("line-through");

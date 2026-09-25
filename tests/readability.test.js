@@ -42,3 +42,20 @@ it("has a ceiling for every role a lesson produces", () => {
   const lesson = COURSE.lessons.find((l) => l.ready);
   for (const role of Object.keys(textRoles(lesson, TRACK_IDS))) expect(ceilingFor(role), role).toBeTypeOf("number");
 });
+
+// The hub's framing is the first thing anyone reads, so it meets the framing ceiling too.
+describe("hub framing", () => {
+  it("is within the framing grade ceiling, with no sentence over the limit", () => {
+    const r = readability([COURSE.tagline, COURSE.framing]);
+    expect(r.grade, `grade ${r.grade.toFixed(1)}`).toBeLessThanOrEqual(CEILINGS.framing);
+    expect(r.longest, r.longestSentence).toBeLessThanOrEqual(LONGEST_SENTENCE);
+  });
+
+  it("gives every lesson card's framing the same ceiling", () => {
+    for (const l of COURSE.lessons) {
+      const r = readability(l.framing);
+      expect(r.grade, `lesson ${l.n}: grade ${r.grade.toFixed(1)}`).toBeLessThanOrEqual(CEILINGS.framing);
+      expect(r.longest, `lesson ${l.n}`).toBeLessThanOrEqual(LONGEST_SENTENCE);
+    }
+  });
+});

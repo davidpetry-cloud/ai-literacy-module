@@ -92,7 +92,7 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 
 - **Both themes, always.** Every colour token in `:root` has a twin in
   `:root[data-theme="dark"]`. Print forces light. Check new UI in both themes
-  and at 375px before calling it done.
+  and at 320px (WCAG reflow) as well as 375px before calling it done.
 - **Contrast is 4.5:1 minimum** for all text, in both themes. The allowed
   text/surface pairings are listed in `PAIRS` in the UI test. A new pairing
   goes there first, and must pass, before it's used.
@@ -104,6 +104,9 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 - **Non-text contrast is 3:1.** Grid lines use `--edge` and buttons carry a
   2px `--btn-edge` ring, so their shape shows in both themes. Nothing that
   carries text is faded with `opacity`; use a token.
+- **Reference tables of three or more columns are written twice** (a table
+  and a stacked `.ref-list`), swapped by a container query, so nothing scrolls
+  sideways at 320px.
 - **A figure must not scroll sideways on a phone.** Every grid is drawn twice,
   as an SVG and as a `table.grid-alt` with the same caption. A container query
   on `.figure` shows the table when the SVG would not fit. New figures do the same.
@@ -197,7 +200,7 @@ a source, so use it like one.
 5. Fill `arcs`, `transfer` and `access`. Set `ready: true`.
 6. `npm test`. Don't ship on a failure.
 7. `npm run preview`. Check every track, the reveal controls, both themes,
-   and 375px width.
+   and 320px and 375px widths.
 
 ## Model guidance
 
