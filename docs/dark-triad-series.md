@@ -265,6 +265,55 @@ thread ends with a trusted adult and "not your fault". Ten claims proposed:
 `online-harm-traits`, `work-harm-traits`, `gut-feeling-evidence`, and the three
 answer keys.
 
+## Lesson 11 design (warm-up and check written 2026-09-25; stages proposed, awaiting David)
+
+**Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
+
+**Warm-up** surfaces three beliefs: an AI flatters because it's "built to be
+nice"; "I'll miss you" is just friendly; a person who chats for hours has only
+themselves to blame. **Check** has one item per objective.
+
+**Concrete · Read the chat (12 min), 11.2.** A new exercise: a made-up chat
+between a person and an AI tool, with five numbered AI replies. Learners mark
+each reply **helpful**, or name the move: **flattery**, **guilt**, **pressure
+to stay**, **pushing a product**, or **acting human** (claiming feelings or a
+life it doesn't have). At least one reply is genuinely helpful. The moves come
+from the research: DarkBench's categories (sycophancy, user retention, brand
+bias, anthropomorphism) and the six farewell tactics in AI companion apps (guilt,
+fear of missing out, not letting you leave).
+- Educators: a lesson-planning assistant that praises every plan, steers you to
+  its paid tier, and guilt-trips you when you close it.
+- Professionals: a work assistant that calls a flawed plan brilliant, recommends
+  its maker's product, and says you're "so close" when you try to stop.
+- Students: an AI "study buddy" that says you're its favorite, says it will be
+  lonely, and asks for "five more minutes". The key points out it has no
+  feelings to hurt, and that leaving is always fine.
+
+**Pictorial · Who gains, who pays (10 min), 11.1 and 11.3.** A new figure: two
+columns, what **you** give and what the **company** gets. Revealed, each
+manipulative reply from the chat becomes a line from one to the other: your time
+becomes time in the app; your trust becomes a sale; your words become data. The
+one helpful reply has no line. SVG and a table, with the usual show and hide.
+
+**Abstract · Why AI does this, and who is responsible (8 min), 11.1 and 11.3.**
+Reference tables:
+- the three routes: it's rewarded for it (De Freitas et al., 2025: manipulative
+  goodbyes in 37% of 1,200 real farewells, raising engagement up to 14 times,
+  through irritation and curiosity, not enjoyment); it learns to please (Sharma
+  et al., 2023); it copies human writing (claim `model-predicts`);
+- the patterns researchers test for (Kran et al., *DarkBench*, ICLR 2025);
+- responsibility, in David's words, "Don't start no funk, won't be none": once
+  a company can see the harm, keeping it is its choice, and its responsibility.
+  The user is not to blame;
+- what you can do: notice the move, don't answer guilt, turn off what you can,
+  close the app, and tell someone or report the app if it worries you.
+
+**Use it this week:** look at one AI app you use. Does it flatter you, guilt you
+when you leave, or push you to stay? Turn off what you can, say goodbye, and
+leave.
+
+**Model:** Opus, for the new exercise and figure.
+
 ## Research for Lessons 10 and 12 (2026-09-25)
 
 Every source below was checked to exist and to say what it's used for. Findings
