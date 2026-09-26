@@ -189,7 +189,7 @@ function scaleFigure(uses) {
       <h3 class="subhead">Three uses of this passage</h3>
       <ol class="uses">${uses.map((u) => `<li><b>${esc(u.label)}.</b> ${esc(u.why)}</li>`).join("")}</ol>
       <div class="figure" id="grid">${checkScaleView(uses)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
+      ${revealButton("scale")}`;
 }
 
 /* ---------- prompt pairs: which part of a request caused which line ---------- */
@@ -1554,16 +1554,16 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? planBuilder(pictorial)
         : isChat
         ? `<div class="figure" id="grid">${gainsView(artefact)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
+      ${revealButton("picture")}`
         : isThread
         ? `<div class="figure" id="grid">${patternView(artefact.moments)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
+      ${revealButton("timeline")}`
         : isJudge
         ? `<div class="figure" id="grid">${controlView(artefact.parts)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
+      ${revealButton("grid")}`
         : isScreen
         ? `<div class="figure" id="grid">${fixFirstView(artefact.parts)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`
+      ${revealButton("grid")}`
         : isClassify
         ? checklistBuilder(pictorial, artefact.items)
     : overlap
@@ -1571,7 +1571,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     : scale
       ? scaleFigure(artefact.uses)
       : `<div class="figure" id="grid">${confidenceView(artefact.sentences)}</div>
-      <button type="button" class="btn" id="reveal-grid">Show the finished grid</button>`;
+      ${revealButton("grid")}`;
 
   content.innerHTML = `
     <div class="obj" id="objectives"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
@@ -1640,11 +1640,11 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isScreen) wireGrid(doc, (revealed) => fixFirstView(artefact.parts, { revealed }));
   else if (isAudit) wireContrast(doc, artefact.contrast);
   else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
-  else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }));
-  else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }));
+  else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }), "timeline");
+  else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }), "picture");
   else if (isRespond) wirePlan(doc, pictorial);
   else if (overlap) wireOverlap(doc, pictorial.overlap);
-  else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }));
+  else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }), "scale");
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
 }
 
@@ -1690,16 +1690,17 @@ function pairExercise(pair, provenanceNote) {
 }
 
 // Show and hide, so a facilitator can run the activity again without reloading (user control).
-export const GRID_SHOW = "Show the finished grid";
-export const GRID_HIDE = "Hide the finished grid";
-function wireGrid(doc, draw) {
+// The button names what it shows: a grid, a scale, a timeline or a picture (the user's words).
+export const revealLabel = (noun, shown = false) => `${shown ? "Hide" : "Show"} the finished ${noun}`;
+const revealButton = (noun) => `<button type="button" class="btn" id="reveal-grid">${revealLabel(noun)}</button>`;
+function wireGrid(doc, draw, noun = "grid") {
   const btn = doc.querySelector("#reveal-grid");
   let shown = false;
   btn.addEventListener("click", () => {
     const grid = doc.querySelector("#grid");
     shown = !shown;
     grid.innerHTML = draw(shown);
-    btn.textContent = shown ? GRID_HIDE : GRID_SHOW;
+    btn.textContent = revealLabel(noun, shown);
     // On show, hand focus to the grid so its new description is read; on hide, stay on the button.
     if (shown) {
       grid.tabIndex = -1;

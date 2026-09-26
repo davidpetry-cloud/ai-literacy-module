@@ -264,7 +264,7 @@ describe.each(TRACK_IDS)("lesson 3, %s track", (track) => {
     usesData(track).forEach((u) => expect(after).toContain(`${u.label} gets a ${level(u.check)}.`));
     expect(after).toContain("the use decides the check");
     expect(svg.querySelectorAll(".g-mark")).toHaveLength(3);
-    expect(doc.querySelector("#reveal-grid").textContent).toBe("Hide the finished grid");
+    expect(doc.querySelector("#reveal-grid").textContent).toBe("Hide the finished scale");
     expect(doc.activeElement).toBe(doc.querySelector("#grid"));
   });
 
@@ -1026,6 +1026,16 @@ describe("lesson navigation", () => {
   });
 });
 
+describe("reveal buttons name what they show (UX audit, 2026-09-25)", () => {
+  it.each([[1, "grid"], [3, "scale"], [6, "grid"], [8, "grid"], [10, "timeline"], [11, "picture"]])("lesson %i says %s", (n, noun) => {
+    const d = lessonDoc(TRACK_IDS[0], getLesson(n));
+    const btn = d.querySelector("#reveal-grid");
+    expect(btn.textContent).toBe(`Show the finished ${noun}`);
+    btn.click();
+    expect(btn.textContent).toBe(`Hide the finished ${noun}`);
+  });
+});
+
 describe("page titles (WCAG 2.4.2)", () => {
   it("names the course on the hub, and each lesson in its own tab", () => {
     const hub = page("index.html");
@@ -1404,18 +1414,18 @@ describe("page structure", () => {
 
 describe("user control and context fixes (UX audit, 2026-09-24)", () => {
   // A facilitator can run the activity again without reloading.
-  it.each([[1, (t) => lessonDoc(t)], [3, (t) => lesson3Doc(t)], [6, (t) => lesson6Doc(t)]])(
-    "lesson %i: the grid can be hidden again, empty as before, with focus left on the button",
-    (n, make) => {
+  it.each([[1, (t) => lessonDoc(t), "grid"], [3, (t) => lesson3Doc(t), "scale"], [6, (t) => lesson6Doc(t), "grid"]])(
+    "lesson %i: the figure can be hidden again, empty as before, with focus left on the button",
+    (n, make, noun) => {
       const doc = make(TRACK_IDS[0]);
       const btn = doc.querySelector("#reveal-grid");
       const empty = doc.querySelector("#grid svg").getAttribute("aria-label");
       btn.click();
-      expect(btn.textContent).toBe("Hide the finished grid");
+      expect(btn.textContent).toBe(`Hide the finished ${noun}`);
       expect(doc.querySelectorAll("#grid svg .g-mark").length).toBeGreaterThan(0);
       btn.focus();
       btn.click();
-      expect(btn.textContent).toBe("Show the finished grid");
+      expect(btn.textContent).toBe(`Show the finished ${noun}`);
       expect(doc.querySelectorAll("#grid svg .g-mark")).toHaveLength(0);
       expect(doc.querySelector("#grid svg").getAttribute("aria-label")).toBe(empty);
       expect(doc.activeElement).toBe(btn);

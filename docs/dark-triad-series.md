@@ -4,7 +4,7 @@
 9–12 of this course** (his choice), each self-contained so it can move to its
 own module later. Three objectives were added or reworded to his direction the
 same day (9.4, 10.3, 12.3); he confirmed the wording the same day. The files
-are `lessons/lesson-09.js` to `lesson-12.js`, all `ready: false`. Each lesson goes through the backward-design gate like any other:
+are `lessons/lesson-09.js` to `lesson-12.js`, all `ready: true`. Each went through the backward-design gate:
 objectives first, approved by David, then assessments, then activities.
 
 **David's direction (2026-09-25):** teach people to recognise behaviour rooted in
