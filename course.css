@@ -282,6 +282,7 @@ dl.so-line{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margi
 .so-who input{width:22px;height:22px;margin:0;accent-color:var(--btn-bg)}
 .so-result{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 12px}
 .so-status{margin:0;font-weight:600;color:var(--ink-2);min-height:52px;flex:1 1 240px}
+.pl-for{margin:16px 0 8px;font-weight:600;color:var(--ink)}
 .so-empty{color:var(--muted)}
 .tl-axis{stroke:var(--edge);stroke-width:2}
 .tl-live{stroke:var(--ink-3);stroke-width:6;stroke-linecap:round}

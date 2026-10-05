@@ -358,7 +358,7 @@ everything, keeping it secret.
   was theirs; someone who keeps saying "you're too sensitive, that never
   happened". Every key ends with a trusted adult and "it's not your fault".
 
-**Pictorial · Build your plan (10 min), 12.1, 12.2 and 12.3.** A new builder,
+**Pictorial · Build a plan for one situation (10 min), 12.1, 12.2 and 12.3.** A new builder,
 like Lesson 5's checklist: learners tick the steps for their own plan from a
 short list (write it down with dates; keep copies; set a boundary; limit
 contact; tell someone you trust; report it; protect your work before sharing).

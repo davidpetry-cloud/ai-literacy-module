@@ -322,17 +322,19 @@ export default {
     },
     {
       kind: "pictorial",
-      title: "Build your plan",
+      title: "Build a plan for one situation",
       minutes: 10,
       targets: ["12.1", "12.2", "12.3"],
       figure: "plan",
       // Learner-visible instructions (David, 2026-10-05: say what the plan is for). Same in every track.
       intro: [
-        "Your plan is for one of the three situations in \"Concrete · What would you do?\" above. Pick one, then tick the steps you would take.",
+        "Make a plan for one of the situations from \"What would you do?\" above. First choose the situation. Then tick the steps you would take.",
+        "Start with your gut. If someone makes you feel uneasy, scared or confused, that feeling counts. Take it seriously, then check it against what they actually do.",
         "A good plan has three parts. A record is proof of what happened, such as notes with dates. Support is a person who helps you. A boundary is a limit that keeps you safe.",
-        "Nothing you tick is saved or sent."
+        "Nothing you choose or tick is saved or sent."
       ],
       steps: [
+        { id: "gut", text: "Trust your gut: if something feels wrong, step back before you reply.", meets: ["boundary"] },
         { id: "write", text: "Write down what happened, with dates.", meets: ["record"] },
         { id: "copies", text: "Keep copies: screenshots, emails and drafts.", meets: ["record"] },
         { id: "no", text: "Say no clearly, once.", meets: ["boundary"] },
@@ -343,15 +345,16 @@ export default {
         { id: "callout", text: "Call them out in public.", meets: [], note: "calling someone out can feel strong, but it can put you at risk, and it gives you no record, support or boundary." }
       ],
       moves: [
-        "Learners pick one situation from the concrete stage, and tick the steps they would use for it.",
+        "Learners choose one situation in the builder, and tick the steps they would use for it.",
         "Read the status aloud. Ask: what's missing, and which step would add it?",
-        "Press Start again, and build a plan for a second situation from the concrete stage.",
+        "Press Start again, and build a plan for a second situation.",
         "Ask each learner to name one step they'll start this week."
       ],
       say: [
         ["Facilitator", "A good plan has three parts: a record, support and a boundary."],
+        ["Facilitator", "Your gut feeling counts. If someone makes you uneasy, that's a reason to step back and check."],
         ["Expected", "\"Calling them out would be enough.\" Tick it and read what the plan says."],
-        ["Facilitator", "Nothing you tick here is saved or sent. It's your plan, for you."]
+        ["Facilitator", "Nothing you choose or tick here is saved or sent. It's your plan, for you."]
       ],
       watch:
         "Learners tick every step. Ask them to choose the fewest steps that cover all three parts, so the plan is one they'll really use."
@@ -361,7 +364,7 @@ export default {
       title: "Protect Yourself and Your Gifts",
       minutes: 8,
       targets: ["12.1", "12.2", "12.3"],
-      principles: ["gaslighting-defined", "never-promise-secrecy", "mandated-reporting-us", "sextortion-advice", "child-helplines"],
+      principles: ["gaslighting-defined", "gut-feeling-evidence", "never-promise-secrecy", "mandated-reporting-us", "sextortion-advice", "child-helplines"],
       tables: [
         {
           title: "Gaslighting, and what helps",
@@ -369,7 +372,8 @@ export default {
           rows: [
             ["\"That never happened.\"", "Your written record, with dates."],
             ["\"You're too sensitive.\"", "A trusted person to talk it through with."],
-            ["You start to doubt your memory.", "Notes made at the time, and people who were there."]
+            ["You start to doubt your memory.", "Notes made at the time, and people who were there."],
+            ["Something feels wrong, but you can't say why.", "Trust the feeling enough to step back. Then check it against what they do."]
           ]
         },
         {

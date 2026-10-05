@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1469,11 +1469,26 @@ describe.each(TRACK_IDS)("lesson 12, %s track", (track) => {
     expect(d.querySelector("#pl-status").textContent).toBe("This gives you a record. Nothing gives you support and a boundary yet.");
     tickPlan(d, ["write", "tell", "no"]);
     expect(d.querySelector("#pl-status").textContent).toBe("Your plan has a record, support and a boundary.");
-    expect(d.querySelector("#pl-figure svg").getAttribute("aria-label")).toContain("Support: covered by step 5.");
+    expect(d.querySelector("#pl-figure svg").getAttribute("aria-label")).toContain("Support: covered by step 6.");
     d.querySelector("#pl-reset").click();
     expect([...d.querySelectorAll('#pl-form input[type="checkbox"]')].some((b) => b.checked)).toBe(false);
     expect(d.querySelector("#pl-status").textContent).toBe("Nothing ticked yet. Pick the steps for your plan.");
     expect(d.activeElement).toBe(d.querySelector("#pl-form input"));
+  });
+
+  it("says what the plan is for: the learner chooses one of this track's situations, and Start again clears it", () => {
+    const d = lesson12Doc(track);
+    const sits = respondData(track).situations;
+    const radios = d.querySelectorAll('#pl-form input[type="radio"]');
+    expect(radios).toHaveLength(sits.length);
+    expect(d.querySelector('[data-stage="concrete"]').textContent).toContain("Next, you'll build a plan for one of these situations.");
+    expect(d.querySelector("#pl-for").textContent).toBe(planFor(sits, -1));
+    radios[1].checked = true;
+    d.querySelector("#pl-form").dispatchEvent(new d.defaultView.Event("change"));
+    expect(d.querySelector("#pl-for").textContent).toBe(`Your plan is for situation 2: ${sits[1].text}`);
+    d.querySelector("#pl-reset").click();
+    expect([...radios].some((r) => r.checked)).toBe(false);
+    expect(d.querySelector("#pl-for").textContent).toBe(planFor(sits, -1));
   });
 
   it("explains why calling someone out gives no protection", () => {
@@ -1497,16 +1512,29 @@ describe.each(TRACK_IDS)("lesson 12, %s track", (track) => {
 describe("lesson 12: one core across tracks", () => {
   const html = (t, sel) => lesson12Doc(t).querySelector(sel).innerHTML;
 
-  it("keeps warm-up, pictorial, abstract and check identical across tracks", () => {
-    for (const sel of ['[data-stage="warmup"]', '[data-stage="pictorial"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+  it("keeps warm-up, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
       for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
     }
   });
 
+  it("varies the plan builder only in the situations it draws from each track's concrete stage", () => {
+    const shared = (t) => {
+      const stage = lesson12Doc(t).querySelector('[data-stage="pictorial"]').cloneNode(true);
+      for (const el of stage.querySelectorAll(".pl-sit")) el.textContent = "";
+      return stage.innerHTML;
+    };
+    for (const t of TRACK_IDS.slice(1)) expect(shared(t), t).toBe(shared(TRACK_IDS[0]));
+  });
+
   it("tells learners what the plan is for, and what each part means (David, 2026-10-05)", () => {
     const text = lesson12Doc(TRACK_IDS[0]).querySelector('[data-stage="pictorial"]').textContent;
-    expect(text).toContain("one of the three situations in \"Concrete · What would you do?\" above");
+    expect(text).toContain("Make a plan for one of the situations from \"What would you do?\" above.");
     for (const part of ["A record is", "Support is", "A boundary is"]) expect(text).toContain(part);
+    // Intuition first (David, 2026-10-05), grounded in the same claim as Lesson 10.
+    expect(text).toContain("Start with your gut.");
+    expect(planSteps[0].id).toBe("gut");
+    expect(lesson12.stages[2].principles).toContain("gut-feeling-evidence");
   });
 
   it("covers all three needs only when each is met", () => {

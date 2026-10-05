@@ -1007,7 +1007,8 @@ function respondExercise(respond, provenanceNote) {
           .join("")}</ol>
         <figcaption>${provenanceNote}</figcaption>
       </figure>
-      <h3 class="subhead">For each response: safe or risky, and why?</h3>`;
+      <h3 class="subhead">For each response: safe or risky, and why?</h3>
+      <p class="sense">Next, you'll build a plan for one of these situations.</p>`;
 }
 
 export function planStatus(ids, steps) {
@@ -1040,7 +1041,7 @@ function planLabel(status, count) {
 
 export function planGrid(ids, steps) {
   const status = planStatus(ids, steps);
-  const x0 = 130, y0 = 44, cw = 46, rh = 52, statW = 148, w = x0 + cw * steps.length + statW, h = y0 + rh * NEEDS.length + 8;
+  const x0 = 130, y0 = 44, cw = 41, rh = 52, statW = 148, w = x0 + cw * steps.length + statW, h = y0 + rh * NEEDS.length + 8;
   const cells = [];
   steps.forEach((_, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${c + 1}</text>`));
   NEEDS.forEach((k, r) => {
@@ -1067,28 +1068,40 @@ export function planView(ids, steps) {
   return planGrid(ids, steps) + gridTable(planLabel(status, steps.length), "What a plan needs", ["Covered by"], rows, "Missing");
 }
 
+/** What the plan is for: the situation the learner chose from the concrete stage. */
+export function planFor(situations, index) {
+  const sit = situations[index];
+  return sit ? `Your plan is for situation ${index + 1}: ${sit.text}` : "Choose a situation first, so your plan is for something real.";
+}
+
 // Nothing typed, nothing sent: the plan lives only on this page, and Start again clears it.
-function planBuilder(stage) {
+function planBuilder(stage, situations) {
   return `${(stage.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
       <form class="ck-form" id="pl-form" novalidate>
-        <fieldset class="ck-list"><legend>Pick the steps for your plan</legend>
+        <fieldset class="ck-list"><legend>1. Choose a situation</legend>
+          ${situations.map((sit, i) => `<label><input type="radio" name="pl-situation" value="${i}"><span><b>Situation ${i + 1}.</b> <span class="pl-sit">${esc(sit.text)}</span></span></label>`).join("")}
+        </fieldset>
+        <fieldset class="ck-list"><legend>2. Pick the steps you would take</legend>
           ${stage.steps.map((st, i) => `<label><input type="checkbox" value="${esc(st.id)}"><span><b>${i + 1}.</b> ${esc(st.text)}</span></label>`).join("")}
         </fieldset>
       </form>
       <button type="button" class="btn" id="pl-reset">Start again</button>
+      <p class="pl-for" id="pl-for">${esc(planFor(situations, -1))}</p>
       <p class="so-status" id="pl-status" aria-live="polite">${esc(planStatus([], stage.steps).text)}</p>
       <div class="figure" id="pl-figure">${planView([], stage.steps)}</div>`;
 }
 
-function wirePlan(doc, stage) {
+function wirePlan(doc, stage, situations) {
   const form = doc.querySelector("#pl-form");
   const update = () => {
+    const picked = form.querySelector('input[type="radio"]:checked');
+    doc.querySelector("#pl-for").textContent = planFor(situations, picked ? Number(picked.value) : -1);
     const ids = [...form.querySelectorAll('input[type="checkbox"]:checked')].map((i) => i.value);
     doc.querySelector("#pl-status").textContent = planStatus(ids, stage.steps).text;
     doc.querySelector("#pl-figure").innerHTML = planView(ids, stage.steps);
   };
   doc.querySelector("#pl-reset").addEventListener("click", () => {
-    for (const b of form.querySelectorAll('input[type="checkbox"]')) b.checked = false;
+    for (const b of form.querySelectorAll("input")) b.checked = false;
     update();
     form.querySelector("input").focus();
   });
@@ -1621,7 +1634,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       : isAudit
         ? contrastChecker(artefact.contrast)
         : isRespond
-        ? planBuilder(pictorial)
+        ? planBuilder(pictorial, artefact.situations)
         : isChat
         ? `<div class="figure" id="grid">${gainsView(artefact)}</div>
       ${revealButton("picture")}`
@@ -1713,7 +1726,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isJudge) wireGrid(doc, (revealed) => controlView(artefact.parts, { revealed }));
   else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }), "timeline");
   else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }), "picture");
-  else if (isRespond) wirePlan(doc, pictorial);
+  else if (isRespond) wirePlan(doc, pictorial, artefact.situations);
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }), "scale");
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));

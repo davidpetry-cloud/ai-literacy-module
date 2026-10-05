@@ -251,7 +251,7 @@ Sonnet worked well.
 | 09 | done | built on Opus: first of the Dark Triad series. Lesson 1's passage exercise (a made-up popular article per track) and the new `overlap` figure (`overlapPlot`, `overlapView`, `overlapPick` in `lesson-core.js`) |
 | 10 | done | built on Opus: the `thread` exercise (dated moments, face to face and online, ordinary or warning sign and its pattern) and the `pattern` timeline (`patternTimeline`, `patternView` in `lesson-core.js`); adds the Dark Tetrad |
 | 11 | done | built on Opus: the `chat` exercise (a made-up AI chat; each reply helpful or a manipulative move) and the `gains` figure (what you give, what the company gets; `gainsFigure`, `gainsView` in `lesson-core.js`) |
-| 12 | done | built on Opus: the `respond` exercise (situations with safe or risky responses) and the `plan` builder (a record, support and a boundary; `planStatus`, `planGrid`, `planView` in `lesson-core.js`). Safeguarding rules are held by tests |
+| 12 | done | built on Opus: the `respond` exercise (situations with safe or risky responses) and the `plan` builder (a record, support and a boundary; `planStatus`, `planGrid`, `planView`, `planFor` in `lesson-core.js`). The learner first chooses one of the track's concrete situations, so the plan is for something real, and the first step is trusting your gut (David, 2026-10-05). Safeguarding rules are held by tests |
 | 13 (Essentials 1) | design | cybersecurity in the age of AI: objectives approved 2026-10-05, `ready: false`. Likely Opus (new tools) |
 
 One lesson per session.

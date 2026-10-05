@@ -14,7 +14,7 @@
 export const SOURCES = [
   { lessons: [3], apa: "Adolescent Sleep Working Group, Committee on Adolescence, & Council on School Health. (2014). School start times for adolescents. *Pediatrics, 134*(3), 642–649.", url: "https://doi.org/10.1542/peds.2014-1697" },
   { lessons: [9], apa: "American Psychiatric Association. (2022). *Diagnostic and statistical manual of mental disorders* (5th ed., text rev.).", url: "https://doi.org/10.1176/appi.books.9780890425787" },
-  { lessons: [10], apa: "Back, M. D., Schmukle, S. C., & Egloff, B. (2010). Why are narcissists so charming at first sight? Decoding the narcissism–popularity link at zero acquaintance. *Journal of Personality and Social Psychology, 98*(1), 132–145.", url: "https://doi.org/10.1037/a0016338" },
+  { lessons: [10, 12], apa: "Back, M. D., Schmukle, S. C., & Egloff, B. (2010). Why are narcissists so charming at first sight? Decoding the narcissism–popularity link at zero acquaintance. *Journal of Personality and Social Psychology, 98*(1), 132–145.", url: "https://doi.org/10.1037/a0016338" },
   { lessons: [3], apa: "Black, P., & Wiliam, D. (1998). Inside the black box: Raising standards through classroom assessment. *Phi Delta Kappan, 80*(2), 139–148." },
   { lessons: [3], apa: "Bloom, B. S. (1984). The 2 sigma problem: The search for methods of group instruction as effective as one-to-one tutoring. *Educational Researcher, 13*(6), 4–16.", url: "https://doi.org/10.3102/0013189X013006004" },
   { lessons: [7], apa: "Brignull, H. (2010). *Deceptive patterns* [Website, first published as Dark Patterns].", url: "https://www.deceptive.design/" },
@@ -40,7 +40,7 @@ export const SOURCES = [
   { lessons: [12], apa: "Federal Bureau of Investigation. (n.d.). *Sextortion*.", url: "https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams/sextortion" },
   { lessons: [7], apa: "Federal Trade Commission. (2022). *Bringing dark patterns to light* [Staff report].", url: "https://www.ftc.gov/reports/bringing-dark-patterns-light" },
   { lessons: [3], apa: "Federal Trade Commission. (n.d.). *CAN-SPAM Act: A compliance guide for business*.", url: "https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business" },
-  { lessons: [10], apa: "Fowler, K. A., Lilienfeld, S. O., & Patrick, C. J. (2009). Detecting psychopathy from thin slices of behavior. *Psychological Assessment, 21*(1), 68–78.", url: "https://doi.org/10.1037/a0014938" },
+  { lessons: [10, 12], apa: "Fowler, K. A., Lilienfeld, S. O., & Patrick, C. J. (2009). Detecting psychopathy from thin slices of behavior. *Psychological Assessment, 21*(1), 68–78.", url: "https://doi.org/10.1037/a0014938" },
   { lessons: [6], apa: "Friedman, B. (1996). Value-sensitive design. *Interactions, 3*(6), 16–23.", url: "https://doi.org/10.1145/242485.242493" },
   { lessons: [10], apa: "Goodboy, A. K., & Martin, M. M. (2015). The personality profile of a cyberbully: Examining the Dark Triad. *Computers in Human Behavior, 49*, 1–4.", url: "https://doi.org/10.1016/j.chb.2015.02.052" },
   { lessons: [8], apa: "Grossmann, I., Weststrate, N. M., Ardelt, M., Brienza, J. P., Dong, M., Ferrari, M., Fournier, M. A., Hu, C. S., Nusbaum, H. C., & Vervaeke, J. (2020). The science of wisdom in a polarized world: Knowns and unknowns. *Psychological Inquiry, 31*(2), 103–133.", url: "https://doi.org/10.1080/1047840X.2020.1750917" },
