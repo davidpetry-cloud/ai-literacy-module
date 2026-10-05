@@ -112,7 +112,7 @@ header, never in a `<meta>` tag.
 |---|---|
 | HTTPS enforced on GitHub Pages | On |
 | Secret scanning and push protection | On |
-| Dependabot alerts | Recommended: off at last check |
-| Branch protection on `main` (no force-push or deletion) | Recommended: none at last check |
+| Dependabot alerts | On (2026-10-05) |
+| Branch protection on `main` (no force-push or deletion, for admins too) | On (2026-10-05) |
 | Two-factor sign-in on the author's account | The author confirms this |
-| Private vulnerability reporting | Recommended; see `SECURITY.md` |
+| Private vulnerability reporting | On (2026-10-05); see `SECURITY.md` |
