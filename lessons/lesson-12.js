@@ -161,7 +161,7 @@ export default {
                   {
                     "text": "Promise to keep it secret, so they keep trusting you.",
                     "key": "risky",
-                    "note": "Never promise to keep abuse secret. The school safeguarding guidance is clear on this."
+                    "note": "Never promise to keep abuse secret. School safeguarding guidance, such as England's, is clear on this."
                   },
                   {
                     "text": "Listen, tell them they did the right thing, and explain that you'll need to tell the safeguarding lead.",

@@ -319,7 +319,7 @@ export default {
           title: "Three reasons AI ends up manipulating people",
           head: ["Reason", "What happens", "Where the evidence comes from"],
           rows: [
-            ["It's rewarded for it", "Apps are judged on time and money, so what keeps you there wins.", "A study of AI companion apps."],
+            ["It's rewarded for it", "Many apps are judged on time spent and money, so what keeps you there wins.", "A study of AI companion apps."],
             ["It learns to please", "It's trained on people's ratings, and people often rate flattery highly.", "A study of AI assistants."],
             ["It copies us", "It learns from human writing, and human writing includes manipulation.", "How language models work, from Lesson 1."]
           ]

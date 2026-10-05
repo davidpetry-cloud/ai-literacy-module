@@ -33,6 +33,7 @@ docs/attestation-guide.md  how David attests, rejects and re-checks claims (exam
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
+docs/fact-check-2026-10.md fact recheck of all twelve lessons (October 2026): sources by field, fixes, cautions
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
 
@@ -303,7 +304,7 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-There are 94 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, Lesson 11 six, and Lesson 12 eight). All twelve lessons are built. David attests them
+There are 95 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, Lesson 11 six, Lesson 12 eight, and the fact recheck one more, `bau-repeated-behavior`, on 2026-10-05). All twelve lessons are built. David attests them
 himself, one lesson at a time, writing each practitioner block by hand; never a
 Claude session. By 2026-09-25 he had attested six, five of them in Lesson 1.
 

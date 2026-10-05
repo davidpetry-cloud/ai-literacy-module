@@ -210,7 +210,7 @@ export default {
                 "key": "warning",
                 "pattern": "request",
                 "feeling": "Excited",
-                "note": "Trust first, then the request. Scam research finds this order again and again."
+                "note": "Trust first, then the request. Research on romance scams describes this same order."
               },
               {
                 "when": "Week 5",
@@ -321,7 +321,7 @@ export default {
       title: "What the pattern looks like",
       minutes: 8,
       targets: ["10.1", "10.2", "10.3"],
-      principles: ["coercive-control-pattern", "grooming-stages", "scam-stages", "dark-tetrad", "online-harm-traits", "work-harm-traits", "gut-feeling-evidence"],
+      principles: ["coercive-control-pattern", "grooming-stages", "scam-stages", "dark-tetrad", "online-harm-traits", "work-harm-traits", "gut-feeling-evidence", "bau-repeated-behavior"],
       tables: [
         {
           title: "Patterns to watch for, in person and online",
@@ -340,7 +340,7 @@ export default {
           head: ["Trait", "In plain words", "Where it shows up"],
           rows: [
             ["Narcissism", "Wants to be admired.", "Charm and flattery."],
-            ["Machiavellianism", "Plans how to use people.", "Secrecy, favors, pressure."],
+            ["Machiavellianism", "Plans how to use people.", "Favors, flattery and pressure."],
             ["Psychopathy", "Feels little for others, acts on impulse.", "Threats, and bullying online."],
             ["Everyday sadism", "Enjoys other people's pain.", "The strongest link to trolling."]
           ]
@@ -354,7 +354,8 @@ export default {
       say: [
         ["Facilitator", "The same patterns show up face to face and online. Only the setting changes."],
         ["Expected", "\"So everyone who flatters me is using me?\""],
-        ["Facilitator", "No. One kind word is just kind. Watch for the pattern: flattery, then secrecy, then an ask, then pressure."]
+        ["Facilitator", "No. One kind word is just kind. Watch for the pattern: flattery, then secrecy, then an ask, then pressure."],
+        ["Facilitator", "Behavior analysts, like the FBI's Behavioral Analysis Unit, look for behavior that repeats across cases, not one act. You can do the same."]
       ],
       watch:
         "Learners start to suspect everyone. Bring them back to the pattern: several warning signs, repeated, usually with a bad feeling that grows."

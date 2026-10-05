@@ -351,7 +351,7 @@ export default {
             ["Dignity", "Does it treat each person with respect, and let them see and challenge what it decides?", "UNESCO, an agreed framework."],
             ["Children's rights", "Does it keep a child safe, protect their data, and help them grow?", "The UN and UNICEF, agreed frameworks."],
             ["Relationships", "Does it bring people together, or take the place of real people?", "Research on health and relationships."],
-            ["People in control", "Can the people it affects see it, change it and stop it?", "Research on design (Shneiderman)."]
+            ["People in control", "Can the people it affects see it, change it and stop it?", "A design framework (Shneiderman)."]
           ]
         },
         {

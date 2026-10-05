@@ -541,6 +541,12 @@ export const CLAIMS = {
       "Fowler, Lilienfeld and Patrick (2009), 'Detecting psychopathy from thin slices of behavior', Psychological Assessment 21(1), 68-78 (moderate accuracy; inmate sample). Back, Schmukle and Egloff (2010), 'Why are narcissists so charming at first sight?', Journal of Personality and Social Psychology 98, 132-145. Supports 10.3: trust the feeling as a signal, strongest over time. Suggested by David (2026-09-25)."
     )
   },
+  "bau-repeated-behavior": {
+    text: "The FBI's Behavioral Analysis Unit supports investigations by analysing behavior, and analysts look for behavior that repeats across cases rather than a single act. Research on how accurate criminal profiling is has found mixed results.",
+    attestation: proposedBy(
+      "FBI, 'Behavioral Analysis' (fbi.gov): the BAU sits in the National Center for the Analysis of Violent Crime and gives behavior-based investigative support. Douglas and Munn (1992), 'Violent crime scene analysis: Modus operandi, signature, and staging', FBI Law Enforcement Bulletin 61(2): repeated 'signature' behavior links cases. Snook et al. (2007), Criminal Justice and Behavior 34(4), 437-453: self-described profilers did not reliably outperform comparison groups. Worded without offender detail, as David chose (2026-09-25), because the abstract is shared with the students track."
+    )
+  },
   "l10-key-educators": {
     text: "The answer key for the Lesson 10 educators thread is reasonable: each moment's label (ordinary or warning sign) and pattern follow from the research on controlling behavior.",
     attestation: proposedBy(
