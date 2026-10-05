@@ -22,6 +22,9 @@ export default {
   objectivesApproved: "2026-09-25",
   framing:
     "Knowing the signs is half of it. This lesson is the other half: what to do, how to keep hold of what really happened, and how to protect your work and your talents.",
+  // Shown to learners before the lesson starts (wellbeing; safeguarding). Same in every track.
+  support:
+    "This lesson is about protecting yourself from people who use others. If it brings something up for you, it's fine to pause or step out. Talk to someone you trust. If you're under 18, tell an adult you trust. Where to get help is listed near the end of this lesson.",
   objectives: [
     {
       id: "12.1",

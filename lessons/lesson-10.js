@@ -22,6 +22,9 @@ export default {
   objectivesApproved: "2026-09-25",
   framing:
     "The same ways of using people show up face to face and online. This lesson helps you trust what your gut tells you, and check it against a pattern of behavior.",
+  // Shown to learners before the lesson starts (wellbeing; safeguarding). Same in every track.
+  support:
+    "This lesson is about people who use others. If it brings something up for you, it's fine to pause or step out. Talk to someone you trust. If you're under 18, tell an adult you trust. Lesson 12 lists where to get help.",
   objectives: [
     {
       id: "10.1",

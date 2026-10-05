@@ -1036,6 +1036,24 @@ describe("reveal buttons name what they show (UX audit, 2026-09-25)", () => {
   });
 });
 
+describe("support note before sensitive lessons (wellbeing, 2026-10-05)", () => {
+  it.each([10, 11, 12])("lesson %i opens with the note, the same in every track, naming an adult for under-18s", (n) => {
+    const notes = TRACK_IDS.map((t) => {
+      const first = lessonDoc(t, getLesson(n)).querySelector("#content").firstElementChild;
+      expect(first.matches("aside.support"), t).toBe(true);
+      expect(first.getAttribute("aria-label")).toBe("Before you start");
+      return first.textContent;
+    });
+    expect(new Set(notes).size).toBe(1);
+    expect(notes[0]).toMatch(/talk to someone you trust/i);
+    expect(notes[0]).toMatch(/under 18, tell an adult you trust/);
+  });
+
+  it("isn't shown on lessons that don't need it", () => {
+    for (const n of [1, 6, 9]) expect(lessonDoc(TRACK_IDS[0], getLesson(n)).querySelector("aside.support"), `lesson ${n}`).toBeNull();
+  });
+});
+
 describe("page titles (WCAG 2.4.2)", () => {
   it("names the course on the hub, and each lesson in its own tab", () => {
     const hub = page("index.html");
@@ -1182,6 +1200,13 @@ describe.each(TRACK_IDS)("lesson 10, %s track", (track) => {
     expect(d.querySelector("#grid table caption").textContent).toBe(label);
     d.querySelector("#reveal-grid").click();
     expect(d.querySelectorAll("#grid .g-mark")).toHaveLength(0);
+  });
+
+  it("keeps the timeline's table to three columns, so it fits a 320px screen once revealed", () => {
+    const d = lesson10Doc(track);
+    d.querySelector("#reveal-grid").click();
+    expect(d.querySelectorAll("#grid table thead th")).toHaveLength(3);
+    expect(d.querySelector("#grid table tbody th").textContent).toBe(`Week 1, ${threadData(track).moments[0].where}`);
   });
 
   it("shows the six patterns and the Dark Tetrad as reference tables", () => {

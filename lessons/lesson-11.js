@@ -21,6 +21,9 @@ export default {
   objectivesApproved: "2026-09-25",
   framing:
     "AI can flatter you, make you feel guilty for leaving, or push you to stay. This lesson shows how that happens, who gains from it, and who is responsible.",
+  // Shown to learners before the lesson starts (wellbeing; safeguarding). Same in every track.
+  support:
+    "This lesson is about AI that tries to keep or use people. If it brings something up for you, it's fine to pause or step out. Talk to someone you trust. If you're under 18, tell an adult you trust. Lesson 12 lists where to get help.",
   objectives: [
     {
       id: "11.1",

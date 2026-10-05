@@ -898,12 +898,10 @@ export function patternTimeline(moments, { revealed = false } = {}) {
 
 /** Drawing plus table, as in the other figures, and the point in words once revealed. */
 export function patternView(moments, { revealed = false } = {}) {
-  const cell = (m, i, st) => (revealed && m.where === st ? `<span class="tmark"><span class="sr">Moment </span>${i + 1}</span> ${m.key === "warning" ? PATTERN_LABEL[m.pattern] : THREAD_LABEL.ordinary}` : "");
-  const table = `<table class="grid-alt"><caption class="sr">${esc(patternLabel(moments, revealed))}</caption><thead><tr><th scope="col">Where</th>${moments
-    .map((_, i) => `<th scope="col">Week ${i + 1}</th>`)
-    .join("")}</tr></thead><tbody>${SETTINGS.map((st) => `<tr><th scope="row">${SETTING_LABEL[st]}</th>${moments.map((m, i) => `<td>${cell(m, i, st)}</td>`).join("")}</tr>`).join("")}<tr><th scope="row">Felt</th>${moments
-    .map((m) => `<td>${revealed ? esc(m.feeling) : ""}</td>`)
-    .join("")}</tr></tbody></table>`;
+  // One row per week, with where it happened in the row heading, so the table fits a 320px screen.
+  const table = `<table class="grid-alt by-row"><caption class="sr">${esc(patternLabel(moments, revealed))}</caption><thead><tr><th scope="col">Week</th><th scope="col">What it was</th><th scope="col">Felt</th></tr></thead><tbody>${moments
+    .map((m, i) => `<tr><th scope="row">Week ${i + 1}${revealed ? `, ${m.where}` : ""}</th><td>${revealed ? (m.key === "warning" ? `<span class="sr">Warning sign: </span>${PATTERN_LABEL[m.pattern]}` : THREAD_LABEL.ordinary) : ""}</td><td>${revealed ? esc(m.feeling) : ""}</td></tr>`)
+    .join("")}</tbody></table>`;
   const note = revealed
     ? `<p class="fix-order">Filled circles are warning signs; open circles are ordinary moments. One moment is a moment. The repeat, in more than one place, is the pattern, and the feelings got worse along with it.</p>`
     : "";
@@ -1574,6 +1572,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       ${revealButton("grid")}`;
 
   content.innerHTML = `
+    ${lesson.support ? `<aside class="support" aria-label="Before you start"><p><b>Before you start.</b> ${esc(lesson.support)}</p></aside>` : ""}
     <div class="obj" id="objectives"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
       .map((o) => `<li><span class="oid">${esc(o.id)}</span> ${esc(o.text)} <span class="bloom">${esc(o.bloom)}</span></li>`)
       .join("")}</ul><p class="legend">Boxes marked <b>Facilitator</b> are for whoever leads the session. Everything else is for learners.</p></div>

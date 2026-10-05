@@ -86,6 +86,7 @@ export function textRoles(lesson, tracks) {
     objectives: lesson.objectives.map((o) => o.text),
     framing: [lesson.framing],
     learnerPrompts: [...lesson.warmup.items, ...lesson.check.items].map((i) => i.prompt)
+      .concat(lesson.support ?? [])
       .concat(lesson.check.exit.rating, lesson.check.exit.open)
       // A checklist builder's options are learner text too.
       .concat(lesson.stages.flatMap((s) => s.checks ?? []).flatMap((c) => [c.text, c.note]).filter(Boolean))
