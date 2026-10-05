@@ -7,7 +7,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A twelve-lesson AI literacy course for three audiences — educators, professionals
+A thirteen-lesson AI literacy course (Lesson 13 in design) for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -36,6 +36,7 @@ start.js, fallback.js  page start-up as files, not inline scripts, so the policy
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
+docs/lesson-13-design.md   Lesson 13 (Staying Secure in the Age of AI) plan; objectives approved 2026-10-05
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
 docs/security-and-privacy-checks.md  how the site protects privacy and security, and how an organisation can verify it
@@ -240,6 +241,7 @@ Sonnet worked well.
 | 10 | done | built on Opus: the `thread` exercise (dated moments, face to face and online, ordinary or warning sign and its pattern) and the `pattern` timeline (`patternTimeline`, `patternView` in `lesson-core.js`); adds the Dark Tetrad |
 | 11 | done | built on Opus: the `chat` exercise (a made-up AI chat; each reply helpful or a manipulative move) and the `gains` figure (what you give, what the company gets; `gainsFigure`, `gainsView` in `lesson-core.js`) |
 | 12 | done | built on Opus: the `respond` exercise (situations with safe or risky responses) and the `plan` builder (a record, support and a boundary; `planStatus`, `planGrid`, `planView` in `lesson-core.js`). Safeguarding rules are held by tests |
+| 13 | design | cybersecurity in the age of AI: objectives approved 2026-10-05, `ready: false`. Likely Opus (new tools) |
 
 One lesson per session.
 

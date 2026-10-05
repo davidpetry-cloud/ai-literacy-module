@@ -19,6 +19,7 @@ import lesson09 from "./lessons/lesson-09.js";
 import lesson10 from "./lessons/lesson-10.js";
 import lesson11 from "./lessons/lesson-11.js";
 import lesson12 from "./lessons/lesson-12.js";
+import lesson13 from "./lessons/lesson-13.js";
 
 /** One core, three contexts. Only the concrete stage and ARCS relevance vary. */
 export const TRACKS = {
@@ -72,9 +73,9 @@ export const COURSE = {
   title: "Human-Centered AI Literacy",
   tagline: "Using AI well, and protecting the people it touches.",
   framing:
-    "Twelve lessons on using AI the way a careful professional uses any source. Learn what it is, how to ask it well, how to check what it says, and who signs off. Then judge what it builds, keep people at the center, and spot manipulation, from people and from AI.",
+    "Thirteen lessons on using AI the way a careful professional uses any source. Learn what it is, how to ask it well, how to check what it says, and who signs off. Then judge what it builds, keep people at the center, spot manipulation, from people and from AI, and stay secure.",
   minutes: 45,
-  lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09, lesson10, lesson11, lesson12]
+  lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09, lesson10, lesson11, lesson12, lesson13]
 };
 
 export function getLesson(n) {

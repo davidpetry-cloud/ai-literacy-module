@@ -2,10 +2,10 @@
 
 Using AI well, and protecting the people it touches.
 
-Twelve lessons on working with AI the way a careful professional works with any
+Thirteen lessons on working with AI the way a careful professional works with any
 source: knowing what it is, asking it well, checking what it says, deciding who
-signs off, judging the screens it builds, keeping people at the center, and
-recognizing manipulation, from people and from AI. Lessons 9–12 are the Dark Triad
+signs off, judging the screens it builds, keeping people at the center,
+recognizing manipulation, from people and from AI, and staying secure. Lessons 9–12 are the Dark Triad
 series. There are three audience tracks: educators,
 professionals and students.
 
