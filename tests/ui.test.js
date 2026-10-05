@@ -111,6 +111,14 @@ describe("colour usage", () => {
     }
   });
 
+  it("makes the whole hub card the click target, with a focus ring around the card", () => {
+    expect(rules.find((r) => r.sel === ".card h3 a::after").body).toMatch(/position:absolute;inset:0/);
+    expect(rules.find((r) => r.sel === ".card").body ?? "").toBeDefined();
+    expect(rules.some((r) => r.sel === ".card" && r.body.includes("position:relative"))).toBe(true);
+    // Focus moves to the whole card, never vanishes: the link's own outline is replaced, not removed.
+    expect(rules.find((r) => r.sel === ".card h3 a:focus-visible::after").body).toMatch(/outline:3px solid var\(--focus\)/);
+  });
+
   it("never paints a background with --ink, which flips in dark mode", () => {
     // SVG text uses fill as its text colour, so it's covered by PAIRS instead.
     const svgText = /\.g-col|\.g-row|\.g-meanlabel|\btext\b/;

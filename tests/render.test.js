@@ -1135,6 +1135,15 @@ describe("student safety (data protection review, 2026-10-05)", () => {
 });
 
 describe("lesson number badges (consistency, 2026-10-05)", () => {
+  it("gives each ready card exactly one link, and none to a lesson still in design", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    for (const card of hub.querySelectorAll(".card")) {
+      const ready = COURSE.lessons.find((l) => String(l.n) === card.dataset.lesson).ready;
+      expect(card.querySelectorAll("a"), `lesson ${card.dataset.lesson}`).toHaveLength(ready ? 1 : 0);
+    }
+  });
+
   it("shows each hub card's number as the same coloured badge used on lesson pages", () => {
     const hub = page("index.html");
     renderHub(hub);

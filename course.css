@@ -119,6 +119,16 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .card.pending{border-style:dashed;border-top-style:solid}
 .card h3{font-family:var(--serif);font-size:var(--fs-lg);margin:0 0 8px;line-height:var(--lh-heading)}
 .card h3 a{color:var(--lc)}
+/* The whole card is the click target for a ready lesson (a "stretched link"): the title stays the one
+   link, so screen readers announce it once, and its ::after covers the card, badge included.
+   Hover outlines the card in its lesson colour; keyboard focus rings the whole card. */
+.card{position:relative}
+.card h3 a::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg)}
+.card:has(h3 a){cursor:pointer}
+.card:has(h3 a:hover){box-shadow:0 0 0 2px var(--lc)}
+.card:has(h3 a:hover) h3 a{text-decoration-thickness:2px}
+.card h3 a:focus-visible{outline:none}
+.card h3 a:focus-visible::after{outline:3px solid var(--focus);outline-offset:4px}
 /* The lesson number is the same coloured badge on the hub as on lesson pages (consistency), large enough to scan for (hierarchy: below the 20px title). */
 .card .eyebrow{font-family:var(--sans);display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px}
 .card .eyebrow .lesson-no{font-size:var(--fs-md)}
