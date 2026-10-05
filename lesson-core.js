@@ -1482,7 +1482,8 @@ const REVIEW_DOCS = [
   ["docs/attestation-guide.md", "Attestation guide", "how a claim is signed, rejected or re-checked"],
   ["docs/dark-triad-series.md", "Dark Triad series plan", "the research and framing behind Lessons 9–12"],
   ["docs/lesson-08-design.md", "Lesson 8 design", "the frameworks and studies behind Human-Centered AI"],
-  ["docs/student-safety.md", "Student safety protocol", "children's data protection and online-safety law, and how the course follows it"]
+  ["docs/student-safety.md", "Student safety protocol", "children's data protection and online-safety law, and how the course follows it"],
+  ["docs/security-and-privacy-checks.md", "Security and privacy checks", "what the site does with data, and how to verify it yourself"]
 ];
 
 const sourceItem = (s, ctx = "") =>

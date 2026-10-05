@@ -32,7 +32,8 @@ input,select{width:100%;padding:9px 10px;font:inherit;border:1px solid #c5c9d6;b
 .note{display:flex;align-items:center;font-size:13px;color:#5a6070;margin:12px 0 0}
 .tool{padding:6px 8px;font:13px system-ui;background:#eef0f4;border:1px solid #d5d8e0;border-radius:6px;color:#333}`;
 
-const page = (body, script) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${MOCK_CSS}</style></head><body>${body}<script>${script}</script></body></html>`;
+// Forms never submit; attached in script, not as an inline attribute, so the site's Content Security Policy allows it.
+const page = (body, script) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${MOCK_CSS}</style></head><body>${body}<script>document.getElementById("f").onsubmit=function(){return false};${script}</script></body></html>`;
 
 export default {
   n: 6,
@@ -135,7 +136,7 @@ export default {
             height: 520,
             html: page(
               `<header><h1><span class="n">1</span>Slot Allocation Module v2</h1><span class="link"><span class="n">2</span>Book a slot</span></header>
-<main><form id="f" onsubmit="return false">
+<main><form id="f">
 <label for="c"><span class="n">3</span>Your child's name</label><input id="c" autocomplete="off">
 <label for="t">Time</label><select id="t"><option>Thursday 4:00</option><option>Thursday 4:15</option><option>Thursday 4:30</option></select>
 <p class="note"><span class="n">4</span>Bookings are final.</p>
@@ -210,7 +211,7 @@ export default {
             height: 860,
             html: page(
               `<header><h1>New expense report</h1></header>
-<main><form id="f" onsubmit="return false">
+<main><form id="f">
 <div class="row"><span class="n">1</span><button type="button" class="tool">Save draft</button><button type="button" class="tool">Preview</button><button type="button" class="tool">Print</button><button type="button" class="tool">Export</button><button type="button" class="tool">Submit</button><button type="button" class="tool">Help</button></div>
 <label for="d"><span class="n">2</span>Date of expense</label><input id="d" type="date">
 <p class="lbl"><span class="n">3</span>Amount</p><input aria-label="Amount" inputmode="decimal">
@@ -295,7 +296,7 @@ export default {
             height: 560,
             html: page(
               `<header><h1>Join the Robotics Club</h1><p style="margin:0;display:flex;align-items:center;font-size:14px"><span class="n">1</span><span id="step">Step 1 of 3</span>&nbsp;· 12 required fields</p></header>
-<main><form id="f" onsubmit="return false">
+<main><form id="f">
 <label for="u"><span class="n">2</span>Enter UID per SIS</label><input id="u">
 <label for="g"><span class="n">3</span>Grade</label><input id="g" style="border:2px solid #d6333a">
 <label for="e"><span class="n">4</span>Email</label><input id="e" type="email">

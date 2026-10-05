@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-1jtpkU4k+U8dXxyWj+ilHk79oXglLNdpoMJqiymHV9E=' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-8ajehj0Wza0qBViDOC2j1S97e/HbZGHhWAiQdYG3XHk=' 'sha256-EidiAAUoHKJzmMZ65rTbbii/hNIuj0TLFfMj0BEzBG4=' 'sha256-SmiFukAquGKMHLeEmi9jJI8UHo5K7a46I+9ns6Gi89A=' 'sha256-cEV1K4d0KTS+4A82dRHqt7rGJrZ/19MXIV7/5FL9eqg=' 'sha256-fFTPG1oXGSAgfkVpLSLjih12oZG+d8TMg9TxUIyfELk='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'none'; frame-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'; manifest-src 'none'; worker-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lesson — Human-Centered AI Literacy</title>
 <meta name="color-scheme" content="light dark">
@@ -26,17 +28,8 @@
     <aside class="side" id="side"></aside>
   </div>
 </main>
-<footer class="wrap foot"><b>Privacy:</b> this site collects nothing about you and sends nothing anywhere. It only remembers your theme and audience track, on your own device. Built by David Petry. Claims engine: <a href="https://www.npmjs.com/package/attestation-ledger">attestation-ledger</a>. <a href="sources.html">Sources (APA)</a>. Course content <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; code MIT.</footer>
-<script type="module">
-import { boot } from "./lesson-core.js";
-boot(document);
-</script>
-<script>
-setTimeout(function () {
-  if (document.body.dataset.ready) return;
-  document.getElementById("content").innerHTML =
-    '<p class="warn"><b>The lesson didn’t load.</b> It must be served over http — not opened as a file. Run <code>npm run preview</code> locally.</p>';
-}, 6000);
-</script>
+<footer class="wrap foot"><b>Privacy:</b> this site collects nothing about you: no accounts, cookies, analytics or forms, and nothing from other websites. It only remembers your theme and audience track, on your own device. GitHub, which hosts it, logs visitors' IP addresses for security. Built by David Petry. Claims engine: <a href="https://www.npmjs.com/package/attestation-ledger">attestation-ledger</a>. <a href="sources.html">Sources (APA)</a>. Course content <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; code MIT.</footer>
+<script type="module" src="start.js"></script>
+<script src="fallback.js"></script>
 </body>
 </html>

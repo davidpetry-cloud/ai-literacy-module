@@ -7,10 +7,14 @@ your school's or district's policy and local law first.
 
 ## The protocol
 
-1. **The site collects nothing.** No analytics, no cookies, no forms that send
-   data, and no third-party requests: fonts and the claims engine are hosted with
-   the site. It remembers only the theme and audience track, in the learner's own
-   browser. Each footer says so.
+1. **The site collects nothing.** No accounts, analytics, cookies, or forms that
+   send data, and no third-party requests: fonts and the claims engine are hosted
+   with the site, and a strict Content Security Policy in every page blocks
+   anything else (see `docs/security-and-privacy-checks.md`). It remembers only the
+   theme and audience track, in the learner's own browser. GitHub, which hosts the
+   site, logs visitors' IP addresses for security, as its documentation states.
+   Each footer says all of this. An organisation that wants no third party at all
+   can host the site itself; it is a folder of static files.
 2. **Students use only AI tools the school approves,** within each tool's own age
    limits and local law. UNESCO recommends 13 as the minimum age for generative AI
    in classrooms. Many tools set 13 (with parental consent) or 18. Every students

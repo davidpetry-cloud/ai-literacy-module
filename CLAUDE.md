@@ -31,11 +31,14 @@ fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requ
 vendor/            the attestation-ledger engine, hosted with the site so pages make no third-party requests
 tests/             alignment · governance · render · ui · readability
 scripts/serve.js   local preview on :8080
+scripts/csp.mjs    builds each page's Content Security Policy (`npm run csp`); a test fails if a page's policy is stale
+start.js, fallback.js  page start-up as files, not inline scripts, so the policy can forbid inline code
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
+docs/security-and-privacy-checks.md  how the site protects privacy and security, and how an organisation can verify it
 docs/student-safety.md     student safety and data protection protocol: children's law by country (checked 2026-10-05), how the course follows it
 docs/fact-check-2026-10.md fact recheck of all twelve lessons (October 2026): sources by field, fixes, cautions
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
@@ -167,6 +170,10 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
   - lesson titles use APA title case ("What a Model Actually Does"), David's
     choice on 2026-10-05; every other heading, stage name and button stays in
     sentence case. The render test checks the titles.
+
+- **Security:** no inline scripts or `on…=` handlers in pages or mock screens;
+  after changing the import map or a mock screen's script, run `npm run csp`.
+  Nothing may load from another site (tested).
 
 ## Readability rules
 

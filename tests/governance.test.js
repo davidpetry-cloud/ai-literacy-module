@@ -136,3 +136,36 @@ describe("no third-party requests", () => {
     expect(hosted).toBe(installed);
   });
 });
+
+// Security: a strict Content Security Policy in every page (GitHub Pages can't send headers).
+// It must match what scripts/csp.mjs builds from the code, so a new inline script can't slip in.
+describe("content security policy", async () => {
+  const { buildPolicy, PAGES } = await import("../scripts/csp.mjs");
+  const policy = await buildPolicy();
+
+  it.each(PAGES)("%s carries the current policy and a no-referrer policy, before any script or style", (p) => {
+    const html = readFileSync(new URL(p, root), "utf8");
+    const meta = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)">/);
+    expect(meta, `${p}: run npm run csp`).not.toBeNull();
+    expect(meta[1], `${p}: run npm run csp`).toBe(policy);
+    expect(html).toContain('<meta name="referrer" content="no-referrer">');
+    expect(html.indexOf("Content-Security-Policy")).toBeLessThan(html.search(/<script|<link/));
+  });
+
+  it("forbids anything that isn't from this site, and anything inline that isn't listed by hash", () => {
+    for (const d of ["default-src 'none'", "connect-src 'none'", "form-action 'none'", "object-src 'none'", "base-uri 'none'"]) expect(policy).toContain(d);
+    expect(policy).not.toMatch(/'unsafe-eval'|script-src[^;]*'unsafe-inline'|https?:|\*/);
+  });
+
+  it.each(PAGES)("%s has no inline event handlers and no inline scripts except the import map", (p) => {
+    const html = readFileSync(new URL(p, root), "utf8");
+    expect(html).not.toMatch(/\son[a-z]+="/);
+    for (const m of html.matchAll(/<script([^>]*)>/g)) expect(m[1], p).toMatch(/src=|type="importmap"/);
+  });
+
+  it("keeps inline event handlers out of every mock screen, too", () => {
+    for (const l of COURSE.lessons) for (const s of l.stages ?? []) for (const t of Object.values(s.tracks ?? {})) {
+      if (t.screen?.html) expect(t.screen.html, `lesson ${l.n}`).not.toMatch(/\son[a-z]+="/);
+    }
+  });
+});
