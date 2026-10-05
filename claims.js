@@ -460,7 +460,7 @@ export const CLAIMS = {
   "trait-not-diagnosis": {
     text: "Dark Triad scores are not diagnoses. Personality disorders, such as narcissistic or antisocial personality disorder, are diagnosed by trained clinicians using clinical criteria.",
     attestation: proposedBy(
-      "Paulhus and Williams (2002) for the traits as subclinical; American Psychiatric Association, DSM-5-TR (2022), for personality disorders as clinical diagnoses with set criteria. The DSM-5-TR section on personality disorders should be checked before attesting."
+      "Paulhus and Williams (2002) for the traits as subclinical. American Psychiatric Association, DSM-5-TR (2022), Section II, Personality Disorders (checked 2026-10-05 through secondary clinical sources): narcissistic personality disorder needs at least five of nine criteria, a pervasive pattern from early adulthood across many contexts; antisocial personality disorder needs at least three of seven, a pattern since age 15. Both are clinical diagnoses made through assessment (Merck Manual Professional Edition, personality disorders). Check the manual itself if you have access."
     )
   },
   "dark-triad-origins": {
