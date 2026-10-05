@@ -110,7 +110,9 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
   `--header-bg`, `--btn-bg` or `--chip-bg`. Text on a lesson colour uses
   `--on-lc`.
 - **Non-text contrast is 3:1.** Grid lines use `--edge` and buttons carry a
-  2px `--btn-edge` ring, so their shape shows in both themes. Nothing that
+  2px `--btn-edge` ring, so their shape shows in both themes. Boxes are outlined
+  at 1.5px: a coloured box in its own colour, a white box in `--edge` (David,
+  2026-10-05). `--line` is only for lines inside tables, never a box's outline. Nothing that
   carries text is faded with `opacity`; use a token.
 - **Reference tables of three or more columns are written twice** (a table
   and a stacked `.ref-list`), swapped by a container query, so nothing scrolls

@@ -98,12 +98,15 @@ section{margin-bottom:48px}
 h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--ink);margin:0 0 12px;line-height:var(--lh-heading)}
 .lede{color:var(--muted);max-width:var(--measure);margin:0 0 16px}
 .loading{color:var(--muted)}
-.warn{background:var(--rose-pale);border-left:4px solid var(--rose);padding:16px 16px;border-radius:0 var(--r-md) var(--r-md) 0}
+.warn{background:var(--rose-pale);border:1.5px solid var(--rose);border-left-width:4px;padding:16px 16px;border-radius:0 var(--r-md) var(--r-md) 0}
 .warn b{display:block}
 /* A calm, learner-facing note before a sensitive lesson: a pause, not an alarm (wellbeing). */
-.support{background:var(--teal-pale);border-left:4px solid var(--teal);border-radius:0 var(--r-md) var(--r-md) 0;padding:12px 16px;margin:0 0 16px;color:var(--text)}
+.support{background:var(--teal-pale);border:1.5px solid var(--teal);border-left-width:4px;border-radius:0 var(--r-md) var(--r-md) 0;padding:12px 16px;margin:0 0 16px;color:var(--text)}
 .support p{margin:0;max-width:var(--measure)}
 
+/* Box outlines: a coloured box is outlined in its own colour, and a white box on the page in --edge.
+   Both pass 3:1 against the page in each theme (WCAG 1.4.11), so a box's shape shows for low-vision readers.
+   Lines inside tables stay --line: they separate text, they don't outline a shape. */
 /* hub */
 .students-note{margin:0 0 16px}
 .students-note p{max-width:var(--measure)}
@@ -126,7 +129,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .objs li{margin-bottom:8px}
 .bloom{font-family:var(--sans);font-size:var(--fs-xs);color:var(--ink-3);background:var(--peri-pale);padding:2px 8px;border-radius:var(--r-sm);margin-right:8px;white-space:nowrap}
 .note{font-size:var(--fs-sm);color:var(--muted);margin:12px 0 0}
-table.basis{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.4);background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+table.basis{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.4);background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-lg);overflow:hidden}
 .basis th,.basis td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
 .basis th{font-family:var(--sans);font-size:var(--fs-xs);color:var(--muted);font-weight:600}
 .basis td:first-child{font-weight:600;width:30%}
@@ -134,7 +137,7 @@ table.basis{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 
 /* Evaluation: Kirkpatrick's four levels, cool to warm as they move from the day itself to lasting results.
    Each level also carries its number and name, so colour is never the only cue. */
 ol.eval-levels{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;max-width:calc(var(--measure) * 1.6)}
-.lvl{background:var(--lvl-pale);border:1px solid var(--line);border-left:8px solid var(--lvl);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:16px 16px 16px 24px;color:var(--text)}
+.lvl{background:var(--lvl-pale);border:1.5px solid var(--lvl);border-left:8px solid var(--lvl);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:16px 16px 16px 24px;color:var(--text)}
 .lvl h3{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 4px;color:var(--text);line-height:var(--lh-heading)}
 .lvl-no{display:block;font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
 .lvl-who{font-size:var(--fs-sm);font-weight:600;margin:0 0 8px;color:var(--text)}
@@ -148,7 +151,7 @@ ol.eval-levels{list-style:none;margin:0;padding:0;display:grid;grid-template-col
 
 /* claims and status badges — shape and text as well as colour */
 .claims{display:grid;gap:12px}
-.claim{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--prop);border-radius:0 var(--r-md) var(--r-md) 0;padding:16px 16px}
+.claim{background:var(--card);border:1.5px solid var(--edge);border-left:4px solid var(--prop);border-radius:0 var(--r-md) var(--r-md) 0;padding:16px 16px}
 .claim[data-status="attested"]{border-left-color:var(--att)}
 .claim[data-status="expired"]{border-left-color:var(--exp)}
 .claim[data-status="rejected"]{border-left-color:var(--rej)}
@@ -160,7 +163,7 @@ ol.eval-levels{list-style:none;margin:0;padding:0;display:grid;grid-template-col
 .claim-also{font-family:var(--sans);font-size:var(--fs-sm);color:var(--muted)}
 /* The ledger on the hub: one collapsed group per lesson, with its colour as a ribbon beside its number. */
 .claim-groups{display:grid;gap:12px}
-.claim-group{background:var(--card);border:1px solid var(--line);border-left:8px solid var(--lc,var(--line));border-radius:0 var(--r-lg) var(--r-lg) 0;padding:4px 16px}
+.claim-group{background:var(--card);border:1.5px solid var(--lc,var(--edge));border-left:8px solid var(--lc,var(--edge));border-radius:0 var(--r-lg) var(--r-lg) 0;padding:4px 16px}
 .claim-group > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:12px;padding:8px 0}
 .cg-text{flex:1;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px}
 .claim-group > summary .lesson-no{font-size:var(--fs-md)}
@@ -185,12 +188,12 @@ details[open] > summary::before{content:"▾" / ""}
 
 /* lesson */
 .lesson{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:24px;align-items:start}
-.obj{background:var(--card);border-left:4px solid var(--amber);padding:16px 24px;border-radius:0 var(--r-md) var(--r-md) 0;margin-bottom:16px}
+.obj{background:var(--card);border:1.5px solid var(--edge);border-left:4px solid var(--amber);padding:16px 24px;border-radius:0 var(--r-md) var(--r-md) 0;margin-bottom:16px}
 .obj p{margin:0 0 8px}
 .obj ul{margin:0;padding-left:0;list-style:none}
 .obj li{margin-bottom:8px}
 .oid{font-family:var(--sans);font-weight:600;color:var(--ink-3);margin-right:4px}
-.block{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 24px;margin-bottom:16px}
+.block{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-lg);padding:24px 24px;margin-bottom:16px}
 .block > h2{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 8px;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;line-height:var(--lh-heading)}
 .block.c{border-top:4px solid var(--teal)}
 .block.p{border-top:4px solid var(--amber)}
@@ -221,7 +224,7 @@ details[open] > summary::before{content:"▾" / ""}
 .say{border-left:3px solid var(--line);padding:2px 0 2px 16px;margin:0 0 16px}
 .say p{margin:0 0 8px;font-size:var(--fs-base);color:var(--ink-2)}
 .say .who{font-family:var(--sans);font-size:var(--fs-xs);color:var(--muted);display:block;margin-bottom:2px}
-.watch,.expect,.crit{background:var(--amber-pale);border-radius:var(--r-md);padding:12px 16px;font-size:var(--fs-sm);margin-top:12px}
+.watch,.expect,.crit{background:var(--amber-pale);border:1.5px solid var(--prop);border-radius:var(--r-md);padding:12px 16px;font-size:var(--fs-sm);margin-top:12px}
 .expect,.crit{background:var(--peri-pale)}
 .watch b,.expect b,.crit b{font-family:var(--serif);font-weight:600;display:block;margin-bottom:2px}
 .facil{background:var(--paper);border:1px dashed var(--ink-3);border-radius:var(--r-lg);padding:16px;margin:16px 0}
@@ -308,7 +311,7 @@ ol.refs{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(-
 .ref-tags{font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3);padding-left:24px}
 .ref-wrap{container-type:inline-size}
 .ref-list{display:none;margin:0 0 16px}
-.ref-list > div{border:1px solid var(--line);border-radius:var(--r-md);padding:8px 12px;margin:0 0 8px;background:var(--card)}
+.ref-list > div{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;margin:0 0 8px;background:var(--card)}
 .ref-list dt{font-weight:600;color:var(--ink);margin:0 0 4px}
 .ref-list dd{margin:0 0 4px;font-size:var(--fs-sm)}
 .ref-k{font-weight:600;color:var(--ink-3)}
@@ -340,7 +343,7 @@ svg.cc-sample{display:block;width:100%;max-width:360px;height:auto;font-family:v
 .search-row input{flex:1 1 240px;font:inherit;font-size:var(--fs-base);color:var(--text);background:var(--card);border:2px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;min-height:44px}
 .search-row .btn{margin:0}
 ol.search-results{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(--measure)}
-.search-results li{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 16px}
+.search-results li{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px}
 .search-results a{font-weight:700;display:inline-block;min-height:24px}
 .search-results .where{display:block;font-size:var(--fs-sm);color:var(--muted)}
 .search-results p{margin:4px 0 0}
@@ -387,7 +390,7 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .k-safe{color:var(--att-text)} .k-risky{color:var(--exp)}
 .g-flow{stroke:var(--ink-3);stroke-width:2}
 .chat .turns{list-style:none;padding:0;margin:0;display:grid;gap:12px}
-.chat .turn{border:1px solid var(--line);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
+.chat .turn{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
 .chat .turn.you{margin-left:32px;border-style:dashed}
 .chat .turn p{margin:0 0 4px}
 .chat .who-said{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3)}
@@ -419,7 +422,7 @@ table.grid-alt{display:none;width:100%;border-collapse:collapse;table-layout:fix
 .g-mark text{fill:var(--on-dark);font-size:16px;font-weight:700;text-anchor:middle}
 
 .side{position:sticky;top:18px;display:grid;gap:16px}
-.sidebox{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 16px;font-size:var(--fs-sm)}
+.sidebox{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-lg);padding:16px 16px;font-size:var(--fs-sm)}
 .sidebox h2{font-family:var(--serif);font-size:var(--fs-md);margin:0 0 8px;color:var(--ink);line-height:var(--lh-heading)}
 .sidebox p{margin:0 0 12px}
 .sidebox p b{text-transform:capitalize;display:block;font-family:var(--sans);font-size:var(--fs-xs);color:var(--teal-text)}

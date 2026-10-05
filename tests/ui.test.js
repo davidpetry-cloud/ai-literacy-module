@@ -78,6 +78,13 @@ describe.each(Object.keys(THEMES))("%s theme contrast", (name) => {
     expect(contrast(theme, edge, bg)).toBeGreaterThanOrEqual(3);
   });
 
+  // Box outlines (David, 2026-10-05): a coloured box is outlined in its own colour, a white box in
+  // --edge. Each outline must show against the page and the card behind it.
+  const OUTLINES = ["--edge", "--peri", "--teal", "--prop", "--rose", ...LESSONS];
+  it.each(OUTLINES.flatMap((o) => ["--paper", "--card"].map((bg) => [o, bg])))("box outline %s is at least 3:1 on %s", (o, bg) => {
+    expect(contrast(theme, o, bg)).toBeGreaterThanOrEqual(3);
+  });
+
   it.each(LESSONS)("lesson colour %s is readable as text on a card", (l) => {
     expect(contrast(theme, l, "--card")).toBeGreaterThanOrEqual(4.5);
   });
@@ -94,6 +101,14 @@ describe("colour usage", () => {
   it("uses border-only hues for borders, never for text", () => {
     const borderOnly = /(?:^|;)\s*color:\s*var\(--(teal|att|peri|rose)\)/;
     for (const r of rules) expect(r.body, r.sel).not.toMatch(borderOnly);
+  });
+
+  it("outlines boxes with a token that passes 3:1, never the faint --line", () => {
+    const boxes = [".lvl", ".claim", ".claim-group", ".block", ".sidebox", ".search-results li", ".chat .turn", ".ref-list > div", ".support", ".watch,.expect,.crit", "table.basis", ".obj", ".warn"];
+    for (const sel of boxes) {
+      const body = rules.find((r) => r.sel === sel)?.body ?? "";
+      expect(body, sel).toMatch(/border:1\.5px solid var\(--(edge|lvl|teal|prop|rose|lc,var\(--edge\))\)/);
+    }
   });
 
   it("never paints a background with --ink, which flips in dark mode", () => {
