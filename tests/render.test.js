@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
 import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
-import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
+import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
 const page = (name) => new JSDOM(readFileSync(new URL(`../${name}`, import.meta.url), "utf8")).window.document;
@@ -1148,9 +1148,32 @@ describe("lesson number badges (consistency, 2026-10-05)", () => {
     const hub = page("index.html");
     renderHub(hub);
     for (const card of hub.querySelectorAll(".card")) {
-      expect(card.querySelector(".eyebrow .lesson-no").textContent).toBe(`Lesson ${card.dataset.lesson}`);
+      expect(card.querySelector(".eyebrow .lesson-no").textContent).toBe(lessonLabel(getLesson(Number(card.dataset.lesson))));
     }
     expect(lessonDoc(TRACK_IDS[0]).querySelector(".top .lesson-no")).not.toBeNull();
+  });
+});
+
+describe("essentials (David, 2026-10-05)", () => {
+  it("keeps essentials out of the numbered lessons, in their own hub section", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    const inLessons = [...hub.querySelectorAll("#lessons .card")].map((c) => Number(c.dataset.lesson));
+    const inEssentials = [...hub.querySelectorAll("#essentials .card")].map((c) => Number(c.dataset.lesson));
+    expect(inLessons).toEqual(mainLessons().map((l) => l.n));
+    expect(inEssentials).toEqual(essentials().map((l) => l.n));
+    expect(inEssentials.length).toBeGreaterThan(0);
+    for (const n of inEssentials) expect(inLessons).not.toContain(n);
+    const section = hub.querySelector("#essentials");
+    expect(section.querySelector("h2").textContent).toBe("Essentials");
+    expect(section.querySelector(".lede").textContent).toBe("Habits anyone needs, at any point in the course.");
+  });
+  it("names an essential by its own label, never as a numbered lesson", () => {
+    for (const l of essentials()) {
+      expect(l.label).toMatch(/^Essentials \d+$/);
+      expect(lessonLabel(l)).toBe(l.label);
+    }
+    expect(lessonLabel(getLesson(1))).toBe("Lesson 1");
   });
 });
 

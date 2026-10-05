@@ -69,11 +69,17 @@ export const EVALUATION = {
   }
 };
 
+/** How a lesson is named to learners: "Lesson 3", or its own label in another category ("Essentials 1"). */
+export const lessonLabel = (l) => l.label ?? `Lesson ${l.n}`;
+/** The numbered course, and the essentials: habits anyone needs, taken at any point. */
+export const mainLessons = () => COURSE.lessons.filter((l) => !l.category);
+export const essentials = () => COURSE.lessons.filter((l) => l.category === "essentials");
+
 export const COURSE = {
   title: "Human-Centered AI Literacy",
   tagline: "Using AI well, and protecting the people it touches.",
   framing:
-    "Thirteen lessons on using AI the way a careful professional uses any source. Learn what it is, how to ask it well, how to check what it says, and who signs off. Then judge what it builds, keep people at the center, spot manipulation, from people and from AI, and stay secure.",
+    "Twelve lessons on using AI the way a careful professional uses any source. Learn what it is, how to ask it well, how to check what it says, and who signs off. Then judge what it builds, keep people at the center, and spot manipulation, from people and from AI. Essentials, such as staying secure, fit in at any point.",
   minutes: 45,
   lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09, lesson10, lesson11, lesson12, lesson13]
 };

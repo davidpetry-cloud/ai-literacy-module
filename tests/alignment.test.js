@@ -53,7 +53,7 @@ describe.each(COURSE.lessons.map((l) => [l.n, l]))("lesson %i objectives", (n, l
     expect(lesson.objectives.length).toBeGreaterThan(0);
     const ids = lesson.objectives.map((o) => o.id);
     expect(new Set(ids).size).toBe(ids.length);
-    for (const id of ids) expect(id.startsWith(`${n}.`)).toBe(true);
+    for (const id of ids) expect(id.startsWith(`${lesson.idPrefix ?? n}.`)).toBe(true);
   });
 
   it("uses a Bloom level and an observable verb for every objective", () => {

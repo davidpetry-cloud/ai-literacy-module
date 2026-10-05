@@ -7,7 +7,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A thirteen-lesson AI literacy course (Lesson 13 in design) for three audiences — educators, professionals
+A twelve-lesson AI literacy course, plus Essentials (Essentials 1 in design), for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -36,7 +36,7 @@ start.js, fallback.js  page start-up as files, not inline scripts, so the policy
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
-docs/lesson-13-design.md   Lesson 13 (Staying Secure in the Age of AI) plan; objectives approved 2026-10-05
+docs/lesson-13-design.md   Essentials 1 (Staying Secure in the Age of AI) plan; objectives approved 2026-10-05
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
 docs/security-and-privacy-checks.md  how the site protects privacy and security, and how an organisation can verify it
@@ -44,6 +44,17 @@ docs/student-safety.md     student safety and data protection protocol: children
 docs/fact-check-2026-10.md fact recheck of all twelve lessons (October 2026): sources by field, fixes, cautions
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
+
+## Essentials
+
+A second category beside the numbered lessons (David, 2026-10-05): habits anyone
+needs, at any point in the course. An essential is an ordinary lesson file with
+`category: "essentials"`, a `label` ("Essentials 1") and an `idPrefix` ("E1") for its
+objective ids. It keeps a lesson number `n` for its page address only. Learners
+always see the label (`lessonLabel` in `course.js`), never "Lesson 13". The hub lists
+essentials in their own section below the lessons, the hub counts them separately,
+and previous/next links stay within a category. Every lesson rule above and below
+applies to essentials unchanged.
 
 ## Design basis
 
@@ -241,7 +252,7 @@ Sonnet worked well.
 | 10 | done | built on Opus: the `thread` exercise (dated moments, face to face and online, ordinary or warning sign and its pattern) and the `pattern` timeline (`patternTimeline`, `patternView` in `lesson-core.js`); adds the Dark Tetrad |
 | 11 | done | built on Opus: the `chat` exercise (a made-up AI chat; each reply helpful or a manipulative move) and the `gains` figure (what you give, what the company gets; `gainsFigure`, `gainsView` in `lesson-core.js`) |
 | 12 | done | built on Opus: the `respond` exercise (situations with safe or risky responses) and the `plan` builder (a record, support and a boundary; `planStatus`, `planGrid`, `planView` in `lesson-core.js`). Safeguarding rules are held by tests |
-| 13 | design | cybersecurity in the age of AI: objectives approved 2026-10-05, `ready: false`. Likely Opus (new tools) |
+| 13 (Essentials 1) | design | cybersecurity in the age of AI: objectives approved 2026-10-05, `ready: false`. Likely Opus (new tools) |
 
 One lesson per session.
 

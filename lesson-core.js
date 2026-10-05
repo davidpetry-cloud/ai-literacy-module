@@ -7,7 +7,7 @@
  * installed devDependency. tests/governance.test.js keeps the two in step.
  */
 import { resolveStatus, tally, STATUS, SOURCE } from "attestation-ledger";
-import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson } from "./course.js";
+import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson, lessonLabel, mainLessons, essentials } from "./course.js";
 import { SOURCES } from "./sources.js";
 import { CLAIMS } from "./claims.js";
 
@@ -59,7 +59,7 @@ function provenance(record, now) {
 export function claimCard(id, now = new Date(), { anchor = false, also = [] } = {}) {
   const record = CLAIMS[id];
   const status = resolveStatus(record, now);
-  const alsoIn = also.length ? `<span class="claim-also">Also used in Lesson ${also.join(", ")}</span>` : "";
+  const alsoIn = also.length ? `<span class="claim-also">Also used in ${labelList(also)}</span>` : "";
   return `<div class="claim"${anchor ? ` id="claim-${esc(id)}"` : ""} data-claim="${esc(id)}" data-status="${status}">
     <div class="claim-head">${statusBadge(status)}<span class="claim-id">${esc(id)}</span> ${alsoIn}</div>
     <p>${esc(record.text)}</p>
@@ -403,6 +403,12 @@ const MISS_WHY = {
   outdated: "No check looks at the date behind a fact.",
   bias: "No check asks who is left out.",
   misread: "No check compares it with the request."
+};
+/** "Lesson 3", "Lessons 1 and 3", or mixed labels ("Lesson 7 and Essentials 1"). */
+const labelList = (ns) => {
+  const ls = ns.map((n) => getLesson(n) ?? { n });
+  if (ls.every((l) => !l.label)) return ls.length === 1 ? `Lesson ${ls[0].n}` : `Lessons ${joinList(ls.map((l) => String(l.n)))}`;
+  return joinList(ls.map(lessonLabel));
 };
 const joinList = (a) => (a.length < 2 ? a.join("") : a.length === 2 ? a.join(" and ") : `${a.slice(0, -1).join(", ")} and ${a.at(-1)}`);
 
@@ -1245,9 +1251,9 @@ export function buildSearchIndex(track = TRACK_IDS[0]) {
   const out = [];
   const page = (n, hash = "") => `lesson.html?n=${n}&track=${track}${hash}`;
   for (const l of COURSE.lessons.filter((x) => x.ready)) {
-    out.push({ kind: "Lesson", where: `Lesson ${l.n}`, title: l.title, text: l.framing, href: page(l.n) });
-    for (const o of l.objectives) out.push({ kind: "Objective", where: `Lesson ${l.n} · Objective ${o.id}`, title: l.title, text: o.text, href: page(l.n, "#objectives") });
-    for (const s of l.stages) out.push({ kind: "Stage", where: `Lesson ${l.n} · ${STAGE_NAME[s.kind]}`, title: s.title, text: `${STAGE_NAME[s.kind]} stage of "${l.title}".`, href: page(l.n, `#stage-${s.kind}`) });
+    out.push({ kind: "Lesson", where: lessonLabel(l), title: l.title, text: l.framing, href: page(l.n) });
+    for (const o of l.objectives) out.push({ kind: "Objective", where: `${lessonLabel(l)} · Objective ${o.id}`, title: l.title, text: o.text, href: page(l.n, "#objectives") });
+    for (const s of l.stages) out.push({ kind: "Stage", where: `${lessonLabel(l)} · ${STAGE_NAME[s.kind]}`, title: s.title, text: `${STAGE_NAME[s.kind]} stage of "${l.title}".`, href: page(l.n, `#stage-${s.kind}`) });
   }
   for (const [id, c] of Object.entries(CLAIMS)) out.push({ kind: "Claim", where: `Claim · ${id}`, title: id, text: c.text, href: `#claim-${id}` });
   return out;
@@ -1375,7 +1381,7 @@ function claimGroups(now) {
       const c = tally(ids.map((id) => CLAIMS[id]), now);
       const counts = ["attested", "proposed", "expired", "rejected"].filter((s) => c[s]).map((s) => `${c[s]} ${STATUS_LABEL[s].toLowerCase()}`).join(", ");
       return `<details class="claim-group" data-lesson="${l.n}" id="claims-lesson-${l.n}">
-        <summary><span class="lesson-no">Lesson ${l.n}</span> <span class="cg-text"><span class="cg-title">${esc(l.title)}</span> <span class="cg-count">${ids.length} claim${ids.length === 1 ? "" : "s"}: ${counts}</span></span></summary>
+        <summary><span class="lesson-no">${esc(lessonLabel(l))}</span> <span class="cg-text"><span class="cg-title">${esc(l.title)}</span> <span class="cg-count">${ids.length} claim${ids.length === 1 ? "" : "s"}: ${counts}</span></span></summary>
         <div class="claims">${ids.map((id) => claimCard(id, now, { anchor: true, also: uses[id].slice(1) })).join("")}</div>
       </details>`;
     })
@@ -1391,13 +1397,14 @@ function openClaimGroup(doc, hash) {
 
 export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query = "", onQuery } = {}) {
   const counts = tally(Object.values(CLAIMS), now);
-  const readyCount = COURSE.lessons.filter((l) => l.ready).length;
+  const readyCount = mainLessons().filter((l) => l.ready).length;
 
   doc.querySelector("#top").innerHTML = `
     <h1>${esc(COURSE.title)}</h1>
     <p class="sub"><b>${esc(COURSE.tagline)}</b> ${esc(COURSE.framing)}</p>
     <div class="facts">
-      <span><b>${COURSE.lessons.length}</b> lessons</span>
+      <span><b>${mainLessons().length}</b> lessons</span>
+      ${essentials().length ? `<span><b>${essentials().length}</b> essential${essentials().length === 1 ? "" : "s"}</span>` : ""}
       <span><b>${COURSE.minutes}</b> minutes each</span>
       <span><b>${TRACK_IDS.length}</b> audience tracks</span>
       <span><b>${readyCount}</b> ready</span>
@@ -1405,10 +1412,8 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
     </div>
     ${trackPicker(track)}`;
 
-  const lessons = COURSE.lessons
-    .map(
-      (l) => `<article class="card${l.ready ? "" : " pending"}" data-lesson="${l.n}">
-      <p class="eyebrow"><span class="lesson-no">Lesson ${l.n}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
+  const card = (l) => `<article class="card${l.ready ? "" : " pending"}" data-lesson="${l.n}">
+      <p class="eyebrow"><span class="lesson-no">${esc(lessonLabel(l))}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
       <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
       <p>${esc(l.framing)}</p>
       <ul class="objs">${l.objectives.map((o) => `<li><span class="bloom">${esc(o.bloom)}</span>${esc(o.text)}</li>`).join("")}</ul>
@@ -1417,9 +1422,9 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
           ? `Objectives approved ${esc(l.objectivesApproved)}. Assessments and activities come next.`
           : "Objectives drafted, awaiting review."
       }</p>`}
-    </article>`
-    )
-    .join("");
+    </article>`;
+  const lessons = mainLessons().map(card).join("");
+  const essentialCards = essentials().map(card).join("");
 
   doc.querySelector("#content").innerHTML = `
     <section class="search" aria-labelledby="search-h"><h2 id="search-h">Search the course</h2>
@@ -1430,7 +1435,8 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
       <p class="so-status" id="search-status" aria-live="polite"></p>
       <ol class="search-results" id="search-results"></ol>
     </section>
-    <section><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}<div class="cards">${lessons}</div></section>
+    <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}<div class="cards">${lessons}</div></section>
+    ${essentialCards ? `<section id="essentials"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
 
     <section><h2>How it's built</h2>
       <table class="basis"><thead><tr><th>Framework</th><th>Its one job here</th></tr></thead><tbody>
@@ -1472,7 +1478,7 @@ const plain = (apa) => apa.replace(/\*/g, "");
 export const sortedSources = () => [...SOURCES].sort((a, b) => plain(a.apa).localeCompare(plain(b.apa), "en", { sensitivity: "base" }));
 /** Escape first, then turn *marked* spans into italics, so source text can never inject markup. */
 export const apaHtml = (apa) => esc(apa).replace(/\*([^*]+)\*/g, "<i>$1</i>");
-const lessonList = (ns) => (ns.length === 1 ? `Lesson ${ns[0]}` : `Lessons ${joinList(ns.map(String))}`);
+const lessonList = (ns) => labelList(ns);
 
 const REPO = "https://github.com/davidpetry-cloud/ai-literacy-module";
 // The review documents, for anyone who wants to confirm or challenge the course's evidence.
@@ -1499,10 +1505,10 @@ export function renderSources(doc) {
     .map((l) => {
       const mine = list.filter((x) => x.lessons.includes(l.n));
       const body = mine.length
-        ? `<ol class="refs">${mine.map((x) => sourceItem(x, `Lesson ${l.n}`)).join("")}</ol>`
-        : `<p>No outside sources. This lesson rests on its own exercises and the claims in the <a href="index.html#claims">claims ledger<span class="sr"> (Lesson ${l.n})</span></a>.</p>`;
+        ? `<ol class="refs">${mine.map((x) => sourceItem(x, lessonLabel(l))).join("")}</ol>`
+        : `<p>No outside sources. This lesson rests on its own exercises and the claims in the <a href="index.html#claims">claims ledger<span class="sr"> (${esc(lessonLabel(l))})</span></a>.</p>`;
       return `<details class="claim-group" data-lesson="${l.n}" id="sources-lesson-${l.n}">
-        <summary><span class="lesson-no">Lesson ${l.n}</span> <span class="cg-text"><span class="cg-title">${esc(l.title)}</span> <span class="cg-count">${mine.length} source${mine.length === 1 ? "" : "s"}</span></span></summary>
+        <summary><span class="lesson-no">${esc(lessonLabel(l))}</span> <span class="cg-text"><span class="cg-title">${esc(l.title)}</span> <span class="cg-count">${mine.length} source${mine.length === 1 ? "" : "s"}</span></span></summary>
         ${body}
       </details>`;
     })
@@ -1534,7 +1540,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     delete header.dataset.lesson;
     doc.title = `Lesson not available — ${COURSE.title}`;
     top.innerHTML = `<h1>Lesson not available</h1>`;
-    content.innerHTML = `<p>${lesson ? `Lesson ${lesson.n} is still in design.` : "There is no lesson with that number."} <a href="index.html">Back to the course overview</a>.</p>`;
+    content.innerHTML = `<p>${lesson ? `${esc(lessonLabel(lesson))} is still in design.` : "There is no lesson with that number."} <a href="index.html">Back to the course overview</a>.</p>`;
     side.innerHTML = "";
     return;
   }
@@ -1555,10 +1561,10 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
   header.dataset.lesson = lesson.n;
   // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
-  doc.title = `Lesson ${lesson.n}: ${lesson.title} — ${COURSE.title}`;
+  doc.title = `${lessonLabel(lesson)}: ${lesson.title} — ${COURSE.title}`;
   doc.querySelector("#back")?.setAttribute("href", `index.html?track=${track}`);
   top.innerHTML = `
-    <p class="eyebrow"><span class="lesson-no">Lesson ${lesson.n}</span> ${esc(TRACKS[track].label)}</p>
+    <p class="eyebrow"><span class="lesson-no">${esc(lessonLabel(lesson))}</span> ${esc(TRACKS[track].label)}</p>
     <h1>${esc(lesson.title)}</h1>
     <p class="sub">${esc(lesson.framing)}</p>
     <div class="facts">
@@ -1714,13 +1720,14 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
 
 /** Previous and next ready lessons, keeping the reader's track. The last lesson leads back to the course overview. */
 export function lessonNav(lesson, track) {
-  const ready = COURSE.lessons.filter((l) => l.ready).sort((a, b) => a.n - b.n);
+  // Previous and next stay within the lesson's own category: the numbered course, or the essentials.
+  const ready = COURSE.lessons.filter((l) => l.ready && (l.category ?? "") === (lesson.category ?? "")).sort((a, b) => a.n - b.n);
   const prev = [...ready].reverse().find((l) => l.n < lesson.n);
   const next = ready.find((l) => l.n > lesson.n);
   const href = (l) => `lesson.html?n=${l.n}&amp;track=${esc(track)}`;
-  const back = prev ? `<a class="prev" href="${href(prev)}"><span aria-hidden="true">← </span>Previous: Lesson ${prev.n}, ${esc(prev.title)}</a>` : "";
+  const back = prev ? `<a class="prev" href="${href(prev)}"><span aria-hidden="true">← </span>Previous: ${esc(lessonLabel(prev))}, ${esc(prev.title)}</a>` : "";
   const fwd = next
-    ? `<a class="btn next" href="${href(next)}">Next: Lesson ${next.n}, ${esc(next.title)}<span aria-hidden="true"> →</span></a>`
+    ? `<a class="btn next" href="${href(next)}">Next: ${esc(lessonLabel(next))}, ${esc(next.title)}<span aria-hidden="true"> →</span></a>`
     : `<a class="btn next" href="index.html?track=${esc(track)}">Back to all lessons<span aria-hidden="true"> →</span></a>`;
   return `<nav class="lesson-nav" aria-label="Lessons">${back}${fwd}</nav>`;
 }

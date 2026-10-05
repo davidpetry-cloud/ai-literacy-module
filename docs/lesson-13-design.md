@@ -1,4 +1,10 @@
-# Lesson 13: Staying Secure in the Age of AI. Design
+# Essentials 1: Staying Secure in the Age of AI. Design
+
+**Category (David, 2026-10-05):** an *essential*, not a numbered lesson: a habit anyone
+needs, at any point in the course. Learners see "Essentials 1" on the hub, in its own
+section below the lessons. Behind the scenes it is still `lessons/lesson-13.js`
+(`n: 13`, so its page is `lesson.html?n=13`), with `category: "essentials"`,
+`label: "Essentials 1"`, and objective ids starting `E1.`.
 
 **Status:** objectives approved by David 2026-10-05 (he chose four of five drafts).
 Warm-up and check written the same day. **Stage design below awaits his approval.** Wording lives
@@ -8,13 +14,13 @@ in `lessons/lesson-13.js`; this file is the plan.
 
 ## Objectives (approved 2026-10-05)
 
-- 13.1 *(understand)*: Explain how AI makes common attacks easier, such as
+- E1.1 *(understand)*: Explain how AI makes common attacks easier, such as
   convincing phishing, cloned voices and fake videos.
-- 13.2 *(analyze)*: Spot the signs of an AI-assisted scam in a message, call or
+- E1.2 *(analyze)*: Spot the signs of an AI-assisted scam in a message, call or
   video, and check it through a second channel you trust.
-- 13.3 *(apply)*: Decide what is safe to put into an AI tool, and keep private,
+- E1.3 *(apply)*: Decide what is safe to put into an AI tool, and keep private,
   work and other people's information out of it.
-- 13.4 *(apply)*: Protect your own accounts with a password manager or passkeys,
+- E1.4 *(apply)*: Protect your own accounts with a password manager or passkeys,
   and two-step sign-in.
 
 **Left for later:** prompt injection (hidden instructions in content an AI reads,
@@ -58,7 +64,7 @@ symbols and frequent changes. One check item per objective.
 
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
 
-**Concrete · Check it, or trust it? (12 min), 13.1 and 13.2.** A new exercise: a
+**Concrete · Check it, or trust it? (12 min), E1.1 and E1.2.** A new exercise: a
 made-up inbox of five items per track (emails, texts, a voice-message transcript, a
 video-call note). Learners mark each **genuine** or **scam**, name the signs (the
 NCSC's five, plus AI tells such as a perfect message from an odd address, or a
@@ -73,14 +79,14 @@ one item is genuine, so learners practise not panicking at everything.
   login; a voice note from "Mum" with a new number; a genuine school reminder. The
   key names a trusted adult.
 
-**Pictorial · What's safe to share? (10 min), 13.3.** A new sorter: about eight
+**Pictorial · What's safe to share? (10 min), E1.3.** A new sorter: about eight
 made-up items (a recipe question, a homework question with no names, a friend's
 message, a password, a colleague's medical note, a customer's address, a photo of
 your face, a school timetable). Learners sort each into **fine for a public AI tool**
 or **keep it out**, and the tool says which they got right and why, in words and
 shape. Start again clears it. Nothing typed, nothing sent.
 
-**Abstract · Habits that hold up (8 min), 13.1–13.4.** Reference tables:
+**Abstract · Habits that hold up (8 min), E1.1–E1.4.** Reference tables:
 - the five signs (NCSC) and AI's new tells (FBI);
 - how to check: a second channel, a family code word, never the contact details
   in the message;
