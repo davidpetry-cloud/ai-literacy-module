@@ -1467,16 +1467,50 @@ export const sortedSources = () => [...SOURCES].sort((a, b) => plain(a.apa).loca
 export const apaHtml = (apa) => esc(apa).replace(/\*([^*]+)\*/g, "<i>$1</i>");
 const lessonList = (ns) => (ns.length === 1 ? `Lesson ${ns[0]}` : `Lessons ${joinList(ns.map(String))}`);
 
+const REPO = "https://github.com/davidpetry-cloud/ai-literacy-module";
+// The review documents, for anyone who wants to confirm or challenge the course's evidence.
+const REVIEW_DOCS = [
+  ["docs/fact-check-2026-10.md", "Fact recheck, October 2026", "every lesson's evidence by field, what was fixed, and cautions"],
+  ["docs/claims-review.md", "Claims review", "each claim with the source to check it against"],
+  ["docs/attestation-guide.md", "Attestation guide", "how a claim is signed, rejected or re-checked"],
+  ["docs/dark-triad-series.md", "Dark Triad series plan", "the research and framing behind Lessons 9–12"],
+  ["docs/lesson-08-design.md", "Lesson 8 design", "the frameworks and studies behind Human-Centered AI"]
+];
+
+const sourceItem = (s, ctx = "") =>
+  `<li><p>${apaHtml(s.apa)}${s.url ? ` <a href="${esc(s.url)}">${esc(s.url)}${ctx ? `<span class="sr"> (${ctx})</span>` : ""}</a>` : ""}</p>${ctx ? "" : `<p class="ref-tags">${lessonList([...s.lessons].sort((a, b) => a - b))}</p>`}</li>`;
+
 export function renderSources(doc) {
   doc.querySelector("#top").innerHTML = `
     <h1>Sources</h1>
     <p class="sub">Every source this course cites, in APA style (7th edition), with the lessons that use it.</p>`;
   const list = sortedSources();
+  const byLesson = COURSE.lessons
+    .filter((l) => l.ready)
+    .map((l) => {
+      const mine = list.filter((x) => x.lessons.includes(l.n));
+      const body = mine.length
+        ? `<ol class="refs">${mine.map((x) => sourceItem(x, `Lesson ${l.n}`)).join("")}</ol>`
+        : `<p>No outside sources. This lesson rests on its own exercises and the claims in the <a href="index.html#claims">claims ledger<span class="sr"> (Lesson ${l.n})</span></a>.</p>`;
+      return `<details class="claim-group" data-lesson="${l.n}" id="sources-lesson-${l.n}">
+        <summary><span class="lesson-no">Lesson ${l.n}</span> <span class="cg-text"><span class="cg-title">${esc(l.title)}</span> <span class="cg-count">${mine.length} source${mine.length === 1 ? "" : "s"}</span></span></summary>
+        ${body}
+      </details>`;
+    })
+    .join("");
   doc.querySelector("#content").innerHTML = `
-    <p class="lede">${list.length} sources. Made-up sources planted in exercises aren't listed, because they don't exist. A source supports a claim; a claim counts as attested only when a named person signs it, in the <a href="index.html#claims">claims ledger</a>.</p>
-    <ol class="refs">${list
-      .map((s) => `<li><p>${apaHtml(s.apa)}${s.url ? ` <a href="${esc(s.url)}">${esc(s.url)}</a>` : ""}</p><p class="ref-tags">${lessonList([...s.lessons].sort((a, b) => a - b))}</p></li>`)
-      .join("")}</ol>`;
+    <section aria-labelledby="help-h"><h2 id="help-h">Help check this course</h2>
+      <p class="lede">This course teaches people to check their sources, so its own sources are open to checking. If you find a claim the evidence doesn't support, or a citation that's wrong, please say so. Every claim's status is in the <a href="index.html#claims">claims ledger</a>; a claim counts as attested only when a named person signs it.</p>
+      <ul class="review-docs">${REVIEW_DOCS.map(([path, name, what]) => `<li><a href="${REPO}/blob/main/${path}">${esc(name)}</a>: ${esc(what)}.</li>`).join("")}</ul>
+      <p class="lede">Specialists in psychology, criminology, education, human–computer interaction and law are especially welcome, but the evidence decides, not the title. To confirm or challenge a claim or source, <a href="${REPO}/issues/new?template=source-review.yml">fill in a review on GitHub</a>. It asks which claim or source, what you found, and the evidence. Reviews are evidence for the author; a claim is attested only when the author signs it.</p>
+    </section>
+    <section aria-labelledby="by-lesson-h"><h2 id="by-lesson-h">Main sources by lesson</h2>
+      <div class="claim-groups">${byLesson}</div>
+    </section>
+    <section aria-labelledby="all-h"><h2 id="all-h">All sources</h2>
+      <p class="lede">${list.length} sources, in alphabetical order. Made-up sources planted in exercises aren't listed, because they don't exist.</p>
+      <ol class="refs">${list.map((x) => sourceItem(x)).join("")}</ol>
+    </section>`;
 }
 
 /* ---------- lesson ---------- */

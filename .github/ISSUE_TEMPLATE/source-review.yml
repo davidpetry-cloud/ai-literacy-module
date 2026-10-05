@@ -1,0 +1,55 @@
+name: Review a claim or source
+description: Confirm or challenge a claim in the course, or a source it cites.
+title: "Review: "
+labels: ["source review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping check this course. Specialists in psychology, criminology, education, human–computer interaction, law and related fields are especially welcome, but the evidence decides, not the title.
+
+        Reviews are evidence for the course author. A claim is only marked attested when the author signs it after checking.
+  - type: input
+    id: item
+    attributes:
+      label: Which claim or source?
+      description: A claim's id from the claims ledger (for example `dark-triad-tactics`), or the source as listed on the Sources page.
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: What do you find?
+      options:
+        - The source supports the claim (confirm)
+        - The claim says more than the source supports
+        - The claim is wrong
+        - The citation is wrong (author, year, title, DOI or pages)
+        - The source is out of date, or newer evidence changes it
+        - A caveat is missing
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Your evidence
+      description: The source you checked, where in it (page, section or table), and what it says. Full citations help.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested wording (optional)
+  - type: textarea
+    id: expertise
+    attributes:
+      label: Your relevant background (optional)
+      description: For context only. It doesn't change how the evidence is weighed.
+  - type: checkboxes
+    id: read
+    attributes:
+      label: Checking
+      options:
+        - label: I read the source myself, not a summary of it.
+          required: true

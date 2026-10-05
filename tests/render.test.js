@@ -1058,9 +1058,24 @@ describe("sources page", () => {
   const doc = page("sources.html");
   renderSources(doc);
 
+  it("invites checking: links the review documents, the ledger, and GitHub issues", () => {
+    const help = doc.querySelector('section[aria-labelledby="help-h"]');
+    const hrefs = [...help.querySelectorAll("a")].map((a) => a.getAttribute("href"));
+    for (const d of ["fact-check-2026-10.md", "claims-review.md", "attestation-guide.md"]) expect(hrefs.some((h) => h.endsWith(d)), d).toBe(true);
+    expect(hrefs).toContain("index.html#claims");
+    expect(hrefs.some((h) => h.endsWith("/issues/new?template=source-review.yml"))).toBe(true);
+  });
+
+  it("groups the main sources by lesson, collapsed, for every ready lesson", () => {
+    const groups = doc.querySelectorAll('section[aria-labelledby="by-lesson-h"] details.claim-group');
+    expect([...groups].map((g) => g.dataset.lesson)).toEqual(COURSE.lessons.filter((l) => l.ready).map((l) => String(l.n)));
+    for (const g of groups) expect(g.open).toBe(false);
+    expect(doc.querySelectorAll("#sources-lesson-10 ol.refs > li").length).toBeGreaterThan(10);
+  });
+
   it("has one h1 and lists every source, alphabetically, with its lessons", () => {
     expect(doc.querySelectorAll("h1")).toHaveLength(1);
-    const items = [...doc.querySelectorAll("ol.refs > li")];
+    const items = [...doc.querySelectorAll('section[aria-labelledby="all-h"] ol.refs > li')];
     expect(items).toHaveLength(sortedSources().length);
     const firsts = items.map((li) => li.querySelector("p").textContent);
     expect(firsts).toEqual([...firsts].sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })));
@@ -1068,8 +1083,8 @@ describe("sources page", () => {
   });
 
   it("puts titles and journals in italics, links each DOI or URL, and escapes the text", () => {
-    expect(doc.querySelectorAll("ol.refs i").length).toBeGreaterThan(sortedSources().length - 5);
-    expect(doc.querySelectorAll('ol.refs a[href^="https://doi.org/10."]').length).toBeGreaterThan(30);
+    expect(doc.querySelectorAll('section[aria-labelledby="all-h"] ol.refs i').length).toBeGreaterThan(sortedSources().length - 5);
+    expect(doc.querySelectorAll('section[aria-labelledby="all-h"] ol.refs a[href^="https://doi.org/10."]').length).toBeGreaterThan(30);
     expect(apaHtml("A <b>x</b> *T*")).toBe("A &lt;b&gt;x&lt;/b&gt; <i>T</i>");
   });
 
@@ -1478,7 +1493,8 @@ describe("page structure", () => {
     ["lesson 9", lesson9Doc(TRACK_IDS[0])],
     ["lesson 10", lesson10Doc(TRACK_IDS[0])],
     ["lesson 11", lesson11Doc(TRACK_IDS[0])],
-    ["lesson 12", lesson12Doc(TRACK_IDS[0])]
+    ["lesson 12", lesson12Doc(TRACK_IDS[0])],
+    ["sources", (() => { const d = page("sources.html"); renderSources(d); return d; })()]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());
     expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);

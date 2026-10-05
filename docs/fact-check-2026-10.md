@@ -48,7 +48,7 @@ This is a model review, not an attestation. Only David attests claims.
 | Lesson 11, reasons table | "Apps are judged on time and money" | "Many apps are judged on time spent and money" | A generalization about every app; the evidence covers companion apps and engagement-measured products. |
 | Lesson 12, disclosure key | "The school safeguarding guidance is clear on this." | "School safeguarding guidance, such as England's, is clear on this." | KCSIE is England's guidance; the course is international. |
 | Lesson 8, sources table | People in control: "Research on design (Shneiderman)." | "A design framework (Shneiderman)." | Shneiderman's work is a design framework and argument, not an empirical finding. |
-| Lesson 10, abstract | The FBI's BAU was in the plan but not on the page. | A facilitator line and a new claim, `bau-repeated-behavior`, with the caveat that profiling accuracy is contested. | David asked for it (2026-09-25). Worded without offender detail, as he chose, because the abstract is shared with students. |
+| Lesson 10, abstract | The FBI's BAU was in the plan but not on the page. | A facilitator line and a new claim, `bau-repeated-behavior`, with the caveat that profiling accuracy is contested. | David asked for it (2026-09-25). Worded without offender detail, as David chose, because the abstract is shared with students. |
 | Lesson 9, `trait-not-diagnosis` | DSM-5-TR "to check" | Criteria counts recorded (NPD 5 of 9; ASPD 3 of 7) | Checked 2026-10-05 through clinical sources. |
 
 ## Checked and left as they are

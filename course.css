@@ -299,6 +299,10 @@ iframe.mock{display:block;width:100%;max-width:360px;border:2px solid var(--edge
 ol.refs{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(--measure)}
 .refs li p{margin:0}
 .refs li > p:first-child{padding-left:24px;text-indent:-24px;overflow-wrap:anywhere}
+.review-docs{margin:0 0 16px;padding-left:24px;max-width:var(--measure)}
+.review-docs li{margin-bottom:8px}
+.claim-group > .refs{margin:8px 0 16px}
+.claim-group > p{max-width:var(--measure);margin:8px 0 16px}
 .ref-tags{font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3);padding-left:24px}
 .ref-wrap{container-type:inline-size}
 .ref-list{display:none;margin:0 0 16px}
