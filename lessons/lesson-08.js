@@ -418,7 +418,7 @@ export default {
     professionals:
       "Pick one AI tool that affects customers, staff or applicants. Ask the four wisdom questions, decide where a person must stay in charge, and tell your team why.",
     students:
-      "Pick one AI app you use. Ask the four questions about it, and check what it keeps about you. Tell someone you trust what you found."
+      "Pick one AI app you use. Ask the four questions about it, and check what it keeps about you. Tell someone you trust what you found. If an app asks for your location, photos or contacts, say no and tell an adult."
   },
 
   access: [

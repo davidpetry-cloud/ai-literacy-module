@@ -503,7 +503,7 @@ input::placeholder{color:#B0B0B0}</style>
     professionals:
       "Set one calmer default on an AI tool you use at work. Then notice one moment in your day when a break, or a colleague, would help more than another prompt.",
     students:
-      "Set one calmer default on an app you study with. Then notice one moment when a break would help more than another prompt, and be kind to others online."
+      "Set one calmer default on an app you study with. Then notice one moment when a break would help more than another prompt, and be kind to others online. If you're not sure an app is right for your age, ask an adult you trust."
   },
 
   access: [

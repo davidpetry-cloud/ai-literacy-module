@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="course.css">
 <script src="theme-toggle.js"></script>
 <script type="importmap">
-{ "imports": { "attestation-ledger": "https://cdn.jsdelivr.net/npm/attestation-ledger@0.1.1/src/index.js" } }
+{ "imports": { "attestation-ledger": "./vendor/attestation-ledger@0.1.1/src/index.js" } }
 </script>
 </head>
 <body data-page="lesson">
@@ -26,7 +26,7 @@
     <aside class="side" id="side"></aside>
   </div>
 </main>
-<footer class="wrap foot">Built by David Petry. Claims engine: <a href="https://www.npmjs.com/package/attestation-ledger">attestation-ledger</a>. <a href="sources.html">Sources (APA)</a>. Course content <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; code MIT.</footer>
+<footer class="wrap foot"><b>Privacy:</b> this site collects nothing about you and sends nothing anywhere. It only remembers your theme and audience track, on your own device. Built by David Petry. Claims engine: <a href="https://www.npmjs.com/package/attestation-ledger">attestation-ledger</a>. <a href="sources.html">Sources (APA)</a>. Course content <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; code MIT.</footer>
 <script type="module">
 import { boot } from "./lesson-core.js";
 boot(document);
@@ -35,7 +35,7 @@ boot(document);
 setTimeout(function () {
   if (document.body.dataset.ready) return;
   document.getElementById("content").innerHTML =
-    '<p class="warn"><b>The lesson didn’t load.</b> It needs a network connection for its claims engine, and must be served over http — not opened as a file. Run <code>npm run preview</code> locally.</p>';
+    '<p class="warn"><b>The lesson didn’t load.</b> It must be served over http — not opened as a file. Run <code>npm run preview</code> locally.</p>';
 }, 6000);
 </script>
 </body>

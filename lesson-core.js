@@ -1345,6 +1345,13 @@ function trackPicker(current) {
 
 /* ---------- hub ---------- */
 
+// Shown with the students track: the safety protocol in brief (docs/student-safety.md has the law and sources).
+const studentsNote = `<div class="facil students-note"><h3 class="subhead">Facilitator notes · Teaching students</h3>
+      <p>Students may be under 13. Use only AI tools your school approves, within each tool's age limits and local law. Students never type personal details into AI tools, and nothing in this course asks them to.</p>
+      <p>Lessons 10 to 12 can lead a student to tell you something. Know your safeguarding route first, and never promise to keep abuse secret. The site itself collects nothing.</p>
+      <p><a href="https://github.com/davidpetry-cloud/ai-literacy-module/blob/main/docs/student-safety.md">Read the student safety protocol</a>, with the law it rests on.</p>
+    </div>`;
+
 /** Every lesson that cites each claim, in lesson order. */
 export function claimLessons() {
   const out = {};
@@ -1423,7 +1430,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
       <p class="so-status" id="search-status" aria-live="polite"></p>
       <ol class="search-results" id="search-results"></ol>
     </section>
-    <section><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p><div class="cards">${lessons}</div></section>
+    <section><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}<div class="cards">${lessons}</div></section>
 
     <section><h2>How it's built</h2>
       <table class="basis"><thead><tr><th>Framework</th><th>Its one job here</th></tr></thead><tbody>
@@ -1474,7 +1481,8 @@ const REVIEW_DOCS = [
   ["docs/claims-review.md", "Claims review", "each claim with the source to check it against"],
   ["docs/attestation-guide.md", "Attestation guide", "how a claim is signed, rejected or re-checked"],
   ["docs/dark-triad-series.md", "Dark Triad series plan", "the research and framing behind Lessons 9–12"],
-  ["docs/lesson-08-design.md", "Lesson 8 design", "the frameworks and studies behind Human-Centered AI"]
+  ["docs/lesson-08-design.md", "Lesson 8 design", "the frameworks and studies behind Human-Centered AI"],
+  ["docs/student-safety.md", "Student safety protocol", "children's data protection and online-safety law, and how the course follows it"]
 ];
 
 const sourceItem = (s, ctx = "") =>
@@ -1502,7 +1510,7 @@ export function renderSources(doc) {
     <section aria-labelledby="help-h"><h2 id="help-h">Help check this course</h2>
       <p class="lede">This course teaches people to check their sources, so its own sources are open to checking. If you find a claim the evidence doesn't support, or a citation that's wrong, please say so. Every claim's status is in the <a href="index.html#claims">claims ledger</a>; a claim counts as attested only when a named person signs it.</p>
       <ul class="review-docs">${REVIEW_DOCS.map(([path, name, what]) => `<li><a href="${REPO}/blob/main/${path}">${esc(name)}</a>: ${esc(what)}.</li>`).join("")}</ul>
-      <p class="lede">Specialists in psychology, criminology, education, human–computer interaction and law are especially welcome, but the evidence decides, not the title. To confirm or challenge a claim or source, <a href="${REPO}/issues/new?template=source-review.yml">fill in a review on GitHub</a>. It asks which claim or source, what you found, and the evidence. Reviews are evidence for the author; a claim is attested only when the author signs it.</p>
+      <p class="lede">Specialists in psychology, criminology, education, human–computer interaction and law are especially welcome, but the evidence decides, not the title. To confirm or challenge a claim or source, <a href="${REPO}/issues/new?template=source-review.yml">fill in a review on GitHub</a>. It asks which claim or source, what you found, and the evidence. Reviews are evidence for the author; a claim is attested only when the author signs it. GitHub is for ages 13 and up; if you're under 18, ask a teacher to report it for you.</p>
     </section>
     <section aria-labelledby="by-lesson-h"><h2 id="by-lesson-h">Main sources by lesson</h2>
       <div class="claim-groups">${byLesson}</div>

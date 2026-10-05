@@ -116,3 +116,23 @@ describe("sources", async () => {
     expect(new Set(dois).size).toBe(dois.length);
   });
 });
+
+// Privacy for students: the site makes no third-party requests. The claims engine is hosted
+// with the site, byte for byte the installed package, so the pinned version can't drift.
+describe("no third-party requests", () => {
+  const pages = readdirSync(root).filter((f) => f.endsWith(".html"));
+
+  it.each(pages)("%s loads scripts, styles and fonts only from this site", (p) => {
+    const html = readFileSync(new URL(p, root), "utf8");
+    const loads = [...html.matchAll(/<(?:script|link)[^>]+(?:src|href)="([^"]+)"/g)].map((m) => m[1]);
+    const imports = [...html.matchAll(/"attestation-ledger":\s*"([^"]+)"/g)].map((m) => m[1]);
+    for (const u of [...loads, ...imports]) expect(u, `${p}: ${u}`).not.toMatch(/^(https?:)?\/\//);
+  });
+
+  it("hosts the same claims engine the tests use", () => {
+    const pin = readFileSync(new URL("index.html", root), "utf8").match(/attestation-ledger@([\d.]+)\//)[1];
+    const hosted = readFileSync(new URL(`vendor/attestation-ledger@${pin}/src/index.js`, root), "utf8");
+    const installed = readFileSync(new URL("node_modules/attestation-ledger/src/index.js", root), "utf8");
+    expect(hosted).toBe(installed);
+  });
+});

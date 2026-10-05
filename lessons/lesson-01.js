@@ -298,7 +298,7 @@ export default {
     professionals:
       "Before your next AI-assisted summary goes to anyone, mark every number, date, name and citation in it, and check each against a source you could show your manager.",
     students:
-      "For your next assignment that uses AI, list every fact you took from it and where you checked it. Hand the list in with the work."
+      "For your next assignment that uses AI, list every fact you took from it and where you checked it. Hand the list in with the work. Use only AI tools your school allows, and never type in personal details like your address or photos."
   },
 
   access: [

@@ -342,7 +342,7 @@ export default {
     professionals:
       "Next time an AI draft has a citation or a figure, look up the source before you send it. Note how long it took, and whether the source said what the draft claimed.",
     students:
-      "For your next assignment that uses AI, look up every reference it gives you. Keep only the ones you found and read, and note any you couldn't find."
+      "For your next assignment that uses AI, look up every reference it gives you. Keep only the ones you found and read, and note any you couldn't find. Use only AI tools your school allows, and never type in personal details like your address or photos."
   },
 
   access: [

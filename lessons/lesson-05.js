@@ -375,7 +375,7 @@ export default {
     professionals:
       "Keep your checklist next to the tool you use most. Use it on the next three outputs, and note what each check caught.",
     students:
-      "Use your checklist on your next AI-assisted assignment. Hand it in with the work, with a note on what you found."
+      "Use your checklist on your next AI-assisted assignment. Hand it in with the work, with a note on what you found. Use only AI tools your school allows, and never type in personal details like your address or photos."
   },
 
   access: [

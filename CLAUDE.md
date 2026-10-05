@@ -28,6 +28,7 @@ sources.html       the Sources page: the APA reference list, linked from every f
 course.css         tokens, fonts, header and themes from Singapore Math; status colours from live-sound-eq-sop
 theme-toggle.js    light/dark toggle, loaded in <head> before first paint
 fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requests
+vendor/            the attestation-ledger engine, hosted with the site so pages make no third-party requests
 tests/             alignment · governance · render · ui · readability
 scripts/serve.js   local preview on :8080
 scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
@@ -35,6 +36,7 @@ docs/attestation-guide.md  how David attests, rejects and re-checks claims (exam
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
+docs/student-safety.md     student safety and data protection protocol: children's law by country (checked 2026-10-05), how the course follows it
 docs/fact-check-2026-10.md fact recheck of all twelve lessons (October 2026): sources by field, fixes, cautions
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
@@ -255,9 +257,12 @@ npm test
 - `readability`: grade ceiling and sentence length per text role, for every
   ready lesson.
 
-When bumping `attestation-ledger`, change the version in `package.json` and in
-the import map in **both** HTML pages. The governance test fails until all
-three agree.
+When bumping `attestation-ledger`, change the version in `package.json`, copy
+`node_modules/attestation-ledger/src/index.js` into
+`vendor/attestation-ledger@<version>/src/`, and change the import map in **every**
+HTML page. The engine is hosted with the site so pages make no third-party
+requests (privacy for students, 2026-10-05). The governance tests fail until the
+pins agree and the hosted copy matches the installed one.
 
 ## Commits
 

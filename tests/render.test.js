@@ -1112,6 +1112,28 @@ describe("lesson titles use title case (David, 2026-10-05)", () => {
   });
 });
 
+describe("student safety (data protection review, 2026-10-05)", () => {
+  it("shows the facilitator safety note on the hub only for the students track", () => {
+    const hubFor = (track) => { const d = page("index.html"); renderHub(d, { track }); return d; };
+    const note = hubFor("students").querySelector(".students-note");
+    expect(note.textContent).toMatch(/AI tools your school approves/);
+    expect(note.textContent).toMatch(/never promise to keep abuse secret/);
+    expect(note.querySelector("a").getAttribute("href")).toMatch(/docs\/student-safety\.md$/);
+    for (const t of ["educators", "professionals"]) expect(hubFor(t).querySelector(".students-note"), t).toBeNull();
+  });
+
+  it("tells students to use only allowed tools, or to ask an adult, wherever a task involves an AI tool or app", () => {
+    for (const l of COURSE.lessons.filter((x) => x.ready)) {
+      const t = l.transfer.students;
+      if (/\bAI\b|\bapp\b/.test(t)) expect(t, `lesson ${l.n}`).toMatch(/school allows|adult/);
+    }
+  });
+
+  it("says in every footer that the site collects nothing", () => {
+    for (const p of ["index.html", "lesson.html", "sources.html"]) expect(page(p).querySelector("footer").textContent, p).toMatch(/collects nothing/);
+  });
+});
+
 describe("lesson number badges (consistency, 2026-10-05)", () => {
   it("shows each hub card's number as the same coloured badge used on lesson pages", () => {
     const hub = page("index.html");

@@ -105,6 +105,8 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .support p{margin:0;max-width:var(--measure)}
 
 /* hub */
+.students-note{margin:0 0 16px}
+.students-note p{max-width:var(--measure)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
 [data-lesson="1"]{--lc:var(--l1)} [data-lesson="2"]{--lc:var(--l2)} [data-lesson="3"]{--lc:var(--l3)}
 [data-lesson="4"]{--lc:var(--l4)} [data-lesson="5"]{--lc:var(--l5)}

@@ -342,7 +342,7 @@ export default {
     professionals:
       "Pick one request you make every week. Rewrite it in four parts with an example, and save it where you'll reuse it.",
     students:
-      "Next time you use AI for schoolwork, ask for feedback, not writing. Use the four parts, and keep the words yours."
+      "Next time you use AI for schoolwork, ask for feedback, not writing. Use the four parts, and keep the words yours. Use only AI tools your school allows, and never type in personal details like your address or photos."
   },
 
   access: [

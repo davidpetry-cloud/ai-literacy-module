@@ -390,7 +390,7 @@ export default {
     professionals:
       "Look at one AI tool you use at work. Does it flatter you, or steer you to its maker's products? Turn off what you can, and ask a colleague what they've noticed.",
     students:
-      "Look at one AI app you use. Does it flatter you, say it will miss you, or ask for five more minutes? Turn off what you can. Say goodbye, and leave."
+      "Look at one AI app you use. Does it flatter you, say it will miss you, or ask for five more minutes? Turn off what you can. Say goodbye, and leave. If you're not sure an app is right for your age, ask an adult you trust."
   },
 
   access: [

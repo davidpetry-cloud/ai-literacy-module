@@ -468,7 +468,7 @@ export default {
     professionals:
       "Take one AI-built tool your team uses. Check it against the five goals, and send the owner the one problem to fix first.",
     students:
-      "Next time you build an app or site with AI, name two principles in your request. Then test it once as a new user would."
+      "Next time you build an app or site with AI, name two principles in your request. Then test it once as a new user would. Use only AI tools your school allows, and don't make it collect anyone's personal details."
   },
 
   access: [

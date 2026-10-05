@@ -436,7 +436,7 @@ export const CLAIMS = {
   "l8-key-students": {
     text: "The answer key for the Lesson 8 students product page is reasonable: each feature's verdict (keep, change or stop), what it touches most, and where it sits on the control grid follow from the lesson's questions.",
     attestation: proposedBy(
-      "The product is made up. Location and contacts (UNICEF requirements 4 and 5, privacy and safety; General Comment 25), night-time streak alerts (wellbeing, as in Lesson 7), and an app that says 'you don't need anyone else' (relationships). The key speaks to the student about their own choices, never about judging other children."
+      "The product is made up. Location and contacts (UNICEF requirements 4 and 5, privacy and safety; General Comment 25; the ICO's Children's Code requires geolocation off by default for children), night-time streak alerts (wellbeing, as in Lesson 7), and an app that says 'you don't need anyone else' (relationships). The key speaks to the student about their own choices, never about judging other children."
     )
   },
   "dark-triad-construct": {
@@ -598,7 +598,7 @@ export const CLAIMS = {
   "l11-key-students": {
     text: "The answer key for the Lesson 11 students chat is reasonable: each reply's label (helpful, or the move it makes) and what it trades follow from the research, and the notes tell students that leaving is always fine and to tell an adult about requests for money.",
     attestation: proposedBy(
-      "The chat is made up. Check replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asks the student to use a parent's card) as a pushing-a-product move aimed at a child, against UNICEF's requirement to keep children safe."
+      "The chat is made up. Check replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asks the student to use a parent's card) as a pushing-a-product move aimed at a child, against UNICEF's requirement to keep children safe. In the EU, the AI Act, Article 5(1)(b), has banned AI that exploits vulnerabilities due to age since 2 February 2025."
     )
   },
   "gaslighting-defined": {
