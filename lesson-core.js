@@ -1401,7 +1401,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
   const lessons = COURSE.lessons
     .map(
       (l) => `<article class="card${l.ready ? "" : " pending"}" data-lesson="${l.n}">
-      <p class="eyebrow">Lesson ${l.n}${l.ready ? "" : " · in design"}</p>
+      <p class="eyebrow"><span class="lesson-no">Lesson ${l.n}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
       <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
       <p>${esc(l.framing)}</p>
       <ul class="objs">${l.objectives.map((o) => `<li><span class="bloom">${esc(o.bloom)}</span>${esc(o.text)}</li>`).join("")}</ul>

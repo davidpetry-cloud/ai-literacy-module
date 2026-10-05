@@ -18,7 +18,7 @@
 export default {
   n: 2,
   slug: "prompt-structure",
-  title: "Asking well: prompt structure",
+  title: "Asking Well: Prompt Structure",
   ready: true,
   objectivesApproved: "2026-09-23",
   framing:

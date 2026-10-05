@@ -16,7 +16,7 @@
 export default {
   n: 9,
   slug: "dark-triad-what-it-is",
-  title: "What the Dark Triad is, and isn't",
+  title: "What the Dark Triad Is, and Isn't",
   ready: true,
   objectivesApproved: "2026-09-25",
   framing:

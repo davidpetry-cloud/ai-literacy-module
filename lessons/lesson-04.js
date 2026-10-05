@@ -23,7 +23,7 @@
 export default {
   n: 4,
   slug: "human-in-the-loop",
-  title: "Who signs off: human in the loop",
+  title: "Who Signs Off: Human in the Loop",
   ready: true,
   objectivesApproved: "2026-09-23",
   framing:

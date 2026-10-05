@@ -17,7 +17,7 @@
 export default {
   n: 10,
   slug: "spot-the-pattern",
-  title: "Spot the pattern, in person and online",
+  title: "Spot the Pattern, in Person and Online",
   ready: true,
   objectivesApproved: "2026-09-25",
   framing:

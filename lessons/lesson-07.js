@@ -36,7 +36,7 @@ const page = (body, script) => `<!doctype html><html lang="en"><head><meta chars
 export default {
   n: 7,
   slug: "accessible-mindful-ux",
-  title: "Accessible and mindful UX",
+  title: "Accessible and Mindful UX",
   ready: true,
   objectivesApproved: "2026-09-24",
   framing:

@@ -17,7 +17,7 @@
 export default {
   n: 12,
   slug: "protect-your-gifts",
-  title: "Protect yourself and your gifts",
+  title: "Protect Yourself and Your Gifts",
   ready: true,
   objectivesApproved: "2026-09-25",
   framing:
@@ -352,7 +352,7 @@ export default {
     },
     {
       kind: "abstract",
-      title: "Protect yourself and your gifts",
+      title: "Protect Yourself and Your Gifts",
       minutes: 8,
       targets: ["12.1", "12.2", "12.3"],
       principles: ["gaslighting-defined", "never-promise-secrecy", "mandated-reporting-us", "sextortion-advice", "child-helplines"],

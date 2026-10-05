@@ -22,7 +22,7 @@
 export default {
   n: 5,
   slug: "failure-modes",
-  title: "How it goes wrong, and a checklist that holds",
+  title: "How It Goes Wrong, and a Checklist That Holds",
   ready: true,
   objectivesApproved: "2026-09-23",
   framing:

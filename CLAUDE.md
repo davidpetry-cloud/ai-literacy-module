@@ -161,7 +161,10 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
     "Concrete · …", "Check · Post-check";
   - the transfer block is "Use it this week" for every track;
   - sidebar headings are "Alignment", "Access notes" and "What learners leave
-    with".
+    with";
+  - lesson titles use APA title case ("What a Model Actually Does"), David's
+    choice on 2026-10-05; every other heading, stage name and button stays in
+    sentence case. The render test checks the titles.
 
 ## Readability rules
 
@@ -274,9 +277,9 @@ objectives 5.1 and 5.2 were reworded on 2026-09-24 to meet the objectives
 grade ceiling; the levels, verbs and meaning are unchanged, and David
 confirmed the new wording the same day.
 
-Lessons 6 and 7 were built on 2026-09-24, both approved by David the same day. Lesson 6, "UX/UI: judging what AI builds", teaches five
+Lessons 6 and 7 were built on 2026-09-24, both approved by David the same day. Lesson 6, "UX/UI: Judging What AI Builds", teaches five
 usability goals and the design principles by having learners judge AI-built
-screens. Lesson 7, "Accessible and mindful UX", covers WCAG by its four
+screens. Lesson 7, "Accessible and Mindful UX", covers WCAG by its four
 principles and levels A, AA and AAA, a contrast checker, and wellbeing
 (calmer defaults, natural pause points, auditing for addictive patterns). Both
 designs are approved in `docs/lesson-06-design.md` and

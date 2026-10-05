@@ -16,7 +16,7 @@
 export default {
   n: 11,
   slug: "when-ai-manipulates",
-  title: "When AI manipulates",
+  title: "When AI Manipulates",
   ready: true,
   objectivesApproved: "2026-09-25",
   framing:

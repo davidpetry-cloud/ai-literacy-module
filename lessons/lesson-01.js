@@ -15,7 +15,7 @@
 export default {
   n: 1,
   slug: "what-a-model-does",
-  title: "What a model actually does",
+  title: "What a Model Actually Does",
   ready: true,
   framing:
     "A chatbot's answer is predicted text, not a looked-up fact. It can be right, and it often is — but how it sounds tells you nothing about which.",

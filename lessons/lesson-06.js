@@ -37,7 +37,7 @@ const page = (body, script) => `<!doctype html><html lang="en"><head><meta chars
 export default {
   n: 6,
   slug: "judging-screens",
-  title: "UX/UI: judging what AI builds",
+  title: "UX/UI: Judging What AI Builds",
   ready: true,
   objectivesApproved: "2026-09-24",
   framing:

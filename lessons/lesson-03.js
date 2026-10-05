@@ -20,7 +20,7 @@
 export default {
   n: 3,
   slug: "verifying-output",
-  title: "Checking what it says",
+  title: "Checking What It Says",
   ready: true,
   objectivesApproved: "2026-09-23",
   framing:

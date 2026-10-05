@@ -1081,6 +1081,33 @@ describe("sources page", () => {
   });
 });
 
+describe("lesson titles use title case (David, 2026-10-05)", () => {
+  // APA title case: capitalise major words and any word of four letters or more; short
+  // articles, conjunctions and prepositions stay lower case unless they start the title or follow a colon.
+  const MINOR = new Set(["a", "an", "the", "and", "but", "or", "nor", "for", "so", "yet", "as", "at", "by", "in", "of", "on", "to", "up", "via"]);
+  it.each(COURSE.lessons.map((l) => [l.n, l.title]))("lesson %i: %s", (n, title) => {
+    const words = title.split(/\s+/);
+    words.forEach((w, i) => {
+      const bare = w.replace(/^[^A-Za-z]+|[^A-Za-z']+$/g, "");
+      if (!bare) return;
+      const first = i === 0 || /:$/.test(words[i - 1]);
+      if (!first && MINOR.has(bare.toLowerCase())) expect(bare, title).toBe(bare.toLowerCase());
+      else expect(bare[0], `${bare} in "${title}"`).toBe(bare[0].toUpperCase());
+    });
+  });
+});
+
+describe("lesson number badges (consistency, 2026-10-05)", () => {
+  it("shows each hub card's number as the same coloured badge used on lesson pages", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    for (const card of hub.querySelectorAll(".card")) {
+      expect(card.querySelector(".eyebrow .lesson-no").textContent).toBe(`Lesson ${card.dataset.lesson}`);
+    }
+    expect(lessonDoc(TRACK_IDS[0]).querySelector(".top .lesson-no")).not.toBeNull();
+  });
+});
+
 describe("page titles (WCAG 2.4.2)", () => {
   it("names the course on the hub, and each lesson in its own tab", () => {
     const hub = page("index.html");
