@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lesson — Human-Centered AI Literacy</title>
+<title>Sources — Human-Centered AI Literacy</title>
 <meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="course.css">
 <script src="theme-toggle.js"></script>
@@ -11,7 +11,7 @@
 { "imports": { "attestation-ledger": "https://cdn.jsdelivr.net/npm/attestation-ledger@0.1.1/src/index.js" } }
 </script>
 </head>
-<body data-page="lesson">
+<body data-page="sources">
 <header class="top">
   <div class="wrap hdr-row">
     <a class="back" id="back" href="index.html">&larr; Course overview</a>
@@ -21,10 +21,7 @@
   <div class="wrap" id="top"></div>
 </header>
 <main class="wrap">
-  <div class="lesson">
-    <div id="content"><p class="loading">Loading the lesson…</p></div>
-    <aside class="side" id="side"></aside>
-  </div>
+  <div id="content"><p class="loading">Loading the sources…</p></div>
 </main>
 <footer class="wrap foot">Built by David Petry. Claims engine: <a href="https://www.npmjs.com/package/attestation-ledger">attestation-ledger</a>. <a href="sources.html">Sources (APA)</a>. Course content <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; code MIT.</footer>
 <script type="module">
@@ -35,7 +32,7 @@ boot(document);
 setTimeout(function () {
   if (document.body.dataset.ready) return;
   document.getElementById("content").innerHTML =
-    '<p class="warn"><b>The lesson didn’t load.</b> It needs a network connection for its claims engine, and must be served over http — not opened as a file. Run <code>npm run preview</code> locally.</p>';
+    '<p class="warn"><b>The sources didn’t load.</b> It needs a network connection for its claims engine, and must be served over http — not opened as a file. Run <code>npm run preview</code> locally.</p>';
 }, 6000);
 </script>
 </body>

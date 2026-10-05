@@ -292,6 +292,11 @@ iframe.mock{display:block;width:100%;max-width:360px;border:2px solid var(--edge
 .goal{font-weight:600}
 .k-user-centricity{color:var(--teal-text)} .k-consistency{color:var(--ink-3)} .k-hierarchy{color:var(--prop)} .k-context{color:var(--exp)} .k-user-control{color:var(--rej)} .k-accessibility{color:var(--att-text)} .k-usability{color:var(--ink-2)}
 .fix-order{font-weight:600;color:var(--ink-2);margin:0 0 12px}
+/* Sources: APA reference list with hanging indents; long URLs wrap so nothing scrolls sideways. */
+ol.refs{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(--measure)}
+.refs li p{margin:0}
+.refs li > p:first-child{padding-left:24px;text-indent:-24px;overflow-wrap:anywhere}
+.ref-tags{font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3);padding-left:24px}
 .ref-wrap{container-type:inline-size}
 .ref-list{display:none;margin:0 0 16px}
 .ref-list > div{border:1px solid var(--line);border-radius:var(--r-md);padding:8px 12px;margin:0 0 8px;background:var(--card)}

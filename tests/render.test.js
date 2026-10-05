@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, lessonNav } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1051,6 +1051,33 @@ describe("support note before sensitive lessons (wellbeing, 2026-10-05)", () => 
 
   it("isn't shown on lessons that don't need it", () => {
     for (const n of [1, 6, 9]) expect(lessonDoc(TRACK_IDS[0], getLesson(n)).querySelector("aside.support"), `lesson ${n}`).toBeNull();
+  });
+});
+
+describe("sources page", () => {
+  const doc = page("sources.html");
+  renderSources(doc);
+
+  it("has one h1 and lists every source, alphabetically, with its lessons", () => {
+    expect(doc.querySelectorAll("h1")).toHaveLength(1);
+    const items = [...doc.querySelectorAll("ol.refs > li")];
+    expect(items).toHaveLength(sortedSources().length);
+    const firsts = items.map((li) => li.querySelector("p").textContent);
+    expect(firsts).toEqual([...firsts].sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })));
+    for (const li of items) expect(li.querySelector(".ref-tags").textContent).toMatch(/^Lessons? \d/);
+  });
+
+  it("puts titles and journals in italics, links each DOI or URL, and escapes the text", () => {
+    expect(doc.querySelectorAll("ol.refs i").length).toBeGreaterThan(sortedSources().length - 5);
+    expect(doc.querySelectorAll('ol.refs a[href^="https://doi.org/10."]').length).toBeGreaterThan(30);
+    expect(apaHtml("A <b>x</b> *T*")).toBe("A &lt;b&gt;x&lt;/b&gt; <i>T</i>");
+  });
+
+  it("is linked from the footer of every page and from the claims section", () => {
+    for (const p of ["index.html", "lesson.html", "sources.html"]) expect(page(p).querySelector('footer a[href="sources.html"]'), p).not.toBeNull();
+    const hub = page("index.html");
+    renderHub(hub);
+    expect(hub.querySelector('#claims a[href="sources.html"]')).not.toBeNull();
   });
 });
 

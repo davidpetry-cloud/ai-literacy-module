@@ -8,6 +8,7 @@
  */
 import { resolveStatus, tally, STATUS, SOURCE } from "attestation-ledger";
 import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson } from "./course.js";
+import { SOURCES } from "./sources.js";
 import { CLAIMS } from "./claims.js";
 
 const esc = (s) =>
@@ -1445,16 +1446,37 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
         .join("")}</ol>
     </section>
 
-    <section><h2>What this course claims, and who has signed it</h2>
+    <section id="claims"><h2>What this course claims, and who has signed it</h2>
       <p class="lede">A course on checking AI output should show which of its own claims are checked. Every factual claim below was proposed by a model and stays Proposed until a named person attests it. Attested claims lapse after two years unless re-checked.</p>
       <p class="tally">${["attested", "proposed", "expired", "rejected"].map((s) => `${statusBadge(s)} ${counts[s]}`).join(" ")}</p>
-      <p class="lede">Grouped by the lesson that first uses each claim. Open a lesson to review its claims.</p>
+      <p class="lede">Grouped by the lesson that first uses each claim. Open a lesson to review its claims. Every source behind them is on the <a href="sources.html">Sources page</a>, in APA style.</p>
       <div class="claim-groups">${claimGroups(now)}</div>
     </section>`;
 
   wireSearch(doc, track, onQuery);
   doc.querySelector("#search-results").addEventListener("click", (e) => openClaimGroup(doc, e.target.closest("a")?.getAttribute("href")));
   openClaimGroup(doc, doc.defaultView?.location.hash);
+}
+
+/* ---------- sources: every source the course cites, in APA style ---------- */
+
+const plain = (apa) => apa.replace(/\*/g, "");
+/** APA orders by the first author's surname; ignore the italics markers when sorting. */
+export const sortedSources = () => [...SOURCES].sort((a, b) => plain(a.apa).localeCompare(plain(b.apa), "en", { sensitivity: "base" }));
+/** Escape first, then turn *marked* spans into italics, so source text can never inject markup. */
+export const apaHtml = (apa) => esc(apa).replace(/\*([^*]+)\*/g, "<i>$1</i>");
+const lessonList = (ns) => (ns.length === 1 ? `Lesson ${ns[0]}` : `Lessons ${joinList(ns.map(String))}`);
+
+export function renderSources(doc) {
+  doc.querySelector("#top").innerHTML = `
+    <h1>Sources</h1>
+    <p class="sub">Every source this course cites, in APA style (7th edition), with the lessons that use it.</p>`;
+  const list = sortedSources();
+  doc.querySelector("#content").innerHTML = `
+    <p class="lede">${list.length} sources. Made-up sources planted in exercises aren't listed, because they don't exist. A source supports a claim; a claim counts as attested only when a named person signs it, in the <a href="index.html#claims">claims ledger</a>.</p>
+    <ol class="refs">${list
+      .map((s) => `<li><p>${apaHtml(s.apa)}${s.url ? ` <a href="${esc(s.url)}">${esc(s.url)}</a>` : ""}</p><p class="ref-tags">${lessonList([...s.lessons].sort((a, b) => a - b))}</p></li>`)
+      .join("")}</ol>`;
 }
 
 /* ---------- lesson ---------- */
@@ -1759,6 +1781,7 @@ export function boot(doc) {
   // The hub re-renders on a track change; keep what the learner typed in the search box (user control).
   let query = "";
   const draw = () => {
+    if (page === "sources") return renderSources(doc);
     if (page === "hub") renderHub(doc, { track, query, onQuery: (q) => (query = q) });
     else renderLesson(doc, getLesson(new URLSearchParams(win.location.search).get("n")), { track });
   };

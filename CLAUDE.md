@@ -20,9 +20,11 @@ locally rather than opening files from disk.
 course.js          SOURCE OF TRUTH: tracks, Bloom levels, evaluation plan, lesson list
 lessons/lesson-NN.js   one lesson's data — objectives first, then everything else
 claims.js          every factual claim, as a ledger record
+sources.js         every cited source in APA 7th edition, with the lessons that use it (DOIs checked against Crossref)
 lesson-core.js     renderer for both pages; no side effects on import
 index.html         hub: course search, lessons, design basis, evaluation (Kirkpatrick levels, cool to warm), claims ledger
 lesson.html        one page for every lesson: lesson.html?n=1&track=educators
+sources.html       the Sources page: the APA reference list, linked from every footer and the claims section
 course.css         tokens, fonts, header and themes from Singapore Math; status colours from live-sound-eq-sop
 theme-toggle.js    light/dark toggle, loaded in <head> before first paint
 fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requests

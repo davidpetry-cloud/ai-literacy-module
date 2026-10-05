@@ -90,3 +90,29 @@ describe("ledger version pin", () => {
     expect(pin).toBe(installed);
   });
 });
+
+// The Sources page (APA, 7th edition). Every entry is checked so the list can't drift into
+// the kind of broken citation the course teaches learners to catch.
+describe("sources", async () => {
+  const { SOURCES } = await import("../sources.js");
+  const lessonNs = COURSE.lessons.map((l) => l.n);
+
+  it.each(SOURCES.map((s) => [s.apa.slice(0, 60), s]))("%s… is well formed", (_, s) => {
+    expect(s.lessons.length).toBeGreaterThan(0);
+    for (const n of s.lessons) expect(lessonNs).toContain(n);
+    expect(s.apa.split("*").length % 2, "italics markers come in pairs").toBe(1);
+    expect(s.apa).toMatch(/\((\d{4}|n\.d\.)\)|\d{4}\)\.?$|\(S\.D\.N\.Y\. \d{4}\)/);
+    expect(s.apa).toMatch(/[.)]$|from$/);
+    if (s.url) {
+      expect(s.url).toMatch(/^https:\/\//);
+      if (s.url.includes("doi")) expect(s.url).toMatch(/^https:\/\/doi\.org\/10\./);
+    }
+    if (/from$/.test(s.apa)) expect(s.url, "a retrieval date needs the URL").toBeTruthy();
+  });
+
+  it("has no duplicate entries or DOIs", () => {
+    expect(new Set(SOURCES.map((s) => s.apa)).size).toBe(SOURCES.length);
+    const dois = SOURCES.map((s) => s.url).filter((u) => u?.startsWith("https://doi.org/"));
+    expect(new Set(dois).size).toBe(dois.length);
+  });
+});
