@@ -51,6 +51,18 @@ This is a model review, not an attestation. Only David attests claims.
 | Lesson 10, abstract | The FBI's BAU was in the plan but not on the page. | A facilitator line and a new claim, `bau-repeated-behavior`, with the caveat that profiling accuracy is contested. | David asked for it (2026-09-25). Worded without offender detail, as David chose, because the abstract is shared with students. |
 | Lesson 9, `trait-not-diagnosis` | DSM-5-TR "to check" | Criteria counts recorded (NPD 5 of 9; ASPD 3 of 7) | Checked 2026-10-05 through clinical sources. |
 
+## Law-enforcement terms (2026-10-05, at David's request)
+
+Checked against how the FBI describes its own work, and replaced where the course's words didn't match the profession's.
+
+| Was | Now | Why |
+|---|---|---|
+| "Behavior analysts, like the FBI's Behavioral Analysis Unit" | "Investigators at the FBI's Behavioral Analysis Unit" | In the US, "behavior analyst" usually means a certified clinician in applied behavior analysis. The BAU is staffed by Supervisory Special Agents and professional staff. |
+| BAU claim: "supports investigations by analysing behavior" | Names the BAU's place (NCAVC, within the Critical Incident Response Group) and the FBI's term for the method, criminal investigative analysis | The FBI's own description; "criminal profiling" is kept only where it is the researchers' term (Snook et al., 2007). |
+| "the police or FBI", "the police" | "law enforcement", with the FBI's reporting route (tips.fbi.gov) for the US | The FBI's phrasing; "police" is narrower and varies by country. |
+| Students' threat situation, unnamed | Named "sextortion", the FBI's term (its pages call this type "financially motivated sextortion") | Knowing the name helps a young person search for, and ask for, the right help. |
+| Sextortion claim | Adds the FBI's reporting routes: local FBI field office, 1-800-CALL-FBI, tips.fbi.gov, or local law enforcement | From the FBI's "Financially Motivated Sextortion" page, now also on the Sources page. |
+
 ## Checked and left as they are
 
 - **Planted errors are labeled.** Every made-up study, survey and citation sits in

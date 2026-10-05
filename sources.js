@@ -36,6 +36,7 @@ export const SOURCES = [
   { lessons: [1, 5], apa: "European Parliament & Council of the European Union. (2016). Regulation (EU) 2016/679 (General Data Protection Regulation). *Official Journal of the European Union, L 119*, 1–88.", url: "https://eur-lex.europa.eu/eli/reg/2016/679/oj" },
   { lessons: [7], apa: "European Parliament & Council of the European Union. (2022). Regulation (EU) 2022/2065 (Digital Services Act). *Official Journal of the European Union, L 277*, 1–102.", url: "https://eur-lex.europa.eu/eli/reg/2022/2065/oj" },
   { lessons: [10], apa: "Federal Bureau of Investigation. (n.d.). *Behavioral analysis*.", url: "https://www.fbi.gov/how-we-investigate/behavioral-analysis" },
+  { lessons: [12], apa: "Federal Bureau of Investigation. (n.d.). *Financially motivated sextortion*.", url: "https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams/sextortion/financially-motivated-sextortion" },
   { lessons: [12], apa: "Federal Bureau of Investigation. (n.d.). *Sextortion*.", url: "https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams/sextortion" },
   { lessons: [7], apa: "Federal Trade Commission. (2022). *Bringing dark patterns to light* [Staff report].", url: "https://www.ftc.gov/reports/bringing-dark-patterns-light" },
   { lessons: [3], apa: "Federal Trade Commission. (n.d.). *CAN-SPAM Act: A compliance guide for business*.", url: "https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business" },

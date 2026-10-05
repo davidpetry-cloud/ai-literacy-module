@@ -542,9 +542,9 @@ export const CLAIMS = {
     )
   },
   "bau-repeated-behavior": {
-    text: "The FBI's Behavioral Analysis Unit supports investigations by analysing behavior, and analysts look for behavior that repeats across cases rather than a single act. Research on how accurate criminal profiling is has found mixed results.",
+    text: "The FBI's Behavioral Analysis Unit (BAU), part of the National Center for the Analysis of Violent Crime within the Critical Incident Response Group, gives behavior-based support to investigations. In what the FBI calls criminal investigative analysis, investigators look for behavior that repeats across cases rather than a single act. Research on the accuracy of criminal profiling has found mixed results.",
     attestation: proposedBy(
-      "FBI, 'Behavioral Analysis' (fbi.gov): the BAU sits in the National Center for the Analysis of Violent Crime and gives behavior-based investigative support. Douglas and Munn (1992), 'Violent crime scene analysis: Modus operandi, signature, and staging', FBI Law Enforcement Bulletin 61(2): repeated 'signature' behavior links cases. Snook et al. (2007), Criminal Justice and Behavior 34(4), 437-453: self-described profilers did not reliably outperform comparison groups. Worded without offender detail, as David chose (2026-09-25), because the abstract is shared with the students track."
+      "FBI, 'Behavioral Analysis' (fbi.gov) and the FBI's NCAVC pages: the BAU sits in the National Center for the Analysis of Violent Crime, part of the Critical Incident Response Group at the FBI Academy, Quantico; its units are staffed by Supervisory Special Agents and professional staff, and its method is called criminal investigative analysis. Terms checked against FBI usage on 2026-10-05 at David's request. Douglas and Munn (1992), 'Violent crime scene analysis: Modus operandi, signature, and staging', FBI Law Enforcement Bulletin 61(2): repeated 'signature' behavior links cases. Snook et al. (2007), Criminal Justice and Behavior 34(4), 437-453: self-described profilers did not reliably outperform comparison groups. Worded without offender detail, as David chose (2026-09-25), because the abstract is shared with the students track."
     )
   },
   "l10-key-educators": {
@@ -620,9 +620,9 @@ export const CLAIMS = {
     )
   },
   "sextortion-advice": {
-    text: "The FBI advises people targeted by sextortion not to pay, to block the person without deleting the profile or messages, to get help and report it, and says it is not the victim's fault. For people under 18, NCMEC's Take It Down service can help remove images.",
+    text: "For financially motivated sextortion, the FBI advises people not to pay, to block the person but save the profile and messages, to ask a trusted adult or law enforcement for help, and to report it to a local FBI field office, 1-800-CALL-FBI, tips.fbi.gov or local law enforcement. It says this is not the victim's fault. For people under 18, NCMEC's Take It Down service can help remove images.",
     attestation: proposedBy(
-      "FBI, 'FBI and Partners Issue National Public Safety Alert on Financial Sextortion Schemes' (press release) and the FBI Sextortion pages (fbi.gov/sextortion); NCMEC Take It Down (takeitdown.ncmec.org). US guidance; FBI IC3 also warns against paid 'removal' services (PSA, April 2023). Re-check yearly: ttlDays 365."
+      "FBI, 'Financially Motivated Sextortion' (fbi.gov), 'FBI and Partners Issue National Public Safety Alert on Financial Sextortion Schemes' (press release) and the FBI Sextortion pages (fbi.gov/sextortion); NCMEC Take It Down (takeitdown.ncmec.org). US guidance; FBI IC3 also warns against paid 'removal' services (PSA, April 2023). Re-check yearly: ttlDays 365."
     )
   },
   "child-helplines": {

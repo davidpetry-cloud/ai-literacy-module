@@ -266,12 +266,12 @@ export default {
                   {
                     "text": "Delete everything, and hope it stops.",
                     "key": "risky",
-                    "note": "Block them, but don't delete the messages. They can help adults and the police stop this person."
+                    "note": "Block them, but don't delete the messages. They can help law enforcement identify and stop this person."
                   },
                   {
                     "text": "Don't pay. Save the messages, block them, and tell a trusted adult now. Take It Down can help remove images.",
                     "key": "safe",
-                    "note": "This is what the FBI advises. It's not your fault, and you won't be in trouble for telling."
+                    "note": "This is called sextortion, and this is what the FBI advises. It's not your fault, and you won't be in trouble for telling."
                   }
                 ]
               },
@@ -332,7 +332,7 @@ export default {
         { id: "no", text: "Say no clearly, once.", meets: ["boundary"] },
         { id: "limit", text: "Limit contact, or block after saving the messages.", meets: ["boundary"] },
         { id: "tell", text: "Tell someone you trust.", meets: ["support"] },
-        { id: "report", text: "Report it: to a manager, the safeguarding lead, the app, or the police.", meets: ["support"] },
+        { id: "report", text: "Report it: to a manager, the safeguarding lead, the app, or law enforcement.", meets: ["support"] },
         { id: "protect", text: "Protect your work before you share it: a dated draft, and credit agreed first.", meets: ["record", "boundary"] },
         { id: "callout", text: "Call them out in public.", meets: [], note: "calling someone out can feel strong, but it can put you at risk, and it gives you no record, support or boundary." }
       ],
@@ -382,7 +382,7 @@ export default {
           rows: [
             ["Someone you trust", "Always a good first step."],
             ["The safeguarding lead, at school", "When a child could be at risk."],
-            ["The app, and the police or FBI", "Threats, blackmail, or someone asking for photos."],
+            ["The app, and law enforcement", "Threats, blackmail, or someone asking for photos. In the US, that includes the FBI: tips.fbi.gov."],
             ["Take It Down", "To help remove images of someone under 18."],
             ["Child Helpline International", "To find a helpline in your country."]
           ]

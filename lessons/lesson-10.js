@@ -355,7 +355,7 @@ export default {
         ["Facilitator", "The same patterns show up face to face and online. Only the setting changes."],
         ["Expected", "\"So everyone who flatters me is using me?\""],
         ["Facilitator", "No. One kind word is just kind. Watch for the pattern: flattery, then secrecy, then an ask, then pressure."],
-        ["Facilitator", "Behavior analysts, like the FBI's Behavioral Analysis Unit, look for behavior that repeats across cases, not one act. You can do the same."]
+        ["Facilitator", "Investigators at the FBI's Behavioral Analysis Unit look for behavior that repeats across cases, not one act. You can do the same."]
       ],
       watch:
         "Learners start to suspect everyone. Bring them back to the pattern: several warning signs, repeated, usually with a bad feeling that grows."
