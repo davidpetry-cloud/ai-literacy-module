@@ -1069,7 +1069,8 @@ export function planView(ids, steps) {
 
 // Nothing typed, nothing sent: the plan lives only on this page, and Start again clears it.
 function planBuilder(stage) {
-  return `<form class="ck-form" id="pl-form" novalidate>
+  return `${(stage.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
+      <form class="ck-form" id="pl-form" novalidate>
         <fieldset class="ck-list"><legend>Pick the steps for your plan</legend>
           ${stage.steps.map((st, i) => `<label><input type="checkbox" value="${esc(st.id)}"><span><b>${i + 1}.</b> ${esc(st.text)}</span></label>`).join("")}
         </fieldset>

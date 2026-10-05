@@ -326,6 +326,12 @@ export default {
       minutes: 10,
       targets: ["12.1", "12.2", "12.3"],
       figure: "plan",
+      // Learner-visible instructions (David, 2026-10-05: say what the plan is for). Same in every track.
+      intro: [
+        "Your plan is for one of the three situations in \"Concrete · What would you do?\" above. Pick one, then tick the steps you would take.",
+        "A good plan has three parts. A record is proof of what happened, such as notes with dates. Support is a person who helps you. A boundary is a limit that keeps you safe.",
+        "Nothing you tick is saved or sent."
+      ],
       steps: [
         { id: "write", text: "Write down what happened, with dates.", meets: ["record"] },
         { id: "copies", text: "Keep copies: screenshots, emails and drafts.", meets: ["record"] },
@@ -337,9 +343,9 @@ export default {
         { id: "callout", text: "Call them out in public.", meets: [], note: "calling someone out can feel strong, but it can put you at risk, and it gives you no record, support or boundary." }
       ],
       moves: [
-        "Learners tick the steps they would use for one situation from today.",
+        "Learners pick one situation from the concrete stage, and tick the steps they would use for it.",
         "Read the status aloud. Ask: what's missing, and which step would add it?",
-        "Press Start again, and build a plan for a second situation.",
+        "Press Start again, and build a plan for a second situation from the concrete stage.",
         "Ask each learner to name one step they'll start this week."
       ],
       say: [

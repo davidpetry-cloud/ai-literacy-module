@@ -1503,6 +1503,12 @@ describe("lesson 12: one core across tracks", () => {
     }
   });
 
+  it("tells learners what the plan is for, and what each part means (David, 2026-10-05)", () => {
+    const text = lesson12Doc(TRACK_IDS[0]).querySelector('[data-stage="pictorial"]').textContent;
+    expect(text).toContain("one of the three situations in \"Concrete · What would you do?\" above");
+    for (const part of ["A record is", "Support is", "A boundary is"]) expect(text).toContain(part);
+  });
+
   it("covers all three needs only when each is met", () => {
     expect(planStatus(["write", "copies"], planSteps).gaps).toEqual(["support", "boundary"]);
     expect(planStatus(["protect", "report"], planSteps).gaps).toEqual([]);
