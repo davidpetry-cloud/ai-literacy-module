@@ -36,6 +36,10 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.inbox) {
+    const ms = art.inbox.items;
+    return { passage: ms.map((m) => m.text), key: ms.flatMap((m) => [m.note, m.check]) };
+  }
   if (art.respond) {
     const sits = art.respond.situations;
     return { passage: sits.flatMap((x) => [x.text, ...x.responses.map((r) => r.text)]), key: sits.flatMap((x) => x.responses.map((r) => r.note)) };
@@ -93,6 +97,8 @@ export function textRoles(lesson, tracks) {
       .concat(lesson.stages.flatMap((s) => s.steps ?? []).map((st) => st.text))
       // A stage's own instructions to learners.
       .concat(lesson.stages.flatMap((s) => s.intro ?? []))
+      // A sorter's items, and the reason shown for each.
+      .concat(lesson.stages.flatMap((s) => s.items ?? []).flatMap((it) => [it.text, it.why]))
       // Reference tables are for learners too; each cell is read as a sentence.
       .concat(lesson.stages.flatMap((s) => s.tables ?? []).flatMap((t) => t.rows.flatMap((r) => r.slice(1).map((c) => (/[.?!]$/.test(c) ? c : `${c}.`))))),
     facilitator: [

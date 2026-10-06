@@ -406,6 +406,24 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .chat .turn p{margin:0 0 4px}
 .chat .who-said{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3)}
 .k-helpful{color:var(--att-text)} .k-flattery{color:var(--prop)} .k-guilt{color:var(--rej)} .k-pressure{color:var(--exp)} .k-product{color:var(--teal-text)} .k-human{color:var(--ink-2)}
+/* Essentials 1: an inbox of messages, and the what's-safe-to-share sorter */
+.inbox .messages{padding-left:24px;margin:0;display:grid;gap:12px}
+.inbox .message{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
+.inbox .message p{margin:0 0 4px}
+.inbox .msg-head{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3)}
+.inbox .msg-kind{font-weight:700;color:var(--ink-2)}
+.inbox .msg-from,.inbox .msg-subject{overflow-wrap:anywhere}
+.k-genuine{color:var(--att-text)} .k-scam{color:var(--exp)}
+.k-fine{color:var(--att-text)} .k-keep{color:var(--exp)}
+.sh-item{border:0;padding:0;margin:0 0 8px;min-width:0}
+.sh-item legend{font-weight:600;color:var(--ink);padding:0;margin-bottom:4px}
+.sh-choices{display:flex;flex-wrap:wrap;gap:0 24px}
+.sh-choices label{display:flex;align-items:center;gap:8px;min-height:44px;color:var(--text)}
+.sh-choices input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--btn-bg)}
+.sh-actions{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 16px}
+.sh-answers{padding-left:24px;margin:16px 0 0}
+.sh-answers li{margin-bottom:8px}
+.sh-verdict{font-weight:600}
 .g-dot{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:1.5}
 .g-axis{stroke:var(--edge);stroke-width:1.5}
 .g-mean{stroke:var(--ink-3);stroke-width:2.5;stroke-dasharray:6 4}

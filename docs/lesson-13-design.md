@@ -6,8 +6,8 @@ section below the lessons. Behind the scenes it is still `lessons/lesson-13.js`
 (`n: 13`, so its page is `lesson.html?n=13`), with `category: "essentials"`,
 `label: "Essentials 1"`, and objective ids starting `E1.`.
 
-**Status:** objectives approved by David 2026-10-05 (he chose four of five drafts).
-Warm-up and check written the same day. **Stage design below awaits his approval.** Wording lives
+**Status:** built 2026-10-05. Objectives approved by David that day (he chose four of five drafts), then the warm-up and check, then the stage design, which he approved the same day.
+Wording lives
 in `lessons/lesson-13.js`; this file is the plan.
 
 **David's direction (2026-10-05):** add a cybersecurity lesson to the course.
@@ -60,7 +60,7 @@ Warm-ups surface four beliefs: scams are full of spelling mistakes; you'd know a
 loved one's voice; pasting something into a chatbot is private; strong means
 symbols and frequent changes. One check item per objective.
 
-## Stages (proposed, awaiting approval)
+## Stages (approved 2026-10-05, built the same day)
 
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10.
 
@@ -110,3 +110,10 @@ adult is named for anything that worries them; no student is asked to try an att
 
 Opus, if the stage design adds a new tool (likely: a "verify it" exercise and a
 "what's safe to share" sorter).
+
+## Built (2026-10-05)
+
+- The inbox has five messages per track, two of them genuine in every track, so learners practise not panicking. Each scam names its signs (the NCSC's five, plus secrecy and new details or payment, from the FBI's advice) and a second-channel check.
+- The sorter has nine items. It added a ninth, a photo with location on, after David shared the FBI's podcast "Keeping Teens Safe on the Web" (4 September 2026).
+- From the same podcast, the abstract adds: set accounts to private and turn off location; don't accept friend requests from strangers; ask a friend or trusted adult first; and what to do if someone threatens to share a fake image of you. Cited as the claim `fbi-teens-online`.
+- Eleven claims, all model proposals awaiting David's attestation: `ai-fraud-fbi`, `scam-signs-ncsc`, `ai-tools-confidential`, `fbi-teens-online`, `passwords-nist`, `passkeys-phishing-resistant`, `report-scams`, and the answer keys `e1-key-educators`, `e1-key-professionals`, `e1-key-students`, `e1-key-share`.

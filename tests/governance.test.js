@@ -16,7 +16,8 @@ function referencedClaims() {
   for (const lesson of COURSE.lessons.filter((l) => l.ready)) {
     for (const stage of lesson.stages) {
       for (const id of stage.principles ?? []) refs.add(id);
-      for (const track of Object.values(stage.tracks ?? {})) refs.add((track.passage ?? track.pair ?? track.signoffs ?? track.classify ?? track.screen ?? track.thread ?? track.chat ?? track.respond).claim);
+      if (stage.claim) refs.add(stage.claim);
+      for (const track of Object.values(stage.tracks ?? {})) refs.add((track.passage ?? track.pair ?? track.signoffs ?? track.classify ?? track.screen ?? track.thread ?? track.chat ?? track.respond ?? track.inbox).claim);
     }
   }
   return refs;
@@ -101,8 +102,10 @@ describe("sources", async () => {
     expect(s.lessons.length).toBeGreaterThan(0);
     for (const n of s.lessons) expect(lessonNs).toContain(n);
     expect(s.apa.split("*").length % 2, "italics markers come in pairs").toBe(1);
-    expect(s.apa).toMatch(/\((\d{4}|n\.d\.)\)|\d{4}\)\.?$|\(S\.D\.N\.Y\. \d{4}\)/);
-    expect(s.apa).toMatch(/[.)]$|from$/);
+    // APA dates: (2024), (n.d.), or a dated item such as (2024, December 3).
+    expect(s.apa).toMatch(/\((\d{4}(, [A-Z][a-z]+ \d{1,2})?|n\.d\.)\)|\d{4}\)\.?$|\(S\.D\.N\.Y\. \d{4}\)/);
+    // Ends with a period, a bracket, "from" (before a URL), or a title's own question mark (APA adds no period).
+    expect(s.apa).toMatch(/[.)]$|from$|\?\*$/);
     if (s.url) {
       expect(s.url).toMatch(/^https:\/\//);
       if (s.url.includes("doi")) expect(s.url).toMatch(/^https:\/\/doi\.org\/10\./);

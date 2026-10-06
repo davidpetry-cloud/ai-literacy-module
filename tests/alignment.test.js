@@ -16,7 +16,7 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond", "inbox"];
 const VERDICTS = ["keep", "change", "stop"];
 const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
@@ -137,7 +137,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"], inbox: ["share"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -688,6 +688,68 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each track's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(respond(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "inbox")("concrete stage: inbox", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const pictorial = lesson.stages.find((s) => s.kind === "pictorial");
+    const inbox = (t) => concrete.tracks[t].inbox;
+    const SIGNS = ["authority", "urgency", "emotion", "scarcity", "current-events", "secrecy", "new-details"];
+
+    it("has a context and five keyed messages for every track, each with a way to check", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(inbox(t).items, t).toHaveLength(5);
+        for (const m of inbox(t).items) {
+          expect(["email", "text", "voice", "video"], m.text).toContain(m.kind);
+          expect(["genuine", "scam"], m.text).toContain(m.key);
+          for (const f of ["from", "text", "check", "note"]) expect(m[f], `${m.text} ${f}`).toBeTruthy();
+          for (const sg of m.signs) expect(SIGNS, m.text).toContain(sg);
+          // A scam shows at least one sign; a genuine message shows none.
+          if (m.key === "scam") expect(m.signs.length, m.text).toBeGreaterThan(0);
+          else expect(m.signs, m.text).toEqual([]);
+        }
+        expect(["planted", "captured"], t).toContain(inbox(t).provenance);
+        expect(inbox(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("includes genuine messages, so learners practise not panicking, and a copied voice or fake video", () => {
+      for (const t of TRACK_IDS) {
+        expect(inbox(t).items.filter((m) => m.key === "genuine").length, t).toBeGreaterThanOrEqual(1);
+        expect(inbox(t).items.some((m) => m.key === "scam" && ["voice", "video"].includes(m.kind)), t).toBe(true);
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => inbox(t).items.map((m) => m.key).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+      expect(new Set(TRACK_IDS.map((t) => inbox(t).items.findIndex((m) => m.key === "genuine"))).size).toBeGreaterThan(1);
+    });
+
+    it("never checks a message through its own contact details", () => {
+      for (const t of TRACK_IDS) for (const m of inbox(t).items.filter((x) => x.key === "scam")) expect(m.check, m.text).not.toMatch(/reply to (the|this) message|number in the message/i);
+    });
+
+    // Safeguarding: every students scam points to a trusted adult; nothing asks for real details.
+    it("points every students scam to a trusted adult", () => {
+      for (const m of inbox("students").items.filter((x) => x.key === "scam")) expect(`${m.check} ${m.note}`, m.text).toMatch(/trusted adult/);
+    });
+
+    it("sorts items into fine or keep out, with a reason, both sides used, and the key under a ledger claim", () => {
+      for (const it of pictorial.items) {
+        expect(["fine", "keep"], it.text).toContain(it.key);
+        expect(it.why, it.text).toBeTruthy();
+      }
+      expect(new Set(pictorial.items.map((it) => it.key))).toEqual(new Set(["fine", "keep"]));
+      expect(new Set(pictorial.items.map((it) => it.id)).size).toBe(pictorial.items.length);
+      expect(pictorial.items.find((it) => it.id === "password").key).toBe("keep");
+      expect(CLAIMS).toHaveProperty(pictorial.claim);
+    });
+
+    it("puts each track's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(inbox(t).claim);
     });
   });
 

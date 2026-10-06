@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -44,7 +44,7 @@ describe("hub", () => {
     for (const g of groups) {
       expect(g.open, g.id).toBe(false);
       // The number sits beside the colour, and the count is in words.
-      expect(g.querySelector("summary .lesson-no").textContent).toBe(`Lesson ${g.dataset.lesson}`);
+      expect(g.querySelector("summary .lesson-no").textContent).toBe(lessonLabel(getLesson(Number(g.dataset.lesson))));
       expect(g.querySelector(".cg-count").textContent).toMatch(/^\d+ claims?: \d+ (attested|proposed)/);
     }
     expect(doc.querySelector("#claims-lesson-1 #claim-model-predicts")).not.toBeNull();
@@ -1079,7 +1079,7 @@ describe("sources page", () => {
     expect(items).toHaveLength(sortedSources().length);
     const firsts = items.map((li) => li.querySelector("p").textContent);
     expect(firsts).toEqual([...firsts].sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })));
-    for (const li of items) expect(li.querySelector(".ref-tags").textContent).toMatch(/^Lessons? \d/);
+    for (const li of items) expect(li.querySelector(".ref-tags").textContent).toMatch(/^(Lessons? \d|Essentials \d)/);
   });
 
   it("puts titles and journals in italics, links each DOI or URL, and escapes the text", () => {
@@ -1543,6 +1543,93 @@ describe("lesson 12: one core across tracks", () => {
   });
 });
 
+const essentials1 = getLesson(13);
+const e1Doc = (track) => lessonDoc(track, essentials1);
+const inboxData = (track) => essentials1.stages[0].tracks[track].inbox;
+const shareItems = essentials1.stages[1].items;
+const sortShare = (d, picks) => {
+  for (const [id, v] of Object.entries(picks)) d.querySelector(`#sh-form input[name="sh-${id}"][value="${v}"]`).checked = true;
+  d.querySelector("#sh-form").dispatchEvent(new d.defaultView.Event("change"));
+};
+
+describe.each(TRACK_IDS)("essentials 1, %s track", (track) => {
+  const doc = e1Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order, labelled Essentials 1", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+    expect(doc.querySelector(".top .lesson-no").textContent).toBe("Essentials 1");
+    expect(doc.title).toBe(`Essentials 1: Staying Secure in the Age of AI — ${COURSE.title}`);
+  });
+
+  it("shows five messages, each naming its kind and sender, with a closed reveal in words", () => {
+    const ms = doc.querySelectorAll('[data-stage="concrete"] .inbox .messages > li');
+    expect(ms).toHaveLength(5);
+    inboxData(track).items.forEach((m, i) => {
+      expect(ms[i].querySelector(".msg-from").textContent).toBe(`From: ${m.from}`);
+      expect(ms[i].querySelector(".msg-kind").textContent).toBeTruthy();
+      expect(ms[i].querySelector("details").open).toBe(false);
+      expect(ms[i].querySelector(".k").textContent).toBe(INBOX_LABEL[m.key]);
+      if (m.signs.length) for (const sg of m.signs) expect(ms[i].querySelector("details").textContent).toContain(SIGN_LABEL[sg]);
+    });
+    expect(doc.querySelector(".inbox figcaption").textContent).toContain("made up");
+    expect(doc.querySelector('[data-stage="concrete"]').textContent).toContain("Next, you'll sort what's safe to put into an AI tool.");
+  });
+
+  it("sorts, counts, shows and hides the answers, and starts again", () => {
+    const d = e1Doc(track);
+    const status = () => d.querySelector("#sh-status").textContent;
+    expect(status()).toBe(`Nothing sorted yet. Choose a side for each of the ${shareItems.length} items.`);
+    sortShare(d, { recipe: "fine", password: "fine" });
+    expect(status()).toBe(`2 of ${shareItems.length} sorted.`);
+    expect(d.querySelector("#sh-figure svg").getAttribute("aria-label")).toContain("Item 2: you chose fine to share.");
+    const btn = d.querySelector("#sh-reveal");
+    btn.click();
+    expect(btn.textContent).toBe("Hide the answers");
+    expect(status()).toBe(`1 of ${shareItems.length} match the answers. ${shareItems.length - 2} not sorted yet.`);
+    const answers = d.querySelectorAll(".sh-answers li");
+    expect(answers).toHaveLength(shareItems.length);
+    expect(answers[1].textContent).toContain("✕ You chose fine to share.");
+    expect(answers[0].textContent).toContain("✓ You matched.");
+    expect(d.activeElement).toBe(d.querySelector("#sh-figure"));
+    btn.click();
+    expect(btn.textContent).toBe("Show the answers");
+    expect(d.querySelectorAll(".sh-answers li")).toHaveLength(0);
+    d.querySelector("#sh-reset").click();
+    expect([...d.querySelectorAll("#sh-form input")].some((r) => r.checked)).toBe(false);
+    expect(status()).toContain("Nothing sorted yet");
+    expect(d.activeElement).toBe(d.querySelector("#sh-form input"));
+  });
+
+  it("gives every sorter choice a distinct accessible name, and collects nothing", () => {
+    const names = [...doc.querySelectorAll("#sh-form label")].map((l) => l.textContent);
+    expect(new Set(names).size).toBe(names.length);
+    expect(doc.querySelectorAll('[data-stage="pictorial"] input[type="text"], [data-stage="pictorial"] textarea')).toHaveLength(0);
+    expect(doc.querySelector("#sh-form").getAttribute("action")).toBeNull();
+  });
+
+  it("shows the sorter's answer key as a claim, and the lesson's own follow-up", () => {
+    expect(doc.querySelector('[data-stage="pictorial"] .keyclaim [data-claim="e1-key-share"]')).not.toBeNull();
+    expect(doc.querySelector(".transfer").textContent).toContain("which protection did you turn on");
+  });
+});
+
+describe("essentials 1: one core across tracks", () => {
+  const html = (t, sel) => e1Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, pictorial, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="pictorial"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("counts right answers only once the answers are shown", () => {
+    const all = Object.fromEntries(shareItems.map((it) => [it.id, it.key]));
+    expect(shareStatus(all, shareItems).text).toBe(`${shareItems.length} of ${shareItems.length} sorted. Show the answers when you're ready.`);
+    expect(shareStatus(all, shareItems, true).text).toBe(`${shareItems.length} of ${shareItems.length} match the answers.`);
+    expect(Object.keys(SHARE_LABEL)).toEqual(["fine", "keep"]);
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -1561,7 +1648,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 9 (${t})`, lesson9Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 10 (${t})`, lesson10Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 11 (${t})`, lesson11Doc(t)]),
-    ...TRACK_IDS.map((t) => [`lesson 12 (${t})`, lesson12Doc(t)])
+    ...TRACK_IDS.map((t) => [`lesson 12 (${t})`, lesson12Doc(t)]),
+    ...TRACK_IDS.map((t) => [`essentials 1 (${t})`, e1Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);

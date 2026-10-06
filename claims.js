@@ -648,5 +648,73 @@ export const CLAIMS = {
     attestation: proposedBy(
       "The situations are made up and stop short of any abuse. Check situation 1 against the FBI's national alert on financial sextortion and NCMEC's Take It Down. The tests require a trusted adult in every students situation."
     )
+  },
+
+  // Essentials 1: Staying Secure in the Age of AI (2026-10-05). Sources checked on that date.
+  "ai-fraud-fbi": {
+    text: "Criminals use generative AI to make fraud more believable and to commit it on a larger scale: written messages, fake images, copied voices and fake video. The FBI advises agreeing a secret word with family, and checking a caller by hanging up and calling back on a number you already know.",
+    attestation: proposedBy(
+      "FBI Internet Crime Complaint Center, public service announcement I-120324-PSA, 'Criminals Use Generative Artificial Intelligence to Facilitate Financial Fraud' (3 December 2024, ic3.gov/PSA/2024/PSA241203). Lists text, image, audio and video uses, and tips: a secret word or phrase, look for flaws in images and video, listen for tone and word choice, limit online images and voice, hang up and call back, never send money, gift cards or cryptocurrency to people met online. Re-read on 2026-10-05."
+    )
+  },
+  "scam-signs-ncsc": {
+    text: "The UK's National Cyber Security Centre names five signs of a scam message: authority, urgency, emotion, scarcity and current events.",
+    attestation: proposedBy(
+      "NCSC, 'How to spot a scam email, text message or call' (ncsc.gov.uk/collection/phishing-scams/spot-scams), read 2026-10-05: authority (pretending to be important people or organisations), urgency (threats of fines or other consequences), emotion (threatening language, false claims of support, teasing), scarcity (fear of missing out), current events (news stories, big events, times of year)."
+    )
+  },
+  "ai-tools-confidential": {
+    text: "Don't put sensitive or private information into a public AI tool: what you type is visible to the company that runs it, and may be stored and used to develop the tool.",
+    attestation: proposedBy(
+      "NCSC blog, 'ChatGPT and large language models: what's the risk?' (14 March 2023): queries are visible to the organisation providing the model, may be stored and will almost certainly be used to develop the service; 'do not include sensitive information in queries to public LLMs'. The lesson adds 'is it mine to share?' for other people's information, a practical reading rather than a quotation."
+    )
+  },
+  "fbi-teens-online": {
+    text: "The FBI advises teens to keep personal details off their profiles, set accounts to private, turn off location sharing, including the location saved in photos, and check friend requests with a friend or trusted adult. Criminals have used AI to put a teen's face on a fake image and then demand money.",
+    attestation: proposedBy(
+      "FBI, 'Inside the FBI Podcast: Keeping Teens Safe on the Web' (4 September 2026, fbi.gov/news/podcasts), with a Special Agent who investigates crimes against children in the Washington Field Office, an FBI employee assistance counselor and a retired FBI child-adolescent forensic interviewer. Covers sextortion, including AI face-swapped images; keeping personal information minimal; photo metadata and geolocation; private settings; vetting friend requests; 'trust your gut'; victims are not to blame; report at tips.fbi.gov or 1-800-CALL-FBI, and Take It Down (NCMEC). Shared by David on 2026-10-05; transcript read the same day."
+    )
+  },
+  "passwords-nist": {
+    text: "US digital identity guidelines say a password used on its own should be at least 15 characters long. Sites shouldn't demand a mix of character types, or make people change passwords on a schedule, only when there is evidence a password was compromised.",
+    attestation: proposedBy(
+      "NIST SP 800-63B-4, 'Digital Identity Guidelines: Authentication and Authenticator Management' (Temoshok et al., 2025; doi.org/10.6028/NIST.SP.800-63B-4, checked against Crossref 2026-10-05), section on passwords: minimum 15 characters for single-factor use (8 when part of multi-factor), no composition rules, no periodic changes, a forced change on evidence of compromise. Passkeys (syncable authenticators) are recognised."
+    )
+  },
+  "passkeys-phishing-resistant": {
+    text: "Passkeys, built on the FIDO standard, resist phishing: a passkey only works on the site it was made for, so a fake site can't use it. CISA calls FIDO the only widely available phishing-resistant sign-in, and says any two-step sign-in is better than none.",
+    attestation: proposedBy(
+      "CISA, 'More than a Password' (cisa.gov/MFA), read 2026-10-05: 'The only widely available phishing-resistant authentication is FIDO/WebAuthn authentication'; 'any MFA is better than no MFA'; users who enable MFA are 'significantly less likely to get hacked'. FIDO Alliance, 'Passkeys' (fidoalliance.org/passkeys): a passkey is bound to the site it was created for."
+    )
+  },
+  "report-scams": {
+    text: "In the UK, scam emails can be forwarded to report@phishing.gov.uk and scam texts to 7726. In the US, scams can be reported to the FBI's Internet Crime Complaint Center at ic3.gov, and to the Federal Trade Commission at ReportFraud.ftc.gov.",
+    attestation: proposedBy(
+      "NCSC, 'Report a scam email' and 'Report a scam text message' (ncsc.gov.uk/collection/phishing-scams), read 2026-10-05: forward emails to report@phishing.gov.uk; most UK phone providers accept scam texts forwarded to 7726. FBI IC3 (ic3.gov); FTC (reportfraud.ftc.gov). Reporting routes change: re-check yearly."
+    )
+  },
+  "e1-key-educators": {
+    text: "The answer key for the Essentials 1 educators inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.",
+    attestation: proposedBy(
+      "The messages are made up. Check the changed bank details and the gift-card voice message against the FBI PSA (I-120324-PSA) and the NCSC's signs; check that both genuine messages ask for nothing and come the usual way. Judgements, not facts: attest that they are reasonable."
+    )
+  },
+  "e1-key-professionals": {
+    text: "The answer key for the Essentials 1 professionals inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.",
+    attestation: proposedBy(
+      "The messages are made up. Check the look-alike supplier address, the fake video call from a finance director (the FBI PSA lists fake videos of company leaders) and the parcel text (NCSC guidance on missed-parcel texts). Judgements, not facts."
+    )
+  },
+  "e1-key-students": {
+    text: "The answer key for the Essentials 1 students inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice, and every scam points to a trusted adult.",
+    attestation: proposedBy(
+      "The messages are made up and involve no images or abuse. Check the copied voice asking for a code (FBI PSA: family secret word, call back) and the prize asking for a password. The tests require a trusted adult in every students scam."
+    )
+  },
+  "e1-key-share": {
+    text: "The answer key for the Essentials 1 sorter is reasonable: passwords, other people's messages, health details and addresses, photos of your face, and photos with location stay out of a public AI tool; general questions and public information are fine.",
+    attestation: proposedBy(
+      "Follows the NCSC's advice not to put sensitive information into public AI tools, the FBI's advice to limit online images and location (PSA I-120324-PSA; September 2026 podcast), and the rule that other people's information isn't yours to share. Judgements, not facts."
+    )
   }
 };
