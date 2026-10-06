@@ -321,7 +321,7 @@ export default {
       title: "What the pattern looks like",
       minutes: 8,
       targets: ["10.1", "10.2", "10.3"],
-      principles: ["coercive-control-pattern", "grooming-stages", "scam-stages", "dark-tetrad", "online-harm-traits", "work-harm-traits", "gut-feeling-evidence", "bau-repeated-behavior"],
+      principles: ["coercive-control-pattern", "grooming-stages", "scam-stages", "dark-tetrad", "online-harm-traits", "work-harm-traits", "gut-feeling-evidence", "fbi-teens-online", "bau-repeated-behavior"],
       tables: [
         {
           title: "Patterns to watch for, in person and online",

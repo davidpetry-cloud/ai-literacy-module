@@ -508,7 +508,7 @@ export const CLAIMS = {
   "grooming-stages": {
     text: "Grooming tends to follow stages: choosing a target, gaining access and isolating them, building trust with attention, gifts and secrets, then pushing boundaries step by step. Early steps can look innocent, and the same tactics, including flattery, bribes and threats, are used online.",
     attestation: proposedBy(
-      "Winters and Jeglic (2017), 'Stages of sexual grooming: Recognizing potentially predatory behaviors of child molesters', Deviant Behavior 38(6), 724-733. Whittle, Hamilton-Giachritsis, Beech and Collings (2013), 'A review of online grooming: Characteristics and concerns', Aggression and Violent Behavior 18(1), 62-70."
+      "Winters and Jeglic (2017), 'Stages of sexual grooming: Recognizing potentially predatory behaviors of child molesters', Deviant Behavior 38(6), 724-733. Whittle, Hamilton-Giachritsis, Beech and Collings (2013), 'A review of online grooming: Characteristics and concerns', Aggression and Violent Behavior 18(1), 62-70. Matches the FBI's own description: a predator builds rapport, then slowly pushes the young person past their comfort zone (FBI, 'Inside the FBI Podcast: Keeping Teens Safe on the Web' (4 September 2026), added 2026-10-05 at David's request)."
     )
   },
   "scam-stages": {
@@ -620,9 +620,9 @@ export const CLAIMS = {
     )
   },
   "sextortion-advice": {
-    text: "For financially motivated sextortion, the FBI advises people not to pay, to block the person but save the profile and messages, to ask a trusted adult or law enforcement for help, and to report it to a local FBI field office, 1-800-CALL-FBI, tips.fbi.gov or local law enforcement. It says this is not the victim's fault. For people under 18, NCMEC's Take It Down service can help remove images.",
+    text: "For financially motivated sextortion, the FBI advises people not to pay, to block the person but save the profile and messages, to ask a trusted adult or law enforcement for help, and to report it to a local FBI field office, 1-800-CALL-FBI, tips.fbi.gov or local law enforcement. It says this is not the victim's fault. Criminals also use AI to put a person's face on a fake image and threaten to share it; the same advice applies. For people under 18, NCMEC's Take It Down service can help remove images.",
     attestation: proposedBy(
-      "FBI, 'Financially Motivated Sextortion' (fbi.gov), 'FBI and Partners Issue National Public Safety Alert on Financial Sextortion Schemes' (press release) and the FBI Sextortion pages (fbi.gov/sextortion); NCMEC Take It Down (takeitdown.ncmec.org). US guidance; FBI IC3 also warns against paid 'removal' services (PSA, April 2023). Re-check yearly: ttlDays 365."
+      "FBI, 'Financially Motivated Sextortion' (fbi.gov), 'FBI and Partners Issue National Public Safety Alert on Financial Sextortion Schemes' (press release) and the FBI Sextortion pages (fbi.gov/sextortion); NCMEC Take It Down (takeitdown.ncmec.org). US guidance; FBI IC3 also warns against paid 'removal' services (PSA, April 2023). AI fakes: FBI, 'Inside the FBI Podcast: Keeping Teens Safe on the Web' (4 September 2026), where a Special Agent who investigates crimes against children describes a face cropped onto another body with a demand for money, and the FBI PSA I-120324-PSA lists AI-made extortion images. Added 2026-10-05 at David's request. Re-check yearly: ttlDays 365."
     )
   },
   "child-helplines": {
@@ -646,7 +646,7 @@ export const CLAIMS = {
   "l12-key-students": {
     text: "The answer key for the Lesson 12 students situations is reasonable: the threat situation follows the FBI's advice (don't pay; block but don't delete; tell a trusted adult), and every situation points to a trusted adult.",
     attestation: proposedBy(
-      "The situations are made up and stop short of any abuse. Check situation 1 against the FBI's national alert on financial sextortion and NCMEC's Take It Down. The tests require a trusted adult in every students situation."
+      "The situations are made up and stop short of any abuse. Check situation 1 against the FBI's national alert on financial sextortion and NCMEC's Take It Down. The tests require a trusted adult in every students situation. The sextortion note says the advice holds even if the photo is fake (FBI podcast, September 2026)."
     )
   },
 
@@ -670,9 +670,9 @@ export const CLAIMS = {
     )
   },
   "fbi-teens-online": {
-    text: "The FBI advises teens to keep personal details off their profiles, set accounts to private, turn off location sharing, including the location saved in photos, and check friend requests with a friend or trusted adult. Criminals have used AI to put a teen's face on a fake image and then demand money.",
+    text: "The FBI advises teens to trust their gut and stop any online conversation that feels odd, keep personal details off their profiles, set accounts to private, turn off location sharing, including the location saved in photos, and check friend requests with a friend or trusted adult. Criminals have used AI to put a teen's face on a fake image and then demand money.",
     attestation: proposedBy(
-      "FBI, 'Inside the FBI Podcast: Keeping Teens Safe on the Web' (4 September 2026, fbi.gov/news/podcasts), with a Special Agent who investigates crimes against children in the Washington Field Office, an FBI employee assistance counselor and a retired FBI child-adolescent forensic interviewer. Covers sextortion, including AI face-swapped images; keeping personal information minimal; photo metadata and geolocation; private settings; vetting friend requests; 'trust your gut'; victims are not to blame; report at tips.fbi.gov or 1-800-CALL-FBI, and Take It Down (NCMEC). Shared by David on 2026-10-05; transcript read the same day."
+      "FBI, 'Inside the FBI Podcast: Keeping Teens Safe on the Web' (4 September 2026, fbi.gov/news/podcasts), with a Special Agent who investigates crimes against children in the Washington Field Office, an FBI employee assistance counselor and a retired FBI child-adolescent forensic interviewer. Covers sextortion, including AI face-swapped images; keeping personal information minimal; photo metadata and geolocation; private settings; vetting friend requests; 'trust your gut'; victims are not to blame; report at tips.fbi.gov or 1-800-CALL-FBI, and Take It Down (NCMEC). Shared by David on 2026-10-05; transcript read the same day. Cited in Essentials 1, Lesson 10 (trusting how someone makes you feel, online grooming) and Lesson 12 (sextortion, the gut step)."
     )
   },
   "passwords-nist": {

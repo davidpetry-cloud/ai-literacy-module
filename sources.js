@@ -98,7 +98,7 @@ export const SOURCES = [
   { lessons: [13], apa: "Cybersecurity and Infrastructure Security Agency. (n.d.). *More than a password*.", url: "https://www.cisa.gov/MFA" },
   { lessons: [13], apa: "FIDO Alliance. (n.d.). *Passkeys*.", url: "https://fidoalliance.org/passkeys/" },
   { lessons: [13], apa: "Federal Bureau of Investigation. (2024, December 3). *Criminals use generative artificial intelligence to facilitate financial fraud* (Public Service Announcement I-120324-PSA). Internet Crime Complaint Center.", url: "https://www.ic3.gov/PSA/2024/PSA241203" },
-  { lessons: [13], apa: "Federal Bureau of Investigation. (2026, September 4). *Keeping teens safe on the web* [Audio podcast episode]. In *Inside the FBI*.", url: "https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web" },
+  { lessons: [10, 12, 13], apa: "Federal Bureau of Investigation. (2026, September 4). *Keeping teens safe on the web* [Audio podcast episode]. In *Inside the FBI*.", url: "https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web" },
   { lessons: [13], apa: "Federal Trade Commission. (n.d.). *ReportFraud.ftc.gov*.", url: "https://reportfraud.ftc.gov/" },
   { lessons: [13], apa: "National Cyber Security Centre. (2023, March 14). *ChatGPT and large language models: What's the risk?*", url: "https://www.ncsc.gov.uk/blog-post/chatgpt-and-large-language-models-whats-the-risk" },
   { lessons: [13], apa: "National Cyber Security Centre. (n.d.). *How to spot a scam email, text message or call*.", url: "https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams" },

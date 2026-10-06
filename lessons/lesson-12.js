@@ -12,6 +12,8 @@
  * (2026) and the FBI's advice on sextortion. Self-contained, so the series
  * can move to its own module later.
  * S4. 12.3 added at David's request on 2026-09-25; David confirmed the wording the same day.
+ * 2026-10-05, at David's request: the FBI's podcast "Keeping Teens Safe on the Web"
+ * (September 2026) adds AI-faked images to the sextortion advice, and 1-800-CALL-FBI.
  */
 
 export default {
@@ -271,7 +273,7 @@ export default {
                   {
                     "text": "Don't pay. Save the messages, block them, and tell a trusted adult now. Take It Down can help remove images.",
                     "key": "safe",
-                    "note": "This is called sextortion, and this is what the FBI advises. It's not your fault, and you won't be in trouble for telling."
+                    "note": "This is called sextortion, and this is what the FBI advises, even if the photo is fake. It's not your fault, and you won't be in trouble for telling."
                   }
                 ]
               },
@@ -364,7 +366,7 @@ export default {
       title: "Protect Yourself and Your Gifts",
       minutes: 8,
       targets: ["12.1", "12.2", "12.3"],
-      principles: ["gaslighting-defined", "gut-feeling-evidence", "never-promise-secrecy", "mandated-reporting-us", "sextortion-advice", "child-helplines"],
+      principles: ["gaslighting-defined", "gut-feeling-evidence", "fbi-teens-online", "never-promise-secrecy", "mandated-reporting-us", "sextortion-advice", "child-helplines"],
       tables: [
         {
           title: "Gaslighting, and what helps",
@@ -392,7 +394,7 @@ export default {
           rows: [
             ["Someone you trust", "Always a good first step."],
             ["The safeguarding lead, at school", "When a child could be at risk."],
-            ["The app, and law enforcement", "Threats, blackmail, or someone asking for photos. In the US, that includes the FBI: tips.fbi.gov."],
+            ["The app, and law enforcement", "Threats, blackmail, or someone asking for photos, even if a photo is fake. In the US, tell the FBI at tips.fbi.gov or 1-800-CALL-FBI (1-800-225-5324). Learn more at fbi.gov/sextortion."],
             ["Take It Down", "To help remove images of someone under 18."],
             ["Child Helpline International", "To find a helpline in your country."]
           ]
