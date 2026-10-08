@@ -696,19 +696,19 @@ export const CLAIMS = {
   "e1-key-educators": {
     text: "The answer key for the Essentials 1 educators inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.",
     attestation: proposedBy(
-      "The messages are made up. Check the changed bank details and the gift-card voice message against the FBI PSA (I-120324-PSA) and the NCSC's signs; check that both genuine messages ask for nothing and come the usual way. Judgements, not facts: attest that they are reasonable."
+      "The messages are made up. Check the automated booking call with changed bank details (it says it's an AI, which doesn't make it honest; EU AI Act Art. 50(1) makes such disclosure a duty for lawful providers from 2 August 2026, and scammers ignore it) and the gift-card voice message against the FBI PSA (I-120324-PSA) and the NCSC's signs; check that both genuine messages ask for nothing and come the usual way. Voice-bot call swapped in for the bank-details email on 2026-10-08 (docs/essentials-gaps-ai-calls-and-security.md). Judgements, not facts: attest that they are reasonable."
     )
   },
   "e1-key-professionals": {
     text: "The answer key for the Essentials 1 professionals inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.",
     attestation: proposedBy(
-      "The messages are made up. Check the look-alike supplier address, the fake video call from a finance director (the FBI PSA lists fake videos of company leaders) and the parcel text (NCSC guidance on missed-parcel texts). Judgements, not facts."
+      "The messages are made up. Check the look-alike supplier address, the fake video call from a finance director (the FBI PSA lists fake videos of company leaders) and the 'bank fraud team' voice-bot call. For the call: FTC consumer alert (T. Miller, 8 July 2024): no bank fraud department asks for a verification code, and moving money to 'protect it' is always a scam; call the number on your statement. Stop Scams UK, '159' (read 2026-10-08): 159 reaches customers of over 99% of UK retail bank current accounts and can't be spoofed. FCC 24-17 ¶ 4: AI in robocalls can interact with people as though it were a live caller. The call replaced the parcel text on 2026-10-08. Judgements, not facts."
     )
   },
   "e1-key-students": {
     text: "The answer key for the Essentials 1 students inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice, and every scam points to a trusted adult.",
     attestation: proposedBy(
-      "The messages are made up and involve no images or abuse. Check the copied voice asking for a code (FBI PSA: family secret word, call back) and the prize asking for a password. The tests require a trusted adult in every students scam."
+      "The messages are made up and involve no images or abuse. Check the copied voice asking for a code (FBI PSA: family secret word, call back) and the 'game support' voice-bot call asking for a code (FBI IC3 I-051525-PSA: never give a two-factor code to anyone; FTC, 8 July 2024: no caller asks for a verification code). The call replaced the prize text on 2026-10-08. The tests require a trusted adult in every students scam."
     )
   },
   "e1-key-share": {
