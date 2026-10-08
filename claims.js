@@ -693,6 +693,18 @@ export const CLAIMS = {
       "NCSC, 'Report a scam email' and 'Report a scam text message' (ncsc.gov.uk/collection/phishing-scams), read 2026-10-05: forward emails to report@phishing.gov.uk; most UK phone providers accept scam texts forwarded to 7726. FBI IC3 (ic3.gov); FTC (reportfraud.ftc.gov). Reporting routes change: re-check yearly."
     )
   },
+  "ai-voice-calls": {
+    text: "AI can make a caller's voice sound human, copy a real person's voice, and carry on a conversation, so a voice alone doesn't prove who, or what, is calling.",
+    attestation: proposedBy(
+      "FCC Declaratory Ruling FCC 24-17 (8 February 2024), para. 4, quoting the FCC's 2023 notice of inquiry: current uses of AI in robocalling include 'emulating human speech and interacting with consumers as though they were live human callers'; para. 5: voice cloning 'artificially simulates a human voice'. FBI IC3 PSA I-051525-PSA (15 May 2025): vishing 'may incorporate AI-generated voices', and cloned and real voices 'can sound nearly identical'. FTC consumer alert (A. Puig, 20 March 2023): 'Don't trust the voice.' No source checked measures how common conversational AI scam bots are, so the lesson says 'can', not 'most'. Read 2026-10-08; see docs/essentials-gaps-ai-calls-and-security.md."
+    )
+  },
+  "uk-159": {
+    text: "In the UK, calling 159 connects you safely to your bank: it reaches most banks, and scammers can't fake the number.",
+    attestation: proposedBy(
+      "Stop Scams UK, '159 Phone number' (stopscamsuk.org.uk/159), read 2026-10-08: 159 connects customers of more than 99% of UK retail bank current accounts with their bank, and 'cannot be spoofed or impersonated'. Stop Scams UK is an industry body (banks, telecoms, tech), not a government agency. 'Most banks' simplifies '99% of retail bank current accounts'."
+    )
+  },
   "e1-key-educators": {
     text: "The answer key for the Essentials 1 educators inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.",
     attestation: proposedBy(
