@@ -336,7 +336,7 @@ export default {
       title: "Habits that hold up",
       minutes: 8,
       targets: ["E1.1", "E1.2", "E1.3", "E1.4"],
-      principles: ["ai-fraud-fbi", "scam-signs-ncsc", "ai-tools-confidential", "fbi-teens-online", "passwords-nist", "passkeys-phishing-resistant", "report-scams"],
+      principles: ["ai-fraud-fbi", "ai-voice-calls", "scam-signs-ncsc", "ai-tools-confidential", "fbi-teens-online", "passwords-nist", "passkeys-phishing-resistant", "report-scams", "uk-159"],
       tables: [
         {
           title: "Five signs of a scam (the UK's National Cyber Security Centre)",
@@ -355,6 +355,7 @@ export default {
           rows: [
             ["A perfect message, with no spelling mistakes.", "Don't judge by spelling. Look for the five signs."],
             ["A copy of someone's voice.", "Hang up, and call back on a number you already have. Or ask for your family's secret word."],
+            ["A caller that sounds human but is a computer.", "Judge what it asks for, not how it sounds. Hang up and call the number on your card, statement or booking."],
             ["A fake photo or video call.", "Look for odd details, like hands or shadows. Ask something only the real person would know."],
             ["Your face on a fake image, to threaten you.", "It's not your fault. Don't pay. Save the messages, block, and tell someone you trust."],
             ["Many fake profiles at once.", "Don't accept friend requests from people you don't know. Ask a friend or a trusted adult first."]
@@ -379,6 +380,7 @@ export default {
             ["A trusted adult (students)", "Tell them first, about anything that worries you."],
             ["Your school or workplace", "Tell IT or your manager, especially about a fake request from a colleague."],
             ["The UK", "Forward scam emails to report@phishing.gov.uk, and scam texts to 7726."],
+            ["Your bank, in the UK", "Hang up, then call 159. It reaches most banks, and scammers can't fake it."],
             ["The US", "Report scams to the FBI at ic3.gov, or to the FTC at ReportFraud.ftc.gov."]
           ]
         }

@@ -435,8 +435,11 @@ Each can be approved, changed or dropped on its own.
    `e1-key-professionals` and `e1-key-students` name the new calls and their sources,
    and `sources.js` lists FCC 24-17, the FTC's 2024 bank-call alert, FBI
    I-051525-PSA, Stop Scams UK's 159 page, and the AI Act for Essentials 1.
-4. The abstract row, the UK 159 row, the say line and the watch line. **Still open**:
-   not part of the 2026-10-08 decision, so not built.
+4. The abstract row, the UK 159 row, the say line and the watch line. **Rows built
+   2026-10-08** (David), with the claims `ai-voice-calls` and `uk-159` added as model
+   proposals. The "What AI changes" row reads "A caller that sounds human but is a
+   computer." without "and can call thousands of people at once", which no checked
+   source supports for voice bots. The say and watch lines are **still open**.
 5. Essentials 2, "Keeping Your Devices and Accounts Safe": yes or no.
 6. E2.1 to E2.3: approve, change or drop each.
 7. E2.4, prompt injection: keep it in Essentials 2, or move it to "UX/UI for AI builders".
