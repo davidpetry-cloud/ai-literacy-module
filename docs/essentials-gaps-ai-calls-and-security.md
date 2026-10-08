@@ -1,8 +1,10 @@
 # Essentials gaps: AI voice-bot calls and security topics. Design note
 
 **Status:** proposal, 2026-10-08, for David to approve, change or drop item by item.
-Nothing in `claims.js`, the lesson files or any page has changed. Every claim below is
-a draft `source: "model"` record that lives only in this note.
+**Part 1 decided and built the same day** (see "Decisions for David"): the swap, as
+drafted, with no E1.5. The other Part 1 extras and all of Part 2 are still open. Every
+claim below is a draft `source: "model"` record that lives only in this note; the
+built swap changed only the three existing answer-key claims' rationales.
 
 **Question (David, 2026-10-08):** does the course cover phone calls from chatbots, and
 cyber security? Essentials 1 covers cloned voices of people the learner knows (a
@@ -425,9 +427,16 @@ Already in `sources.js` and still current for this work: FBI IC3 PSA I-120324-PS
 Each can be approved, changed or dropped on its own.
 
 1. Voice bots go into Essentials 1 with **no new objective** (recommended), or with E1.5.
+   **Decided 2026-10-08: no E1.5.**
 2. Swap one scam per track (recommended), or Option B, six messages per track.
-3. The three draft inbox items, as written or changed.
-4. The abstract row, the UK 159 row, the say line and the watch line.
+   **Decided 2026-10-08: the swap.**
+3. The three draft inbox items, as written or changed. **Built 2026-10-08 as written**,
+   in `lessons/lesson-13.js`. The rationales of `e1-key-educators`,
+   `e1-key-professionals` and `e1-key-students` name the new calls and their sources,
+   and `sources.js` lists FCC 24-17, the FTC's 2024 bank-call alert, FBI
+   I-051525-PSA, Stop Scams UK's 159 page, and the AI Act for Essentials 1.
+4. The abstract row, the UK 159 row, the say line and the watch line. **Still open**:
+   not part of the 2026-10-08 decision, so not built.
 5. Essentials 2, "Keeping Your Devices and Accounts Safe": yes or no.
 6. E2.1 to E2.3: approve, change or drop each.
 7. E2.4, prompt injection: keep it in Essentials 2, or move it to "UX/UI for AI builders".

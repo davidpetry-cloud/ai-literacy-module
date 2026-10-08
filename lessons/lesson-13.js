@@ -7,7 +7,9 @@
  * Backward design: objectives approved 2026-10-05, then the warm-up and check,
  * then the stages (design approved by David the same day). The concrete stage
  * is an inbox of made-up messages, genuine or scam; the pictorial is a sorter
- * for what's safe to put into an AI tool. Facts rest on the FBI (IC3, and its
+ * for what's safe to put into an AI tool. On 2026-10-08 David approved swapping
+ * one scam per track for an AI voice-bot call, with no new objective
+ * (docs/essentials-gaps-ai-calls-and-security.md). Facts rest on the FBI (IC3, and its
  * September 2026 podcast on keeping teens safe online), the UK's NCSC, NIST
  * and CISA.
  * Plan and sources: docs/lesson-13-design.md. Security claims must rest on
@@ -129,14 +131,13 @@ export default {
             claim: "e1-key-educators",
             items: [
               {
-                kind: "email",
-                from: "Bookings, Lakeside Coach Tours <bookings@lakeside-coach-tours.example>",
-                subject: "New bank details: balance due today",
-                text: "Dear organizer, our bank has changed. Please pay the balance for your class trip to the new account below today, or we may have to give your coach to another school. Thank you for choosing Lakeside.",
+                kind: "voice",
+                from: "An automated caller, \"Lakeside Coach Tours booking assistant\"",
+                text: "Hello, I'm Lakeside Coach Tours' automated booking assistant. Our bank has changed. To keep your class trip on Friday, please pay the balance to our new account today. I can text you the details now. Shall I go ahead?",
                 key: "scam",
                 signs: ["urgency", "scarcity", "new-details"],
-                check: "Call the company on the number in your original booking, not the one in this email. Tell your school office before you pay.",
-                note: "Changed bank details are one of the commonest payment scams. AI can make the email look exactly like the real company's."
+                check: "Hang up. Call the company on the number in your original booking. Tell your school office before you pay anything.",
+                note: "It said it was an AI, and many firms do use them. Saying so doesn't make it honest. The new bank details are the warning sign."
               },
               {
                 kind: "voice",
@@ -215,13 +216,13 @@ export default {
                 note: "Criminals use AI to fake video of company leaders. Secrecy plus a rushed payment is the pattern."
               },
               {
-                kind: "text",
-                from: "An unknown number",
-                text: "Your parcel could not be delivered. Pay a $1.99 redelivery fee today to avoid it being returned: [link]",
+                kind: "voice",
+                from: "A caller from \"your bank's fraud team\"",
+                text: "A calm voice answers every question at once. \"We've stopped a suspicious payment from your business account. Please read me the code we just texted you. Then we'll move your balance to a safe account until it's fixed.\" You ask if it's a real person. \"Yes, I'm Daniel, in the fraud team.\"",
                 key: "scam",
-                signs: ["urgency", "emotion", "new-details"],
-                check: "Don't tap the link. Track the parcel on the courier's own site, or the shop's.",
-                note: "A tiny fee gets your card details. Forward scam texts to your phone company's reporting number."
+                signs: ["authority", "urgency", "emotion", "new-details"],
+                check: "Hang up. Call your bank on the number on your card or statement. In the UK, call 159. Never read out a code.",
+                note: "This may be an AI voice bot, and it can claim to be human. A real fraud team never asks for your code, or tells you to move money to keep it safe."
               },
               {
                 kind: "voice",
@@ -261,13 +262,13 @@ export default {
                 note: "It comes in the school's own app, and asks for nothing."
               },
               {
-                kind: "text",
-                from: "\"Prize Team\"",
-                text: "You've won 5,000 free coins! Only 10 winners left. Log in here with your game password to claim.",
+                kind: "voice",
+                from: "A caller from \"support\" for a game you play",
+                text: "Hi! I'm Max, from game support. Someone just tried to hack your account. I can lock it for you right now. I've sent a code to your phone. Read it to me, quick, before they get in!",
                 key: "scam",
-                signs: ["scarcity", "urgency", "emotion"],
-                check: "Don't log in from the message. Open the game yourself. Never give your password.",
-                note: "No real prize needs your password. If you already logged in, tell a trusted adult and change your password."
+                signs: ["authority", "urgency", "emotion"],
+                check: "Hang up. Open the game yourself and check your account there. Never read out a code. Tell a trusted adult.",
+                note: "The voice may be a computer, not a person. Real support never asks for a code. A code can let someone into your account. It's not your fault if you're fooled."
               },
               {
                 kind: "voice",
