@@ -981,14 +981,21 @@ describe("reference tables reflow at 320px (WCAG 1.4.10)", () => {
   it.each(COURSE.lessons.filter((l) => l.ready).map((l) => [l.n, l]))("lesson %i: every table of three or more columns has a matching stacked list", (n, lesson) => {
     const doc = lessonDoc(TRACK_IDS[0], lesson);
     const abstract = lesson.stages.find((s) => s.kind === "abstract");
-    const wraps = doc.querySelectorAll('[data-stage="abstract"] .ref-wrap');
-    expect(wraps).toHaveLength((abstract.tables ?? []).length);
+    const tables = [...doc.querySelectorAll('[data-stage="abstract"] table.ref')];
+    expect(tables).toHaveLength((abstract.tables ?? []).length);
     (abstract.tables ?? []).forEach((t, i) => {
-      const list = wraps[i].querySelector(".ref-list");
-      if (t.head.length < 3) return expect(list).toBeNull();
+      const wrap = tables[i].closest(".ref-wrap");
+      // The wrap's container query hides the table, so a narrow table must stay outside it.
+      if (t.head.length < 3) return expect(wrap).toBeNull();
+      const list = wrap.querySelector(".ref-list");
       expect([...list.querySelectorAll("dt")].map((d) => d.textContent)).toEqual(t.rows.map((r) => r[0]));
       expect(list.querySelectorAll("dd")).toHaveLength(t.rows.length * (t.head.length - 1));
     });
+  });
+
+  it.each(COURSE.lessons.filter((l) => l.ready).map((l) => [l.n, l]))("lesson %i: no table is hidden at phone width without a stacked list in its place", (n, lesson) => {
+    const doc = lessonDoc(TRACK_IDS[0], lesson);
+    for (const w of doc.querySelectorAll(".ref-wrap")) expect(w.querySelector(".ref-list"), w.textContent.slice(0, 60)).not.toBeNull();
   });
 });
 

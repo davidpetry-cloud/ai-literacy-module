@@ -697,7 +697,9 @@ function refTables(tables = []) {
         : `<dl class="ref-list">${t.rows
             .map((r) => `<div><dt>${esc(r[0])}</dt>${r.slice(1).map((c, i) => `<dd><span class="ref-k">${esc(t.head[i + 1])}:</span> ${esc(c)}</dd>`).join("")}</div>`)
             .join("")}</dl>`;
-      return `<h3 class="subhead">${esc(t.title)}</h3><div class="ref-wrap">${table}${list}</div>`;
+      // Only a table with a stacked twin goes in .ref-wrap: its container query hides the table,
+      // so a two-column table wrapped there would vanish on a phone with nothing in its place.
+      return `<h3 class="subhead">${esc(t.title)}</h3>${list ? `<div class="ref-wrap">${table}${list}</div>` : table}`;
     })
     .join("");
 }

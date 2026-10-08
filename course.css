@@ -333,7 +333,7 @@ ol.refs{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(-
 .ref-k{font-weight:600;color:var(--ink-3)}
 @container (max-width:440px){.ref-wrap table.ref{display:none}.ref-wrap .ref-list{display:block}}
 table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.1);margin:0 0 16px;font-size:var(--fs-sm)}
-.ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 .ref thead th{color:var(--ink-3)}
 .ref tbody th{color:var(--ink);font-weight:600}
 /* audit + contrast checker (Lesson 7) */
