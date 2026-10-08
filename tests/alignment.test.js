@@ -702,7 +702,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
         expect(concrete.tracks[t]?.context, t).toBeTruthy();
         expect(inbox(t).items, t).toHaveLength(5);
         for (const m of inbox(t).items) {
-          expect(["email", "text", "voice", "video"], m.text).toContain(m.kind);
+          expect(["email", "text", "voice", "call", "video"], m.text).toContain(m.kind);
           expect(["genuine", "scam"], m.text).toContain(m.key);
           for (const f of ["from", "text", "check", "note"]) expect(m[f], `${m.text} ${f}`).toBeTruthy();
           for (const sg of m.signs) expect(SIGNS, m.text).toContain(sg);
@@ -718,7 +718,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
     it("includes genuine messages, so learners practise not panicking, and a copied voice or fake video", () => {
       for (const t of TRACK_IDS) {
         expect(inbox(t).items.filter((m) => m.key === "genuine").length, t).toBeGreaterThanOrEqual(1);
-        expect(inbox(t).items.some((m) => m.key === "scam" && ["voice", "video"].includes(m.kind)), t).toBe(true);
+        expect(inbox(t).items.some((m) => m.key === "scam" && ["voice", "call", "video"].includes(m.kind)), t).toBe(true);
       }
     });
 

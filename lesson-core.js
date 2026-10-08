@@ -1122,7 +1122,8 @@ export const SIGN_LABEL = {
   secrecy: "Secrecy",
   "new-details": "New details or payment"
 };
-const MESSAGE_KIND = { email: "Email", text: "Text message", voice: "Voice message (written out)", video: "Video call (notes)" };
+// A voice message is a recording; a phone call is live, so the caller (or bot) can answer back.
+const MESSAGE_KIND = { email: "Email", text: "Text message", voice: "Voice message (written out)", call: "Phone call (written out)", video: "Video call (notes)" };
 
 function inboxReveal(m) {
   const signs = m.signs.length ? m.signs.map((s) => SIGN_LABEL[s]).join(", ") : "None";

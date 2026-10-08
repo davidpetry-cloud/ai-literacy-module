@@ -131,7 +131,7 @@ export default {
             claim: "e1-key-educators",
             items: [
               {
-                kind: "voice",
+                kind: "call",
                 from: "An automated caller, \"Lakeside Coach Tours booking assistant\"",
                 text: "Hello, I'm Lakeside Coach Tours' automated booking assistant. Our bank has changed. To keep your class trip on Friday, please pay the balance to our new account today. I can text you the details now. Shall I go ahead?",
                 key: "scam",
@@ -140,7 +140,7 @@ export default {
                 note: "It said it was an AI, and many firms do use them. Saying so doesn't make it honest. The new bank details are the warning sign."
               },
               {
-                kind: "voice",
+                kind: "call",
                 from: "An unknown number, in your principal's voice",
                 text: "Hi, it's Dr. Hale. I'm stuck in a board meeting and need a favor. Can you buy six $100 gift cards for staff prizes and text me the codes? Keep it quiet, it's a surprise. I'll pay you back today.",
                 key: "scam",
@@ -216,7 +216,7 @@ export default {
                 note: "Criminals use AI to fake video of company leaders. Secrecy plus a rushed payment is the pattern."
               },
               {
-                kind: "voice",
+                kind: "call",
                 from: "A caller from \"your bank's fraud team\"",
                 text: "A calm voice answers every question at once. \"We've stopped a suspicious payment from your business account. Please read me the code we just texted you. Then we'll move your balance to a safe account until it's fixed.\" You ask if it's a real person. \"Yes, I'm Daniel, in the fraud team.\"",
                 key: "scam",
@@ -262,7 +262,7 @@ export default {
                 note: "It comes in the school's own app, and asks for nothing."
               },
               {
-                kind: "voice",
+                kind: "call",
                 from: "A caller from \"support\" for a game you play",
                 text: "Hi! I'm Max, from game support. Someone just tried to hack your account. I can lock it for you right now. I've sent a code to your phone. Read it to me, quick, before they get in!",
                 key: "scam",
@@ -456,7 +456,7 @@ export default {
     },
     {
       channel: "hearing",
-      note: "The voice messages and the video call are written out as transcripts and notes, so no audio is needed."
+      note: "The phone calls, voice messages and video call are written out as transcripts and notes, so no audio is needed."
     },
     {
       channel: "attention",

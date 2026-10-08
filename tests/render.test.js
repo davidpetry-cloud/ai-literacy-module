@@ -1567,6 +1567,8 @@ describe.each(TRACK_IDS)("essentials 1, %s track", (track) => {
     inboxData(track).items.forEach((m, i) => {
       expect(ms[i].querySelector(".msg-from").textContent).toBe(`From: ${m.from}`);
       expect(ms[i].querySelector(".msg-kind").textContent).toBeTruthy();
+      // A live call is labelled a call, not a recorded voice message.
+      if (m.kind === "call") expect(ms[i].querySelector(".msg-kind").textContent).toBe("Phone call (written out)");
       expect(ms[i].querySelector("details").open).toBe(false);
       expect(ms[i].querySelector(".k").textContent).toBe(INBOX_LABEL[m.key]);
       if (m.signs.length) for (const sg of m.signs) expect(ms[i].querySelector("details").textContent).toContain(SIGN_LABEL[sg]);
