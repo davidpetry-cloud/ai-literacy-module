@@ -93,7 +93,12 @@ a{color:var(--ink-2)}
 .top #top > *{grid-column:1}
 .top #top > .tracks{grid-column:2;grid-row:1 / span 4;flex-direction:column;flex-wrap:nowrap;gap:0}
 
-main{padding:32px 0 48px}
+/* Room under the header. main also has .wrap, whose padding shorthand would win over a plain
+   main rule (a class beats an element) and leave the content touching the header. */
+main.wrap{padding-top:32px}
+/* The hub and Sources headers have no lesson-colour band, and in dark mode the header and page are
+   almost the same colour, so an amber rule marks the header's edge (as on Singapore Math). */
+[data-page="hub"] .top,[data-page="sources"] .top{border-bottom:4px solid var(--amber)}
 section{margin-bottom:48px}
 h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--ink);margin:0 0 12px;line-height:var(--lh-heading)}
 .lede{color:var(--muted);max-width:var(--measure);margin:0 0 16px}
@@ -489,7 +494,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --edge:#666;--btn-edge:#0F2338;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}
-  .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none}
+  .top,[data-page] .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none}
   .top h1,.facts b{color:#000}
   .facts,.top .sub,.top .eyebrow{color:#333}
   .tracks,.btn,.back,.theme-toggle,.foot{display:none}

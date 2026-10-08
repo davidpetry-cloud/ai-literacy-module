@@ -1,7 +1,8 @@
 # Visual refresh: a proposal
 
-**Status:** proposal only, 2026-10-08. Nothing in the site has changed. Each item
-below can be approved, changed or turned down on its own. The before/after
+**Status:** proposal, 2026-10-08. Item 1 approved by David and built the same
+day; items 2–5 are still open. Each item can be approved, changed or turned
+down on its own. The before/after
 images are in [`visual-refresh/`](visual-refresh/). They were made by adding the
 CSS sketches to the local preview for the screenshot only.
 
@@ -47,7 +48,7 @@ Ranked by how many people it helps and how much, divided by the effort.
 
 | # | Item | Principle (foundation) | Who it affects | Effort | Your call? |
 |---|---|---|---|---|---|
-| 1 | Room under the header | Hierarchy (Gestalt) | Everyone, every page | About 15 minutes | No |
+| 1 | Room under the header (**built**) | Hierarchy (Gestalt) | Everyone, every page | About 15 minutes | No |
 | 2 | One box language | Consistency (Shneiderman; Nielsen) | Everyone on a lesson page | Under an hour | No |
 | 3 | A compact header on phones | Usability (Nielsen, 1993) | Everyone on a phone, every page | 1–2 hours | **Yes**: toggle wording |
 | 4 | Calmer hub cards | Hierarchy (Gestalt) | Everyone who opens the hub | 1–2 hours | **Yes**: objectives on the hub |
@@ -58,7 +59,13 @@ device, not by count. Phones matter most for the Students track.
 
 ---
 
-## 1. Room under the header
+## 1. Room under the header — **built 2026-10-08**
+
+Approved by David on 2026-10-08. Built as below, with the bottom padding left
+as it was (it never applied, so restoring it would have added a second 48px
+before the footer). Tests: `main.wrap` keeps 32px, the hub and Sources
+headers carry the amber rule, and the edge shows in both themes.
+
 
 **What's wrong.** Every page's content starts right against the header. On the
 Sources page the first heading sits on the header's edge. The gap should be

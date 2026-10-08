@@ -90,6 +90,19 @@ describe.each(Object.keys(THEMES))("%s theme contrast", (name) => {
   });
 });
 
+// Visual refresh item 1 (David, 2026-10-08). In dark mode the header and the page are almost the same
+// colour, so the hub and Sources headers need an edge that shows. In light mode the dark header is its own edge.
+describe("header edge", () => {
+  it("marks the hub and Sources header with an amber rule", () => {
+    expect(rules.find((r) => r.sel === '[data-page="hub"] .top,[data-page="sources"] .top')?.body).toContain("border-bottom:4px solid var(--amber)");
+  });
+
+  it("shows the amber rule at 3:1 against the dark page, and the header itself against the light page", () => {
+    expect(contrast(THEMES.dark, "--amber", "--paper")).toBeGreaterThanOrEqual(3);
+    expect(contrast(THEMES.light, "--header-bg", "--paper")).toBeGreaterThanOrEqual(3);
+  });
+});
+
 describe("colour usage", () => {
   it("defines every light token again for dark", () => {
     const dark = themeTokens(':root[data-theme="dark"]');
@@ -184,6 +197,11 @@ describe("colour usage", () => {
     expect(rules.find((r) => r.sel === ".btn").body).toContain("border:2px solid var(--btn-edge)");
     expect(rules.find((r) => r.sel === ".g-cell").body).toContain("stroke:var(--edge)");
     expect(rules.find((r) => r.sel === ".g-mark circle").body).toContain("stroke:var(--btn-edge)");
+  });
+
+  // main also has .wrap, whose padding shorthand beats a plain main rule; this once left a 0px gap.
+  it("leaves 32px between the header and the page content", () => {
+    expect(rules.find((r) => r.sel === "main.wrap")?.body).toContain("padding-top:32px");
   });
 
   it("prints in light colours whatever the screen theme", () => {
