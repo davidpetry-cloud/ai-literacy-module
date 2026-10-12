@@ -440,9 +440,17 @@ Each can be approved, changed or dropped on its own.
    proposals. The "What AI changes" row reads "A caller that sounds human but is a
    computer." without "and can call thousands of people at once", which no checked
    source supports for voice bots. The say and watch lines are **still open**.
-5. Essentials 2, "Keeping Your Devices and Accounts Safe": yes or no.
-6. E2.1 to E2.3: approve, change or drop each.
+5. Essentials 2, "Keeping Your Devices and Accounts Safe": yes or no. **Decided
+   2026-10-12: yes.** Started as `lessons/lesson-14.js`, objectives only,
+   `ready: false`; colour `--l14` rust (#9A3412 light, #FDBA74 dark).
+6. E2.1 to E2.3: approve, change or drop each. **Decided 2026-10-12: E2.1 and E2.3
+   approved as written. E2.2 reworded** to "Judge whether an AI app, browser extension
+   or 'connect your account' request is genuine, from where it came from and what it
+   asks to see, before you install it or say yes." (The learner can't verify "safe";
+   they can check the source and what it asks to see.)
 7. E2.4, prompt injection: keep it in Essentials 2, or move it to "UX/UI for AI builders".
+   **Decided 2026-10-12: moved to "UX/UI for AI builders"** (or a later essential once
+   assistants that act for people are common). Essentials 2 has three objectives.
 8. The thirteen draft claims go into `claims.js` as model proposals only after the
    matching lesson change is approved, and only David attests them.
 

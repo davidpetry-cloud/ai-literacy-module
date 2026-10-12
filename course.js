@@ -20,6 +20,7 @@ import lesson10 from "./lessons/lesson-10.js";
 import lesson11 from "./lessons/lesson-11.js";
 import lesson12 from "./lessons/lesson-12.js";
 import lesson13 from "./lessons/lesson-13.js";
+import lesson14 from "./lessons/lesson-14.js";
 
 /** One core, three contexts. Only the concrete stage and ARCS relevance vary. */
 export const TRACKS = {
@@ -81,7 +82,7 @@ export const COURSE = {
   framing:
     "Twelve lessons on using AI the way a careful professional uses any source. Learn what it is, how to ask it well, how to check what it says, and who signs off. Then judge what it builds, keep people at the center, and spot manipulation, from people and from AI. Essentials, such as staying secure, fit in at any point.",
   minutes: 45,
-  lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09, lesson10, lesson11, lesson12, lesson13]
+  lessons: [lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08, lesson09, lesson10, lesson11, lesson12, lesson13, lesson14]
 };
 
 export function getLesson(n) {
