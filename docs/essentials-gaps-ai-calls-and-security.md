@@ -62,7 +62,7 @@ All opened and read on 2026-10-08.
 | **FCC Notice of Proposed Rulemaking FCC 24-84** (adopted 7 Aug 2024) | Proposes that callers using AI-generated voice must, at the beginning of each call, disclose that the call uses AI-generated technology (¶ 14; proposed rule text). States that "consumers have a right to know they will be interacting with AI and to decide whether to continue that call" (¶ 15). Notes the TCPA doesn't reach technology that **answers inbound** calls (¶ 11). | It is a **proposal**. I found no final rule, and the eCFR text above has no such duty, so as of 2026-10-08 it is not US law. Re-check before building. |
 | **EU AI Act, Regulation (EU) 2024/1689, Article 50(1) and (5)** | Providers must design AI systems that interact directly with people so that the people are informed they're interacting with an AI, unless that's obvious to a reasonably well-informed, observant person. The information must be given clearly at the latest at the first interaction, and meet accessibility requirements. Applies from 2 August 2026 (Article 113). The Digital Omnibus on AI, **Regulation (EU) 2026/1744** (OJ 24 July 2026), replaced Article 50(7) and gave a transition to 2 December 2026 for the Article 50(2) **marking** duty only; it left 50(1) unchanged. | The duty falls on **providers** of AI systems in the EU market. It doesn't help you spot a criminal, who won't comply, and it doesn't apply outside the EU. There's an exception for AI systems authorised by law to detect or investigate crime. "Unless obvious" leaves room for argument. |
 | **California B.O.T. Act, SB 1001 (2018), Bus. & Prof. Code §§ 17940–17943**, operative 1 July 2019 | Unlawful to use a bot to communicate with a person in California **online** with intent to mislead them about its artificial identity, in order to knowingly deceive them to incentivise a sale or influence a vote. A bot that discloses it's a bot, clearly and conspicuously, is not liable. | "Online" is defined as a public-facing website, web application or digital application (§ 17940(b)), so it almost certainly doesn't reach **phone calls** (my reading of the definition, not a court's). It's not a general right to know: it needs intent to deceive, for a sale or a vote. It puts no duty on large platforms (§ 17942(c)). |
-| **Utah S.B. 226 (2025), Utah Code § 13-75-103 as enacted**, effective 7 May 2025 | A business using generative AI with a person in a consumer transaction must disclose that it's an AI and not a human **if the person clearly asks**. A licensed professional must disclose up front, aloud at the start of a spoken interaction, when generative AI is used in a high-risk interaction (health, financial, biometric data, or advice relied on for big decisions). The definition of generative AI includes audio. | It's a right to an answer **if you ask**, not to be told unprompted (except the professional duty). Section numbers may have been renumbered since; I read the enrolled bill, not the current code. |
+| **Utah S.B. 226 (2025), now Utah Code § 13-77-103** (enacted as 13-75-103, renumbered), effective 7 May 2025 | A business using generative AI with a person in a consumer transaction must disclose that it's an AI and not a human **if the person clearly asks**. A licensed professional must disclose up front, aloud at the start of a spoken interaction, when generative AI is used in a high-risk interaction (health, financial, biometric data, or advice relied on for big decisions). The definition of generative AI includes audio. | It's a right to an answer **if you ask**, not to be told unprompted (except the professional duty). Checked 2026-10-12: renumbered to § 13-77-103, text unchanged. |
 | **UK** | I did not find or check a UK law that requires an AI caller to identify itself. | Don't claim one either way until it's checked. |
 
 **Teaching consequence.** The law gives a "right to know" in some places (the EU from
@@ -230,7 +230,7 @@ E1.2 well, so I'd keep those.
 "us-state-bot-disclosure": {
   text: "Some US states add their own rules. In California, a bot online may not hide that it's a bot in order to deceive someone into buying or voting. In Utah, a business using generative AI must say so if a customer clearly asks.",
   attestation: proposedBy(
-    "California Business and Professions Code §§ 17940-17943 (SB 1001, Stats. 2018, ch. 892), operative 1 July 2019, read on leginfo.legislature.ca.gov 2026-10-08: 'online' means a public-facing website or app, so phone calls are almost certainly outside it (my reading). Utah S.B. 226 (2025 General Session), enacting Utah Code § 13-75-103, effective 7 May 2025, enrolled text read on le.utah.gov 2026-10-08; current section numbering not checked."
+    "California Business and Professions Code §§ 17940-17943 (SB 1001, Stats. 2018, ch. 892), operative 1 July 2019, read on leginfo.legislature.ca.gov 2026-10-08: 'online' means a public-facing website or app, so phone calls are almost certainly outside it (my reading). Utah S.B. 226 (2025 General Session), enacting Utah Code § 13-75-103 (now § 13-77-103, checked 2026-10-12), effective 7 May 2025, enrolled text read on le.utah.gov 2026-10-08."
   )
 },
 "bank-fraud-call-ftc": {
@@ -248,7 +248,7 @@ E1.2 well, so I'd keep those.
 "ai-disclosure-not-proof": {
   text: "What a caller says about itself, that it's an AI or that it's a real person, doesn't show whether it's honest. Scammers don't follow disclosure rules, and they fake names, numbers and credentials.",
   attestation: proposedBy(
-    "A judgement drawn from the sources, not a quotation. FBI IC3 I-091726-PSA (17 September 2026): scammers spoof authentic phone numbers, names and credentials. Disclosure duties (FCC 24-17 ¶ 9; EU AI Act Art. 50(1); Utah § 13-75-103) bind lawful businesses. Attest that it is reasonable."
+    "A judgement drawn from the sources, not a quotation. FBI IC3 I-091726-PSA (17 September 2026): scammers spoof authentic phone numbers, names and credentials. Disclosure duties (FCC 24-17 ¶ 9; EU AI Act Art. 50(1); Utah § 13-77-103) bind lawful businesses. Attest that it is reasonable."
   )
 }
 ```
@@ -417,7 +417,7 @@ All opened and checked on 2026-10-08. None of these has a DOI; official URLs are
 - Siman Tov Bustan, M. (2025, December 30). *900K users compromised: Chrome extensions steal ChatGPT and DeepSeek conversations*. OX Security. https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/
 - Stop Scams UK. (n.d.). *159 phone number*. Retrieved October 8, 2026, from https://stopscamsuk.org.uk/159
 - U.S. Code of Federal Regulations. (2026). *Delivery restrictions*, 47 C.F.R. § 64.1200 (eCFR text as of October 1, 2026). https://www.ecfr.gov/current/title-47/chapter-I/subchapter-B/part-64/subpart-L/section-64.1200
-- Utah Legislature. (2025). *Artificial intelligence consumer protection amendments* (S.B. 226, 2025 General Session; enacting Utah Code §§ 13-75-101 to 13-75-106). https://le.utah.gov/~2025/bills/static/SB0226.html
+- Utah Legislature. (2025). *Artificial intelligence consumer protection amendments* (S.B. 226, 2025 General Session; enacted as Utah Code §§ 13-75-101 to 13-75-106, now §§ 13-77-101 to 13-77-106). https://le.utah.gov/~2025/bills/static/SB0226.html
 
 Already in `sources.js` and still current for this work: FBI IC3 PSA I-120324-PSA
 (December 2024) and the NCSC's "How to spot a scam email, text message or call".
@@ -448,11 +448,38 @@ Each can be approved, changed or dropped on its own.
 
 ## Follow-ups (outside this note)
 
-- **CISA's Secure Our World pages are marked "Archived Content".** Essentials 1's
-  `passkeys-phishing-resistant` claim cites CISA's "More than a Password", which may be
-  archived too. Worth re-checking in the next fact check.
-- **FCC 24-84** (AI disclosure on calls) is still a proposal. If the FCC adopts it,
-  `fcc-ai-voice-tcpa` changes from "proposed" to a rule.
-- **Utah's section numbers**: confirm against the current Utah Code before citing a
-  section number on the Sources page.
+Checked 2026-10-12:
+
+- **CISA "Archived Content".** "More than a Password" (cisa.gov/MFA), cited by
+  Essentials 1's `passkeys-phishing-resistant`, is archived too. Its words still match
+  the claim, and every part of the claim has a current, unarchived CISA source:
+  - "the only widely available phishing-resistant authentication is FIDO/WebAuthn":
+    CISA fact sheet *Implementing Phishing-Resistant MFA* (October 2022), still hosted
+    with no archive banner;
+  - FIDO/WebAuthn ranked first, SMS or voice last: CISA *Cybersecurity Performance
+    Goals 2.0* (CPG 2.0);
+  - "any MFA is better than none": CISA, *Require Multifactor Authentication* (small and
+    medium businesses);
+  - FIDO passkeys are "an acceptable alternative" to security keys, and SMS MFA "is not
+    phishing-resistant": CISA, *Mobile Communications Best Practice Guidance*
+    (December 2025).
+
+  Proposed fix (awaiting David): keep the claim text, and change its rationale and the
+  `sources.js` entry to these. For Essentials 2, cite the NCSC for updates and find a
+  current CISA page at build time; the Secure Our World pages are archived.
+- **FCC 24-84 is still a proposal.** The eCFR text of 47 CFR § 64.1200, last amended
+  25 March 2026, has no AI-disclosure duty, and I found no order adopting or
+  withdrawing the proposal. Separately, the FCC has put out for comment a Club for
+  Growth petition for a waiver that would let political groups make unsolicited
+  artificial or prerecorded voice calls, including AI voices, to cell phones before
+  the November 2026 midterms; a ruling could come in late October (Associated Press,
+  7 October 2026, via ABC News; not checked against FCC documents). If granted, it
+  doesn't change `fcc-ai-voice-tcpa`, which already says "unless an exemption
+  applies", but it would be worth a facilitator note before the election.
+- **Utah was renumbered.** The disclosure rule is now **Utah Code § 13-77-103**, in
+  Chapter 77, "Generative Artificial Intelligence — Consumer Disclosures and
+  Enforcement" (enacted by Laws of Utah 2025, ch. 465, as SB 226's 13-75-103,
+  renumbered to avoid a clash). Its text is unchanged since 7 May 2025. The
+  definitions in § 13-77-101 were amended in 2026 (ch. 95); "generative AI" still
+  covers text, audio and visual conversation. Cite § 13-77-103.
 - **A UK position on AI disclosure** for calls or chatbots was not researched here.
