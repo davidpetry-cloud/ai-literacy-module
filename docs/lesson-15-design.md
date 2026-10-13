@@ -7,7 +7,7 @@
 to say" added at his request the same day. **Not registered yet:** the lesson file, the
 hub entry, a `--l15` colour and the CLAUDE.md rows wait until the Essentials 2 build
 (running in a separate session) has merged, so the two pieces of work don't clash in
-`course.js`, `course.css` and `CLAUDE.md`. Next after that: warm-up and check.
+`course.js`, `course.css` and `CLAUDE.md`. Warm-up and check approved 2026-10-13. Next: stage design.
 
 **Why its own essential (David, 2026-10-13):** AI voice on the phone reaches past
 scams. Essentials 1 teaches spotting a scam call and checking it another way, and
@@ -91,7 +91,7 @@ will copy your voice". The FBI's advice is to limit *public* recordings of your 
   (2024), FBI I-051525-PSA and I-091726-PSA. See
   `docs/essentials-gaps-ai-calls-and-security.md`.
 
-## Warm-up and check (drafted 2026-10-13, awaiting David)
+## Warm-up and check (approved by David 2026-10-13)
 
 One pre and one post item per objective. Learner questions measure grade 2.2 and the
 facilitator notes 3.2 (ceilings 7); the longest sentence is 20 words.
@@ -154,6 +154,6 @@ companions are covered in Lesson 11 and not repeated here.
 1. After Essentials 2 merges: create `lessons/lesson-15.js` with these objectives,
    `ready: false`; register it in `course.js`; add `--l15` (both themes); update
    CLAUDE.md.
-2. Warm-up and check: one pre and one post item per objective, for David's review.
+2. Warm-up and check: approved 2026-10-13 (above); add them to the lesson file with the objectives.
 3. Stage design. A likely concrete stage: a written-out call that pauses at each
    decision (answer? say this? hang up?), per track. It may need a new tool (Opus).
