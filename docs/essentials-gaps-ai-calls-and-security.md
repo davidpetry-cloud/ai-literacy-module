@@ -475,6 +475,10 @@ Draft objectives, for David to approve, change or drop:
 
 E3.2 overlaps the in-call table now in Essentials 1; at the objectives gate, decide
 whether Essentials 3 deepens it (practice on a made-up call) or drops it.
+
+**Objectives approved 2026-10-13** (all four; E3.2 kept, with practice; "what to say
+and what not to say" added to E3.2 and E3.3 at David's request). Plan, wording and
+sources now live in `docs/lesson-15-design.md`.
 5. Essentials 2, "Keeping Your Devices and Accounts Safe": yes or no. **Decided
    2026-10-12: yes.** Started as `lessons/lesson-14.js`, objectives only,
    `ready: false`; colour `--l14` rust (#9A3412 light, #FDBA74 dark).
