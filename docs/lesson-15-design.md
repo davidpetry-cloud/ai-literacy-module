@@ -4,10 +4,11 @@
 (`n: 15`, `label: "Essentials 3"`, objective ids `E3.`). Working title.
 
 **Status:** objectives approved by David on 2026-10-13, with "what to say and what not
-to say" added at his request the same day. **Not registered yet:** the lesson file, the
-hub entry, a `--l15` colour and the CLAUDE.md rows wait until the Essentials 2 build
-(running in a separate session) has merged, so the two pieces of work don't clash in
-`course.js`, `course.css` and `CLAUDE.md`. Warm-up and check approved 2026-10-13. Stage design approved by David 2026-10-13 (generalise the `share` sorter to three bins). Next: build, after the Essentials 2 build merges.
+to say" added at his request the same day. **Registered 2026-10-13**, after Essentials 2 merged: `lessons/lesson-15.js` holds
+the objectives, warm-up, check and exit ticket (`ready: false`), it is in `course.js`,
+and its colour is `--l15` magenta (#9D174D light, #F9A8D4 dark). The hub lists it under
+Essentials as in design. Stage design approved by David 2026-10-13 (generalise the
+`share` sorter to three bins). Next: build the stages, in a fresh session.
 
 **Why its own essential (David, 2026-10-13):** AI voice on the phone reaches past
 scams. Essentials 1 teaches spotting a scam call and checking it another way, and
@@ -271,9 +272,10 @@ companions are covered in Lesson 11 and not repeated here.
 
 ## Next
 
-1. After Essentials 2 merges: create `lessons/lesson-15.js` with these objectives,
-   `ready: false`; register it in `course.js`; add `--l15` (both themes); update
-   CLAUDE.md.
-2. Warm-up and check: approved 2026-10-13 (above); add them to the lesson file with the objectives.
-3. Stage design: approved 2026-10-13. Then build, after the Essentials 2 build has merged (both edit `lesson-core.js`), in its own session on Opus
-   at high effort (two tools: a new `pause-call` exercise and a three-bin sorter).
+1. Registered 2026-10-13: `lessons/lesson-15.js` (objectives, warm-up, check, exit
+   ticket; `ready: false`), `course.js`, `--l15` in both themes and print, CLAUDE.md.
+2. Build the stages in a fresh session, on Opus at high effort: a new `pause-call`
+   exercise and the `share` sorter generalised to three bins (Essentials 1's two-bin
+   sort and its tests unchanged). Allow ic3.gov, fcc.gov, ftc.gov, consumerfinance.gov
+   and cisa.gov in the environment's network settings first, so the sources can be
+   opened rather than checked through search (the Essentials 2 build couldn't).

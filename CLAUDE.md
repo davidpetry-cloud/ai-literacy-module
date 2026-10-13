@@ -7,7 +7,7 @@ Read this before touching anything. It is the contract, not a summary.
 
 ## What this is
 
-A twelve-lesson AI literacy course, plus Essentials (Essentials 1 and 2 built; Essentials 3 planned), for three audiences — educators, professionals
+A twelve-lesson AI literacy course, plus Essentials (Essentials 1 and 2 built; Essentials 3 in design), for three audiences — educators, professionals
 and students — built on the same CPA method as
 `grade6-singapore-math-cpa`, with every factual claim governed by
 `attestation-ledger`. Static site, no build step, deployed to GitHub Pages from
@@ -38,6 +38,7 @@ docs/attestation-guide.md  how David attests, rejects and re-checks claims (exam
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
 docs/lesson-13-design.md   Essentials 1 (Staying Secure in the Age of AI) design and checked sources; built 2026-10-05
 docs/lesson-14-design.md   Essentials 2 (Keeping Your Devices and Accounts Safe) design and checked sources; built 2026-10-13
+docs/lesson-15-design.md   Essentials 3 (Talking With AI on the Phone) design and checked sources; stage design approved 2026-10-13; build next
 docs/essentials-gaps-ai-calls-and-security.md  AI voice-bot calls (built into Essentials 1, 2026-10-08) and Essentials 2's plan, ranking and checked sources
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
@@ -256,6 +257,7 @@ Sonnet worked well.
 | 12 | done | built on Opus: the `respond` exercise (situations with safe or risky responses) and the `plan` builder (a record, support and a boundary; `planStatus`, `planGrid`, `planView`, `planFor` in `lesson-core.js`). The learner first chooses one of the track's concrete situations, so the plan is for something real, and the first step is trusting your gut (David, 2026-10-05). Safeguarding rules are held by tests |
 | 13 (Essentials 1) | done | built on Opus (2026-10-05): the `inbox` exercise (made-up messages, genuine or scam, with signs and a second-channel check; `INBOX_LABEL`, `SIGN_LABEL` in `lesson-core.js`) and the `share` sorter (what's safe to put into a public AI tool; `shareStatus`, `shareGrid`, `shareView` in `lesson-core.js`). A pictorial stage may carry its own answer-key `claim`, and a lesson its own `followUp` line. On 2026-10-08 one scam per track became an AI voice-bot call, shown with the `call` kind ("Phone call (written out)") |
 | 14 (Essentials 2) | done | built on Opus (2026-10-13): the `requests` exercise (made-up on-screen requests keyed say yes, say no or check first, with what to look at: where it came from, what it asks to see, a rush; `REQUEST_LABEL`, `LOOK_LABEL` in `lesson-core.js`) and the `recover` builder (eight recovery steps put in order with Move up and Move down, each with a range of right places where the NCSC's and the FTC's orders differ; `recoverStatus`, `recoverMoveText`, `placesText`). Moves, show and Start again are announced in `#announce`. The inbox renderer is untouched; the two share message CSS. Prompt injection moved to the companion module "UX/UI for AI builders" |
+| 15 (Essentials 3) | in design | "Talking With AI on the Phone": objectives, warm-up and check approved 2026-10-13 (E3.1 what an AI voice can do and must tell you, E3.2 responding to a call that might be a bot, E3.3 talking to a company's AI agent, E3.4 protecting your own voice); stage design approved the same day: a new `pause-call` exercise and Essentials 1's `share` sorter generalised to three bins. Registered 2026-10-13 (`--l15` magenta). Next: build, on Opus at high effort, in its own session |
 
 One lesson per session.
 
@@ -339,7 +341,7 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-There are 121 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, Lesson 11 six, Lesson 12 eight, the fact recheck one more, `bau-repeated-behavior`, Essentials 1 eleven on 2026-10-05, two more for its voice-bot rows, `ai-voice-calls` and `uk-159`, on 2026-10-08, and two for its in-call table, `answering-bot-calls` and `ai-disclosure-laws`, on 2026-10-13, and Essentials 2 eleven on 2026-10-13: seven sourced claims and four answer keys). All twelve lessons and Essentials 1 and 2 are built; Essentials 3, "Talking With AI on the Phone", is planned next (draft objectives in `docs/essentials-gaps-ai-calls-and-security.md`). David attests them
+There are 121 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, Lesson 11 six, Lesson 12 eight, the fact recheck one more, `bau-repeated-behavior`, Essentials 1 eleven on 2026-10-05, two more for its voice-bot rows, `ai-voice-calls` and `uk-159`, on 2026-10-08, and two for its in-call table, `answering-bot-calls` and `ai-disclosure-laws`, on 2026-10-13, and Essentials 2 eleven on 2026-10-13: seven sourced claims and four answer keys). All twelve lessons and Essentials 1 and 2 are built; Essentials 3, "Talking With AI on the Phone", is in design: objectives, warm-up, check and stage design approved and registered on 2026-10-13 (`docs/lesson-15-design.md`); its stages are built next. David attests them
 himself, one lesson at a time, writing each practitioner block by hand; never a
 Claude session. By 2026-09-25 he had attested six, five of them in Lesson 1.
 
