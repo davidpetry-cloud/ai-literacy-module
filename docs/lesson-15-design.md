@@ -7,7 +7,7 @@
 to say" added at his request the same day. **Not registered yet:** the lesson file, the
 hub entry, a `--l15` colour and the CLAUDE.md rows wait until the Essentials 2 build
 (running in a separate session) has merged, so the two pieces of work don't clash in
-`course.js`, `course.css` and `CLAUDE.md`. Warm-up and check approved 2026-10-13. Next: stage design.
+`course.js`, `course.css` and `CLAUDE.md`. Warm-up and check approved 2026-10-13. Stage design proposed 2026-10-13, awaiting David.
 
 **Why its own essential (David, 2026-10-13):** AI voice on the phone reaches past
 scams. Essentials 1 teaches spotting a scam call and checking it another way, and
@@ -142,12 +142,130 @@ a call *you* made to the official number some banks do send a code to confirm it
 once" in p1 rests on robocalls being mass calls by definition (FCC 24-17), not on any
 count of AI scam bots.
 
-## Students track (to design)
+## Stages (proposed 2026-10-13, awaiting David)
+
+**Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10 (45).
+
+### Concrete · "Pause the call" (12 min), E3.1, E3.2, E3.3
+
+A new exercise, **`pause-call`**: two written-out phone calls per track. Each call stops
+at three or four **pause points**. At each, the learner picks what they'd say or do from
+three choices, then reveals the answer and why. It's linear, not a branching story: every
+learner reads the same call, so the group can compare choices at each pause.
+
+Each track has two calls, so learners practise both sides of the lesson:
+
+1. **A call you didn't make**, from a bot that may be a scam (E3.2). Pauses: whether to
+   answer, then "Can you hear me?", a request for a detail, then the push to act now. The
+   best choices: let it go to voicemail or hang up; don't say "yes"; never give the
+   detail; "I'll call you back on the official number."
+2. **A call you made** to a company's official number, answered by an honest AI agent
+   (E3.3). Pauses: it says it's an AI (it should; E3.1), it asks for more than the task
+   needs, it gets your problem wrong twice, then it offers to finish. The best choices:
+   describe the problem in your own words, keep the password to yourself, and say "I'd
+   like to speak to a person."
+
+The reveal at the first pause of call 1 says the caller was a bot, which carries E3.1
+("it sounded human"). Choices are written so the best one isn't always in the same
+place (keys not positional, as the tests require for every exercise).
+
+Track contexts (only the concrete stage varies by track):
+
+- **Educators:** call 1 is "district payroll" asking you to confirm your bank details
+  for a pay update; call 2 is you calling a textbook supplier's order line.
+- **Professionals:** call 1 is "the IT help desk" asking for the code it just sent you,
+  to "fix your account" (a known pattern against workplaces; source to check, likely
+  CISA's advisory on Scattered Spider, AA23-320A); call 2 is you calling an insurer to
+  ask about a claim.
+- **Students:** call 1 is "your phone company", opening with "Can you hear me?" and then
+  asking for your account PIN; call 2 is a parent or carer calling the phone company
+  with you, and the AI asks for the account password. Per `docs/student-safety.md`:
+  made-up calls about the learner's own phone; nothing asks a student to make a call or
+  record their voice; every "hang up" choice names a trusted adult.
+
+**Tool:** new, in `lesson-core.js` beside the inbox. It needs Opus. Each pause point
+gets a fieldset of radio buttons with a visible question, a toggling "Show the answer"
+reveal that hands focus to the answer, and a "Start again" button; the calls are plain
+text, so no audio is needed.
+
+### Pictorial · "Say it, or keep it?" (10 min), E3.2, E3.3
+
+A three-way sorter: twelve things you might say on a call, each sorted into **Fine on any
+call**, **Only on a call you made to the official number**, or **Never on a call**. The
+middle column is the lesson's real point: the same words can be fine or risky depending
+on who called whom. For example:
+
+- Fine on any call: "Am I talking to a person or an AI?", "I'd like to speak to a person",
+  "I'll call you back on the official number", "No, thank you" (then hang up).
+- Only on a call you made: your name and the reason you're calling, your order or claim
+  number, a one-time code your bank sends to confirm it's you.
+- Never: your password, your PIN, a code on a call you didn't make, "yes" to "Can you
+  hear me?", agreeing to move money or buy gift cards.
+
+**Tool:** Essentials 1's `share` sorter has two bins. Two options:
+
+- generalise it to accept a set of keys (recommended: small, reuses a tested tool, and
+  Essentials 1's two-bin sort stays the same, which its tests will prove); or
+- build a new three-bin sorter.
+
+### Abstract · "Talking with AI on the phone" (8 min), E3.1–E3.4
+
+Two-column reference tables:
+
+- **What an AI voice can do:** sound human; copy a real person's voice from a short
+  clip; answer questions and keep a conversation going; call many people at once. And
+  what it can't prove: who it is.
+- **What it must tell you:** the EU (from 2 August 2026, it must say it's an AI unless
+  that's obvious); Utah (if you clearly ask); US federal rules (who is calling, but not
+  that it's AI); scam bots (nothing, and they lie). Learners elsewhere check their own
+  rules. No UK row: no UK rule was researched.
+- **Say it, or keep it:** the summary of the sorter.
+- **Protect your voice:** limit public videos and voice notes, and set accounts to
+  private (FBI, December 2024); set a strong voicemail password (FCC); agree a family
+  secret word (FBI). Students do these with a parent or carer.
+
+A facilitator note for US groups before an election: AI voices in political calls, and
+the FCC's pending waiver petition (AP, 7 October 2026), checked again at build time.
+
+### ARCS and transfer (draft)
+
+- **Relevance:** educators get calls about pay, trips and student records; professionals
+  get "help desk", supplier and bank calls, and use company AI lines; students get
+  calls and voice notes about phones, games and school.
+- **Use it this week:** set a voicemail password and agree a family secret word.
+  Educators and professionals also try "Am I talking to a person or an AI?" on the next
+  company line they call. Students do the first two with a parent or carer.
+
+## Claims the build would need (model proposals; checked again at build time)
+
+Reuse from Essentials 1: `ai-voice-calls`, `answering-bot-calls`, `ai-disclosure-laws`,
+`bank-fraud-call-ftc` (drafted in the gaps note). New:
+
+- `voice-protection-fbi-fcc`: limit public recordings, private accounts, voicemail
+  password, secret word (FBI I-120324-PSA; FCC guide).
+- `voice-cloning-bank-access`: criminals have used AI-generated audio of a person to get
+  into their bank account (FBI I-120324-PSA).
+- `can-you-hear-me-fcc`: callers have recorded a "yes" to approve charges (FCC, 2017).
+- `chatbots-cfpb`: company chatbots can give wrong answers and trap people with no way to
+  a human; sharing sensitive data with them carries privacy risks (CFPB, 2023).
+- `help-desk-code-scam`: criminals pose as IT help desks to get sign-in codes (source to
+  find and check; CISA AA23-320A is the likely one).
+- Answer keys: `e3-key-educators`, `e3-key-professionals`, `e3-key-students` and
+  `e3-key-say`.
+
+## Students track
 
 Per `docs/student-safety.md`: calls about the learner's own phone, games and school;
 nothing asks a student to call anyone or record their voice; a trusted adult in every
 "hang up" step; E3.4 done with a parent or carer; no political calls. AI voice
 companions are covered in Lesson 11 and not repeated here.
+
+## Open choices for David
+
+1. Approve the stage design, or change it.
+2. The sorter: generalise Essentials 1's `share` sorter to three bins (recommended), or
+   build a new one.
+3. The professionals' "IT help desk" call stays only if an agency source is found.
 
 ## Next
 
@@ -155,5 +273,5 @@ companions are covered in Lesson 11 and not repeated here.
    `ready: false`; register it in `course.js`; add `--l15` (both themes); update
    CLAUDE.md.
 2. Warm-up and check: approved 2026-10-13 (above); add them to the lesson file with the objectives.
-3. Stage design. A likely concrete stage: a written-out call that pauses at each
-   decision (answer? say this? hang up?), per track. It may need a new tool (Opus).
+3. Stage design: proposed above, awaiting David. Then build, in its own session on Opus
+   at high effort (two tools: a new `pause-call` exercise and a three-bin sorter).
