@@ -37,7 +37,7 @@ scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
 docs/lesson-13-design.md   Essentials 1 (Staying Secure in the Age of AI) design and checked sources; built 2026-10-05
-docs/lesson-14-design.md   Essentials 2 (Keeping Your Devices and Accounts Safe) design; stage design proposed 2026-10-13
+docs/lesson-14-design.md   Essentials 2 (Keeping Your Devices and Accounts Safe) design; stage design approved 2026-10-13 (new `requests` exercise); build next
 docs/essentials-gaps-ai-calls-and-security.md  AI voice-bot calls (built into Essentials 1, 2026-10-08) and Essentials 2's plan, ranking and checked sources
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
@@ -255,7 +255,7 @@ Sonnet worked well.
 | 11 | done | built on Opus: the `chat` exercise (a made-up AI chat; each reply helpful or a manipulative move) and the `gains` figure (what you give, what the company gets; `gainsFigure`, `gainsView` in `lesson-core.js`) |
 | 12 | done | built on Opus: the `respond` exercise (situations with safe or risky responses) and the `plan` builder (a record, support and a boundary; `planStatus`, `planGrid`, `planView`, `planFor` in `lesson-core.js`). The learner first chooses one of the track's concrete situations, so the plan is for something real, and the first step is trusting your gut (David, 2026-10-05). Safeguarding rules are held by tests |
 | 13 (Essentials 1) | done | built on Opus (2026-10-05): the `inbox` exercise (made-up messages, genuine or scam, with signs and a second-channel check; `INBOX_LABEL`, `SIGN_LABEL` in `lesson-core.js`) and the `share` sorter (what's safe to put into a public AI tool; `shareStatus`, `shareGrid`, `shareView` in `lesson-core.js`). A pictorial stage may carry its own answer-key `claim`, and a lesson its own `followUp` line. On 2026-10-08 one scam per track became an AI voice-bot call, shown with the `call` kind ("Phone call (written out)") |
-| 14 (Essentials 2) | in design | "Keeping Your Devices and Accounts Safe": objectives approved 2026-10-12 (E2.1 updates, E2.2 fake AI apps, extensions and "connect your account" requests, E2.3 recovering a hacked account); prompt injection moved to the companion module "UX/UI for AI builders". Warm-up and check approved and added 2026-10-13. Next: stage design. Likely Opus if it adds a tool |
+| 14 (Essentials 2) | in design | "Keeping Your Devices and Accounts Safe": objectives approved 2026-10-12 (E2.1 updates, E2.2 fake AI apps, extensions and "connect your account" requests, E2.3 recovering a hacked account); prompt injection moved to the companion module "UX/UI for AI builders". Warm-up and check approved and added 2026-10-13; stage design approved the same day, with a new `requests` exercise and a `recover` builder. Next: build. Likely Opus if it adds a tool |
 
 One lesson per session.
 

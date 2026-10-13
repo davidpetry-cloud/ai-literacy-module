@@ -5,7 +5,7 @@
 Colour `--l14` rust (#9A3412 light, #FDBA74 dark).
 
 **Status:** objectives approved 2026-10-12; warm-up and check approved and added
-2026-10-13. **Stage design proposed 2026-10-13, awaiting David.** The ranking, the
+2026-10-13. **Stage design approved by David 2026-10-13, with a new `requests` exercise.** Next: build it. The ranking, the
 reasons for each topic and the checked sources are in
 `docs/essentials-gaps-ai-calls-and-security.md` (Part 2).
 
@@ -21,7 +21,7 @@ reasons for each topic and the checked sources are in
 
 Prompt injection moved to the companion module "UX/UI for AI builders".
 
-## Stages (proposed 2026-10-13)
+## Stages (approved 2026-10-13)
 
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10 (45, as the
 course requires).
@@ -132,9 +132,9 @@ and a current CISA page), `fake-downloads-fbi`, `fake-ai-extensions-example`,
 Plus an answer-key claim for each track's `requests` set and one for the `recover`
 order.
 
-## Open choices for David
+## Decisions (David, 2026-10-13)
 
-1. Approve the stage design, or change it.
-2. The concrete tool: a new `requests` exercise (recommended: clearer, and Essentials 1
-   stays untouched), or generalise the inbox renderer.
-3. The fake browser-update item stays only if an agency source is found.
+1. Stage design: **approved** as written.
+2. The concrete tool: **a new `requests` exercise**; the inbox renderer stays as it is,
+   so Essentials 1 is untouched.
+3. The fake browser-update item stays only if an agency source is found at build time.
