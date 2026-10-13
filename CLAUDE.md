@@ -37,6 +37,7 @@ scripts/ui-audit.js  in-browser audit used by /build-lesson and /ship
 docs/attestation-guide.md  how David attests, rejects and re-checks claims (examples)
 docs/claims-review.md      model review of all 50 claims, with sources (not an attestation)
 docs/lesson-13-design.md   Essentials 1 (Staying Secure in the Age of AI) design and checked sources; built 2026-10-05
+docs/lesson-14-design.md   Essentials 2 (Keeping Your Devices and Accounts Safe) design; stage design proposed 2026-10-13
 docs/essentials-gaps-ai-calls-and-security.md  AI voice-bot calls (built into Essentials 1, 2026-10-08) and Essentials 2's plan, ranking and checked sources
 docs/lesson-08-design.md   Lesson 8 (Human-Centered AI) design and checked sources
 docs/dark-triad-series.md  plan for a later series on recognising exploitative behaviour
