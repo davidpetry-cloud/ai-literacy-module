@@ -91,6 +91,57 @@ will copy your voice". The FBI's advice is to limit *public* recordings of your 
   (2024), FBI I-051525-PSA and I-091726-PSA. See
   `docs/essentials-gaps-ai-calls-and-security.md`.
 
+## Warm-up and check (drafted 2026-10-13, awaiting David)
+
+One pre and one post item per objective. Learner questions measure grade 2.2 and the
+facilitator notes 3.2 (ceilings 7); the longest sentence is 20 words.
+
+**Warm-up (5 min)**
+
+- **w1 (E3.1):** "A friendly caller sounds completely human. Could it be a computer? Would it
+  have to tell you?" *Expected:* Most say they'd hear a robot. Note who says AI can
+  sound human, or that it might not tell you.
+- **w2 (E3.2):** "A caller asks, 'Can you hear me?' What's the harm in saying yes?"
+  *Expected:* Most say none. Note who says they'd hang up, or that a recorded yes can be
+  misused.
+- **w3 (E3.3):** "You call your bank and an AI answers. It asks for your password to help
+  you faster. Is that OK, because you called them?" *Expected:* Most say yes. Note who
+  says never give a password, or who would ask for a person.
+- **w4 (E3.4):** "How could someone get a copy of your voice?" *Expected:* Most say only
+  by hacking. Note who mentions videos or voice notes they've posted online.
+
+**Check (10 min)**
+
+- **p1 (E3.1):** "Name two things an AI voice can do on a call. Does a business's AI have
+  to tell you it's an AI?" *Crit:* Names two: sound human, copy a real person's voice,
+  answer questions, or call many people at once. Says the rule depends on where you
+  live, and that scam bots ignore it. Reteach if they think a bot always sounds like a
+  robot.
+- **p2 (E3.2):** "A caller says it's your bank. It asks, 'Can you hear me?' Then it asks
+  you to confirm your account number. What do you do, and what do you not say?"
+  *Crit:* Hangs up without saying yes or giving the number. Doesn't press any keys.
+  Calls back on the number on their card or statement. Reteach if they'd say yes to be
+  polite, or give part of the number.
+- **p3 (E3.3):** "You call a company's official number and an AI answers. It keeps
+  getting your problem wrong. What do you say, and what do you keep to yourself?"
+  *Crit:* Asks for a person. Describes the problem in their own words. Gives only what
+  the task needs, and never a password. Reteach if they'd share a password, or keep
+  going round in circles.
+- **p4 (E3.4):** "Give three ways to make it harder for someone to copy your voice or
+  use it to fool your family." *Crit:* Limits public videos and voice notes, or sets
+  accounts to private. Sets a strong voicemail password. Agrees a family secret word.
+  Students do this with a parent or carer. Reteach if they think only famous people's
+  voices get copied.
+
+**Exit ticket:** "How useful was today for handling calls from AI? (1 = not at all,
+5 = very)" and "What will you say, or not say, on your next unexpected call?"
+
+Two deliberate choices: p3 says "never a password" but not "never a code", because on
+a call *you* made to the official number some banks do send a code to confirm it's you
+(the FTC's "no caller will ever ask" is about calls to you). And "call many people at
+once" in p1 rests on robocalls being mass calls by definition (FCC 24-17), not on any
+count of AI scam bots.
+
 ## Students track (to design)
 
 Per `docs/student-safety.md`: calls about the learner's own phone, games and school;
