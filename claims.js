@@ -684,7 +684,7 @@ export const CLAIMS = {
   "passkeys-phishing-resistant": {
     text: "Passkeys, built on the FIDO standard, resist phishing: a passkey only works on the site it was made for, so a fake site can't use it. CISA calls FIDO the only widely available phishing-resistant sign-in, and says any two-step sign-in is better than none.",
     attestation: proposedBy(
-      "CISA, 'More than a Password' (cisa.gov/MFA), read 2026-10-05: 'The only widely available phishing-resistant authentication is FIDO/WebAuthn authentication'; 'any MFA is better than no MFA'; users who enable MFA are 'significantly less likely to get hacked'. FIDO Alliance, 'Passkeys' (fidoalliance.org/passkeys): a passkey is bound to the site it was created for."
+      "CISA, 'Implementing Phishing-Resistant MFA' (fact sheet, October 2022): 'The only widely available phishing-resistant authentication is FIDO/WebAuthn authentication.' CISA, Cybersecurity Performance Goals 2.0: MFA options ranked high to low, phishing-resistant MFA (e.g. FIDO/WebAuthn) first, SMS or voice last. CISA, 'Require Multifactor Authentication' (small and medium businesses): 'Any MFA is better than none, but some are much stronger', like phishing-resistant MFA. CISA, 'Mobile Communications Best Practice Guidance' (December 2025): FIDO passkeys are 'an acceptable alternative' to hardware security keys; SMS MFA 'is not phishing-resistant'. All read 2026-10-12, none marked archived. FIDO Alliance, 'Passkeys' (fidoalliance.org/passkeys): a passkey is bound to the site it was created for. Replaces CISA's 'More than a Password' (cisa.gov/MFA), whose wording matched but which CISA now marks 'Archived Content'."
     )
   },
   "report-scams": {

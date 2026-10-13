@@ -472,8 +472,8 @@ Checked 2026-10-12:
     phishing-resistant": CISA, *Mobile Communications Best Practice Guidance*
     (December 2025).
 
-  Proposed fix (awaiting David): keep the claim text, and change its rationale and the
-  `sources.js` entry to these. For Essentials 2, cite the NCSC for updates and find a
+  **Applied 2026-10-13 (David's yes):** the claim text is unchanged; its rationale and
+  `sources.js` now cite these four instead of the archived page. For Essentials 2, cite the NCSC for updates and find a
   current CISA page at build time; the Secure Our World pages are archived.
 - **FCC 24-84 is still a proposal.** The eCFR text of 47 CFR § 64.1200, last amended
   25 March 2026, has no AI-disclosure duty, and I found no order adopting or
