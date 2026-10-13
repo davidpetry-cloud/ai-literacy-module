@@ -121,7 +121,7 @@ export default {
         ["Facilitator", "Never check with the contact details in the message. Use ones you already have."]
       ],
       watch:
-        "Learners mark everything as a scam. Ask what makes the genuine ones safe: they ask for nothing, and they come the usual way.",
+        "Learners mark everything as a scam. Ask what makes the genuine ones safe: they ask for nothing, and they come the usual way. Learners trust the call because it said it was an AI, or said it was human. Bring them back to what it asked for.",
       tracks: {
         educators: {
           context: "Five made-up messages in a teacher's inbox and phone.",
@@ -296,7 +296,7 @@ export default {
     {
       kind: "pictorial",
       title: "What's safe to share?",
-      minutes: 10,
+      minutes: 9,
       targets: ["E1.3"],
       figure: "share",
       claim: "e1-key-share",
@@ -334,9 +334,9 @@ export default {
     {
       kind: "abstract",
       title: "Habits that hold up",
-      minutes: 8,
+      minutes: 9,
       targets: ["E1.1", "E1.2", "E1.3", "E1.4"],
-      principles: ["ai-fraud-fbi", "ai-voice-calls", "scam-signs-ncsc", "ai-tools-confidential", "fbi-teens-online", "passwords-nist", "passkeys-phishing-resistant", "report-scams", "uk-159"],
+      principles: ["ai-fraud-fbi", "ai-voice-calls", "answering-bot-calls", "ai-disclosure-laws", "scam-signs-ncsc", "ai-tools-confidential", "fbi-teens-online", "passwords-nist", "passkeys-phishing-resistant", "report-scams", "uk-159"],
       tables: [
         {
           title: "Five signs of a scam (the UK's National Cyber Security Centre)",
@@ -359,6 +359,18 @@ export default {
             ["A fake photo or video call.", "Look for odd details, like hands or shadows. Ask something only the real person would know."],
             ["Your face on a fake image, to threaten you.", "It's not your fault. Don't pay. Save the messages, block, and tell someone you trust."],
             ["Many fake profiles at once.", "Don't accept friend requests from people you don't know. Ask a friend or a trusted adult first."]
+          ]
+        },
+        {
+          title: "If a call might be a bot",
+          head: ["If…", "Do this"],
+          rows: [
+            ["A number you don't know calls.", "You don't have to answer. Let it go to voicemail. A real caller can leave a message."],
+            ["A recording or a computer voice starts talking.", "Hang up. Don't press any numbers, even to stop the calls. Pressing can lead to more calls."],
+            ["The caller says it's your bank, a company or the government.", "Hang up. Call back on the number on your card or statement, or on the official website."],
+            ["Caller ID shows a name or number you trust.", "Caller ID can be faked. It doesn't prove who's calling."],
+            ["It asks for money, a code or personal details.", "Hang up right away. A real bank or agency never asks you to read out a code."],
+            ["You ask \"Are you a real person?\"", "Its answer proves nothing. Scammers' bots can say they're human. Judge what it asks for."]
           ]
         },
         {
@@ -388,13 +400,16 @@ export default {
       moves: [
         "Read the five signs. Ask: which messages today used which signs?",
         "Read what AI changes. Learners pick one habit to start.",
+        "Read what to do if a call might be a bot. Ask: which of today's calls would you have hung up on, and when?",
         "Read the account steps. Ask who has two-step sign-in turned on. Hands only.",
         "Read where to report. Say who to tell at your school or workplace."
       ],
       say: [
         ["Facilitator", "Most of these attacks fail if you slow down and check another way."],
         ["Expected", "\"Isn't a password with symbols strong?\" Length matters more. A passkey is better still."],
-        ["Facilitator", "If you clicked or paid, tell someone right away. It's not your fault, and acting fast helps."]
+        ["Facilitator", "If you clicked or paid, tell someone right away. It's not your fault, and acting fast helps."],
+        ["Facilitator", "In some places a business's AI must tell you it's an AI. Scammers break that rule. A voice saying \"I'm a real person\" proves nothing."],
+        ["Facilitator", "You never have to stay on the line. Hanging up is always allowed, even if the caller sounds kind or official."]
       ],
       watch:
         "Learners feel it's hopeless because AI is so good. Bring them back to the habits: they work however good the fake is."

@@ -339,7 +339,7 @@ principle, while staying in Lesson 6's abstract stage as the overview. That
 series is not designed yet and goes through the backward-design gate like any
 lesson.
 
-There are 108 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, Lesson 11 six, Lesson 12 eight, the fact recheck one more, `bau-repeated-behavior`, Essentials 1 eleven on 2026-10-05, and two more for its voice-bot rows, `ai-voice-calls` and `uk-159`, on 2026-10-08). All twelve lessons and Essentials 1 are built; Essentials 2 is in design. David attests them
+There are 110 claims (Lessons 8, 9 and 10 each added ten on 2026-09-25, Lesson 11 six, Lesson 12 eight, the fact recheck one more, `bau-repeated-behavior`, Essentials 1 eleven on 2026-10-05, two more for its voice-bot rows, `ai-voice-calls` and `uk-159`, on 2026-10-08, and two for its in-call table, `answering-bot-calls` and `ai-disclosure-laws`, on 2026-10-13). All twelve lessons and Essentials 1 are built; Essentials 2 is in design; Essentials 3, "Talking With AI on the Phone", is planned after it (draft objectives in `docs/essentials-gaps-ai-calls-and-security.md`). David attests them
 himself, one lesson at a time, writing each practitioner block by hand; never a
 Claude session. By 2026-09-25 he had attested six, five of them in Lesson 1.
 

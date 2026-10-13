@@ -439,7 +439,42 @@ Each can be approved, changed or dropped on its own.
    2026-10-08** (David), with the claims `ai-voice-calls` and `uk-159` added as model
    proposals. The "What AI changes" row reads "A caller that sounds human but is a
    computer." without "and can call thousands of people at once", which no checked
-   source supports for voice bots. The say and watch lines are **still open**.
+   source supports for voice bots. **The say and watch lines were built 2026-10-13**
+   (David), with an in-call table, "If a call might be a bot" (six rows, from the FTC's
+   "Robocalls" page and the FCC's robocall guide), a second say line ("You never have to
+   stay on the line…"), a facilitator move, and the claims `answering-bot-calls` and
+   `ai-disclosure-laws`. Pictorial 10 → 9 minutes, abstract 8 → 9. Left out: "don't
+   speak, or a bot copies your voice" (no agency source found) and Ofcom's 7726 route
+   for calls (its page sat behind a bot check).
+
+## Essentials 3, planned (David, 2026-10-13)
+
+David decided AI voice on the phone deserves its own essential, because it reaches
+past scams. Working title **"Talking With AI on the Phone"**. It comes after
+Essentials 2 is finished, and goes through the objectives gate like any lesson.
+Essentials 1 keeps its three voice-bot calls and the in-call table; Essentials 3
+builds on them rather than repeating them.
+
+Topics to research (none checked yet): legitimate AI agents (a bank or doctor's AI
+answering, or calling you), what to share with one and when to ask for a person; AI
+calling on your behalf; AI voices in political calls (the FCC's pending waiver); your
+own voice being copied (the FBI's December 2024 PSA advises limiting public recordings
+of your voice; the FCC advises a strong voicemail password); and the right to know by
+place.
+
+Draft objectives, for David to approve, change or drop:
+
+- E3.1 *(understand)*: Explain what an AI voice can do on a call, and what the law
+  where you live says it must tell you.
+- E3.2 *(apply)*: Respond safely to a call that might be a bot: let unknown numbers go
+  to voicemail, hang up without pressing keys, and call back on an official number.
+- E3.3 *(evaluate)*: Decide what to share with a legitimate company's AI agent, and
+  when to ask for a person instead.
+- E3.4 *(apply)*: Protect your own voice from copying: limit public recordings, set a
+  voicemail password, and agree a family secret word.
+
+E3.2 overlaps the in-call table now in Essentials 1; at the objectives gate, decide
+whether Essentials 3 deepens it (practice on a made-up call) or drops it.
 5. Essentials 2, "Keeping Your Devices and Accounts Safe": yes or no. **Decided
    2026-10-12: yes.** Started as `lessons/lesson-14.js`, objectives only,
    `ready: false`; colour `--l14` rust (#9A3412 light, #FDBA74 dark).
