@@ -740,5 +740,75 @@ export const CLAIMS = {
     attestation: proposedBy(
       "Follows the NCSC's advice not to put sensitive information into public AI tools, the FBI's advice to limit online images and location (PSA I-120324-PSA; September 2026 podcast), and the rule that other people's information isn't yours to share. Judgements, not facts."
     )
+  },
+
+  // Essentials 2 (2026-10-13). Sources were read on 2026-10-08 (docs/essentials-gaps-ai-calls-and-security.md)
+  // and re-checked on 2026-10-13 through web search: this session's network policy blocked opening the agency
+  // sites directly. Each rationale says which. Open the pages before attesting.
+  "updates-ncsc-cisa": {
+    text: "Software updates fix security flaws that criminals use. Install them soon, turn on automatic updates, and get updates from your device's own settings or the official app store. Older devices eventually stop getting updates.",
+    attestation: proposedBy(
+      "NCSC, 'Install the latest software and app updates' (Top tips for staying secure online; reviewed 21 December 2021), read 2026-10-08: apply updates as soon as they're available, 'one of the most important (and quickest) things you can do'; turn on automatic updates; older devices eventually stop receiving updates. CISA, 'Keep Your Device's Operating System and Applications Up to Date' (training page), quoted in web search results on 2026-10-13, not opened: turn on automatic updates; 'install your updates from official sources, such as your device's standard OS update feature or a trusted app store'; move to a supported version when a developer stops issuing security updates. Re-sourced from CISA's Secure Our World 'Update Software' page, which carries an 'Archived Content' banner. Check that the training page has no archive banner."
+    )
+  },
+  "fake-updates-cisa": {
+    text: "An update offered in a pop-up on a web page, or in an email, may be a trick. Criminals have spread harmful software disguised as browser updates.",
+    attestation: proposedBy(
+      "CISA, 'Keep Your Device's Operating System and Applications Up to Date': 'Exercise caution if you are prompted to install an update through a browser pop-up or email, as these may be phishing attempts.' CISA, FBI, HHS and MS-ISAC, '#StopRansomware: Interlock' (Cybersecurity Advisory AA25-203A, 22 July 2025): Interlock actors gained access through drive-by downloads from compromised legitimate websites, and disguised their payloads as fake Google Chrome or Microsoft Edge browser updates. Both quoted in web search results on 2026-10-13, not opened. This is the agency source the fake-update items needed (David's decision 3, 2026-10-13). 'Harmful software' simplifies 'malware' and 'remote access trojan'."
+    )
+  },
+  "fake-downloads-fbi": {
+    text: "Criminals pay for search ads that look like real companies and lead to fake sites, where a download named after the program you wanted is really harmful software. Type the company's address yourself, or use the official app store.",
+    attestation: proposedBy(
+      "FBI IC3 PSA I-122122-PSA, 'Cyber Criminals Impersonating Brands Using Search Engine Advertisement Services to Defraud Users' (21 December 2022), read 2026-10-08 and re-checked by web search 2026-10-13: ads sit at the top of results with 'minimum distinction' from real results, and lead to copies of the brand's site offering a download that is malware; check the address, or type it instead of searching. 'Or use the official app store' is an addition (CISA's update guidance names trusted app stores), not from the PSA."
+    )
+  },
+  "fake-ai-extensions-example": {
+    text: "A security company reported two fake AI browser extensions, with about 900,000 users between them, that sent users' AI chats to criminals. One had a \"Featured\" badge.",
+    attestation: proposedBy(
+      "OX Security, M. Siman Tov Bustan, '900K Users Compromised: Chrome Extensions Steal ChatGPT and DeepSeek Conversations' (30 December 2025), read 2026-10-08: two extensions copying AITOPIA's AI sidebar, with over 600,000 and 300,000 users, sent ChatGPT and DeepSeek chats and all tab addresses to a server every 30 minutes; one had Google's 'Featured' badge. Re-checked by web search 2026-10-13 (The Hacker News, January 2026, reports the badge was later removed). Vendor research, not an agency source; the learner text says 'a security company'. The lesson's extensions are made up, and name no real product."
+    )
+  },
+  "consent-phishing-fbi": {
+    text: "Saying yes to an app that asks to \"connect\" to your account can give a criminal access without your password, even with two-step sign-in. Changing your password doesn't remove that access: you have to remove the app in your account's security settings.",
+    attestation: proposedBy(
+      "FBI IC3 PSA I-090126-PSA, 'Malicious Cyber Actors Gain Access to Victim Accounts Through Consent Phishing' (1 September 2026), read 2026-10-08 and re-checked by web search 2026-10-13: the criminal's app is registered with a real OAuth provider, so the permission screen is real; it bypasses passwords and multi-factor authentication; access 'can only be revoked by the victim invalidating the token in their application security settings; not by changing the password'. Targets so far are prominent people and their contacts; the lesson applies the habit to everyone."
+    )
+  },
+  "recover-hacked-account": {
+    text: "To recover a hacked account: use the provider's own recovery page, check for forwarding rules, change the password and any you reused, sign out of all devices, remove apps you didn't add, turn on two-step sign-in, and warn your contacts.",
+    attestation: proposedBy(
+      "NCSC, 'Recovering a hacked account' (reviewed 24 August 2022): provider's own help pages, check email filters and forwarding rules, change the password and any reused, log out all devices and apps, set up 2-step verification, update devices, notify contacts, check bank and shopping accounts, report to Report Fraud (Police Scotland on 101). FTC, 'How to Recover Your Hacked Email or Social Media Account' (August 2023): scan for malware, provider's recovery steps, change the password, sign out of all devices, two-factor authentication, check recovery details and forwarding rules, warn contacts. Both read 2026-10-08 and re-checked by web search 2026-10-13. 'Remove apps you didn't add' comes from FBI IC3 I-090126-PSA, not these two pages."
+    )
+  },
+  "identitytheft-gov": {
+    text: "In the US, if someone stole your personal information, IdentityTheft.gov, run by the Federal Trade Commission, helps you report it and gives you a recovery plan.",
+    attestation: proposedBy(
+      "FTC, IdentityTheft.gov, quoted in web search results on 2026-10-13, not opened: 'Based on the information you enter, IdentityTheft.gov will create your Identity Theft Report and recovery plan.' The FTC's consumer alert 'Email or social media hacked? Here's what to do' (October 2024) sends people who think their personal information was stolen to IdentityTheft.gov for a personalised recovery plan. The FTC enters reports into Consumer Sentinel and does not resolve individual reports."
+    )
+  },
+  "e2-key-educators": {
+    text: "The answer key for the Essentials 2 educators requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice on updates, downloads and connected apps.",
+    attestation: proposedBy(
+      "The requests are made up. Check: the laptop's own security update and turning on automatic updates (yes: NCSC, CISA); the 'Featured' grading extension that can read every site (check first: badge and users prove nothing, OX Security; ask IT because of student data); the browser-update pop-up (no: CISA training page, AA25-203A); the quiz maker asking to send email and read all files (no: more than a quiz needs; FBI I-090126-PSA on consent and removing access). Judgements, not facts: attest that they are reasonable."
+    )
+  },
+  "e2-key-professionals": {
+    text: "The answer key for the Essentials 2 professionals requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice on updates, downloads and connected apps.",
+    attestation: proposedBy(
+      "The requests are made up. Check: the work laptop's security update (yes); the meeting-notes app asking to send email and see contacts (check first with IT: calendar may fit, sending email doesn't; FBI I-090126-PSA); the 'urgent' browser-update pop-up (no: CISA, AA25-203A); the AI sidebar from a search ad with a 'Featured' badge (check first: FBI I-122122-PSA on search ads; OX Security's real case); the approved meeting tool asking for the microphone to record (yes: approved tool, asks only what the job needs). Judgements, not facts."
+    )
+  },
+  "e2-key-students": {
+    text: "The answer key for the Essentials 2 students requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice, and every \"no\" and \"check first\" names a trusted adult.",
+    attestation: proposedBy(
+      "The requests are made up, on the learner's own phone, and nothing is installed or typed (docs/student-safety.md). Check: the homework app from an ad asking for contacts, photos and location (check first, with a trusted adult; school-approved tools only); the free-coins site asking to send messages as you (no: consent phishing, FBI I-090126-PSA); the phone's security update and the school reading app's update from the official store (yes); the browser-update pop-up (no: CISA). The tests require a trusted adult in every 'no' and 'check first'. Judgements, not facts."
+    )
+  },
+  "e2-key-recover": {
+    text: "The order in the Essentials 2 recovery builder is reasonable: it follows the NCSC's steps, adds the FBI's step of removing apps you didn't add, and accepts a range of places where the NCSC's and the FTC's orders differ.",
+    attestation: proposedBy(
+      "Places: recovery page 1; forwarding rules 2–6 (NCSC 2, before the new password; FTC after two-factor); new password 2–3 (FTC 2, NCSC 3); sign out everywhere 3–4; remove apps 4–6 (FBI I-090126-PSA gives no place, only that a new password doesn't remove them); two-step sign-in 4–6 (FTC 4, NCSC 5); warn contacts 7; check money and report 8 (NCSC). Both the NCSC's order and the FTC's (with remove apps added) score every step right. Left out: the NCSC's 'update your devices' (taught under E2.1) and the FTC's malware scan before recovery. Judgements, not facts."
+    )
   }
 };
