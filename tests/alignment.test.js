@@ -16,7 +16,7 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond", "inbox"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond", "inbox", "requests"];
 const VERDICTS = ["keep", "change", "stop"];
 const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
@@ -137,7 +137,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"], inbox: ["share"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"], inbox: ["share"], requests: ["recover"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -750,6 +750,97 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each track's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(inbox(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "requests")("concrete stage: requests", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const pictorial = lesson.stages.find((s) => s.kind === "pictorial");
+    const requests = (t) => concrete.tracks[t].requests;
+    const LOOK = ["source", "access", "rush"];
+
+    it("has a context and five keyed requests for every track, each with what to look at and a way to check", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(requests(t).items, t).toHaveLength(5);
+        for (const r of requests(t).items) {
+          expect(["update", "popup", "app", "extension", "connect"], r.text).toContain(r.kind);
+          expect(["yes", "no", "check"], r.text).toContain(r.key);
+          for (const f of ["where", "text", "check", "note"]) expect(r[f], `${r.text} ${f}`).toBeTruthy();
+          // Every request says where it came from and what it asks to see; a rush only when there is one.
+          expect(r.look.source, r.text).toBeTruthy();
+          expect(r.look.access, r.text).toBeTruthy();
+          for (const k of Object.keys(r.look)) expect(LOOK, r.text).toContain(k);
+        }
+        expect(["planted", "captured"], t).toContain(requests(t).provenance);
+        expect(requests(t).model, t).toBeTruthy();
+      }
+    });
+
+    // The approved design: a real update, a fake update, an AI app or extension, a "connect" screen, and one more yes.
+    it("gives every track a real update, a fake update, an AI app or extension to check, a connect screen, and two yes answers", () => {
+      for (const t of TRACK_IDS) {
+        const items = requests(t).items;
+        expect(items.some((r) => r.kind === "update" && r.key === "yes"), t).toBe(true);
+        expect(items.filter((r) => r.kind === "popup").map((r) => r.key), t).toEqual(["no"]);
+        expect(items.some((r) => ["app", "extension"].includes(r.kind) && r.key === "check" && /\bAI\b/.test(r.text)), t).toBe(true);
+        expect(items.filter((r) => r.kind === "connect").every((r) => ["no", "check"].includes(r.key)), t).toBe(true);
+        expect(items.some((r) => r.kind === "connect"), t).toBe(true);
+        expect(items.filter((r) => r.key === "yes").length, t).toBeGreaterThanOrEqual(2);
+      }
+    });
+
+    it("doesn't let the key be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => requests(t).items.map((r) => r.key).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+      expect(new Set(TRACK_IDS.map((t) => requests(t).items.findIndex((r) => r.key === "yes"))).size).toBeGreaterThan(1);
+    });
+
+    it("never checks a request through the request itself, and sends updates to settings or the official store", () => {
+      for (const t of TRACK_IDS) {
+        for (const r of requests(t).items.filter((x) => x.key !== "yes")) expect(r.check, r.text).not.toMatch(/click the link|tap the link|download the update/i);
+        for (const r of requests(t).items.filter((x) => x.kind === "popup")) expect(`${r.check} ${r.note}`, r.text).toMatch(/settings|official store|app store|IT/);
+      }
+    });
+
+    // Safeguarding (docs/student-safety.md): own devices, nothing installed or typed, a trusted adult, allowed tools only.
+    it("points every students \"no\" and \"check first\" to a trusted adult, and keeps students to their own phone and allowed tools", () => {
+      const items = requests("students").items;
+      for (const r of items.filter((x) => x.key !== "yes")) expect(`${r.check} ${r.note}`, r.text).toMatch(/trusted adult/);
+      expect(concrete.tracks.students.context).toMatch(/your own phone/);
+      expect(concrete.tracks.students.context).toMatch(/Don't install or type anything/);
+      expect(items.filter((r) => /\bAI\b/.test(r.text)).map((r) => r.check).join(" ")).toMatch(/AI tools your school allows/);
+    });
+
+    it("orders eight recovery steps with a right place or range for each, starting jumbled, and both guides' orders score right", () => {
+      const steps = pictorial.steps;
+      expect(steps).toHaveLength(8);
+      expect(new Set(steps.map((st) => st.id)).size).toBe(8);
+      for (const st of steps) {
+        for (const f of ["label", "text", "why"]) expect(st[f], `${st.id} ${f}`).toBeTruthy();
+        expect(st.places[0], st.id).toBeGreaterThanOrEqual(1);
+        expect(st.places[1], st.id).toBeLessThanOrEqual(steps.length);
+        expect(st.places[0], st.id).toBeLessThanOrEqual(st.places[1]);
+      }
+      const scores = (order) => order.every((id, i) => { const st = steps.find((x) => x.id === id); return i + 1 >= st.places[0] && i + 1 <= st.places[1]; });
+      // The NCSC's order (the steps as listed) and the FTC's, with the FBI's "remove apps" added.
+      expect(scores(steps.map((st) => st.id))).toBe(true);
+      expect(scores(["recovery", "password", "signout", "twostep", "forwarding", "apps", "contacts", "money"])).toBe(true);
+      expect(steps[0].id).toBe("recovery");
+      expect([...pictorial.start].sort()).toEqual(steps.map((st) => st.id).sort());
+      pictorial.start.forEach((id, i) => {
+        const st = steps.find((x) => x.id === id);
+        expect(i + 1 >= st.places[0] && i + 1 <= st.places[1], `${id} starts in a right place`).toBe(false);
+      });
+      expect(CLAIMS).toHaveProperty(pictorial.claim);
+    });
+
+    it("tells students' facilitators that a trusted adult comes first", () => {
+      expect(pictorial.moves.join(" ")).toMatch(/Students: the first step is always to tell a trusted adult/);
+    });
+
+    it("puts each track's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(requests(t).claim);
     });
   });
 
