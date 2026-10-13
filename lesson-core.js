@@ -1246,6 +1246,126 @@ function wireShare(doc, stage) {
   });
 }
 
+/* ---------- requests and recover (Essentials 2): say yes, say no or check first; and recovery steps in order ---------- */
+
+// Three answers, not two, so learners practise the middle habit: not panic, not click, check.
+export const REQUEST_LABEL = { yes: "Say yes", no: "Say no", check: "Check first" };
+// What to look at before saying yes: where it came from, what it asks to see, and any rush.
+export const LOOK_LABEL = { source: "Where it came from", access: "What it asks to see", rush: "A rush" };
+const REQUEST_KIND = { update: "Update", popup: "Pop-up on a website", app: "App", extension: "Browser extension", connect: "\"Connect your account\" screen" };
+
+function requestReveal(r) {
+  const look = Object.keys(LOOK_LABEL)
+    .filter((k) => r.look[k])
+    .map((k) => `<li><b>${LOOK_LABEL[k]}:</b> ${esc(r.look[k])}</li>`)
+    .join("");
+  return `<p><b class="k k-${r.key}">${REQUEST_LABEL[r.key]}</b> ${esc(r.note)}</p><ul class="rq-look">${look}</ul><p><b>How to check:</b> ${esc(r.check)}</p>`;
+}
+
+function requestsExercise(requests, provenanceNote) {
+  return `<figure class="passage requests">
+        <ol class="messages">${requests.items
+          .map(
+            (r, i) => `<li class="message"><p class="msg-head"><span class="msg-kind">${REQUEST_KIND[r.kind]}</span> <span class="msg-from">Where: ${esc(r.where)}</span></p><p>${esc(r.text)}</p>${
+              r.asks?.length ? `<p class="rq-asks-head">It asks to:</p><ul class="rq-asks">${r.asks.map((a) => `<li>${esc(a)}</li>`).join("")}</ul>` : ""
+            }<details class="key"><summary>Reveal<span class="sr"> the answer for request ${i + 1}</span></summary>${requestReveal(r)}</details></li>`
+          )
+          .join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>
+      <h3 class="subhead">For each request: say yes, say no, or check first? What did you look at? How would you check?</h3>
+      <p class="sense">Next, you'll put the steps for getting a hacked account back in order.</p>`;
+}
+
+export const placesText = ([a, b]) => (a === b ? `place ${a}` : `places ${a} to ${b}`);
+const inPlace = (st, place) => place >= st.places[0] && place <= st.places[1];
+// Right or wrong in a word and a shape (✓ or ✕), never colour alone.
+const placeVerdict = (st, place) => (inPlace(st, place) ? "✓ Right place." : `✕ Belongs at ${placesText(st.places)}.`);
+
+/** Where each step sits in the learner's order, and, once shown, whether it's in an accepted place. */
+export function recoverStatus(order, steps, shown = false) {
+  const byId = Object.fromEntries(steps.map((st) => [st.id, st]));
+  const placed = order.map((id, i) => ({ step: byId[id], place: i + 1, ok: inPlace(byId[id], i + 1) }));
+  const right = placed.filter((p) => p.ok).length, n = steps.length;
+  const text = !shown
+    ? `Put the ${n} steps in order, from first to last. Then show the order.`
+    : right === n
+      ? `All ${n} steps are in a right place.`
+      : `${right} of ${n} steps are in a right place. Move the ones marked ✕, and the marks update as you go.`;
+  return { placed, right, text };
+}
+
+/** What a move says: the step, its new place, and once the order is shown, whether that place is right. */
+export function recoverMoveText(order, steps, id, shown = false) {
+  const st = steps.find((s) => s.id === id), place = order.indexOf(id) + 1;
+  return `Moved "${st.label}" to place ${place} of ${order.length}.${shown ? ` ${placeVerdict(st, place)}` : ""}`;
+}
+
+function recoverList(order, steps, shown) {
+  const { placed } = recoverStatus(order, steps, shown);
+  return `<ol class="rc-list">${placed
+    .map(({ step: st, place, ok }) => {
+      const verdict = shown ? `<p class="rc-verdict ${ok ? "rc-yes" : "rc-no"}"><b>${placeVerdict(st, place)}</b> ${esc(st.why)}</p>` : "";
+      const btn = (dir, word, off) =>
+        `<button type="button" class="btn" data-id="${esc(st.id)}" data-move="${dir}"${off ? " disabled" : ""}>${word}<span class="sr">: ${esc(st.label)}</span></button>`;
+      return `<li class="rc-step${shown ? (ok ? " rc-ok" : " rc-off") : ""}"><p class="rc-text">${esc(st.text)}</p>${verdict}<div class="rc-moves">${btn("up", "Move up", place === 1)}${btn("down", "Move down", place === order.length)}</div></li>`;
+    })
+    .join("")}</ol>`;
+}
+
+// Nothing typed, nothing sent: the order lives only on this page, and Start again puts it back.
+function recoverBuilder(stage) {
+  return `${(stage.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
+      <div class="rc-steps" id="rc-steps">${recoverList(stage.start, stage.steps, false)}</div>
+      <div class="sh-actions"><button type="button" class="btn" id="rc-reveal">Show the order</button> <button type="button" class="btn" id="rc-reset">Start again</button></div>
+      <p class="so-status" id="rc-status">${esc(recoverStatus(stage.start, stage.steps).text)}</p>`;
+}
+
+function wireRecover(doc, stage) {
+  const box = doc.querySelector("#rc-steps"), btn = doc.querySelector("#rc-reveal");
+  let order = [...stage.start], shown = false;
+  // The list re-renders on every move, so each change is said in the page's static live region (WCAG 4.1.3).
+  const announce = (text) => {
+    const live = doc.querySelector("#announce");
+    if (live) live.textContent = text;
+  };
+  const draw = () => {
+    box.innerHTML = recoverList(order, stage.steps, shown);
+    doc.querySelector("#rc-status").textContent = recoverStatus(order, stage.steps, shown).text;
+    btn.textContent = shown ? "Hide the order" : "Show the order";
+  };
+  box.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-move]");
+    if (!b || b.disabled) return;
+    const { id, move } = b.dataset;
+    const i = order.indexOf(id), j = i + (move === "up" ? -1 : 1);
+    if (j < 0 || j >= order.length) return;
+    [order[i], order[j]] = [order[j], order[i]];
+    draw();
+    // Focus stays with the step that moved: the same button if it still works, otherwise the other one.
+    const mine = (dir) => box.querySelector(`button[data-id="${id}"][data-move="${dir}"]`);
+    (mine(move).disabled ? mine(move === "up" ? "down" : "up") : mine(move)).focus();
+    announce(recoverMoveText(order, stage.steps, id, shown));
+  });
+  btn.addEventListener("click", () => {
+    shown = !shown;
+    draw();
+    announce(shown ? recoverStatus(order, stage.steps, true).text : "The order is hidden. Keep moving the steps, or show it again.");
+    // On show, hand focus to the marked steps so they are read; on hide, stay on the button.
+    if (shown) {
+      box.tabIndex = -1;
+      box.focus();
+    }
+  });
+  doc.querySelector("#rc-reset").addEventListener("click", () => {
+    order = [...stage.start];
+    shown = false;
+    draw();
+    box.querySelector("button:not([disabled])").focus();
+    announce("Started again. The steps are back in their first order.");
+  });
+}
+
 /* ---------- contrast checker (Lesson 7): measure a colour pair against WCAG, and find the nearest pass ---------- */
 
 export const CONTRAST_LEVELS = [
@@ -1514,7 +1634,7 @@ export function claimLessons() {
   const out = {};
   for (const l of COURSE.lessons.filter((x) => x.ready)) {
     for (const s of l.stages) {
-      const ids = [...(s.principles ?? []), s.claim, ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat ?? t.respond ?? t.inbox)?.claim)];
+      const ids = [...(s.principles ?? []), s.claim, ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat ?? t.respond ?? t.inbox ?? t.requests)?.claim)];
       for (const id of ids.filter(Boolean)) if (!(out[id] ??= []).includes(l.n)) out[id].push(l.n);
     }
   }
@@ -1709,7 +1829,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   const isChat = exercise === "chat";
   const isRespond = exercise === "respond";
   const isInbox = exercise === "inbox";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat, respond: art.respond, inbox: art.inbox }[exercise];
+  const isRequests = exercise === "requests";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat, respond: art.respond, inbox: art.inbox, requests: art.requests }[exercise];
 
   header.dataset.lesson = lesson.n;
   // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
@@ -1732,6 +1853,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? `Written by ${esc(artefact.model)} for this lesson. The situations and the people in them are made up.`
         : isInbox
         ? `Written by ${esc(artefact.model)} for this lesson. The messages, names and addresses are made up.`
+        : isRequests
+        ? `Written by ${esc(artefact.model)} for this lesson. The requests, apps and companies are made up.`
         : isChat
         ? `Written by ${esc(artefact.model)} for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
         : isThread
@@ -1758,6 +1881,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? respondExercise(artefact, provenanceNote)
         : isInbox
         ? inboxExercise(artefact, provenanceNote)
+        : isRequests
+        ? requestsExercise(artefact, provenanceNote)
         : isChat
         ? chatExercise(artefact, provenanceNote) + `<h3 class="subhead">For each reply: helpful, or which move is it?</h3>`
         : isThread
@@ -1779,6 +1904,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? planBuilder(pictorial, artefact.situations)
         : isInbox
         ? shareSorter(pictorial)
+        : isRequests
+        ? recoverBuilder(pictorial)
         : isChat
         ? `<div class="figure" id="grid">${gainsView(artefact)}</div>
       ${revealButton("picture")}`
@@ -1873,6 +2000,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
   else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }), "picture");
   else if (isRespond) wirePlan(doc, pictorial, artefact.situations);
   else if (isInbox) wireShare(doc, pictorial);
+  else if (isRequests) wireRecover(doc, pictorial);
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }), "scale");
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));

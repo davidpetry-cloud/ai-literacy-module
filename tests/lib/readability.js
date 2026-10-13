@@ -36,6 +36,11 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.requests) {
+    // What the screen says reads as passage text; the notes, what to look at and how to check are the key.
+    const rs = art.requests.items;
+    return { passage: rs.flatMap((r) => [r.where, r.text, ...(r.asks ?? [])]), key: rs.flatMap((r) => [r.note, r.check, ...Object.values(r.look)]) };
+  }
   if (art.inbox) {
     const ms = art.inbox.items;
     return { passage: ms.map((m) => m.text), key: ms.flatMap((m) => [m.note, m.check]) };
@@ -94,7 +99,7 @@ export function textRoles(lesson, tracks) {
       .concat(lesson.check.exit.rating, lesson.check.exit.open)
       // A checklist builder's options are learner text too.
       .concat(lesson.stages.flatMap((s) => s.checks ?? []).flatMap((c) => [c.text, c.note]).filter(Boolean))
-      .concat(lesson.stages.flatMap((s) => s.steps ?? []).map((st) => st.text))
+      .concat(lesson.stages.flatMap((s) => s.steps ?? []).flatMap((st) => [st.text, st.why]).filter(Boolean))
       // A stage's own instructions to learners.
       .concat(lesson.stages.flatMap((s) => s.intro ?? []))
       // A sorter's items, and the reason shown for each.

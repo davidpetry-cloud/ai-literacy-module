@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1639,6 +1639,137 @@ describe("essentials 1: one core across tracks", () => {
   });
 });
 
+const essentials2 = getLesson(14);
+const e2Doc = (track) => lessonDoc(track, essentials2);
+const requestsData = (track) => essentials2.stages[0].tracks[track].requests;
+const recoverStage = essentials2.stages[1];
+const rcOrder = (d) => [...d.querySelectorAll("#rc-steps button[data-move=\"up\"]")].map((b) => b.dataset.id);
+const rcButton = (d, id, dir) => d.querySelector(`#rc-steps button[data-id="${id}"][data-move="${dir}"]`);
+// Move one step to a place by pressing its buttons, as a keyboard user would.
+const rcMoveTo = (d, id, place) => {
+  while (rcOrder(d).indexOf(id) + 1 > place) rcButton(d, id, "up").click();
+  while (rcOrder(d).indexOf(id) + 1 < place) rcButton(d, id, "down").click();
+};
+
+describe.each(TRACK_IDS)("essentials 2, %s track", (track) => {
+  const doc = e2Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order, labelled Essentials 2", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+    expect(doc.querySelector(".top .lesson-no").textContent).toBe("Essentials 2");
+    expect(doc.title).toBe(`Essentials 2: Keeping Your Devices and Accounts Safe — ${COURSE.title}`);
+    expect(doc.querySelector("header.top").dataset.lesson).toBe("14");
+  });
+
+  it("shows five requests, each naming its kind, where it appears and what it asks, with a closed reveal in words", () => {
+    const rs = doc.querySelectorAll('[data-stage="concrete"] .requests .messages > li');
+    expect(rs).toHaveLength(5);
+    requestsData(track).items.forEach((r, i) => {
+      expect(rs[i].querySelector(".msg-from").textContent).toBe(`Where: ${r.where}`);
+      expect(rs[i].querySelector(".msg-kind").textContent).toBeTruthy();
+      expect([...rs[i].querySelectorAll(".rq-asks li")].map((l) => l.textContent)).toEqual(r.asks ?? []);
+      const key = rs[i].querySelector("details");
+      expect(key.open).toBe(false);
+      expect(key.querySelector("summary").textContent).toBe(`Reveal the answer for request ${i + 1}`);
+      expect(key.querySelector(".k").textContent).toBe(REQUEST_LABEL[r.key]);
+      for (const k of Object.keys(r.look)) expect(key.textContent).toContain(`${LOOK_LABEL[k]}: ${r.look[k]}`);
+      expect(key.textContent).toContain(`How to check: ${r.check}`);
+    });
+    expect(doc.querySelector(".requests figcaption").textContent).toContain("made up");
+    expect(doc.querySelector('[data-stage="concrete"]').textContent).toContain("Next, you'll put the steps for getting a hacked account back in order.");
+  });
+
+  it("starts the builder jumbled, with nothing marked, and the first and last moves switched off", () => {
+    const d = e2Doc(track);
+    expect(rcOrder(d)).toEqual(recoverStage.start);
+    expect(d.querySelector("#rc-status").textContent).toBe("Put the 8 steps in order, from first to last. Then show the order.");
+    expect(d.querySelectorAll("#rc-steps .rc-verdict")).toHaveLength(0);
+    expect(rcButton(d, recoverStage.start[0], "up").disabled).toBe(true);
+    expect(rcButton(d, recoverStage.start.at(-1), "down").disabled).toBe(true);
+    expect(d.querySelectorAll("#rc-steps button:disabled")).toHaveLength(2);
+  });
+
+  it("moves a step, keeps focus with it, and says where it went in the live region", () => {
+    const d = e2Doc(track);
+    const live = d.querySelector("#announce");
+    rcButton(d, "recovery", "up").click();
+    expect(rcOrder(d).indexOf("recovery")).toBe(2);
+    expect(d.activeElement).toBe(rcButton(d, "recovery", "up"));
+    expect(live.textContent).toBe('Moved "Recovery page" to place 3 of 8.');
+    rcMoveTo(d, "recovery", 1);
+    // At the top, Move up is off, so focus moves to the step's other button.
+    expect(rcButton(d, "recovery", "up").disabled).toBe(true);
+    expect(d.activeElement).toBe(rcButton(d, "recovery", "down"));
+    expect(live.textContent).toBe('Moved "Recovery page" to place 1 of 8.');
+  });
+
+  it("shows the order in words and shape, updates as steps move, hides it again, and starts again", () => {
+    const d = e2Doc(track);
+    const live = d.querySelector("#announce");
+    const btn = d.querySelector("#rc-reveal");
+    btn.click();
+    expect(btn.textContent).toBe("Hide the order");
+    expect(d.activeElement).toBe(d.querySelector("#rc-steps"));
+    expect(d.querySelector("#rc-status").textContent).toBe("0 of 8 steps are in a right place. Move the ones marked ✕, and the marks update as you go.");
+    expect(live.textContent).toBe(d.querySelector("#rc-status").textContent);
+    expect(d.querySelectorAll("#rc-steps .rc-off")).toHaveLength(8);
+    const first = d.querySelector("#rc-steps .rc-verdict").textContent;
+    expect(first).toContain(`✕ Belongs at ${placesText(recoverStage.steps.find((st) => st.id === recoverStage.start[0]).places)}.`);
+    rcMoveTo(d, "recovery", 1);
+    expect(live.textContent).toBe('Moved "Recovery page" to place 1 of 8. ✓ Right place.');
+    expect(d.querySelector("#rc-steps .rc-step").classList.contains("rc-ok")).toBe(true);
+    expect(d.querySelector("#rc-steps .rc-verdict").textContent).toContain("✓ Right place.");
+    recoverStage.steps.forEach((st, i) => rcMoveTo(d, st.id, i + 1));
+    expect(d.querySelector("#rc-status").textContent).toBe("All 8 steps are in a right place.");
+    expect(d.querySelectorAll("#rc-steps .rc-off")).toHaveLength(0);
+    btn.click();
+    expect(btn.textContent).toBe("Show the order");
+    expect(d.querySelectorAll("#rc-steps .rc-verdict")).toHaveLength(0);
+    d.querySelector("#rc-reset").click();
+    expect(rcOrder(d)).toEqual(recoverStage.start);
+    expect(d.querySelector("#rc-status").textContent).toContain("Put the 8 steps in order");
+    expect(live.textContent).toBe("Started again. The steps are back in their first order.");
+    expect(d.activeElement).toBe(d.querySelector("#rc-steps button:not([disabled])"));
+  });
+
+  it("gives every move button a distinct accessible name with its visible words, and collects nothing", () => {
+    const names = [...doc.querySelectorAll("#rc-steps button")].map((b) => b.textContent);
+    expect(names).toHaveLength(16);
+    expect(new Set(names).size).toBe(names.length);
+    for (const n of names) expect(n).toMatch(/^Move (up|down): /);
+    expect(doc.querySelectorAll('[data-stage="pictorial"] input, [data-stage="pictorial"] textarea, [data-stage="pictorial"] form')).toHaveLength(0);
+  });
+
+  it("shows the recovery key as a claim, four two-column reference tables, and the lesson's own follow-up", () => {
+    expect(doc.querySelector('[data-stage="pictorial"] .keyclaim [data-claim="e2-key-recover"]')).not.toBeNull();
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect([...doc.querySelectorAll('[data-stage="abstract"] h3.subhead')].map((h) => h.textContent).slice(0, 4)).toEqual(["Keep things updated", "Before you install or connect", "If your account is hacked", "Where to get help"]);
+    expect(tables).toHaveLength(4);
+    for (const t of tables) expect(t.querySelectorAll("thead th")).toHaveLength(2);
+    expect(doc.querySelector(".transfer").textContent).toContain("did you find any connected apps you didn't expect");
+  });
+});
+
+describe("essentials 2: one core across tracks", () => {
+  const html = (t, sel) => e2Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, pictorial, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="pictorial"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("marks a step right anywhere in its range, and says so only once the order is shown", () => {
+    const order = recoverStage.steps.map((st) => st.id);
+    expect(recoverStatus(order, recoverStage.steps).right).toBe(8);
+    expect(recoverStatus(order, recoverStage.steps).text).toContain("Then show the order.");
+    expect(recoverStatus(order, recoverStage.steps, true).text).toBe("All 8 steps are in a right place.");
+    expect(recoverMoveText(order, recoverStage.steps, "password", true)).toBe('Moved "New password" to place 3 of 8. ✓ Right place.');
+    expect(placesText([7, 7])).toBe("place 7");
+    expect(placesText([2, 6])).toBe("places 2 to 6");
+  });
+});
+
 describe("page structure", () => {
   const outline = (doc) => [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
   const hub = page("index.html");
@@ -1658,7 +1789,8 @@ describe("page structure", () => {
     ...TRACK_IDS.map((t) => [`lesson 10 (${t})`, lesson10Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 11 (${t})`, lesson11Doc(t)]),
     ...TRACK_IDS.map((t) => [`lesson 12 (${t})`, lesson12Doc(t)]),
-    ...TRACK_IDS.map((t) => [`essentials 1 (${t})`, e1Doc(t)])
+    ...TRACK_IDS.map((t) => [`essentials 1 (${t})`, e1Doc(t)]),
+    ...TRACK_IDS.map((t) => [`essentials 2 (${t})`, e2Doc(t)])
   ])("%s has one h1 and never skips a heading level", (_, doc) => {
     const levels = outline(doc);
     expect(levels.filter((l) => l === 1)).toHaveLength(1);
@@ -1679,6 +1811,7 @@ describe("page structure", () => {
     ["lesson 10", lesson10Doc(TRACK_IDS[0])],
     ["lesson 11", lesson11Doc(TRACK_IDS[0])],
     ["lesson 12", lesson12Doc(TRACK_IDS[0])],
+    ...TRACK_IDS.map((t) => [`essentials 2 (${t})`, e2Doc(t)]),
     ["sources", (() => { const d = page("sources.html"); renderSources(d); return d; })()]
   ])("%s gives every control a distinct accessible name", (_, doc) => {
     const names = [...doc.querySelectorAll("button, summary, a[href]")].map((e) => (e.getAttribute("aria-label") || e.textContent).replace(/\s+/g, " ").trim());

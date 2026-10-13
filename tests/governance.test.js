@@ -17,7 +17,7 @@ function referencedClaims() {
     for (const stage of lesson.stages) {
       for (const id of stage.principles ?? []) refs.add(id);
       if (stage.claim) refs.add(stage.claim);
-      for (const track of Object.values(stage.tracks ?? {})) refs.add((track.passage ?? track.pair ?? track.signoffs ?? track.classify ?? track.screen ?? track.thread ?? track.chat ?? track.respond ?? track.inbox).claim);
+      for (const track of Object.values(stage.tracks ?? {})) refs.add((track.passage ?? track.pair ?? track.signoffs ?? track.classify ?? track.screen ?? track.thread ?? track.chat ?? track.respond ?? track.inbox ?? track.requests).claim);
     }
   }
   return refs;

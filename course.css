@@ -412,12 +412,12 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .chat .who-said{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3)}
 .k-helpful{color:var(--att-text)} .k-flattery{color:var(--prop)} .k-guilt{color:var(--rej)} .k-pressure{color:var(--exp)} .k-product{color:var(--teal-text)} .k-human{color:var(--ink-2)}
 /* Essentials 1: an inbox of messages, and the what's-safe-to-share sorter */
-.inbox .messages{padding-left:24px;margin:0;display:grid;gap:12px}
-.inbox .message{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
-.inbox .message p{margin:0 0 4px}
-.inbox .msg-head{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3)}
-.inbox .msg-kind{font-weight:700;color:var(--ink-2)}
-.inbox .msg-from,.inbox .msg-subject{overflow-wrap:anywhere}
+.inbox .messages,.requests .messages{padding-left:24px;margin:0;display:grid;gap:12px}
+.inbox .message,.requests .message{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
+.inbox .message p,.requests .message p{margin:0 0 4px}
+.inbox .msg-head,.requests .msg-head{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3)}
+.inbox .msg-kind,.requests .msg-kind{font-weight:700;color:var(--ink-2)}
+.inbox .msg-from,.inbox .msg-subject,.requests .msg-from{overflow-wrap:anywhere}
 .k-genuine{color:var(--att-text)} .k-scam{color:var(--exp)}
 .k-fine{color:var(--att-text)} .k-keep{color:var(--exp)}
 .sh-item{border:0;padding:0;margin:0 0 8px;min-width:0}
@@ -429,6 +429,21 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .sh-answers{padding-left:24px;margin:16px 0 0}
 .sh-answers li{margin-bottom:8px}
 .sh-verdict{font-weight:600}
+/* Essentials 2: requests to say yes, no or check first to, and the recovery steps in order */
+.requests .rq-asks-head{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-2)}
+.requests .rq-asks{margin:0 0 8px;padding-left:24px;font-family:var(--sans)}
+.requests .rq-asks li,.requests .rq-look li{margin-bottom:4px}
+.requests .rq-look{margin:4px 0 8px;padding-left:24px}
+.k-yes{color:var(--att-text)} .k-no{color:var(--exp)} .k-check{color:var(--prop)}
+.rc-list{padding-left:32px;margin:0 0 16px;display:grid;gap:8px;max-width:var(--measure)}
+.rc-step{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
+.rc-step p{margin:0 0 8px}
+/* Once shown, a step in the wrong place gets a dashed outline: shape, not colour, carries the verdict. */
+.rc-step.rc-off{border-style:dashed}
+.rc-verdict b{font-weight:700}
+.rc-yes b{color:var(--att-text)} .rc-no b{color:var(--exp)}
+.rc-moves{display:flex;flex-wrap:wrap;gap:8px}
+.rc-moves .btn{margin:0}
 .g-dot{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:1.5}
 .g-axis{stroke:var(--edge);stroke-width:1.5}
 .g-mean{stroke:var(--ink-3);stroke-width:2.5;stroke-dasharray:6 4}
