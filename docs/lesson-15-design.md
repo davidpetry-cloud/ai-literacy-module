@@ -7,7 +7,7 @@
 to say" added at his request the same day. **Not registered yet:** the lesson file, the
 hub entry, a `--l15` colour and the CLAUDE.md rows wait until the Essentials 2 build
 (running in a separate session) has merged, so the two pieces of work don't clash in
-`course.js`, `course.css` and `CLAUDE.md`. Warm-up and check approved 2026-10-13. Stage design proposed 2026-10-13, awaiting David.
+`course.js`, `course.css` and `CLAUDE.md`. Warm-up and check approved 2026-10-13. Stage design approved by David 2026-10-13 (generalise the `share` sorter to three bins). Next: build, after the Essentials 2 build merges.
 
 **Why its own essential (David, 2026-10-13):** AI voice on the phone reaches past
 scams. Essentials 1 teaches spotting a scam call and checking it another way, and
@@ -142,7 +142,7 @@ a call *you* made to the official number some banks do send a code to confirm it
 once" in p1 rests on robocalls being mass calls by definition (FCC 24-17), not on any
 count of AI scam bots.
 
-## Stages (proposed 2026-10-13, awaiting David)
+## Stages (approved 2026-10-13)
 
 **Timing:** warm-up 5, concrete 12, pictorial 10, abstract 8, check 10 (45).
 
@@ -260,12 +260,14 @@ nothing asks a student to call anyone or record their voice; a trusted adult in 
 "hang up" step; E3.4 done with a parent or carer; no political calls. AI voice
 companions are covered in Lesson 11 and not repeated here.
 
-## Open choices for David
+## Decisions (David, 2026-10-13)
 
-1. Approve the stage design, or change it.
-2. The sorter: generalise Essentials 1's `share` sorter to three bins (recommended), or
-   build a new one.
-3. The professionals' "IT help desk" call stays only if an agency source is found.
+1. Stage design: **approved** as written.
+2. The sorter: **generalise Essentials 1's `share` sorter** to accept a set of keys, so
+   it can sort into three bins. Essentials 1's two-bin sort must stay the same, and its
+   tests must still pass unchanged.
+3. The professionals' "IT help desk" call stays only if an agency source is found at
+   build time.
 
 ## Next
 
@@ -273,5 +275,5 @@ companions are covered in Lesson 11 and not repeated here.
    `ready: false`; register it in `course.js`; add `--l15` (both themes); update
    CLAUDE.md.
 2. Warm-up and check: approved 2026-10-13 (above); add them to the lesson file with the objectives.
-3. Stage design: proposed above, awaiting David. Then build, in its own session on Opus
+3. Stage design: approved 2026-10-13. Then build, after the Essentials 2 build has merged (both edit `lesson-core.js`), in its own session on Opus
    at high effort (two tools: a new `pause-call` exercise and a three-bin sorter).
