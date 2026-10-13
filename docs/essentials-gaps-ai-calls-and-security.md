@@ -451,6 +451,9 @@ Each can be approved, changed or dropped on its own.
 7. E2.4, prompt injection: keep it in Essentials 2, or move it to "UX/UI for AI builders".
    **Decided 2026-10-12: moved to "UX/UI for AI builders"** (or a later essential once
    assistants that act for people are common). Essentials 2 has three objectives.
+   **Warm-up and check approved 2026-10-13** and added to `lessons/lesson-14.js`
+   (the E2.2 check was rewritten to fit the new wording: an AI helper found through an
+   ad asks to connect to your email). Next: stage design.
 8. The thirteen draft claims go into `claims.js` as model proposals only after the
    matching lesson change is approved, and only David attests them.
 
