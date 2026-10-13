@@ -699,6 +699,18 @@ export const CLAIMS = {
       "FCC Declaratory Ruling FCC 24-17 (8 February 2024), para. 4, quoting the FCC's 2023 notice of inquiry: current uses of AI in robocalling include 'emulating human speech and interacting with consumers as though they were live human callers'; para. 5: voice cloning 'artificially simulates a human voice'. FBI IC3 PSA I-051525-PSA (15 May 2025): vishing 'may incorporate AI-generated voices', and cloned and real voices 'can sound nearly identical'. FTC consumer alert (A. Puig, 20 March 2023): 'Don't trust the voice.' No source checked measures how common conversational AI scam bots are, so the lesson says 'can', not 'most'. Read 2026-10-08; see docs/essentials-gaps-ai-calls-and-security.md."
     )
   },
+  "answering-bot-calls": {
+    text: "You don't have to answer a number you don't know. If a recording or a computer voice starts talking, hang up without pressing any numbers. Caller ID can be faked, so call back on the number on your card or statement, or on the official website. Hang up right away if a caller asks for money, a code or personal details.",
+    attestation: proposedBy(
+      "FTC, 'Robocalls' (consumer.ftc.gov/articles/robocalls, September 2023), read 2026-10-13: 'Hang up.' 'Pressing numbers to speak to someone or remove you from the list will probably only lead to more robocalls.' 'Caller ID is easy to fake.' FCC, 'Stop Unwanted Robocalls and Texts' (fcc.gov consumer guide, last reviewed 27 February 2026), read 2026-10-13: 'Don't answer calls from numbers you don't know. Hang up right away if someone asks for money or personal information'; call back 'using an official phone number from an account statement ... or their website'. Codes: FTC consumer alert (T. Miller, 8 July 2024). 'Let it go to voicemail' is a practical reading of the FCC's advice not to answer. Not included: advice not to speak in case a bot records your voice, for which no agency source was found."
+    )
+  },
+  "ai-disclosure-laws": {
+    text: "Some places require a business's AI to say it's an AI: the EU from 2 August 2026, and Utah when a customer clearly asks. US federal rules require a recorded or AI-voice call to say who is calling, but not that it uses AI. Scammers ignore these rules, so what a caller says about itself proves nothing.",
+    attestation: proposedBy(
+      "Regulation (EU) 2024/1689 (AI Act), Art. 50(1) and (5), applying from 2 August 2026 (Art. 113; unchanged by the Digital Omnibus, Regulation (EU) 2026/1744). Utah Code § 13-77-103 (enacted 2025 as SB 226; renumbered from 13-75-103), read on le.utah.gov 2026-10-12. FCC Declaratory Ruling FCC 24-17 (8 February 2024), para. 9, and 47 CFR § 64.1200(b) (eCFR, last amended 25 March 2026): caller identity required, no AI-disclosure duty; FCC 24-84 (August 2024) only proposed one. 'Scammers ignore these rules' is a judgement: FBI IC3 I-091726-PSA (17 September 2026) says scammers spoof real numbers, names and credentials. Full research: docs/essentials-gaps-ai-calls-and-security.md."
+    )
+  },
   "uk-159": {
     text: "In the UK, calling 159 connects you safely to your bank: it reaches most banks, and scammers can't fake the number.",
     attestation: proposedBy(
