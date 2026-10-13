@@ -75,7 +75,7 @@ or a statute) that isn't in `sources.js`.
 **No link was opened for this list.** The session that wrote it couldn't reach
 any outside site: its network policy blocked them all. Instead, the flagged
 claims were re-checked by web search on 2026-10-13, and what that found is in
-their notes. Treat every other link as unchecked until you open it.
+their notes. Treat every other link as unchecked until you open it. **Update 2026-10-13:** the main session opened the Essentials 2 sources that had only been searched (marked ✓ below); they match.
 
 ## Lesson 1 · What a Model Actually Does
 
@@ -915,7 +915,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > Software updates fix security flaws that criminals use. Install them soon, turn on automatic updates, and get updates from your device's own settings or the official app store. Older devices eventually stop getting updates.
 
-  - ⚑ **Do first.** Re-sourced after CISA's Secure Our World 'Update Software' page was archived. The CISA training page was only seen in search results, never opened. A web search on 2026-10-13 still lists it; open it and check for an archive banner.
+  - ✓ **Opened 2026-10-13** (main session): the CISA training page is live, has no archive banner, and its words match the rationale. Re-sourced after CISA's Secure Our World 'Update Software' page was archived.
   - **Open:** [NCSC, Install the latest software and app updates](https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/install-the-latest-software-and-app-updates) · [CISA training, Keep your device's OS and applications up to date](https://www.cisa.gov/resources-tools/training/keep-your-devices-operating-system-and-applications-date)
   - **Check** four things: install updates soon, turn on automatic updates, get them from the device's own settings or the official store, and older devices stop getting them.
 
@@ -923,7 +923,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > An update offered in a pop-up on a web page, or in an email, may be a trick. Criminals have spread harmful software disguised as browser updates.
 
-  - ⚑ **Do first.** Both sources were quoted in search results on 2026-10-13, not opened. Open them before attesting.
+  - ✓ **Opened 2026-10-13** (main session): both CISA pages are live and not archived; the quoted words match. The Interlock advisory says the fake browser updates were used 'previously', and the group has since shifted to fake security-software updates.
   - **Open:** [CISA training, Keep your device's OS and applications up to date](https://www.cisa.gov/resources-tools/training/keep-your-devices-operating-system-and-applications-date) · [CISA et al., #StopRansomware: Interlock (AA25-203A)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a)
   - **Check** CISA's caution about updates offered in a pop-up or email, and that the Interlock advisory describes payloads disguised as Chrome or Edge updates.
 
@@ -960,7 +960,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > In the US, if someone stole your personal information, IdentityTheft.gov, run by the Federal Trade Commission, helps you report it and gives you a recovery plan.
 
-  - ⚑ **Do first.** Quoted in search results on 2026-10-13, not opened. Open it before attesting.
+  - ✓ **Opened 2026-10-13** (main session): IdentityTheft.gov and the FTC alert (A. Puig, 29 October 2024) both support the claim. The rationale's earlier quote from search results wasn't on the page, so it was replaced with the page's own words.
   - **Open:** [FTC, IdentityTheft.gov](https://www.identitytheft.gov/) · [FTC alert, Email or social media hacked? (Oct 2024)](https://consumer.ftc.gov/consumer-alerts/2024/10/email-or-social-media-hacked-heres-what-do)
   - **Check** that IdentityTheft.gov is run by the FTC and creates a report and a recovery plan.
 
@@ -970,7 +970,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > The answer key for the Essentials 2 educators requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice on updates, downloads and connected apps.
 
-  - ⚑ **Do first.** Leans on the CISA training page and the Interlock advisory, which were only seen in search results.
+  - ✓ Its sources (the CISA training page and the Interlock advisory) were opened 2026-10-13 and match.
   - **Open:** [NCSC, Install the latest software and app updates](https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/install-the-latest-software-and-app-updates) · [CISA training, Keep your device's OS and applications up to date](https://www.cisa.gov/resources-tools/training/keep-your-devices-operating-system-and-applications-date) · [CISA et al., #StopRansomware: Interlock (AA25-203A)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a) · [OX Security, 900K users compromised (30 Dec 2025)](https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/) · [FBI IC3 PSA I-090126-PSA (1 Sept 2026)](https://www.ic3.gov/PSA/2026/PSA260901)
   - **Check:** The requests are made up. Check: the laptop's update (yes), the 'Featured' grading extension (check first), the browser-update pop-up (no), and the quiz maker asking to send email and read files (no).
 
@@ -978,7 +978,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > The answer key for the Essentials 2 professionals requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice on updates, downloads and connected apps.
 
-  - ⚑ **Do first.** Leans on the Interlock advisory, which was only seen in search results.
+  - ✓ Its source (the Interlock advisory) was opened 2026-10-13 and matches.
   - **Open:** [FBI IC3 PSA I-090126-PSA (1 Sept 2026)](https://www.ic3.gov/PSA/2026/PSA260901) · [CISA et al., #StopRansomware: Interlock (AA25-203A)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a) · [FBI IC3 PSA I-122122-PSA (21 Dec 2022)](https://www.ic3.gov/PSA/2022/PSA221221) · [OX Security, 900K users compromised (30 Dec 2025)](https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/)
   - **Check** each answer: the work laptop's update (yes), the notes app asking to send email (check first), the 'urgent' pop-up (no), the AI sidebar from a search ad (check first), and the approved tool asking for the microphone (yes).
 
@@ -986,7 +986,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > The answer key for the Essentials 2 students requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice, and every "no" and "check first" names a trusted adult.
 
-  - ⚑ **Do first.** Leans on the CISA training page, which was only seen in search results.
+  - ✓ Its source (the CISA training page) was opened 2026-10-13 and matches.
   - **Open:** [FBI IC3 PSA I-090126-PSA (1 Sept 2026)](https://www.ic3.gov/PSA/2026/PSA260901) · [CISA training, Keep your device's OS and applications up to date](https://www.cisa.gov/resources-tools/training/keep-your-devices-operating-system-and-applications-date)
   - **Check** each answer: the homework app from an ad (check first), the free-coins site (no), the phone and reading-app updates from the store (yes), the browser pop-up (no). Every 'no' and 'check first' names a trusted adult.
 
