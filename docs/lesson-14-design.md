@@ -5,7 +5,8 @@
 Colour `--l14` rust (#9A3412 light, #FDBA74 dark).
 
 **Status:** objectives approved 2026-10-12; warm-up and check approved and added
-2026-10-13. **Stage design approved by David 2026-10-13, with a new `requests` exercise.** Next: build it. The ranking, the
+2026-10-13. **Stage design approved by David 2026-10-13, with a new `requests` exercise.** **Built 2026-10-13**
+(see "Built" at the end); its claims await David's attestation. The ranking, the
 reasons for each topic and the checked sources are in
 `docs/essentials-gaps-ai-calls-and-security.md` (Part 2).
 
@@ -138,3 +139,71 @@ order.
 2. The concrete tool: **a new `requests` exercise**; the inbox renderer stays as it is,
    so Essentials 1 is untouched.
 3. The fake browser-update item stays only if an agency source is found at build time.
+
+## Built (2026-10-13)
+
+Built to the approved design, `ready: true`. What changed from the design, and why:
+
+- **The fake-update items stayed** (decision 3). Agency sources found: CISA's training
+  page *Keep Your Device's Operating System and Applications Up to Date* ("Exercise
+  caution if you are prompted to install an update through a browser pop-up or email,
+  as these may be phishing attempts") and the CISA, FBI, HHS and MS-ISAC advisory
+  *#StopRansomware: Interlock* (AA25-203A, 22 July 2025): payloads disguised as fake
+  Chrome or Edge updates, delivered from compromised real websites. Claim
+  `fake-updates-cisa`.
+- **Updates re-sourced:** the NCSC first, then the same CISA training page (it names
+  official sources: the device's own update feature or a trusted app store). Claim
+  `updates-ncsc-cisa`.
+- **IdentityTheft.gov** is cited from the FTC's own site and its October 2024 alert on
+  hacked accounts. Claim `identitytheft-gov`.
+- **Sources were checked through web search, not opened.** This session's network
+  policy refused www.ncsc.gov.uk, www.ic3.gov, consumer.ftc.gov, www.cisa.gov and
+  www.ox.security. The NCSC, FTC, FBI and OX pages were opened on 2026-10-08 (Part 2 of
+  `docs/essentials-gaps-ai-calls-and-security.md`); the CISA training page, AA25-203A
+  and IdentityTheft.gov were not. Every rationale says which. Open them before
+  attesting, and check the CISA training page has no "Archived Content" banner.
+
+### Concrete · `requests`
+
+Five requests per track, keys not positional (educators check, yes, no, no, yes;
+professionals yes, check, no, check, yes; students check, no, yes, no, yes). Each
+shows its kind, where it appears, what it says and what it asks to do; the reveal gives
+the answer in words, what to look at (where it came from, what it asks to see, and a
+rush when there is one), how to check and a note. Two "yes" answers per track. The
+made-up extensions name no real product. Students: own phone, nothing installed or
+typed, a trusted adult in every "no" and "check first", school-allowed AI tools only.
+
+### Pictorial · `recover`
+
+The eight steps as designed. Right places: recovery page 1; forwarding rules 2–6;
+new password 2–3; sign out everywhere 3–4; remove apps 4–6; two-step sign-in 4–6;
+warn contacts 7; check money and report 8. Both the NCSC's order and the FTC's (with
+"remove apps" added) score every step right; the starting order puts no step in a
+right place. Move up and Move down buttons (each named with its step, for screen
+readers), Show the order / Hide the order, Start again; every change is announced in
+`#announce`, and focus stays with the step that moved. Right or wrong shows as a word,
+a ✓ or ✕, and a solid or dashed outline. The facilitator moves say students tell a
+trusted adult first.
+
+### Abstract
+
+Four two-column tables, as designed. "Before you install or connect" gained one row,
+"Does a badge or lots of users prove it's safe? No.", from the OX Security case.
+
+### Claims (11 model proposals)
+
+`updates-ncsc-cisa`, `fake-updates-cisa`, `fake-downloads-fbi`,
+`fake-ai-extensions-example`, `consent-phishing-fbi`, `recover-hacked-account`,
+`identitytheft-gov`, and the answer keys `e2-key-educators`, `e2-key-professionals`,
+`e2-key-students` and `e2-key-recover`.
+
+### Checks
+
+`npm test` passes. `scripts/ui-audit.js` passes on the hub and every track at 320px
+and 375px, starting in each theme (each audit checks light and dark), before and after
+showing the order; every table and list was confirmed visible. UX/UI checked against
+`docs/ux-foundations.md`: every action shows a result; Start again and Hide undo;
+one name per action, matching the other builders; keyboard, focus that follows the
+moved step, 44px targets, distinct names; contrast in both themes, colour never the
+only cue; no sideways scroll at 320px; no motion; calm defaults (no score, streak or
+timer); the requests say a model wrote them and they're made up.
