@@ -103,6 +103,14 @@ Each framework has one job. Don't add a sixth without removing one.
   theory a framework is named after), paired with a recent source showing it
   still holds. Prefer sources about AI itself. Check every DOI against
   Crossref, and read the abstract before quoting a number.
+- **Chatbots for emotional support need care** (David, 2026-10-14: their
+  effects on different populations and cultures are unknown, and age and
+  development come first). Never present benefit or harm as settled; say
+  what is and isn't known, with current sources. Don't shame people who use
+  one, and don't assume a trusted person is always there: name helplines
+  (Child Helpline International lists them by country). Give the students'
+  track the most care, with a trusted adult and the safeguarding route, and
+  don't make one culture's way of seeking help the default.
 - **No live model calls from the site.** No keys, nothing to break mid-class.
 - **Objective verbs are observable.** Not "understand", "know", "learn",
   "appreciate". Bloom level `understand` is fine; the verb must be "explain",
