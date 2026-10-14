@@ -362,6 +362,37 @@ describe.each(TRACK_IDS)("lesson 4, %s track", (track) => {
   });
 });
 
+// "Today" is the day on the learner's clock, not the UTC date (UX audit 2026-10, finding 8).
+describe("lesson 4: today is the learner's own date", () => {
+  const atZone = (tz, iso, run) => {
+    const before = process.env.TZ;
+    process.env.TZ = tz;
+    try {
+      const doc = page("lesson.html");
+      renderLesson(doc, getLesson(4), { track: TRACK_IDS[0], now: new Date(iso) });
+      return run(doc);
+    } finally {
+      if (before === undefined) delete process.env.TZ;
+      else process.env.TZ = before;
+    }
+  };
+
+  it("a Sydney morning (still the day before in UTC) shows Sydney's date, and accepts it as today", () => {
+    atZone("Australia/Sydney", "2026-10-13T22:30:00Z", (doc) => {
+      expect(doc.querySelector('[data-stage="concrete"] figcaption').textContent).toContain("Today is 2026-10-14.");
+      expect(signoffStatus({ who: "person", by: "Sam", role: "", basis: "Checked the policy.", date: "2026-10-14" }, new Date("2026-10-14T00:00:00Z")).text).not.toMatch(/future/);
+      const today = [...doc.querySelectorAll("#timeline table tr")].find((r) => r.querySelector("th")?.textContent === "Today");
+      expect(today.querySelector("td").textContent).toBe("2026-10-14");
+    });
+  });
+
+  it("a New York evening (already the next day in UTC) shows New York's date", () => {
+    atZone("America/New_York", "2026-10-14T01:30:00Z", (doc) => {
+      expect(doc.querySelector('[data-stage="concrete"] figcaption').textContent).toContain("Today is 2026-10-13.");
+    });
+  });
+});
+
 describe("lesson 4: the sign-off builder", () => {
   const today = new Date().toISOString().slice(0, 10);
 

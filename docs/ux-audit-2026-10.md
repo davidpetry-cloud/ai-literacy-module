@@ -81,7 +81,7 @@ hour each.
 | 5 | L10's shared script tells students the grooming opener is fine (**fixed 2026-10-14**) | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
 | 6 | Phone tables describe drawings that aren't there (**fixed 2026-10-14**) | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
 | 7 | The instruction comes after the items in four exercises (**fixed 2026-10-14**) | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
-| 8 | Lesson 4 shows the UTC date as "today" | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
+| 8 | Lesson 4 shows the UTC date as "today" (**fixed 2026-10-14**) | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
 | 9 | L4 students key rests on a fact the page doesn't show | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
 | 10 | L6 students key contradicts its own note on reach | Consistency | Medium | Students, L6 | 10 min |
 | 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
@@ -387,7 +387,15 @@ came before) and Usability (Nielsen: learnability).
 **Effort:** 30 minutes. **Tests:** `render` (stage order, if it checks
 position); `ui-audit` heading outline (still h3 under h2).
 
-## 8. Lesson 4 shows the UTC date as "today"
+## 8. Lesson 4 shows the UTC date as "today" — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. `calendarDay()` turns the learner's clock
+into their own calendar date, once, where the hub or a lesson is drawn. Every
+sign-off date, the "Today is" line, the builder's checks and the timeline now
+use it, and so does the ledger engine, which also removes its "drops a day
+after midday UTC" quirk. **Tests:** two `render` tests run the page at a
+Sydney morning and a New York evening, either side of midnight UTC; both fail
+on the old code.
 
 **What's wrong.** The sign-off document says "Today is 2026-10-14". It was
 written on the evening of 13 October in New York. `isoDay()` formats dates

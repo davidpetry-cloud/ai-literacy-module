@@ -260,6 +260,13 @@ export const SIGNOFF_LABEL = {
 const DAY_MS = 86400000;
 const TTL_DAYS = 730;
 const isoDay = (d) => d.toISOString().slice(0, 10);
+/**
+ * The learner's own calendar date, as midnight UTC, so every date the pages show or compare is
+ * the day on the learner's clock. Without it, "today" was the UTC date: tomorrow in the Americas
+ * each evening, and yesterday in Asia-Pacific each morning, where today's date then read as "in the
+ * future" (UX audit 2026-10, finding 8). Apply once, where a page is drawn.
+ */
+export const calendarDay = (d = new Date()) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
 const daysFrom = (d, days) => new Date(d.getTime() + days * DAY_MS);
 const validDate = (s) => Boolean(s) && !Number.isNaN(new Date(s).getTime());
 
@@ -1669,7 +1676,8 @@ function openClaimGroup(doc, hash) {
   if (group) group.open = true;
 }
 
-export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query = "", onQuery } = {}) {
+export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), query = "", onQuery } = {}) {
+  const now = calendarDay(clock);
   const counts = tally(Object.values(CLAIMS), now);
   const readyCount = mainLessons().filter((l) => l.ready).length;
 
@@ -1805,7 +1813,8 @@ export function renderSources(doc) {
 
 /* ---------- lesson ---------- */
 
-export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date() } = {}) {
+export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = new Date() } = {}) {
+  const now = calendarDay(clock);
   const top = doc.querySelector("#top");
   const content = doc.querySelector("#content");
   const side = doc.querySelector("#side");
