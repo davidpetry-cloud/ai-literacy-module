@@ -232,13 +232,13 @@ export default {
             claim: "l4-key-students",
             items: [
               {
-                statement: "Our survey found that 62% of students recycle their bottles.",
+                statement: "The eco group's survey found that 62% of students recycle their bottles.",
                 by: "Ava Lin",
                 role: "Club member, wrote the sheet",
                 basis: "Checked the survey numbers.",
                 daysAgo: 20,
                 key: "wrong-signer",
-                note: "Another group ran the survey, and Ava never saw the answers. Someone from the survey group should sign this."
+                note: "The eco group ran this survey, not Ava, and she never saw the answers. Someone from the eco group should sign this."
               },
               {
                 statement: "The school cafeteria uses cups that can be composted.",

@@ -82,7 +82,7 @@ hour each.
 | 6 | Phone tables describe drawings that aren't there (**fixed 2026-10-14**) | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
 | 7 | The instruction comes after the items in four exercises (**fixed 2026-10-14**) | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
 | 8 | Lesson 4 shows the UTC date as "today" (**fixed 2026-10-14**) | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
-| 9 | L4 students key rests on a fact the page doesn't show | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
+| 9 | L4 students key rests on a fact the page doesn't show (**fixed 2026-10-14**) | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
 | 10 | L6 students key contradicts its own note on reach | Consistency | Medium | Students, L6 | 10 min |
 | 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
 | 12 | L7 table files reflow under Robust; the key says Perceivable | Accessibility (WCAG 2.2) | Medium | All tracks, L7 (students key) | 10 min |
@@ -425,7 +425,12 @@ that `CLAUDE.md` describes. Build the date from `getFullYear()`,
 add one near midnight UTC). Check that the ledger engine's own expiry still
 agrees.
 
-## 9. Lesson 4, students: a key the learner can't reach
+## 9. Lesson 4, students: a key the learner can't reach — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. The statement now reads "The eco group's
+survey found that 62% of students recycle their bottles", so the page shows
+that Ava is signing for a survey another group ran. The note says the eco
+group should sign. The claim `l4-key-students` (Proposed) records the change.
 
 **What's wrong.** Ava Lin ("Club member, wrote the sheet", basis "Checked the
 survey numbers") signs "Our survey found that 62% of students recycle". The

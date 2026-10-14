@@ -224,7 +224,7 @@ export const CLAIMS = {
   "l4-key-students": {
     text: "The answer key for the Lesson 4 students sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true. Revised 2026-09-24: the tool signer is now 'Study chatbot (self-check)', replacing a product-like name."
+      "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true. Revised 2026-09-24: the tool signer is now 'Study chatbot (self-check)', replacing a product-like name. Revised 2026-10-14: sign-off 1 said 'Our survey', yet was keyed Wrong signer because another group ran it, a fact the page never showed. It now says 'The eco group's survey', so the label matches what it shows (UX audit 2026-10, finding 9)."
     )
   },
   "error-kinds": {
