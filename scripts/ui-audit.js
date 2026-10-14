@@ -5,7 +5,7 @@
 // background it actually sits on, after any opacity. It also checks the edges
 // of controls and grid cells (3:1), content hidden behind a sideways scroll,
 // SVG text that runs off the drawing, aria-labels that drop the visible
-// words, and disclosures with no arrow.
+// words, disclosures with no arrow, and labels that split mid-word.
 const rgb = (s) => (s.match(/[\d.]+/g) || []).map(Number);
 const lum = ([r, g, b]) => {
   const f = (v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -172,6 +172,37 @@ export async function audit() {
   result.summariesWithoutArrow = [...document.querySelectorAll("summary")]
     .filter((e) => e.getClientRects().length && !/^["'][▸▾]/.test(getComputedStyle(e, "::before").content))
     .map((e) => e.textContent.trim().slice(0, 30));
+  // A label that splits mid-word ("Autho / rity") is hard to read. Find where each letter of each
+  // visible word lands: a word whose letters sit on two lines was split, unless the split comes right
+  // after a hyphen ("User- / centricity"). Body cells and claim details are left out: a long address
+  // may wrap there.
+  const lineOf = (node, i) => {
+    const r = document.createRange();
+    r.setStart(node, i);
+    r.setEnd(node, i + 1);
+    const box = r.getClientRects()[0];
+    return box ? Math.round(box.top) : null;
+  };
+  result.brokenWords = [...document.querySelectorAll("main th, main dt, main h1, main h2, main h3, main button, main summary, main label, main .badge")]
+    .filter((e) => e.getClientRects().length && !e.closest(".sr"))
+    .flatMap((e) => {
+      const found = [];
+      const walker = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        if (n.parentElement.closest(".sr") || !n.parentElement.getClientRects().length) continue;
+        for (const m of n.textContent.matchAll(/\S{2,}/g)) {
+          for (let i = 1; i < m[0].length; i++) {
+            const [a, b] = [lineOf(n, m.index + i - 1), lineOf(n, m.index + i)];
+            if (a !== null && b !== null && a !== b && m[0][i - 1] !== "-") {
+              found.push(`${e.tagName.toLowerCase()}.${e.className} "${m[0].slice(0, i)} / ${m[0].slice(i)}"`);
+              break;
+            }
+          }
+        }
+      }
+      return found;
+    })
+    .filter((v, i, a) => a.indexOf(v) === i);
   result.smallTargets = [...document.querySelectorAll("button, a.back, .tracks label")]
     .filter((e) => e.getClientRects().length && e.getBoundingClientRect().height < 44)
     .map((e) => `${e.tagName.toLowerCase()}.${e.className} ${Math.round(e.getBoundingClientRect().height)}px`);
@@ -179,7 +210,7 @@ export async function audit() {
     !result.light.contrastFails.length && !result.dark.contrastFails.length &&
     !result.light.under12_8px.length && !result.horizontalScroll && !result.smallTargets.length &&
     !result.light.nonTextFails.length && !result.dark.nonTextFails.length &&
-    !result.hiddenByScroll.length && !result.svgTextClipped.length && !result.labelMismatch.length && !result.summariesWithoutArrow.length &&
+    !result.hiddenByScroll.length && !result.brokenWords.length && !result.svgTextClipped.length && !result.labelMismatch.length && !result.summariesWithoutArrow.length &&
     !result.headingSkips.length && result.h1Count === 1 && !result.duplicateNames.length && !result.longLines.length;
   return result;
 }

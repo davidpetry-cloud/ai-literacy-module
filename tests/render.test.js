@@ -987,6 +987,12 @@ describe.each(TRACK_IDS)("lesson 8, %s track", (track) => {
     expect(d.querySelector("#reveal-grid").textContent).toBe("Show the finished grid");
   });
 
+  it("heads the phone table's columns once, so each column label is one short word that fits", () => {
+    const heads = [...doc.querySelectorAll("#grid table thead tr")].map((tr) => [...tr.querySelectorAll("th")].map((th) => th.textContent));
+    expect(heads).toEqual([["Human control", "How much the AI does"], ["Little", "Some", "High"]]);
+    expect(doc.querySelector('#grid table thead th[scope="colgroup"]').getAttribute("colspan")).toBe("3");
+  });
+
   it("shows what Human-Centered AI protects, and the four wisdom questions, as reference tables", () => {
     const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
     expect(tables).toHaveLength(2);
@@ -1258,8 +1264,10 @@ describe.each(TRACK_IDS)("lesson 9, %s track", (track) => {
     expect(label).toContain("made-up");
     expect(label).toContain("average 2.75");
     expect(label).toContain("average 3.25");
+    // One row per score, one column per group, so it fits a phone.
     const rows = [...doc.querySelectorAll("#grid table tbody tr")].map((r) => [...r.querySelectorAll("td")].map((c) => Number(c.textContent)));
-    expect(rows).toEqual(overlapData.groups.map((g) => g.counts));
+    expect(rows).toEqual(overlapData.steps.map((_, i) => overlapData.groups.map((g) => g.counts[i])));
+    expect([...doc.querySelectorAll("#grid table thead th")].map((t) => t.textContent)).toEqual(["Score", ...overlapData.groups.map((g) => g.short)]);
     expect(doc.querySelector("#grid .fix-order").textContent).toContain("made up");
   });
 

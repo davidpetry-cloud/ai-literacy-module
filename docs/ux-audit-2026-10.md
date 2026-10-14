@@ -74,7 +74,7 @@ hour each.
 
 | # | Finding | Principle (foundation) | Severity | Who it affects | Effort |
 |---|---|---|---|---|---|
-| 1 | Reference tables split words in half | Accessibility (WCAG 2.2; Universal Design) and Hierarchy (Gestalt) | High | All tracks, abstract stages of L6–L12, E1, E2; phones, and desktop for 6 lessons | 15 min |
+| 1 | Reference tables split words in half (**fixed 2026-10-14**) | Accessibility (WCAG 2.2; Universal Design) and Hierarchy (Gestalt) | High | All tracks, abstract stages of L6–L12, E1, E2; phones, and desktop for 6 lessons | 15 min |
 | 2 | L11 students key contradicts its own post-check | Consistency (Shneiderman; Nielsen) | High | Students, L11 | 15 min |
 | 3 | L7 educators key says the icon buttons have no name; they do | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
 | 4 | Six concrete and five pictorial stages don't tell the learner what to do | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
@@ -101,7 +101,18 @@ hour each.
 
 ---
 
-## 1. Reference tables split words in half
+## 1. Reference tables split words in half — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. Reference tables: labels (`th`) use
+`overflow-wrap:break-word`, and only body cells keep `anywhere`. Figure
+tables: `table-layout:auto`, so each column fits its longest word, and row
+labels take the same 4px side padding as other cells. Lesson 9's table runs
+the scores down the side. Lesson 8's table heads its three columns once
+("How much the AI does": Little, Some, High). `ui-audit.js` now has a
+`brokenWords` check that finds where each letter lands, and a break straight
+after a hyphen is allowed. All 132 runs pass, with no broken words. New tests:
+`ui` (table label rule), `render` (Lesson 8 table heads, Lesson 9 table
+orientation).
 
 **What's wrong.** In the two-column reference tables, the first column
 shrinks until its words break mid-word. On a phone, "Authority" reads

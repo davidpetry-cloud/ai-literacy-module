@@ -89,12 +89,17 @@ function confidenceLabel(placed, revealed) {
   return label;
 }
 
-/** The same grid as a table, for figures too narrow to draw it. Only one of the two is ever shown. */
-function gridTable(caption, corner, cols, rows, empty = "") {
+/**
+ * The same grid as a table, for figures too narrow to draw it. Only one of the two is ever shown.
+ * `group` heads the columns once, so each column can keep a short label that fits a phone.
+ */
+function gridTable(caption, corner, cols, rows, empty = "", group = null) {
   const cell = (marks) => `<td>${marks.length ? marks.map((m) => `<span class="tmark"><span class="sr">${m.word} </span>${m.n}</span>`).join("") : empty}</td>`;
-  return `<table class="grid-alt"><caption class="sr">${esc(caption)}</caption><thead><tr><th scope="col">${corner}</th>${cols
-    .map((c) => `<th scope="col">${c}</th>`)
-    .join("")}</tr></thead><tbody>${rows.map((r) => `<tr><th scope="row">${esc(r.label)}</th>${r.cells.map(cell).join("")}</tr>`).join("")}</tbody></table>`;
+  const colHeads = cols.map((c) => `<th scope="col">${c}</th>`).join("");
+  const head = group
+    ? `<tr><th scope="col" rowspan="2">${corner}</th><th scope="colgroup" colspan="${cols.length}">${esc(group)}</th></tr><tr>${colHeads}</tr>`
+    : `<tr><th scope="col">${corner}</th>${colHeads}</tr>`;
+  return `<table class="grid-alt"><caption class="sr">${esc(caption)}</caption><thead>${head}</thead><tbody>${rows.map((r) => `<tr><th scope="row">${esc(r.label)}</th>${r.cells.map(cell).join("")}</tr>`).join("")}</tbody></table>`;
 }
 
 export function confidenceGrid(sentences, { revealed = false } = {}) {
@@ -764,7 +769,9 @@ export function controlView(parts, { revealed = false } = {}) {
   const note = revealed
     ? `<p class="fix-order">The features worth keeping (${kept.join(" and ")}) all leave people in control. The aim is the top right: the AI does a lot, and people can still see it, change it and stop it.</p>`
     : `<p class="fix-order">The aim is the top right: high human control and high automation together. On the drawing, that square has a dashed outline.</p>`;
-  return controlGrid(parts, { revealed }) + gridTable(controlLabel(parts, revealed), "Control", AUTOMATION.map((a) => AUTOMATION_LABEL[a]), rows) + note;
+  // "Little automation" won't fit a phone column, so the table heads the three columns once (UX audit 2026-10, finding 1).
+  const short = { low: "Little", some: "Some", high: "High" };
+  return controlGrid(parts, { revealed }) + gridTable(controlLabel(parts, revealed), "Human control", AUTOMATION.map((a) => short[a]), rows, "", "How much the AI does") + note;
 }
 
 /* ---------- groups overlap (Lesson 9): a finding about groups can't sort one person ---------- */
@@ -819,10 +826,12 @@ export function overlapPlot(data, picked = null) {
 
 /** Drawing plus table (same counts), and the picked score in words. */
 export function overlapView(data, picked = null) {
-  const table = `<table class="grid-alt"><caption class="sr">${esc(overlapLabel(data, picked))}</caption><thead><tr><th scope="col">Score</th>${data.steps
-    .map((v) => `<th scope="col"${v === picked ? ' class="picked"' : ""}>${score1(v)}</th>`)
-    .join("")}</tr></thead><tbody>${data.groups
-    .map((g) => `<tr><th scope="row">${esc(g.short)}</th>${g.counts.map((c, i) => `<td${data.steps[i] === picked ? ' class="picked"' : ""}>${c}</td>`).join("")}</tr>`)
+  // Scores run down the side: nine score columns don't fit a phone ("1. / 0"; UX audit 2026-10, finding 1).
+  const pick = (v) => (v === picked ? ' class="picked"' : "");
+  const table = `<table class="grid-alt"><caption class="sr">${esc(overlapLabel(data, picked))}</caption><thead><tr><th scope="col">Score</th>${data.groups
+    .map((g) => `<th scope="col">${esc(g.short)}</th>`)
+    .join("")}</tr></thead><tbody>${data.steps
+    .map((v, i) => `<tr><th scope="row"${pick(v)}>${score1(v)}</th>${data.groups.map((g) => `<td${pick(v)}>${g.counts[i]}</td>`).join("")}</tr>`)
     .join("")}</tbody></table>`;
   return overlapPlot(data, picked) + table + `<p class="fix-order">${esc(data.note)}</p>`;
 }

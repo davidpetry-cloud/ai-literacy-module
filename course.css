@@ -346,7 +346,11 @@ ol.refs{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(-
 /* Reference tables (David, 2026-10-13: "everything is the same color and blends together"). The header row
    is a dark band, the first column a pale one, and the table is outlined like any box; --line stays inside. */
 table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.1);margin:0 0 16px;font-size:var(--fs-sm);border:1.5px solid var(--edge)}
-.ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+/* Body cells may hold a long address, so they can break anywhere. Labels can't: "anywhere" lets a table
+   shrink its label column to one letter ("Autho / rity", "A / A / A"; UX audit 2026-10, finding 1). */
+.ref td{overflow-wrap:anywhere}
+.ref th{overflow-wrap:break-word}
 .ref thead th{color:var(--on-dark);background:var(--chip-bg);border-color:var(--chip-bg)}
 .ref tbody th{color:var(--ink);font-weight:600;background:var(--paper)}
 /* audit + contrast checker (Lesson 7) */
@@ -468,13 +472,15 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .g-row{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:end}
 .g-mark circle{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:2}
 /* Narrow figure: the drawing would need a sideways scroll that hides half of it, so show the same grid as a table. */
-table.grid-alt{display:none;width:100%;border-collapse:collapse;table-layout:fixed;font-size:var(--fs-sm)}
+/* Auto layout lets each column fit its longest word; equal fixed columns split "Glanc / e" and
+   "automa / tion" at 320px (UX audit 2026-10, finding 1). The audit's reflow check guards the total. */
+table.grid-alt{display:none;width:100%;border-collapse:collapse;table-layout:auto;font-size:var(--fs-sm)}
 .grid-alt th{overflow-wrap:break-word}
 .grid-alt thead th:first-child{width:36%}
 .grid-alt.by-row thead th:first-child{width:auto}
 .grid-alt th,.grid-alt td{border:1.5px solid var(--edge);padding:8px 4px;text-align:center;vertical-align:middle}
 .grid-alt thead th{color:var(--ink-3);font-weight:600}
-.grid-alt tbody th{color:var(--ink-3);font-weight:600;text-align:left;padding:8px}
+.grid-alt tbody th{color:var(--ink-3);font-weight:600;text-align:left;padding:8px 4px}
 .tmark{display:inline-block;min-width:32px;padding:2px 4px;background:var(--btn-bg);color:var(--on-dark);border:2px solid var(--btn-edge);border-radius:var(--r-pill);font-weight:700;line-height:var(--lh-heading)}
 .tmark + .tmark{margin-left:4px}
 @container (max-width:559px){

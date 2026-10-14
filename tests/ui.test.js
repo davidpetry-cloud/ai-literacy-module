@@ -219,6 +219,15 @@ describe("colour usage", () => {
     expect(rules.find((r) => r.sel === ".claim dd").body).toContain("overflow-wrap:anywhere");
   });
 
+  // "anywhere" lowers a cell's narrowest width to one letter, so an auto-layout table squeezes its
+  // label column until words split: "Autho / rity", "A / A / A" (UX audit 2026-10, finding 1).
+  it("never lets a reference table's labels break mid-word; only body cells, which may hold an address", () => {
+    const thRules = rules.filter((r) => r.sel.split(",").some((s) => /\.ref\b.*\bth\b/.test(s.trim())));
+    for (const r of thRules) expect(r.body, r.sel).not.toContain("overflow-wrap:anywhere");
+    expect(rules.find((r) => r.sel === ".ref th").body).toContain("overflow-wrap:break-word");
+    expect(rules.find((r) => r.sel === ".ref td").body).toContain("overflow-wrap:anywhere");
+  });
+
   it("lets the prompt comparison's columns shrink below 280px, so it reflows at 320px", () => {
     expect(rules.find((r) => r.sel === ".cmp").body).toContain("minmax(min(100%,280px),1fr)");
   });
