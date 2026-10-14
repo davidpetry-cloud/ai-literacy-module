@@ -443,6 +443,8 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
           if (p.also) expect(GOALS.filter((g) => g !== p.goal), `${t} ${p.label}`).toContain(p.also);
           expect(["high", "medium", "low"], `${t} ${p.label}`).toContain(p.harm);
           expect(["few", "some", "all"], `${t} ${p.label}`).toContain(p.reach);
+          // A note that says nobody (or everyone) is affected can't be placed as "hits few" (UX audit 2026-10, finding 10).
+          if (/\b(nobody|no one|everyone|every user)\b/i.test(p.note)) expect(p.reach, `${t} ${p.label}`).not.toBe("few");
         }
       }
     });

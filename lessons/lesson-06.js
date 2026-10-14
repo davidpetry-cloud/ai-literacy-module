@@ -333,7 +333,8 @@ export default {
                 principle: "accessibility",
                 goal: "errors",
                 harm: "high",
-                reach: "few",
+                // Every user: with no message, nobody knows what to fix (UX audit 2026-10, finding 10).
+                reach: "all",
                 note: "A red border is the only sign. Some people can't see it, and nobody knows what to fix. Add a message in words."
               },
               {

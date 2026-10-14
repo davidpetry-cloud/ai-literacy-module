@@ -83,7 +83,7 @@ hour each.
 | 7 | The instruction comes after the items in four exercises (**fixed 2026-10-14**) | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
 | 8 | Lesson 4 shows the UTC date as "today" (**fixed 2026-10-14**) | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
 | 9 | L4 students key rests on a fact the page doesn't show (**fixed 2026-10-14**) | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
-| 10 | L6 students key contradicts its own note on reach | Consistency | Medium | Students, L6 | 10 min |
+| 10 | L6 students key contradicts its own note on reach (**fixed 2026-10-14**) | Consistency | Medium | Students, L6 | 10 min |
 | 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
 | 12 | L7 table files reflow under Robust; the key says Perceivable | Accessibility (WCAG 2.2) | Medium | All tracks, L7 (students key) | 10 min |
 | 13 | L4 educators "sound" sign-off blesses a medicine rule that may be unsafe | User-centricity; safety | Low–medium | Educators, L4 | 10 min + source check |
@@ -449,7 +449,15 @@ eco group's survey found…".
 **Effort:** 10 minutes. **Tests:** `readability`, `render`. **Claim:**
 `l4-key-students` (Proposed).
 
-## 10. Lesson 6, students: reach contradicts the note
+## 10. Lesson 6, students: reach contradicts the note — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. Part 3 is now "high harm, hits all". The
+students' fix order becomes 3, 5, 1, 2, 6. The professionals' red-only
+"required" labels stay a genuine "few" case, so the shared line "A problem
+that hits only a few people can still come early" still has an example. A
+new `alignment` check stops a part whose note says nobody or everyone is
+affected from being placed "few". The claim `l6-key-students` (Proposed)
+records the change.
 
 **What's wrong.** Part 3, the Grade box with only a red border, is placed at
 **high harm, hits few**. Its own note says "Some people can't see it, and

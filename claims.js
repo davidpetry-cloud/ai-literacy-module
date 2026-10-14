@@ -334,7 +334,7 @@ export const CLAIMS = {
   "l6-key-students": {
     text: "The answer key for the Lesson 6 students screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up, so check it by using the screen beside the key. Twelve required fields is filed under usability (effort) rather than user-centricity; either is defensible, and the note explains the choice."
+      "Written with the screen, which is made up, so check it by using the screen beside the key. Twelve required fields is filed under usability (effort) rather than user-centricity; either is defensible, and the note explains the choice. Revised 2026-10-14: part 3 (a red border with no message) was placed 'hits few', but its own note says nobody knows what to fix, which is every user (WCAG 3.3.1); it is now 'hits all', so it comes first in the fix order (UX audit 2026-10, finding 10)."
     )
   },
   "wcag-structure": {
