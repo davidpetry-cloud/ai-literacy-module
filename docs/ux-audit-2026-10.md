@@ -84,8 +84,8 @@ hour each.
 | 8 | Lesson 4 shows the UTC date as "today" (**fixed 2026-10-14**) | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
 | 9 | L4 students key rests on a fact the page doesn't show (**fixed 2026-10-14**) | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
 | 10 | L6 students key contradicts its own note on reach (**fixed 2026-10-14**) | Consistency | Medium | Students, L6 | 10 min |
-| 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
-| 12 | L7 table files reflow under Robust; the key says Perceivable | Accessibility (WCAG 2.2) | Medium | All tracks, L7 (students key) | 10 min |
+| 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 (**fixed 2026-10-14**) | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
+| 12 | L7 table files reflow under Robust; the key says Perceivable (**fixed 2026-10-14**) | Accessibility (WCAG 2.2) | Medium | All tracks, L7 (students key) | 10 min |
 | 13 | L4 educators "sound" sign-off blesses a medicine rule that may be unsafe | User-centricity; safety | Low–medium | Educators, L4 | 10 min + source check |
 | 14 | E2 students "Homework Hero" keyed check first against the lesson's own rule | Consistency | Low–medium | Students, E2 | 10 min |
 | 15 | E2's sixteen Move buttons outweigh everything else | Hierarchy (Gestalt) | Low–medium | All tracks, E2 | 30 min |
@@ -475,7 +475,11 @@ can't see the colour.
 **Effort:** 10 minutes. **Tests:** `alignment`, `render` (fix-first grid
 and order). **Claim:** `l6-key-students` (Proposed).
 
-## 11. Essentials 2, students: "tell a trusted adult first"
+## 11. Essentials 2, students: "tell a trusted adult first" — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. The builder's shared intro adds: "Students:
+tell a trusted adult before step 1, and do the steps together." A new
+`alignment` test holds it.
 
 **What's wrong.** The facilitator moves and the post-check (p3) both say
 students tell a trusted adult first. The recovery builder, shared by every
@@ -494,7 +498,12 @@ new step.
 **Effort:** 15 minutes. **Tests:** `readability` (intro is learner text);
 `render` if the intro count is checked.
 
-## 12. Lesson 7: reflow filed under Robust
+## 12. Lesson 7: reflow filed under Robust — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. David's group "Mobile and device" stays
+under Robust. The example now reads "layouts that fit a phone (WCAG files
+this one under Perceivable)", which matches the students key and the UX
+standard. A new `alignment` test holds it.
 
 **What's wrong.** The "WCAG 2.2 at a glance" table lists "layouts that fit a
 phone" as an example under **Robust**. WCAG files Reflow (1.4.10) under

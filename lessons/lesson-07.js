@@ -412,7 +412,7 @@ input::placeholder{color:#B0B0B0}</style>
             ["Perceivable", "Text and visuals", "Contrast, colour is never the only sign, text alternatives, text that can grow."],
             ["Operable", "Navigation and interaction", "Keyboard use, visible focus, big enough targets, a way to pause moving things."],
             ["Understandable", "Content clarity", "Labels, clear error messages that say how to fix them, the same navigation everywhere."],
-            ["Robust", "Mobile and device", "Controls with names, status messages that are announced, layouts that fit a phone."]
+            ["Robust", "Mobile and device", "Controls with names, status messages that are announced, layouts that fit a phone (WCAG files this one under Perceivable)."]
           ]
         },
         {

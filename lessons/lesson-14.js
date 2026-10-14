@@ -350,6 +350,8 @@ export default {
       intro: [
         "Someone got into your email. Put these eight steps in order, from first to last. Use Move up and Move down.",
         "Then show the order. Some steps have more than one right place, because the UK and US guides order them a little differently.",
+        // The builder is shared, so it names students here (UX audit 2026-10, finding 11).
+        "Students: tell a trusted adult before step 1, and do the steps together.",
         "Nothing you choose is saved or sent."
       ],
       // In the NCSC's order, with the FBI's step 5 added and its "update your devices" left to E2.1.

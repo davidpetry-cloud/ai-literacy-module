@@ -270,6 +270,12 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   });
 
   describe.runIf(exerciseOf(lesson) === "audit")("concrete stage: audit", () => {
+    // The course's groups put "Mobile and device" under Robust, but WCAG files Reflow (1.4.10) under
+    // Perceivable, as the students key does. The table must say so (UX audit 2026-10, finding 12).
+    it("notes, wherever a WCAG table puts phone layouts under Robust, that WCAG files them under Perceivable", () => {
+      const rows = lesson.stages.flatMap((s) => s.tables ?? []).flatMap((tb) => tb.rows);
+      for (const r of rows.filter((x) => x[0] === "Robust" && /phone|reflow/i.test(x.join(" ")))) expect(r.join(" ")).toMatch(/Perceivable/);
+    });
     const concrete = lesson.stages.find((s) => s.kind === "concrete");
     const screen = (t) => concrete.tracks[t].screen;
     const hexRe = /^#[0-9A-F]{6}$/;
@@ -797,6 +803,12 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   });
 
   describe.runIf(exerciseOf(lesson) === "requests")("concrete stage: requests", () => {
+    // Safeguarding: the recovery builder is shared, so its intro tells students to bring in a trusted
+    // adult before step 1, as the moves and the post-check do (UX audit 2026-10, finding 11).
+    it("tells students, before the recovery steps, to tell a trusted adult first", () => {
+      const pictorial = lesson.stages.find((s) => s.kind === "pictorial");
+      expect(pictorial.intro.some((line) => /^Students:.*trusted adult before step 1/.test(line))).toBe(true);
+    });
     const concrete = lesson.stages.find((s) => s.kind === "concrete");
     const pictorial = lesson.stages.find((s) => s.kind === "pictorial");
     const requests = (t) => concrete.tracks[t].requests;
