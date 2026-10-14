@@ -167,7 +167,7 @@ export const CLAIMS = {
   "l3-key-educators": {
     text: "The answer key for the Lesson 3 educators passage is correct: each sentence's label matches its cited source, the no-source sentence has no real review behind it, and each use is given a fitting level of checking.",
     attestation: proposedBy(
-      "Written with the passage. Black & Wiliam (1998) and Bloom (1984) should be checked against the originals before this is attested. The level for each use is a judgement about consequences, not a fact.",
+      "Written with the passage. Steiss et al. (2024) and Bloom (1984) should be checked against the originals before this is attested. The level for each use is a judgement about consequences, not a fact. On 2026-10-14, at David's request for current sources, sentence 4 changed from Black & Wiliam (1998), 'Inside the Black Box', which it had called a review (it is the authors' short summary of their review), to Steiss et al. (2024), Learning and Instruction 91, 101894, doi:10.1016/j.learninstruc.2024.101894 (checked against Crossref). Its structured abstract (author manuscript, NSF repository) says 200 pieces of human and 200 of ChatGPT feedback on the same secondary-school essays were scored on five measures; human raters were slightly better on all but 'criteria-based', and well-trained educators gave higher-quality feedback than the free version of ChatGPT. The key stays Correct.",
       "claude-sonnet-5"
     )
   },

@@ -133,9 +133,9 @@ export default {
                 note: "No author and no link. Planted for this lesson: there is no such review to find. A journal name, a year and a number make it sound real."
               },
               {
-                text: "Black and Wiliam's 1998 review, \"Inside the Black Box\", found that better classroom formative assessment raises student achievement.",
+                text: "Steiss and colleagues' 2024 study of feedback on 200 secondary school essays found that trained teachers gave slightly better feedback than ChatGPT.",
                 key: "correct",
-                source: "Black, P., & Wiliam, D. (1998). Inside the black box: Raising standards through classroom assessment. Phi Delta Kappan, 80(2), 139–148. Their review of research finds that stronger formative assessment raises achievement.",
+                source: "Steiss, J., Tate, T., Graham, S., Cruz, J., Hebert, M., Wang, J., Moon, Y., Tseng, W., Warschauer, M., & Olson, C. B. (2024). Comparing the quality of human and ChatGPT feedback of students' writing. Learning and Instruction, 91, 101894. Trained raters gave slightly better feedback than ChatGPT on four of five measures.",
                 note: "Checkable, and the source agrees."
               }
             ],
