@@ -832,7 +832,7 @@ export function overlapView(data, picked = null) {
     .map((g) => `<th scope="col">${esc(g.short)}</th>`)
     .join("")}</tr></thead><tbody>${data.steps
     .map((v, i) => `<tr><th scope="row"${pick(v)}>${score1(v)}</th>${data.groups.map((g) => `<td${pick(v)}>${g.counts[i]}</td>`).join("")}</tr>`)
-    .join("")}</tbody></table>`;
+    .join("")}</tbody><tfoot><tr><th scope="row">Average</th>${data.groups.map((g) => `<td>${overlapMean(data.steps, g.counts).toFixed(2)}</td>`).join("")}</tr></tfoot></table>`;
   return overlapPlot(data, picked) + table + `<p class="fix-order">${esc(data.note)}</p>`;
 }
 
@@ -918,10 +918,10 @@ export function patternTimeline(moments, { revealed = false } = {}) {
 export function patternView(moments, { revealed = false } = {}) {
   // One row per week, with where it happened in the row heading, so the table fits a 320px screen.
   const table = `<table class="grid-alt by-row"><caption class="sr">${esc(patternLabel(moments, revealed))}</caption><thead><tr><th scope="col">Week</th><th scope="col">What it was</th><th scope="col">Felt</th></tr></thead><tbody>${moments
-    .map((m, i) => `<tr><th scope="row">Week ${i + 1}${revealed ? `, ${m.where}` : ""}</th><td>${revealed ? (m.key === "warning" ? `<span class="sr">Warning sign: </span>${PATTERN_LABEL[m.pattern]}` : THREAD_LABEL.ordinary) : ""}</td><td>${revealed ? esc(m.feeling) : ""}</td></tr>`)
+    .map((m, i) => `<tr><th scope="row">Week ${i + 1}${revealed ? `, ${m.where}` : ""}</th><td>${revealed ? (m.key === "warning" ? `${THREAD_LABEL.warning}: ${PATTERN_LABEL[m.pattern]}` : THREAD_LABEL.ordinary) : ""}</td><td>${revealed ? esc(m.feeling) : ""}</td></tr>`)
     .join("")}</tbody></table>`;
   const note = revealed
-    ? `<p class="fix-order">Filled circles are warning signs; open circles are ordinary moments. One moment is a moment. The repeat, in more than one place, is the pattern, and the feelings got worse along with it.</p>`
+    ? `<p class="fix-order">Warning signs are filled circles in the drawing, and named in the table; the rest are ordinary moments. One moment is a moment. The repeat, in more than one place, is the pattern, and the feelings got worse along with it.</p>`
     : "";
   return patternTimeline(moments, { revealed }) + table + note;
 }
@@ -993,7 +993,7 @@ export function gainsView(chat, { revealed = false } = {}) {
     .map((t, i) => `<tr><th scope="row">${i + 1}</th><td>${revealed ? (t.key === "helpful" ? "Nothing: it helped" : esc(t.gives)) : ""}</td><td>${revealed && t.key !== "helpful" ? esc(t.gets) : ""}</td></tr>`)
     .join("")}</tbody></table>`;
   const note = revealed
-    ? `<p class="fix-order">Every line is something you give that the company gets. The helpful reply has no line: it just helped.</p>`
+    ? `<p class="fix-order">Each move takes something you give and turns it into something the company gets. The helpful reply took nothing: it just helped.</p>`
     : "";
   return gainsFigure(chat, { revealed }) + table + note;
 }

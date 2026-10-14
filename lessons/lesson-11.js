@@ -301,7 +301,7 @@ export default {
       moves: [
         "Draw two columns: what you give, and what the company gets.",
         "For each move in the chat, learners draw a line from what they give to what the company gets.",
-        "Reveal the finished grid. Point out the helpful reply: it has no line.",
+        "Reveal the finished grid. Point out the helpful reply: it takes nothing from you.",
         "Ask: who decided the app would do this, and who could change it?"
       ],
       say: [

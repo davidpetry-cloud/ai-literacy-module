@@ -234,11 +234,11 @@ export default {
       moves: [
         "Draw the grid on the board: two rows (sounds confident, sounds unsure) and four columns (Correct, Wrong, No source, Nothing to check).",
         "Learners place each sentence number in its box.",
-        "Reveal the finished grid. Every sentence sits in the top row, spread across all four columns."
+        "Reveal the finished grid. Every sentence sits under Sounds confident, spread across all four answers."
       ],
       say: [
         ["Facilitator", "If tone told you anything about truth, the right answers would bunch up somewhere. Where did they land?"],
-        ["Expected", "\"They're all in the top row.\""],
+        ["Expected", "\"They all sound confident.\""],
         ["Facilitator", "So the one thing you were going on at the start — how sure it sounded — sorted nothing."]
       ],
       watch:

@@ -253,7 +253,7 @@ export default {
         note: "These scores are made up to show the idea. The averages differ a little, but most people in the two groups have the same scores."
       },
       moves: [
-        "Show the two rows of dots. Each dot is one person. Say the scores are made up to show the idea.",
+        "Show the two groups. Each dot is one person, and the table on a phone counts them. Say the scores are made up to show the idea.",
         "Point to the two averages. Ask: which group scores higher on average?",
         "Press \"Pick a person\". Learners say which group they think the person is in, then read the answer.",
         "Pick three or four people. Ask: what would you need to know about this person, instead of their group?"

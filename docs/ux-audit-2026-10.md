@@ -79,7 +79,7 @@ hour each.
 | 3 | L7 educators key says the icon buttons have no name; they do (**fixed 2026-10-14**) | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
 | 4 | Six concrete and five pictorial stages don't tell the learner what to do (**fixed 2026-10-14**) | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
 | 5 | L10's shared script tells students the grooming opener is fine (**fixed 2026-10-14**) | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
-| 6 | Phone tables describe drawings that aren't there | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
+| 6 | Phone tables describe drawings that aren't there (**fixed 2026-10-14**) | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
 | 7 | The instruction comes after the items in four exercises (**fixed 2026-10-14**) | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
 | 8 | Lesson 4 shows the UTC date as "today" | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
 | 9 | L4 students key rests on a fact the page doesn't show | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
@@ -309,7 +309,26 @@ what came after it?* This keeps the one-core rule.
 
 **Effort:** 10 minutes. **Tests:** `readability` (facilitator notes, grade 7).
 
-## 6. Phone tables describe drawings that aren't there
+## 6. Phone tables describe drawings that aren't there — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead.
+- **Lesson 1:** the notes now say every sentence sits "under Sounds
+  confident", and the expected answer is "They all sound confident". Both
+  are true of the grid and of the turned phone table.
+- **Lesson 9:** the phone table has an Average row (2.75 and 3.25), and the
+  notes say "the table on a phone counts them".
+- **Lesson 10:** the table shows "Warning sign:" in words, where it used to
+  be for screen readers only. The caption reads "Warning signs are filled
+  circles in the drawing, and named in the table".
+- **Lesson 11:** the caption reads "Each move takes something you give and
+  turns it into something the company gets. The helpful reply took nothing",
+  and the notes no longer say "it has no line".
+
+The facilitator's board instructions ("Draw the grid…") are unchanged,
+because they describe the board. **Tests:** three new `render` tests (Lesson
+9 averages, Lesson 10 visible warning words, and no caption that leans only
+on the drawing). All three fail on the old renderer. ui-audit: 36 runs pass
+(Lessons 1, 9, 10 and 11, all tracks, 320, 375 and 1280px).
 
 **What's wrong.** On a phone, each figure shows its table instead of its
 drawing, as the rules require. But the words around it still describe the

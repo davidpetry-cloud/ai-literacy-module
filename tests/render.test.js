@@ -884,6 +884,35 @@ describe("narrow figures: the grid as a table", () => {
   });
 });
 
+describe("a phone table says what its drawing says (UX audit 2026-10, finding 6)", () => {
+  it("lesson 9: the table gives both averages, as the drawing does", () => {
+    const l = getLesson(9);
+    const foot = [...lessonDoc(TRACK_IDS[0], l).querySelectorAll("#grid table tfoot td")].map((td) => td.textContent);
+    expect(foot).toEqual(l.stages[1].overlap.groups.map((g) => overlapMean(l.stages[1].overlap.steps, g.counts).toFixed(2)));
+  });
+
+  it("lesson 10: once revealed, the table names each warning sign in words a sighted reader sees", () => {
+    const l = getLesson(10);
+    const d = lessonDoc(TRACK_IDS[0], l);
+    d.querySelector("#reveal-grid").click();
+    const cells = [...d.querySelectorAll("#grid table tbody td:nth-child(2)")];
+    const warnings = l.stages[0].tracks[TRACK_IDS[0]].thread.moments.filter((m) => m.key === "warning").length;
+    expect(cells.filter((c) => c.textContent.startsWith(`${THREAD_LABEL.warning}: `) && !c.querySelector(".sr"))).toHaveLength(warnings);
+  });
+
+  it("no figure caption leans only on the drawing: no 'top row', no lines, no circles without the table", () => {
+    for (const l of COURSE.lessons.filter((x) => x.ready)) {
+      const d = lessonDoc(TRACK_IDS[0], l);
+      d.querySelector("#reveal-grid")?.click();
+      for (const p of d.querySelectorAll('[data-stage="pictorial"] .fix-order')) {
+        const t = p.textContent;
+        expect(t, `lesson ${l.n}`).not.toMatch(/top row|\bno line\b|every line/i);
+        if (/circles/i.test(t)) expect(t, `lesson ${l.n}`).toMatch(/table/i);
+      }
+    }
+  });
+});
+
 describe("every activity says on the page what to do (UX audit 2026-10, findings 4 and 7)", () => {
   const ready = COURSE.lessons.filter((l) => l.ready);
   const before = (a, b) => Boolean(a.compareDocumentPosition(b) & 4); // b follows a
