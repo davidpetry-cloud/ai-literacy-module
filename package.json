@@ -2,7 +2,7 @@
   "name": "ai-literacy-module",
   "version": "0.1.0",
   "private": true,
-  "description": "A five-lesson AI literacy course for educators, professionals and students. Every factual claim carries an attestation: a model can propose, only a named human can attest.",
+  "description": "Human-Centered AI Literacy: twelve lessons plus Essentials for educators, professionals and students. Every factual claim carries an attestation: a model can propose, only a named human can attest.",
   "type": "module",
   "scripts": {
     "test": "vitest run",

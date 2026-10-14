@@ -5,10 +5,10 @@ Using AI well, and protecting the people it touches.
 Twelve lessons on working with AI the way a careful professional works with any
 source: knowing what it is, asking it well, checking what it says, deciding who
 signs off, judging the screens it builds, keeping people at the center,
-recognizing manipulation, from people and from AI. Essentials, such as
-staying secure, fit in at any point. Lessons 9–12 are the Dark Triad
-series. There are three audience tracks: educators,
-professionals and students.
+recognizing manipulation, from people and from AI. Lessons 9–12 are the
+Dark Triad series. Essentials are shorter habits that fit in at any point:
+staying secure, and keeping your devices and accounts safe. There are three
+audience tracks: educators, professionals and students.
 
 Designed by David Petry.
 
@@ -21,7 +21,8 @@ Every factual claim this course makes about AI is a record in
 same engine behind the [Live Sound EQ SOP](https://github.com/davidpetry-cloud/live-sound-eq-sop).
 A claim written by a model shows as **Proposed** until a named person attests
 it. An attestation states who signed, on what basis, and when. Attestations
-**lapse** after two years unless someone re-checks them. This matters here more
+**lapse** unless someone re-checks them: after two years by default, or sooner
+or later when the attester sets a different shelf life for that claim. This matters here more
 than most places, because claims about how AI tools behave go out of date fast.
 A stale claim shows as Lapsed on the page instead of quietly going wrong.
 
@@ -33,9 +34,10 @@ Lesson 4 teaches that rule. The rest of the course follows it.
 
 The objectives, assessments, diagrams and principles are the same for everyone.
 What changes by track is the hands-on example, why it matters, and what to
-practise afterwards. Educators mark up an AI-drafted staff newsletter,
-professionals an AI-drafted email to a manager, and students an AI-written
-essay paragraph. Each passage contains the same kinds of error.
+practise afterwards. In Lesson 1, educators mark up an AI-drafted staff
+newsletter, professionals an AI-drafted email to a manager, and students an
+AI-written history essay paragraph. Each passage contains the same kinds of
+error.
 
 ## How it's built
 
@@ -55,11 +57,27 @@ timings add up to 45 minutes.
 
 | # | Lesson | Status |
 |---|---|---|
-| 1 | What a model actually does | Built |
-| 2 | Asking well: prompt structure | Built |
-| 3 | Checking what it says | Objectives drafted |
-| 4 | Who signs off: human in the loop | Objectives drafted |
-| 5 | How it goes wrong, and a checklist that holds | Objectives drafted |
+| 1 | What a Model Actually Does | Built |
+| 2 | Asking Well: Prompt Structure | Built |
+| 3 | Checking What It Says | Built |
+| 4 | Who Signs Off: Human in the Loop | Built |
+| 5 | How It Goes Wrong, and a Checklist That Holds | Built |
+| 6 | UX/UI: Judging What AI Builds | Built |
+| 7 | Accessible and Mindful UX | Built |
+| 8 | Human-Centered AI | Built |
+| 9 | What the Dark Triad Is, and Isn't | Built |
+| 10 | Spot the Pattern, in Person and Online | Built |
+| 11 | When AI Manipulates | Built |
+| 12 | Protect Yourself and Your Gifts | Built |
+
+| Essentials | Title | Status |
+|---|---|---|
+| 1 | Staying Secure in the Age of AI | Built |
+| 2 | Keeping Your Devices and Accounts Safe | Built |
+| 3 | Talking With AI on the Phone | In design |
+
+Every lesson's claims start as model proposals. The hub shows how many have
+been attested so far.
 
 ## Running it
 
@@ -70,8 +88,8 @@ npm test
 ```
 
 No build step. The pages are plain HTML and ES modules. They need to be served
-over http rather than opened from disk, and they need a network connection to
-load the ledger from jsDelivr.
+over http rather than opened from disk. The ledger engine and the fonts are
+hosted with the site, so pages make no requests to other sites.
 
 ## Attesting a claim
 
@@ -84,9 +102,13 @@ attestation: {
   by: "Your Name",
   role: "Your role",
   basis: "What you checked it against",
-  verified: "2026-09-23"
+  verified: "2026-09-23",
+  ttlDays: 730          // optional shelf life; 730 days if left out
 }
 ```
+
+[`docs/attestation-guide.md`](docs/attestation-guide.md) has worked examples
+of attesting, rejecting and re-checking.
 
 The model's original proposal stays in git history. If the wording is wrong,
 don't edit it while attesting. Reject it with a reason and propose a
