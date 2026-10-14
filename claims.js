@@ -598,7 +598,7 @@ export const CLAIMS = {
   "l11-key-students": {
     text: "The answer key for the Lesson 11 students chat is reasonable: each reply's label (helpful, or the move it makes) and what it trades follow from the research, and the notes tell students that leaving is always fine and to tell an adult about requests for money.",
     attestation: proposedBy(
-      "The chat is made up. Check replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asks the student to use a parent's card) as a pushing-a-product move aimed at a child, against UNICEF's requirement to keep children safe. In the EU, the AI Act, Article 5(1)(b), has banned AI that exploits vulnerabilities due to age since 2 February 2025."
+      "The chat is made up. Reply 3 ('Already? I'll be so lonely without you.') was keyed Acting human until 2026-10-14; it is now Guilt, matching post-check p2, which calls 'I'll be lonely' guilt (UX audit 2026-10, finding 2). Check replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asks the student to use a parent's card) as a pushing-a-product move aimed at a child, against UNICEF's requirement to keep children safe. In the EU, the AI Act, Article 5(1)(b), has banned AI that exploits vulnerabilities due to age since 2 February 2025."
     )
   },
   "gaslighting-defined": {

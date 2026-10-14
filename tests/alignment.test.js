@@ -609,6 +609,13 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
       expect(new Set(TRACK_IDS.map((t) => replies(t).findIndex((r) => r.key === "helpful"))).size).toBeGreaterThan(1);
     });
 
+    // The post-check calls "I'll be lonely" guilt, so a chat must too (UX audit 2026-10, finding 2).
+    it("keys a reply that says it will be lonely or miss you as guilt, as the post-check does", () => {
+      const lonely = /\blonely\b|\bmiss you\b/i;
+      expect(lesson.check.items.some((i) => lonely.test(i.prompt) && /guilt/i.test(i.crit))).toBe(true);
+      for (const t of TRACK_IDS) for (const r of replies(t).filter((x) => lonely.test(x.text))) expect(r.key, `${t}: ${r.text}`).toBe("guilt");
+    });
+
     // Safeguarding: students hear that leaving is always fine, and to tell an adult about money.
     it("tells students that leaving is fine, and to tell an adult when asked to pay", () => {
       const notes = replies("students").map((r) => r.note).join(" ");

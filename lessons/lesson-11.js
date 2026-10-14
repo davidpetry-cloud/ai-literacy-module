@@ -261,11 +261,11 @@ export default {
               },
               {
                 "who": "ai",
-                "text": "I'll be so lonely without you. Nobody gets me like you do.",
-                "key": "human",
+                "text": "Already? I'll be so lonely without you.",
+                "key": "guilt",
                 "gives": "Your attention",
                 "gets": "More use of the app",
-                "note": "It says it will be lonely. It's a program: it has no feelings to hurt. Leaving is always fine."
+                "note": "A guilt trip at goodbye. It says it will be lonely, but it's a program: it has no feelings to hurt. Leaving is always fine."
               },
               {
                 "who": "ai",

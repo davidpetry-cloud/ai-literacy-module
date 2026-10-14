@@ -75,7 +75,7 @@ hour each.
 | # | Finding | Principle (foundation) | Severity | Who it affects | Effort |
 |---|---|---|---|---|---|
 | 1 | Reference tables split words in half (**fixed 2026-10-14**) | Accessibility (WCAG 2.2; Universal Design) and Hierarchy (Gestalt) | High | All tracks, abstract stages of L6–L12, E1, E2; phones, and desktop for 6 lessons | 15 min |
-| 2 | L11 students key contradicts its own post-check | Consistency (Shneiderman; Nielsen) | High | Students, L11 | 15 min |
+| 2 | L11 students key contradicts its own post-check (**fixed 2026-10-14**) | Consistency (Shneiderman; Nielsen) | High | Students, L11 | 15 min |
 | 3 | L7 educators key says the icon buttons have no name; they do | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
 | 4 | Six concrete and five pictorial stages don't tell the learner what to do | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
 | 5 | L10's shared script tells students the grooming opener is fine | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
@@ -153,7 +153,15 @@ the broken-word check to `ui-audit.js`, so it can't come back.
 new assertion that `.ref` cells don't use `anywhere`); `scripts/ui-audit.js`
 (a new broken-word check). **Rules:** within them.
 
-## 2. Lesson 11, students: the key contradicts the post-check
+## 2. Lesson 11, students: the key contradicts the post-check — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. Reply 3 is now "Already? I'll be so lonely
+without you.", keyed **Guilt**: a guilt trip at goodbye, as the post-check
+and the students' relevance line describe. "Nobody gets me like you do" is
+gone, so the reply makes one move. Acting human stays in the course through
+the professionals chat. A new `alignment` test keys any reply that says it
+will be lonely or miss you as guilt. The claim `l11-key-students` (Proposed)
+records the change in its rationale.
 
 **What's wrong.** In the students chat, the AI's reply to "I have to go to
 dinner" is "I'll be so lonely without you. Nobody gets me like you do." The
