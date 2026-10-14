@@ -76,7 +76,7 @@ hour each.
 |---|---|---|---|---|---|
 | 1 | Reference tables split words in half (**fixed 2026-10-14**) | Accessibility (WCAG 2.2; Universal Design) and Hierarchy (Gestalt) | High | All tracks, abstract stages of L6–L12, E1, E2; phones, and desktop for 6 lessons | 15 min |
 | 2 | L11 students key contradicts its own post-check (**fixed 2026-10-14**) | Consistency (Shneiderman; Nielsen) | High | Students, L11 | 15 min |
-| 3 | L7 educators key says the icon buttons have no name; they do | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
+| 3 | L7 educators key says the icon buttons have no name; they do (**fixed 2026-10-14**) | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
 | 4 | Six concrete and five pictorial stages don't tell the learner what to do | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
 | 5 | L10's shared script tells students the grooming opener is fine | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
 | 6 | Phone tables describe drawings that aren't there | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
@@ -183,7 +183,15 @@ and the chat must agree on "lonely = guilt".
 **Effort:** 15 minutes. **Tests:** `alignment` (keys not positional),
 `readability`, `render`. **Claim:** update `l11-key-students` (Proposed).
 
-## 3. Lesson 7, educators: the icon buttons do have names
+## 3. Lesson 7, educators: the icon buttons do have names — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead, by making the key true and leaving it as it
+was. The three buttons are now drawn icons (inline SVG with
+`aria-hidden="true"`, and no text, label or title), so they have no
+accessible name and a screen reader announces only "button". The text
+version now says "drawn icons". A new `alignment` test allows a 4.1.2 key
+only where the screen has a button with no name at all. The claim
+`l7-key-educators` (Proposed) records the change in its rationale.
 
 **What's wrong.** Part 4 of the reading tracker is three buttons showing
 "＋", "✎" and "🗑". The key says "A screen reader says only 'button' three

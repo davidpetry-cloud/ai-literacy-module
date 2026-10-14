@@ -29,7 +29,8 @@ input{width:100%;padding:9px 10px;font:inherit;border:1px solid #c5c9d6;border-r
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
 .note{display:flex;align-items:center;font-size:13px;margin:12px 0 0}
 .box{border:1px solid #e3e6ee;border-radius:10px;padding:10px;margin-top:12px}
-.ico{width:40px;height:40px;font-size:18px;border:1px solid #c5c9d6;border-radius:8px;background:#fff}`;
+.ico{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #c5c9d6;border-radius:8px;background:#fff}
+.ico svg{width:20px;height:20px;fill:none;stroke:#1f2430;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}`;
 
 const page = (body, script) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${MOCK_CSS}</style></head><body>${body}<script>${script}</script></body></html>`;
 
@@ -138,7 +139,7 @@ export default {
 <main>
 <p class="note" style="color:#A0A6B0"><span class="n">2</span>Log each book you finish. Minutes count toward your class total.</p>
 <div class="box" style="background:#fff4e5"><span class="n">3</span>🔥 Don't break your 12-day streak! Read today or lose it.</div>
-<div class="row"><span class="n">4</span><button type="button" class="ico">＋</button><button type="button" class="ico">✎</button><button type="button" class="ico">🗑</button></div>
+<div class="row"><span class="n">4</span><button type="button" class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></button><button type="button" class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20l4-1L19 8l-3-3L5 16l-1 4zM14 7l3 3"/></svg></button><button type="button" class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button></div>
 <div class="box"><p class="lbl" style="margin-top:0"><span class="n">5</span>Class leaderboard</p>
 <ol style="margin:0;padding-left:20px"><li>Sam, 340 min</li><li>Priya, 310 min</li><li>Jo, 295 min</li><li>…</li><li>Leo, 20 min (last)</li></ol></div>
 <p class="note"><span class="n">6</span><span id="t">Logging you out in 60 seconds</span></p>
@@ -173,7 +174,7 @@ export default {
               },
               {
                 label: "The three small buttons",
-                desc: "Three buttons that show only symbols: a plus, a pencil and a bin. None has a name.",
+                desc: "Three buttons that show only drawn icons: a plus, a pencil and a bin. None has a name.",
                 kind: "wcag",
                 principle: "Robust",
                 group: "Mobile and device",

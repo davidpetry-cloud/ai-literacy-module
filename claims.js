@@ -364,7 +364,7 @@ export const CLAIMS = {
   "l7-key-educators": {
     text: "The answer key for the Lesson 7 educators screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up, so check it by using the screen beside the key and WCAG 2.2: 1.4.3 (AA), 4.1.2 (A), 2.2.1 (A). The instructions' contrast was measured at 2.44:1 (rounded down, as the checker does)."
+      "Written with the screen, which is made up, so check it by using the screen beside the key and WCAG 2.2: 1.4.3 (AA), 4.1.2 (A), 2.2.1 (A). The instructions' contrast was measured at 2.44:1 (rounded down, as the checker does). Until 2026-10-14 part 4's buttons showed text symbols (＋ ✎ 🗑), which are their names, so a screen reader read them out and the 4.1.2 key was untrue; they are now drawn icons, hidden from screen readers, with no text, label or title, so the buttons have no name (UX audit 2026-10, finding 3)."
     )
   },
   "l7-key-professionals": {

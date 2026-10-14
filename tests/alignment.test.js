@@ -264,6 +264,22 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
     const screen = (t) => concrete.tracks[t].screen;
     const hexRe = /^#[0-9A-F]{6}$/;
 
+    // A key must be true of its own screen. Symbols such as "＋" or "🗑" are text, so they are the
+    // button's name; only a drawn icon with no text, label or title leaves it nameless
+    // (UX audit 2026-10, finding 3).
+    it("keys 4.1.2 Name, Role, Value only where the screen has a button with no name at all", () => {
+      for (const t of TRACK_IDS) {
+        if (!screen(t).parts.some((p) => p.criterion === "4.1.2")) continue;
+        const buttons = [...screen(t).html.matchAll(/<button([^>]*)>([\s\S]*?)<\/button>/g)];
+        const nameless = buttons.filter(([, attrs, inner]) =>
+          !/aria-label|aria-labelledby|title=/.test(attrs) &&
+          !/<title/.test(inner) &&
+          inner.replace(/<[^>]*>/g, "").trim() === "" &&
+          [...inner.matchAll(/<svg([^>]*)>/g)].every(([, a]) => /aria-hidden="true"/.test(a)));
+        expect(nameless.length, t).toBeGreaterThan(0);
+      }
+    });
+
     it("has a context, a titled screen and six numbered parts for every track", () => {
       for (const t of TRACK_IDS) {
         expect(concrete.tracks[t]?.context, t).toBeTruthy();
