@@ -212,7 +212,7 @@ export const CLAIMS = {
   "l4-key-educators": {
     text: "The answer key for the Lesson 4 educators sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. The people and sign-offs are fictional, so no outside source is needed: check each label against the sign-off as shown, and that the lapsed one is over two years old."
+      "Written with the document. The people and sign-offs are fictional, so no outside source is needed: check each label against the sign-off as shown, and that the lapsed one is over two years old. Revised 2026-10-14 (UX audit 2026-10, finding 13): the sound sign-off was on 'Students may not carry their own prescription medicine on trips. Staff hold it.', a rule that real guidance rejects, so a sound key on it modelled bad practice. It now reads 'On trips, students keep their own inhalers and adrenaline pens with them. Staff hold other prescription medicine.' England's statutory guidance (DfE, Supporting pupils at school with medical conditions, December 2015, read in the gov.uk PDF) says children should wherever possible carry their own medicines, that inhalers and adrenaline pens should be readily available and not locked away, 'particularly … on school trips', and that it is 'not generally acceptable practice' to prevent children from easily accessing their inhalers. The Allergy & Asthma Network's state-laws page (read 2026-10-14) says all 50 US states protect students' rights to carry and use prescribed asthma and anaphylaxis medications. DfE consulted on an update to this guidance in 2026; recheck when it is published."
     )
   },
   "l4-key-professionals": {

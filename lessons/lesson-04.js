@@ -131,7 +131,7 @@ export default {
                 note: "A name and a date, but no basis. \"Looks right\" is not a check. Ask what she compared it with."
               },
               {
-                statement: "Students may not carry their own prescription medicine on trips. Staff hold it.",
+                statement: "On trips, students keep their own inhalers and adrenaline pens with them. Staff hold other prescription medicine.",
                 by: "Priya Raman",
                 role: "School nurse",
                 basis: "Checked against the district medication policy, section 4.",

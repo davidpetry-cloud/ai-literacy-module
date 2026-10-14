@@ -86,7 +86,7 @@ hour each.
 | 10 | L6 students key contradicts its own note on reach (**fixed 2026-10-14**) | Consistency | Medium | Students, L6 | 10 min |
 | 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 (**fixed 2026-10-14**) | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
 | 12 | L7 table files reflow under Robust; the key says Perceivable (**fixed 2026-10-14**) | Accessibility (WCAG 2.2) | Medium | All tracks, L7 (students key) | 10 min |
-| 13 | L4 educators "sound" sign-off blesses a medicine rule that may be unsafe | User-centricity; safety | Low–medium | Educators, L4 | 10 min + source check |
+| 13 | L4 educators "sound" sign-off blesses a medicine rule that may be unsafe (**fixed 2026-10-14**) | User-centricity; safety | Low–medium | Educators, L4 | 10 min + source check |
 | 14 | E2 students "Homework Hero" keyed check first against the lesson's own rule | Consistency | Low–medium | Students, E2 | 10 min |
 | 15 | E2's sixteen Move buttons outweigh everything else | Hierarchy (Gestalt) | Low–medium | All tracks, E2 | 30 min |
 | 16 | L2 keys the same kind of gap two ways | Consistency | Low | Educators and students, L2 | 5 min |
@@ -523,7 +523,26 @@ Perceivable row.
 are unaffected. **Rule:** the groups are yours, so this leaves them as they
 are.
 
-## 13. Lesson 4, educators: a "sound" sign-off on a rule that may be unsafe
+## 13. Lesson 4, educators: a "sound" sign-off on a rule that may be unsafe — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead, after a source check. England's statutory
+guidance (DfE, *Supporting pupils at school with medical conditions*,
+December 2015, read in the gov.uk PDF):
+- says children should, wherever possible, carry their own medicines;
+- says inhalers and adrenaline pens should be readily available and "not
+  locked away", particularly on school trips;
+- calls it "not generally acceptable practice" to prevent children from
+  easily accessing their inhalers.
+
+The Allergy & Asthma Network says all 50 US states protect students' right to
+carry prescribed asthma and anaphylaxis medication.
+
+So the rule was worse than "may be unsafe": the course's one "sound"
+sign-off blessed practice the guidance rejects. It now reads: "On trips,
+students keep their own inhalers and adrenaline pens with them. Staff hold
+other prescription medicine." The key stays Sound. Both sources are on the
+Sources page, and the claim `l4-key-educators` (Proposed) records the
+evidence. DfE consulted on an update in 2026, so recheck when it's published.
 
 **What's wrong.** The one sound sign-off is on "Students may not carry their
 own prescription medicine on trips. Staff hold it." The key judges the
