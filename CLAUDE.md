@@ -96,6 +96,13 @@ Each framework has one job. Don't add a sixth without removing one.
   ones turn up. Answer keys must not follow a guessable position pattern.
 - **Every passage's answer key is a claim** in `claims.js`, because a wrong key
   teaches the wrong thing with authority. That is worse than no lesson.
+- **Sources are current** (David, 2026-10-14; he prefers newer references).
+  Five years by default; three for anything about AI tools, scams, security
+  or platform features; one to two for statistics, with the year in the
+  sentence. Older only for originals (a law, standard, definition, or the
+  theory a framework is named after), paired with a recent source showing it
+  still holds. Prefer sources about AI itself. Check every DOI against
+  Crossref, and read the abstract before quoting a number.
 - **No live model calls from the site.** No keys, nothing to break mid-class.
 - **Objective verbs are observable.** Not "understand", "know", "learn",
   "appreciate". Bloom level `understand` is fine; the verb must be "explain",
