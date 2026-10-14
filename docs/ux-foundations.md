@@ -41,12 +41,12 @@ sources named in "Where these come from".
 |---|---|---|
 | User-centricity | Is it built around the user's task and words? | Labels and titles use the user's words, not the system's names |
 | Consistency | Does the same thing look and act the same everywhere? | One name per action; shared components and tokens, no one-off styles |
-| Hierarchy | Do size, weight and space show what matters most? | The main action stands out; destructive actions don't |
+| Hierarchy | Do size, weight and space show what matters most? | The main action stands out; destructive actions don't; on a page that teaches, cues mark what's essential (see signaling below) |
 | Context | Does the user know where they are and what just happened? | Every action shows a result: success, error, or progress |
 | User control | Can the user go back, undo and cancel? | Back, undo or confirm for anything that loses work |
-| Accessibility | Can everyone use it? | See WCAG below |
+| Accessibility | Can everyone use it? | See WCAG and cognitive accessibility below |
 | Usability | Can a real person finish with little effort? | Ask for each thing once; ask only for what's needed now |
-| Wellbeing (mindful UX) | Does it respect time, attention and choice? | See mindful UX below |
+| Wellbeing (mindful UX) | Does it respect time, attention, choice and privacy? | See mindful UX and privacy by design below |
 
 ## Accessibility: WCAG 2.2, target level AA
 
@@ -70,12 +70,82 @@ because some content can't meet every AAA criterion.
 Check with a contrast checker; never judge by eye. Test both light and dark
 themes, and respect `prefers-reduced-motion`.
 
+## Cognitive accessibility: beyond level AA
+
+WCAG AA says little about people with cognitive and learning disabilities,
+or anyone tired, stressed, distracted or reading in a second language. The
+W3C's guidance for them, *Making Content Usable for People with Cognitive and
+Learning Disabilities* (2021), sets eight objectives. The objective names are
+the W3C's; the checks are this standard's own wording.
+
+| W3C objective | In code, check that… |
+|---|---|
+| Help users understand what things are and how to use them | Every control looks like what it is and says what it does; no mystery icons |
+| Help users find what they need | The page says where you are; the important thing is easy to find, not buried |
+| Use clear and understandable content | Common words; short sentences; literal language; one instruction per step; white space |
+| Help users avoid mistakes and know how to correct them | Errors are prevented where possible, and named in plain words with the fix (see user control) |
+| Help users focus | Nothing moves, pops up or interrupts while someone is working (see mindful UX) |
+| Ensure processes do not rely on memory | Nobody has to remember a code, a step or an earlier answer to finish |
+| Provide help and support | Help is one step away on any task that can go wrong |
+| Support adaptation and personalization | Text can be resized and themes changed without anything breaking |
+
+A readability check helps with the third objective: measure the reading
+grade of the text and keep sentences short. A grade score is a guide, not
+proof; plain words and one idea per sentence matter more.
+
 ## Mindful UX (digital wellbeing)
 
 - **Calmer defaults:** notifications off until asked, no autoplay, no streaks, quiet hours, sensible limits.
 - **Natural pause points:** an end to lists ("you're all caught up"), pages instead of endless scroll, a stopping cue before big actions.
 - **Audit for addictive patterns:** infinite scroll, autoplay, streak pressure, variable rewards, confirmshaming, hidden cancel or unsubscribe.
 - **Reward care, not harm:** designs shouldn't reward manipulating, ranking or shaming people. Healthy habits, empathy and self-care are practised everywhere, at a screen, on a playground or at home.
+
+## Signaling and cognitive load: pages that teach
+
+A person's working memory is small. Everything on a page that doesn't help
+them learn competes with what does (Sweller's cognitive load theory). Richard
+Mayer's research on multimedia learning turns this into design principles.
+Three apply to any page that teaches, explains or trains. The principle names
+are Mayer's; the checks are this standard's own wording.
+
+| Principle (Mayer) | Means | In code, check that… |
+|---|---|---|
+| Coherence | Leave out material that doesn't serve the learning goal | Every element on a teaching page serves an objective; no decoration, side stories or background noise competing with it |
+| Signaling | Cues show what's essential and how it's organised | Headings, contrast, bands and emphasis mark the parts; a squint test shows question from answer, rule from example and header from body without reading. If the parts blend together, signaling has failed |
+| Segmenting | Break a lesson into parts the learner moves through at their own pace | Long content is split into steps or disclosures the learner opens; nothing advances on its own |
+
+Mayer groups coherence and signaling with the principles that cut wasted
+effort ("extraneous processing"), and segmenting with those that make hard
+material manageable ("essential processing"). His evidence comes mainly from
+lessons that combine words and pictures. Applying it to the design of any
+teaching page is this standard's extension, not his claim.
+
+## Privacy by design
+
+Privacy is part of the design from the start, not a setting added later. Ann
+Cavoukian's seven foundational principles name the approach, and Article 25 of
+the EU's GDPR makes "data protection by design and by default" a legal duty
+for anyone handling personal data. The principle names are Cavoukian's; the
+checks are this standard's own wording.
+
+| Principle (Cavoukian) | In code, check that… |
+|---|---|
+| Proactive not reactive; preventative not remedial | Privacy is planned before building, not patched after a problem |
+| Privacy as the default | Nothing is collected, shared or made public unless the person turns it on |
+| Privacy embedded into design | Privacy is part of the feature itself, not a separate settings page |
+| Full functionality: positive-sum, not zero-sum | The design keeps both the feature and the privacy; neither is traded away |
+| End-to-end security: lifecycle protection | Data is protected from collection to deletion, and deleted when no longer needed |
+| Visibility and transparency | The page says plainly what is collected, why, and where it goes |
+| Respect for user privacy | The person's interests come first: strong defaults, clear notice, easy choices |
+
+In practice:
+- **Collect only what each purpose needs** (GDPR Article 25(2)). If a page
+  works without an account, a name or a location, don't ask for one.
+- **Every request to another site shares data.** Fonts, scripts, analytics and
+  embeds from third parties tell those companies who visited. Host them
+  yourself, or leave them out.
+- **Children's data needs the most care.** Check the law for each country
+  you serve before collecting anything from or about a child.
 
 ## Human–AI interaction: designing with a model inside
 
@@ -131,6 +201,7 @@ WCAG numbers are 2.2 success criteria.
 - **AI-built screens break it with:** six equal buttons; a big red Cancel beside a small grey Save; everything bold.
 - **Check:** squint test (blur the screen: does the main action still stand out?); count primary-styled buttons per view (aim for one); headings in order with no skipped levels.
 - **Fix:** one primary button; destructive actions quieter and set apart; *progressive disclosure*, showing advanced options only when asked.
+- **On a page that teaches:** hierarchy becomes *signaling* (Mayer). Give a table a distinct header and row labels, and set notes, examples and answers apart, so the parts don't blend together. See "Signaling and cognitive load" above.
 
 ### Context: where am I, and what just happened?
 - **Means:** the system always shows its state. Every action gets a visible, timely response. Feedback lives here.
@@ -151,6 +222,7 @@ WCAG numbers are 2.2 success criteria.
 - **AI-built screens break it with:** colour-only error states; icon buttons with no name; low-contrast grey text; fixed widths that break on phones; placeholders instead of labels.
 - **Check:** keyboard-only pass (Tab through everything, and every control must be reachable, visible when focused and usable); a contrast tool in both themes; zoom to 200% and a 320px width; a screen-reader pass of names and roles; automated checks for what can be automated.
 - **Fix:** real `<label>`s, text alongside colour, visible focus, 24px+ targets (44px is better and is the AAA level), reflowing layouts.
+- **Beyond AA:** plain words, one instruction per step, and nothing that relies on memory. See "Cognitive accessibility" above.
 
 ### Usability: the task gets done with little effort
 - **Means:** the whole flow works for a real person, first time and every time. It brings the goals together: learnable, efficient, memorable, forgiving and satisfying.
@@ -163,6 +235,7 @@ WCAG numbers are 2.2 success criteria.
 - **AI-built screens break it with:** everything notifying by default; infinite feeds; streak guilt; "mystery bonus" rewards; confirmshaming; public rankings of people.
 - **Check:** list every notification, timer, counter and prompt. Who does each one serve? Is there a natural place to stop? Can the user say no without being shamed?
 - **Fix:** off-by-default notifications, "you're all caught up" endings, private progress instead of leaderboards, plain "No thanks".
+- **Privacy is part of respect:** collect nothing a feature doesn't need, keep it private by default, and say what happens to it. See "Privacy by design" above.
 
 ## Where these come from
 
@@ -183,12 +256,12 @@ foundational theory.** The grouping is the course's; the ideas are not.
 |---|---|
 | User-centricity | User-centred design: Norman and Draper (eds.), *User Centered System Design* (1986); ISO 9241-210 |
 | Consistency | Shneiderman, *Designing the User Interface* (1987 on), "strive for consistency"; Nielsen's heuristics (1994), "consistency and standards" |
-| Hierarchy | The Gestalt principles of perceptual organisation (Wertheimer, 1923), the basis of visual hierarchy |
+| Hierarchy | The Gestalt principles of perceptual organisation (Wertheimer, 1923), the basis of visual hierarchy; on pages that teach, Mayer's signaling principle (2021) |
 | Context | Norman, *The Design of Everyday Things* (1988; 2013), feedback and visibility; Nielsen (1994), "visibility of system status" |
 | User control | Nielsen (1994), "user control and freedom"; Shneiderman, "permit easy reversal of actions" and "keep users in control" |
-| Accessibility | *The Principles of Universal Design* (Center for Universal Design, NC State, 1997); W3C WCAG 2.2 |
+| Accessibility | *The Principles of Universal Design* (Center for Universal Design, NC State, 1997); W3C WCAG 2.2; W3C, *Making Content Usable for People with Cognitive and Learning Disabilities* (2021) |
 | Usability | Nielsen, *Usability Engineering* (1993); ISO 9241-11 |
-| Wellbeing (mindful UX) | Value sensitive design (Friedman, 1996); deceptive-design research (Brignull, 2010) |
+| Wellbeing (mindful UX) | Value sensitive design (Friedman, 1996); deceptive-design research (Brignull, 2010); Privacy by Design (Cavoukian, 2009) |
 
 Which principle "mainly helps" which goal is this course's mapping, not a published one.
 
@@ -207,6 +280,37 @@ credit, wording here is this standard's own). The research beneath them:
 
 **Mindful UX** draws on work on deceptive design ("dark patterns", Harry Brignull, 2010), the FTC's *Bringing Dark Patterns to Light* (2022), and Article 25 of the EU Digital Services Act.
 
+**Cognitive accessibility** is W3C, *Making Content Usable for People with
+Cognitive and Learning Disabilities*, W3C Working Group Note, 29 April 2021
+(editors Lisa Seeman-Horwitz, Rachael Bradley Montgomery, Steve Lee and Ruoxi
+Ran; https://www.w3.org/TR/coga-usable/). It sets eight objectives, each with
+design patterns.
+
+**Signaling and cognitive load:**
+- Mayer, R. E. (2021), *Multimedia Learning* (3rd ed.), Cambridge University
+  Press. It reviews fifteen principles of multimedia design. Coherence and
+  signaling are among the principles for reducing extraneous processing, and
+  segmenting among those for managing essential processing.
+- Sweller, J. (1988), "Cognitive Load During Problem Solving: Effects on
+  Learning", *Cognitive Science* 12(2), 257–285. The start of cognitive load
+  theory.
+
+**Privacy by design:**
+- Cavoukian, A. (2009; revised 2011), *Privacy by Design: The 7 Foundational
+  Principles*, Information and Privacy Commissioner of Ontario. In 2010 the
+  International Conference of Data Protection and Privacy Commissioners
+  adopted a resolution recognising Privacy by Design.
+- Regulation (EU) 2016/679 (GDPR), Article 25, "Data protection by design and
+  by default": build data protection into how data is handled, and by default
+  process only the personal data each purpose needs.
+
+These three sections were added on 2026-10-13. A model checked the sources the
+same day: Mayer against Cambridge's front matter (copyright page and contents),
+the W3C note and GDPR Article 25 at their own pages, and Cavoukian's seven
+principles in a copy of the IPC document. Sweller, Cavoukian's dates and the
+2010 resolution were checked by search only, not opened. None of them is a
+course claim awaiting David's attestation.
+
 The course claims behind these attributions are **Proposed** in `claims.js` until
 David attests them against the sources above.
 
@@ -220,6 +324,9 @@ David attests them against the sources above.
 - [ ] Contrast checked in both themes; colour never the only cue
 - [ ] No sideways scroll at 320px; reduced motion respected
 - [ ] No addictive patterns; calm defaults
+- [ ] Plain words, one instruction per step, nothing relies on memory (cognitive accessibility)
+- [ ] On a page that teaches, the essential parts are cued and don't blend together (signaling)
+- [ ] Collects only what it needs; private by default; says what happens to data; no third-party requests it doesn't need (privacy by design)
 
 If the screen shows, suggests or acts on AI output, also check:
 
