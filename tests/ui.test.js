@@ -148,11 +148,29 @@ describe("colour usage", () => {
   });
 
   it("outlines boxes with a token that passes 3:1, never the faint --line", () => {
-    const boxes = [".lvl", ".claim", ".claim-group", ".block", ".sidebox", ".search-results li", ".chat .turn", ".ref-list > div", ".support", ".watch,.expect,.crit", "table.basis", ".obj", ".warn"];
+    const boxes = [".lvl", ".claim", ".claim-group", ".block", ".sidebox", ".search-results li", ".chat .turn", ".ref-list > div", ".support", ".watch,.expect,.crit", "table.basis", ".obj", ".warn", ".passage", ".facil"];
     for (const sel of boxes) {
       const body = rules.find((r) => r.sel === sel)?.body ?? "";
       expect(body, sel).toMatch(/border:1\.5px solid var\(--(edge|lvl|teal|prop|rose|lc,var\(--edge\))\)/);
     }
+  });
+
+  // Visual refresh item 2 (2026-10-13): one box language. A note is outlined in its own colour with a
+  // 4px left rule; the facilitator box gets an --ink-3 rule so it stays apart from learner material.
+  it("outlines each note in its own colour, with a 4px left rule", () => {
+    expect(rules.find((r) => r.sel === ".watch,.expect,.crit").body).toContain("border-left-width:4px");
+    expect(rules.find((r) => r.sel === ".expect,.crit").body).toContain("border-color:var(--peri)");
+    expect(rules.find((r) => r.sel === ".facil").body).toContain("border-left:4px solid var(--ink-3)");
+    for (const theme of [THEMES.light, THEMES.dark]) {
+      for (const bg of ["--paper", "--card"]) expect(contrast(theme, "--ink-3", bg)).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  // Dashed means one thing per place: a lesson still in design on the hub, the learner's own turn in a chat,
+  // and a recovery step in the wrong place. The last two carry meaning by shape, not colour alone.
+  it("uses a dashed border only where the shape carries a meaning", () => {
+    const dashed = rules.filter((r) => /border[\w-]*:[^;]*dashed/.test(r.body)).map((r) => r.sel).sort();
+    expect(dashed).toEqual([".card.pending", ".chat .turn.you", ".rc-step.rc-off"].sort());
   });
 
   it("makes the whole hub card the click target, with a focus ring around the card", () => {

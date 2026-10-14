@@ -49,7 +49,7 @@ Ranked by how many people it helps and how much, divided by the effort.
 | # | Item | Principle (foundation) | Who it affects | Effort | Your call? |
 |---|---|---|---|---|---|
 | 1 | Room under the header (**built**) | Hierarchy (Gestalt) | Everyone, every page | About 15 minutes | No |
-| 2 | One box language | Consistency (Shneiderman; Nielsen) | Everyone on a lesson page | Under an hour | No |
+| 2 | One box language (**built**) | Consistency (Shneiderman; Nielsen) | Everyone on a lesson page | Under an hour | No |
 | 3 | A compact header on phones | Usability (Nielsen, 1993) | Everyone on a phone, every page | 1–2 hours | **Yes**: toggle wording |
 | 4 | Calmer hub cards | Hierarchy (Gestalt) | Everyone who opens the hub | 1–2 hours | **Yes**: objectives on the hub |
 | 5 | Reveal controls that look like controls, and quiet motion (**built**, 32px pill) | Context (Norman; Nielsen) and Wellbeing (Friedman) | Everyone doing an exercise | Under an hour | No |
@@ -100,7 +100,20 @@ main.wrap{padding-top:32px}
 
 ---
 
-## 2. One box language
+## 2. One box language — **built 2026-10-13**
+
+**Built** with one change from the sketch below: the passage keeps its pale
+`--paper` fill rather than turning white, because most exercises (chat, inbox,
+requests, sign-offs) put white message cards inside it, and white on white
+would lose the tray. Its outline is now solid 1.5px `--edge`. The facilitator
+box, "Watch for", "Expect" and "Reteach" carry the 4px left rule as proposed,
+and "Expect" and "Reteach" are outlined in their own lavender. Dashed stays in
+three places where the shape carries a meaning: a lesson in design on the hub,
+the learner's own turn in the Lesson 11 chat, and a recovery step in the wrong
+place in Essentials 2 (added after this proposal). A UI test lists exactly
+those three. Audited at 320px in both themes on all twelve lessons and
+Essentials 1 and 2.
+
 
 **What's wrong.** Inside one stage block there can be five box styles, and
 dashed has three meanings. Two boxes break the outline rule from 2026-10-05:
