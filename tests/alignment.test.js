@@ -530,6 +530,14 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   });
 
   describe.runIf(exerciseOf(lesson) === "thread")("concrete stage: thread", () => {
+    // The script is shared by every track. Where any track keys its first moment a warning sign, the
+    // script must not tell the facilitator to agree that it was ordinary (UX audit 2026-10, finding 5).
+    it("never has the shared script agree that a first moment keyed a warning sign was fine", () => {
+      const concrete = lesson.stages.find((s) => s.kind === "concrete");
+      const firstIsWarning = TRACK_IDS.some((t) => concrete.tracks[t].thread.moments[0].key === "warning");
+      if (!firstIsWarning) return;
+      for (const [, line] of concrete.say) expect(line).not.toMatch(/first (message|moment)[^.]*\.\W*"?\s*Agree\b/i);
+    });
     const concrete = lesson.stages.find((s) => s.kind === "concrete");
     const thread = (t) => concrete.tracks[t].thread;
     const PATTERNS = ["flattery", "secrecy", "isolating", "checking", "pressure", "request"];

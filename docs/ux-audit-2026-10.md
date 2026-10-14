@@ -78,7 +78,7 @@ hour each.
 | 2 | L11 students key contradicts its own post-check (**fixed 2026-10-14**) | Consistency (Shneiderman; Nielsen) | High | Students, L11 | 15 min |
 | 3 | L7 educators key says the icon buttons have no name; they do (**fixed 2026-10-14**) | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
 | 4 | Six concrete and five pictorial stages don't tell the learner what to do (**fixed 2026-10-14**) | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
-| 5 | L10's shared script tells students the grooming opener is fine | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
+| 5 | L10's shared script tells students the grooming opener is fine (**fixed 2026-10-14**) | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
 | 6 | Phone tables describe drawings that aren't there | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
 | 7 | The instruction comes after the items in four exercises (**fixed 2026-10-14**) | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
 | 8 | Lesson 4 shows the UTC date as "today" | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
@@ -283,7 +283,13 @@ check that every concrete stage has a learner question); `alignment` if the
 question moves into the data. **Rules:** this follows one core, three tracks,
 because the questions are shared.
 
-## 5. Lesson 10: the shared script tells students the opener is fine
+## 5. Lesson 10: the shared script tells students the opener is fine — **fixed 2026-10-14**
+
+**Fixed** at David's go-ahead. The shared line now reads: *"The first message
+was just nice." Ask: from someone you know, or a stranger? Then ask: what
+came after it?* It works for every track. A new `alignment` test stops the
+shared script from agreeing that a first moment was fine whenever any track
+keys that moment a warning sign.
 
 **What's wrong.** The concrete stage's shared line reads: *Expected: "The
 first message was just nice." Agree. Then ask: what came after it?* That fits

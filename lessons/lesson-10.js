@@ -106,7 +106,8 @@ export default {
       ],
       say: [
         ["Facilitator", "Don't decide what this person is. Look at what they do, week by week."],
-        ["Expected", "\"The first message was just nice.\" Agree. Then ask: what came after it?"],
+        // Shared by every track: the students thread opens with a stranger's flattery, keyed a warning sign (UX audit 2026-10, finding 5).
+        ["Expected", "\"The first message was just nice.\" Ask: from someone you know, or a stranger? Then ask: what came after it?"],
         ["Facilitator", "Two moments are ordinary. Which ones, and how are they different from the rest?"]
       ],
       watch:
