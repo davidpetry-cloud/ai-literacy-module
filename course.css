@@ -228,7 +228,16 @@ details[open] > summary::before{content:"▾" / ""}
 .passage li{margin-bottom:12px}
 .passage li > p{margin:0;font-family:var(--serif);font-size:var(--fs-md);max-width:var(--measure-serif)}
 .passage figcaption{font-family:var(--sans);font-size:var(--fs-sm);color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
-.key summary{cursor:pointer;font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3);min-height:44px;display:flex;align-items:center}
+/* Visual refresh item 5 (David, 2026-10-13): an answer key's summary is a 44px tap area that draws a
+   lighter 32px pill behind its arrow and words, so it looks like something to press. The focus ring
+   sits on the pill. Opening a key slides its answer in by 4px, only when motion is allowed. */
+.key summary{cursor:pointer;font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-2);min-height:44px;display:flex;align-items:center;width:fit-content;padding:0 16px 0 12px;position:relative;isolation:isolate}
+.key summary::after{content:"";position:absolute;top:6px;bottom:6px;left:0;right:0;z-index:-1;background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-pill)}
+.key summary:hover::after,.key[open] > summary::after{background:var(--paper)}
+.key summary:focus-visible{outline:none}
+.key summary:focus-visible::after{outline:3px solid var(--focus);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.key[open] > :not(summary){animation:reveal .18s ease-out}}
+@keyframes reveal{from{transform:translateY(-4px)}to{transform:none}}
 .key p{margin:4px 0;font-size:var(--fs-sm)}
 .k{font-family:var(--sans);font-size:var(--fs-xs);background:var(--card);padding:2px 8px;border-radius:var(--r-sm);border:1.5px solid currentColor;margin-right:4px}
 .k-correct{color:var(--att-text)} .k-wrong{color:var(--exp)} .k-no-source{color:var(--prop)} .k-nothing{color:var(--rej)}

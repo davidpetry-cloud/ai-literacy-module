@@ -52,7 +52,7 @@ Ranked by how many people it helps and how much, divided by the effort.
 | 2 | One box language | Consistency (Shneiderman; Nielsen) | Everyone on a lesson page | Under an hour | No |
 | 3 | A compact header on phones | Usability (Nielsen, 1993) | Everyone on a phone, every page | 1–2 hours | **Yes**: toggle wording |
 | 4 | Calmer hub cards | Hierarchy (Gestalt) | Everyone who opens the hub | 1–2 hours | **Yes**: objectives on the hub |
-| 5 | Reveal controls that look like controls, and quiet motion | Context (Norman; Nielsen) and Wellbeing (Friedman) | Everyone doing an exercise | Under an hour | No |
+| 5 | Reveal controls that look like controls, and quiet motion (**built**, 32px pill) | Context (Norman; Nielsen) and Wellbeing (Friedman) | Everyone doing an exercise | Under an hour | No |
 
 The site has no analytics, by design, so "who it affects" is by page and
 device, not by count. Phones matter most for the Students track.
@@ -268,7 +268,14 @@ and the hub from 15,937px to 11,970px (25% shorter).
 
 ---
 
-## 5. Reveal controls that look like controls, and quiet motion
+## 5. Reveal controls that look like controls, and quiet motion — **built 2026-10-13**
+
+**Built** with the lighter 32px pill (David's choice, 2026-10-13), in CSS alone:
+the summary stays a 44px tap area and a `::after` layer draws the pill behind
+the arrow and words, so no renderer change was needed. The focus ring sits on
+the pill. Four UI tests hold it. Audited at 320px in both themes on Lessons 1,
+4, 6, 10, 11 and 12 and Essentials 1 and 2, and at 375px on Essentials 1.
+
 
 **What's wrong.** Under each passage sentence, "▸ Reveal" is small grey text. It
 works and is 44px tall to tap, but it doesn't look like something to press

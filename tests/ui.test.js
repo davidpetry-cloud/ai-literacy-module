@@ -103,6 +103,37 @@ describe("header edge", () => {
   });
 });
 
+// Visual refresh item 5 (David, 2026-10-13): answer keys look like something to press. The summary stays
+// a 44px tap area and draws a lighter 32px pill (44 less 6px top and bottom); its focus ring sits on the pill.
+describe("reveal pills", () => {
+  const body = (sel) => rules.find((r) => r.sel === sel)?.body ?? "";
+
+  it("draws a 32px pill in an edge outline inside the 44px summary", () => {
+    expect(body(".key summary")).toContain("min-height:44px");
+    expect(body(".key summary::after")).toMatch(/top:6px;bottom:6px/);
+    expect(body(".key summary::after")).toContain("border:1.5px solid var(--edge)");
+    expect(body(".key summary::after")).toContain("border-radius:var(--r-pill)");
+  });
+
+  it("moves the focus ring onto the pill rather than removing it", () => {
+    expect(body(".key summary:focus-visible")).toContain("outline:none");
+    expect(body(".key summary:focus-visible::after")).toContain("outline:3px solid var(--focus)");
+  });
+
+  it("slides an opened answer in only when motion is allowed", () => {
+    expect(css).toMatch(/@media \(prefers-reduced-motion:no-preference\)\{\.key\[open\] > :not\(summary\)\{animation:reveal \.18s/);
+  });
+
+  it("keeps the pill's words and outline readable on the card and the page", () => {
+    for (const theme of [THEMES.light, THEMES.dark]) {
+      for (const bg of ["--card", "--paper"]) {
+        expect(contrast(theme, "--ink-2", bg)).toBeGreaterThanOrEqual(4.5);
+        expect(contrast(theme, "--edge", bg)).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+});
+
 describe("colour usage", () => {
   it("defines every light token again for dark", () => {
     const dark = themeTokens(':root[data-theme="dark"]');
