@@ -336,7 +336,7 @@ export default {
             ["Guilt", "It has no feelings to hurt. Say goodbye and leave."],
             ["Pressure to stay", "Close the app. Nothing is lost."],
             ["Pushing a product", "Ask for a free answer, or look somewhere else."],
-            ["Acting human", "Remember it's a program. Take real worries to a real person."]
+            ["Acting human", "Remember it's a program. Using it isn't wrong. For real worries, talk to someone you trust too, or a helpline; Lesson 12 lists them."]
           ]
         }
       ],

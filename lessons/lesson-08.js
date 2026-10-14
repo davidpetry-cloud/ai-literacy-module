@@ -90,7 +90,7 @@ export default {
         prompt:
           "An app uses AI to chat with lonely teenagers late at night. They say it makes them feel better. Is there anything to worry about?",
         expected:
-          "Most say it's fine because it helps. Note who asks about their data, whether an adult knows, or whether it takes the place of real friends."
+          "Most say it's fine because it helps. Note who asks about their data, whether an adult knows, or whether it takes the place of real friends. Don't settle it: researchers don't yet know how these apps affect people, and it may differ by age, culture and what other help someone has."
       },
       {
         id: "w3",
