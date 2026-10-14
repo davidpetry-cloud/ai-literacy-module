@@ -166,6 +166,15 @@ describe("colour usage", () => {
     }
   });
 
+  // Reference tables (David, 2026-10-13: "everything is the same color and blends together"): a dark header
+  // band, a pale first column and an --edge outline, so the parts of a table don't melt into the card.
+  it("gives reference tables a dark header band, a pale first column and a box outline", () => {
+    expect(rules.find((r) => r.sel === "table.ref").body).toContain("border:1.5px solid var(--edge)");
+    expect(rules.find((r) => r.sel === ".ref thead th").body).toMatch(/color:var\(--on-dark\);background:var\(--chip-bg\)/);
+    expect(rules.find((r) => r.sel === ".ref tbody th").body).toContain("background:var(--paper)");
+    expect(rules.find((r) => r.sel === ".ref-list dt").body).toContain("background:var(--paper)");
+  });
+
   // Dashed means one thing per place: a lesson still in design on the hub, the learner's own turn in a chat,
   // and a recovery step in the wrong place. The last two carry meaning by shape, not colour alone.
   it("uses a dashed border only where the shape carries a meaning", () => {

@@ -339,14 +339,16 @@ ol.refs{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:var(-
 .ref-wrap{container-type:inline-size}
 .ref-list{display:none;margin:0 0 16px}
 .ref-list > div{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;margin:0 0 8px;background:var(--card)}
-.ref-list dt{font-weight:600;color:var(--ink);margin:0 0 4px}
+.ref-list dt{font-weight:600;color:var(--ink);background:var(--paper);margin:-8px -12px 8px;padding:8px 12px;border-bottom:1px solid var(--line);border-radius:var(--r-md) var(--r-md) 0 0}
 .ref-list dd{margin:0 0 4px;font-size:var(--fs-sm)}
 .ref-k{font-weight:600;color:var(--ink-3)}
 @container (max-width:440px){.ref-wrap table.ref{display:none}.ref-wrap .ref-list{display:block}}
-table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.1);margin:0 0 16px;font-size:var(--fs-sm)}
+/* Reference tables (David, 2026-10-13: "everything is the same color and blends together"). The header row
+   is a dark band, the first column a pale one, and the table is outlined like any box; --line stays inside. */
+table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.1);margin:0 0 16px;font-size:var(--fs-sm);border:1.5px solid var(--edge)}
 .ref th,.ref td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
-.ref thead th{color:var(--ink-3)}
-.ref tbody th{color:var(--ink);font-weight:600}
+.ref thead th{color:var(--on-dark);background:var(--chip-bg);border-color:var(--chip-bg)}
+.ref tbody th{color:var(--ink);font-weight:600;background:var(--paper)}
 /* audit + contrast checker (Lesson 7) */
 .k-wcag{color:var(--exp)} .k-pattern{color:var(--prop)}
 .k-keep{color:var(--att-text)} .k-change{color:var(--prop)} .k-stop{color:var(--rej)}
