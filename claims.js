@@ -796,7 +796,7 @@ export const CLAIMS = {
   "e2-key-professionals": {
     text: "The answer key for the Essentials 2 professionals requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice on updates, downloads and connected apps.",
     attestation: proposedBy(
-      "The requests are made up. Check: the work laptop's security update (yes); the meeting-notes app asking to send email and see contacts (check first with IT: calendar may fit, sending email doesn't; FBI I-090126-PSA); the 'urgent' browser-update pop-up (no: CISA, AA25-203A); the AI sidebar from a search ad with a 'Featured' badge (check first: FBI I-122122-PSA on search ads; OX Security's real case); the approved meeting tool asking for the microphone to record (yes: approved tool, asks only what the job needs). Judgements, not facts."
+      "The requests are made up. Check: the work laptop's security update (yes); the meeting-notes app asking to send email and see contacts (check first with IT: calendar may fit, sending email doesn't; FBI I-090126-PSA); the 'urgent' browser-update pop-up (no: CISA, AA25-203A); the AI sidebar from a search ad with a 'Featured' badge (check first: FBI I-122122-PSA on search ads; OX Security's real case); the approved video-call app asking for the microphone right after you click Join (yes: approved app, asks only what the call needs, when you need it). Revised 2026-10-13: this item used to ask for the microphone to record the meeting, keyed yes, but recording other people needs their agreement and the company's policy, so a plain yes taught the wrong thing. Judgements, not facts."
     )
   },
   "e2-key-students": {

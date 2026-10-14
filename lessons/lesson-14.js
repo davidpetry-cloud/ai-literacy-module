@@ -246,16 +246,16 @@ export default {
               },
               {
                 kind: "app",
-                where: "The AI meeting tool your company approved, opened from your IT team's page.",
-                text: "To record this meeting, allow access to your microphone?",
-                asks: ["Use your microphone during this meeting"],
+                where: "The video-call app your company approved, opened from your IT team's page. You've just clicked Join.",
+                text: "Allow access to your microphone so others can hear you?",
+                asks: ["Use your microphone during this call"],
                 key: "yes",
                 look: {
-                  source: "An approved tool, opened the usual way.",
-                  access: "Only the microphone, which recording needs."
+                  source: "An approved app, opened the usual way, right after you clicked Join.",
+                  access: "Only the microphone, which a call needs."
                 },
-                check: "Nothing to check. Allow it for this meeting, and tell everyone you're recording.",
-                note: "It asks only for what the job needs, from a tool you're allowed to use. Not every request is a threat."
+                check: "Nothing to check. Allow it. You can turn it off again in Settings.",
+                note: "It asks only for what the call needs, just when you need it, from an app you're allowed to use. Not every request is a threat."
               }
             ]
           }

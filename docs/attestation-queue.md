@@ -980,7 +980,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   - ✓ Its source (the Interlock advisory) was opened 2026-10-13 and matches.
   - **Open:** [FBI IC3 PSA I-090126-PSA (1 Sept 2026)](https://www.ic3.gov/PSA/2026/PSA260901) · [CISA et al., #StopRansomware: Interlock (AA25-203A)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a) · [FBI IC3 PSA I-122122-PSA (21 Dec 2022)](https://www.ic3.gov/PSA/2022/PSA221221) · [OX Security, 900K users compromised (30 Dec 2025)](https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/)
-  - **Check** each answer: the work laptop's update (yes), the notes app asking to send email (check first), the 'urgent' pop-up (no), the AI sidebar from a search ad (check first), and the approved tool asking for the microphone (yes).
+  - **Check** each answer: the work laptop's update (yes), the notes app asking to send email (check first), the 'urgent' pop-up (no), the AI sidebar from a search ad (check first), and the approved video-call app asking for the microphone right after you click Join (yes; revised 2026-10-13, it used to ask to record the meeting).
 
 - [ ] **`e2-key-students`** · Answer key: check that it's reasonable
 
