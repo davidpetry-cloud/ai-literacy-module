@@ -89,6 +89,8 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "For each reply: helpful, or which move is it?",
       exercise: "chat",
       title: "Read the chat",
       minutes: 12,
@@ -290,6 +292,8 @@ export default {
     },
     {
       kind: "pictorial",
+      // Learner-visible instructions: what to do before the reveal. Same in every track.
+      intro: ["For each move in the chat, match what you give to what the company gets. Then show the picture. Who gains?"],
       title: "Who gains, who pays",
       minutes: 10,
       targets: ["11.1", "11.3"],

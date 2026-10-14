@@ -90,6 +90,10 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // What the learner sees: a line before the passage, the question before the items, and what comes next (UX audit 2026-10, findings 4 and 7).
+      ask: "For each moment: ordinary, or a warning sign? For a warning sign, which pattern is it?",
+      hint: "The patterns: flattery or gifts · asking for something · secrecy · cutting you off · checking up on you · pressure or threats.",
+      next: "Next, you'll see the pattern over time.",
       exercise: "thread",
       title: "Follow the thread",
       minutes: 12,
@@ -298,6 +302,8 @@ export default {
     },
     {
       kind: "pictorial",
+      // Learner-visible instructions: what to do before the reveal. Same in every track.
+      intro: ["Decide which week each moment goes in, face to face or online, and write how it might have felt. Then show the timeline. What repeats?"],
       title: "The pattern over time",
       minutes: 10,
       targets: ["10.2", "10.3"],

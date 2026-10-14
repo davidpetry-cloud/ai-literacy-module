@@ -65,6 +65,16 @@ describe.each(COURSE.lessons.map((l) => [l.n, l]))("lesson %i objectives", (n, l
 });
 
 describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
+  // Every activity says on the page what to do, not only in the facilitator notes (David, 2026-10-05;
+  // UX audit 2026-10, finding 4). A grid that is only shown, never built, needs an intro to say so.
+  it("gives learners the question for the concrete stage, and an intro for a grid they only reveal", () => {
+    const [concrete, pictorial] = lesson.stages;
+    expect(concrete.ask, "concrete.ask").toBeTruthy();
+    if (["confidence-grid", "fix-first", "control", "pattern", "gains"].includes(pictorial.figure)) {
+      expect(pictorial.intro?.length, "pictorial.intro").toBeGreaterThan(0);
+    }
+  });
+
   const objectiveIds = new Set(lesson.objectives.map((o) => o.id));
   const allTargets = [
     ...lesson.warmup.items.flatMap((i) => i.targets),

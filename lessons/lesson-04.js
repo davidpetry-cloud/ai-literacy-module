@@ -93,6 +93,9 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // What the learner sees: a line before the passage, the question before the items, and what comes next (UX audit 2026-10, findings 4 and 7).
+      ask: "For each sign-off: sound, not a person, no basis, wrong signer, or lapsed?",
+      next: "Next, you'll write a sign-off of your own.",
       exercise: "sign-offs",
       title: "Check the sign-offs",
       minutes: 12,

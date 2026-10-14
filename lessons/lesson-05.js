@@ -93,6 +93,9 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // What the learner sees: a line before the passage, the question before the items, and what comes next (UX audit 2026-10, findings 4 and 7).
+      ask: "For each sentence: fabrication, outdated, bias, misread request, or no error? What did you compare it with?",
+      next: "Next, you'll build a checklist that catches each kind.",
       exercise: "classify",
       title: "Name the mistake",
       minutes: 12,

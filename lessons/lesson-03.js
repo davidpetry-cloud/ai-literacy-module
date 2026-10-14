@@ -90,6 +90,10 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // What the learner sees: a line before the passage, the question before the items, and what comes next (UX audit 2026-10, findings 4 and 7).
+      lead: "An AI wrote this for the lesson. Some sources are wrong or made up on purpose.",
+      ask: "For each sentence: correct, wrong, no source, or nothing to check? Does the source exist, and does it say this?",
+      next: "Next, you'll decide how much checking each use needs.",
       title: "Check the sources",
       minutes: 14,
       targets: ["3.1", "3.2"],

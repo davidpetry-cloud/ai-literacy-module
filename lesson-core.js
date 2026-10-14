@@ -625,13 +625,13 @@ function auditReveal(p) {
   return `<b class="k k-fine">${AUDIT_LABEL.fine}</b> ${esc(p.note)}`;
 }
 
-function screenExercise(screen, provenanceNote, reveal = principleReveal, ask = "Name what each numbered part breaks, or say it works") {
+function screenExercise(screen, provenanceNote, reveal = principleReveal, ask = "") {
   return `<figure class="passage screen">
         <iframe class="mock" title="${esc(screen.title)}: a made-up screen, as if built by AI" sandbox="allow-scripts" height="${Number(screen.height)}" srcdoc="${esc(screen.html)}"></iframe>
         <details class="key textver"><summary>Text version of this screen</summary><ol>${screen.parts.map((p) => `<li>${esc(p.desc)}</li>`).join("")}</ol></details>
         <figcaption>${provenanceNote}</figcaption>
       </figure>
-      <h3 class="subhead">${ask}</h3>
+      ${ask}
       <ol class="gaps">${screen.parts
         .map((p, i) => `<li><p>${esc(p.label)}</p><details class="key"><summary>Reveal<span class="sr"> the answer for part ${i + 1}</span></summary><p>${reveal(p)}</p></details></li>`)
         .join("")}</ol>`;
@@ -1017,9 +1017,7 @@ function respondExercise(respond, provenanceNote) {
           )
           .join("")}</ol>
         <figcaption>${provenanceNote}</figcaption>
-      </figure>
-      <h3 class="subhead">For each response: safe or risky, and why?</h3>
-      <p class="sense">Next, you'll build a plan for one of these situations.</p>`;
+      </figure>`;
 }
 
 export function planStatus(ids, steps) {
@@ -1087,7 +1085,7 @@ export function planFor(situations, index) {
 
 // Nothing typed, nothing sent: the plan lives only on this page, and Start again clears it.
 function planBuilder(stage, situations) {
-  return `${(stage.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
+  return `
       <form class="ck-form" id="pl-form" novalidate>
         <fieldset class="ck-list"><legend>1. Choose a situation</legend>
           ${situations.map((sit, i) => `<label><input type="radio" name="pl-situation" value="${i}"><span><b>Situation ${i + 1}.</b> <span class="pl-sit">${esc(sit.text)}</span></span></label>`).join("")}
@@ -1149,9 +1147,7 @@ function inboxExercise(inbox, provenanceNote) {
           )
           .join("")}</ol>
         <figcaption>${provenanceNote}</figcaption>
-      </figure>
-      <h3 class="subhead">For each message: genuine or scam? Which signs? How would you check?</h3>
-      <p class="sense">Next, you'll sort what's safe to put into an AI tool.</p>`;
+      </figure>`;
 }
 
 export const SHARE_LABEL = { fine: "Fine to share", keep: "Keep it out" };
@@ -1212,7 +1208,7 @@ export function shareView(choices, items, { shown = false } = {}) {
 
 // Nothing typed, nothing sent: the sort lives only on this page, and Start again clears it.
 function shareSorter(stage) {
-  return `${(stage.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
+  return `
       <form class="ck-form" id="sh-form" novalidate>
         ${stage.items
           .map(
@@ -1281,9 +1277,7 @@ function requestsExercise(requests, provenanceNote) {
           )
           .join("")}</ol>
         <figcaption>${provenanceNote}</figcaption>
-      </figure>
-      <h3 class="subhead">For each request: say yes, say no, or check first? What did you look at? How would you check?</h3>
-      <p class="sense">Next, you'll put the steps for getting a hacked account back in order.</p>`;
+      </figure>`;
 }
 
 export const placesText = ([a, b]) => (a === b ? `place ${a}` : `places ${a} to ${b}`);
@@ -1324,7 +1318,7 @@ function recoverList(order, steps, shown) {
 
 // Nothing typed, nothing sent: the order lives only on this page, and Start again puts it back.
 function recoverBuilder(stage) {
-  return `${(stage.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
+  return `
       <div class="rc-steps" id="rc-steps">${recoverList(stage.start, stage.steps, false)}</div>
       <div class="sh-actions"><button type="button" class="btn" id="rc-reveal">Show the order</button> <button type="button" class="btn" id="rc-reset">Start again</button></div>
       <p class="so-status" id="rc-status">${esc(recoverStatus(stage.start, stage.steps).text)}</p>`;
@@ -1880,14 +1874,18 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         ? `Written by ${esc(artefact.model)} for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
         : `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
       : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
+  // The question learners answer, before the items they answer it about (UX audit 2026-10, findings 4 and 7).
+  // A screen or a prompt pair shows its artefact first, then the question, then the parts.
+  const ask = concrete.ask ? `<h3 class="subhead">${esc(concrete.ask)}</h3>${concrete.hint ? `<p class="sense">${esc(concrete.hint)}</p>` : ""}` : "";
+  const askInside = isPair || isScreen || isAudit || isJudge;
   const concreteBody = isPair
-    ? pairExercise(artefact, provenanceNote)
+    ? pairExercise(artefact, provenanceNote, ask)
     : isSignoff
       ? signoffExercise(artefact, provenanceNote, now)
       : isScreen
-        ? screenExercise(artefact, provenanceNote)
+        ? screenExercise(artefact, provenanceNote, principleReveal, ask)
         : isAudit
-        ? screenExercise(artefact, provenanceNote, auditReveal, "For each numbered part: an accessibility failure, an addictive pattern, or it works")
+        ? screenExercise(artefact, provenanceNote, auditReveal, ask)
         : isRespond
         ? respondExercise(artefact, provenanceNote)
         : isInbox
@@ -1895,11 +1893,11 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
         : isRequests
         ? requestsExercise(artefact, provenanceNote)
         : isChat
-        ? chatExercise(artefact, provenanceNote) + `<h3 class="subhead">For each reply: helpful, or which move is it?</h3>`
+        ? chatExercise(artefact, provenanceNote)
         : isThread
         ? threadExercise(artefact, provenanceNote)
         : isJudge
-        ? screenExercise(artefact, provenanceNote, judgeReveal, "For each numbered feature: keep, change or stop, and what it touches most")
+        ? screenExercise(artefact, provenanceNote, judgeReveal, ask)
         : isClassify
         ? classifyExercise(artefact, null, provenanceNote)
         : passageExercise(artefact, provenanceNote);
@@ -1961,13 +1959,17 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
     <section class="block c" data-stage="concrete" id="stage-concrete"><h2>Concrete · ${esc(concrete.title)} <span class="mins">${concrete.minutes} min</span></h2>
       <p class="stage-meta">${targets(concrete.targets)}</p>
       <p class="context">${esc(art.context)}</p>
+      ${concrete.lead ? `<p class="sense">${esc(concrete.lead)}</p>` : ""}
+      ${askInside ? "" : ask}
       ${concreteBody}
+      ${concrete.next ? `<p class="sense">${esc(concrete.next)}</p>` : ""}
       ${facil(concrete.moves, concrete.say, concrete.watch)}
       <div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(artefact.claim, now)}</div>
     </section>
 
     <section class="block p" data-stage="pictorial" id="stage-pictorial"><h2>Pictorial · ${esc(pictorial.title)} <span class="mins">${pictorial.minutes} min</span></h2>
       <p class="stage-meta">${targets(pictorial.targets)}</p>
+      ${(pictorial.intro ?? []).map((t) => `<p class="sense">${esc(t)}</p>`).join("")}
       ${pictorialBody}
       ${facil(pictorial.moves, pictorial.say, pictorial.watch)}
       ${pictorial.claim ? `<div class="keyclaim"><h3 class="subhead">Is this answer key right?</h3>${claimCard(pictorial.claim, now)}</div>` : ""}
@@ -2044,7 +2046,7 @@ function passageExercise(passage, provenanceNote) {
       </figure>`;
 }
 
-function pairExercise(pair, provenanceNote) {
+function pairExercise(pair, provenanceNote, ask = "") {
   return `<figure class="passage pair">
         <p class="cmp-label">The request</p>
         <p class="req">“${esc(pair.vague.prompt)}”</p>
@@ -2052,7 +2054,7 @@ function pairExercise(pair, provenanceNote) {
         <ol>${pair.vague.output.map((l) => `<li><p>${esc(l.text)}</p></li>`).join("")}</ol>
         <figcaption>${provenanceNote}</figcaption>
       </figure>
-      <h3 class="subhead">Mark each part: stated, vague or missing</h3>
+      ${ask}
       <ol class="gaps">${PARTS.map((p) => {
         const g = pair.vague.gaps[p.id];
         return `<li><p><b>${p.label}.</b> ${p.ask}</p><details class="key"><summary>Reveal<span class="sr"> the answer for ${p.label}</span></summary><p><b class="k k-${g.key}">${GAP_LABEL[g.key]}</b> ${esc(g.note)}</p></details></li>`;

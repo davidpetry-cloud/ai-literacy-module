@@ -86,6 +86,10 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // What the learner sees: a line before the passage, the question before the items, and what comes next (UX audit 2026-10, findings 4 and 7).
+      lead: "An AI wrote this for the lesson. Some sentences are wrong on purpose.",
+      ask: "For each sentence: correct, wrong, no source, or nothing to check?",
+      next: "Next, you'll sort the sentences by how sure they sound.",
       title: "Mark the passage",
       minutes: 14,
       targets: ["1.2", "1.3"],
@@ -221,6 +225,8 @@ export default {
     },
     {
       kind: "pictorial",
+      // Learner-visible instructions: what to do before the reveal. Same in every track.
+      intro: ["Decide where each sentence goes: how sure it sounds, and what it really is. Then show the grid. What does it show?"],
       title: "Sort by tone and by truth",
       minutes: 8,
       targets: ["1.2"],

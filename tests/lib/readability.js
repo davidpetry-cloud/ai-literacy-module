@@ -100,8 +100,9 @@ export function textRoles(lesson, tracks) {
       // A checklist builder's options are learner text too.
       .concat(lesson.stages.flatMap((s) => s.checks ?? []).flatMap((c) => [c.text, c.note]).filter(Boolean))
       .concat(lesson.stages.flatMap((s) => s.steps ?? []).flatMap((st) => [st.text, st.why]).filter(Boolean))
-      // A stage's own instructions to learners.
+      // A stage's own instructions to learners: its intro, and the question, hint, lead and next line.
       .concat(lesson.stages.flatMap((s) => s.intro ?? []))
+      .concat(lesson.stages.flatMap((s) => [s.lead, s.ask, s.hint, s.next]).filter(Boolean))
       // A sorter's items, and the reason shown for each.
       .concat(lesson.stages.flatMap((s) => s.items ?? []).flatMap((it) => [it.text, it.why]))
       // Reference tables are for learners too; each cell is read as a sentence.

@@ -77,10 +77,10 @@ hour each.
 | 1 | Reference tables split words in half (**fixed 2026-10-14**) | Accessibility (WCAG 2.2; Universal Design) and Hierarchy (Gestalt) | High | All tracks, abstract stages of L6–L12, E1, E2; phones, and desktop for 6 lessons | 15 min |
 | 2 | L11 students key contradicts its own post-check (**fixed 2026-10-14**) | Consistency (Shneiderman; Nielsen) | High | Students, L11 | 15 min |
 | 3 | L7 educators key says the icon buttons have no name; they do (**fixed 2026-10-14**) | Accessibility (WCAG 4.1.2) | High | Educators, L7 | 30 min |
-| 4 | Six concrete and five pictorial stages don't tell the learner what to do | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
+| 4 | Six concrete and five pictorial stages don't tell the learner what to do (**fixed 2026-10-14**) | Context (Norman; Nielsen) and Consistency | High | All tracks, all devices, L1, L3–L6, L8–L11 | 2–3 h |
 | 5 | L10's shared script tells students the grooming opener is fine | Wellbeing (Friedman) and Consistency | Medium–high | Students, L10 | 10 min |
 | 6 | Phone tables describe drawings that aren't there | Context and Consistency | Medium | Phones, all tracks, L1, L9, L10, L11 | 1 h |
-| 7 | The instruction comes after the items in four exercises | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
+| 7 | The instruction comes after the items in four exercises (**fixed 2026-10-14**) | Hierarchy (Gestalt) and Usability (Nielsen) | Medium | All tracks, L11, L12, E1, E2; worst on phones | 30 min |
 | 8 | Lesson 4 shows the UTC date as "today" | Context and Errors (Nielsen) | Medium | All tracks, L4; mornings in Asia-Pacific, evenings in the Americas | 30 min |
 | 9 | L4 students key rests on a fact the page doesn't show | User-centricity (Norman and Draper) | Medium | Students, L4 | 10 min |
 | 10 | L6 students key contradicts its own note on reach | Consistency | Medium | Students, L6 | 10 min |
@@ -216,7 +216,29 @@ of criteria.
 **Effort:** 30 minutes. **Tests:** the L7 frame-markup tests in `render` and
 `ui`; `alignment`. **Claim:** `l7-key-educators` (Proposed).
 
-## 4. Activities that don't say what to do
+## 4. Activities that don't say what to do — **fixed 2026-10-14**
+
+**Fixed** with finding 7, at David's go-ahead, in the wording he approved on
+2026-10-14. Every concrete stage now carries its learner question as data
+(`ask`, with an optional `lead` before the passage, a `hint` and a `next`
+line), and the renderer shows it before the first answer, outside the
+facilitator notes:
+- **New questions:** Lessons 1, 3, 4, 5, 9 and 10. Lesson 10 lists the six
+  pattern names under its question.
+- **New lead line** in Lessons 1, 3 and 9: "An AI wrote this for the lesson.
+  Some sentences are wrong on purpose."
+- **New intros** above Lessons 1, 6, 8, 10 and 11's grids.
+- **The soft wording for Lesson 1's intro:** "What does it show?", not "Did
+  sounding sure tell you anything?", so the reveal keeps its point. The
+  intros say "Decide where each … goes", since the grids are placed on paper,
+  not dragged.
+
+Every line was scored with the project's readability function (all below
+grade 6). **Tests:** `alignment` (every concrete stage has a question; every
+reveal-only grid has an intro); `render` (in every lesson and track, the
+question comes before the first answer and the next line after the last; the
+intro comes before the figure); `readability` now reads the new fields as
+learner text.
 
 **What's wrong.** Your rule is that every activity says on the page what
 it's for (2026-10-05). The newer lessons do this well. Lesson 12, Essentials
@@ -317,7 +339,11 @@ and Consistency between the two forms of one figure.
 **Effort:** about an hour. **Tests:** `render` (figure aria-labels before and
 after reveal; table headers); `ui` if a new swap class is added.
 
-## 7. The instruction comes after the items
+## 7. The instruction comes after the items — **fixed 2026-10-14**
+
+**Fixed** with finding 4. Lessons 11 and 12 and Essentials 1 and 2 now show
+their question before the items. The wording is unchanged; it moved from the
+renderer into each lesson's data.
 
 **What's wrong.** In Lessons 11 and 12 and Essentials 1 and 2, the question
 that tells you what to do ("For each reply: helpful, or which move is it?")

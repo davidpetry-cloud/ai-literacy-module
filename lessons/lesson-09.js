@@ -99,6 +99,10 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // What the learner sees: a line before the passage, the question before the items, and what comes next (UX audit 2026-10, findings 4 and 7).
+      lead: "An AI wrote this article for the lesson. Some sentences are wrong on purpose.",
+      ask: "For each sentence: correct, wrong, no source, or nothing to check?",
+      next: "Next, you'll see why a finding about a group can't tell you about one person.",
       title: "Read the article",
       minutes: 12,
       targets: ["9.1", "9.3"],

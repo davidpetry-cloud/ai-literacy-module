@@ -884,6 +884,36 @@ describe("narrow figures: the grid as a table", () => {
   });
 });
 
+describe("every activity says on the page what to do (UX audit 2026-10, findings 4 and 7)", () => {
+  const ready = COURSE.lessons.filter((l) => l.ready);
+  const before = (a, b) => Boolean(a.compareDocumentPosition(b) & 4); // b follows a
+  it.each(ready.flatMap((l) => TRACK_IDS.map((t) => [l.n, t, l])))("lesson %i, %s: the question comes before the first answer, the next line after the last", (n, track, l) => {
+    const stage = lessonDoc(track, l).querySelector('[data-stage="concrete"]');
+    const [concrete] = l.stages;
+    const q = [...stage.querySelectorAll("h3.subhead")].find((h) => h.textContent === concrete.ask);
+    expect(q, "question shown").toBeTruthy();
+    const answers = [...stage.querySelectorAll("details.key")].filter((d) => !d.classList.contains("textver"));
+    expect(answers.length).toBeGreaterThan(0);
+    expect(before(q, answers[0]), "question before the first answer").toBe(true);
+    expect(q.closest(".facil"), "not in the facilitator notes").toBeNull();
+    const lines = [...stage.querySelectorAll("p.sense")].map((p) => p.textContent);
+    if (concrete.lead) expect(lines).toContain(concrete.lead);
+    if (concrete.next) {
+      const next = [...stage.querySelectorAll("p.sense")].find((p) => p.textContent === concrete.next);
+      expect(before(answers.at(-1), next), "next line after the last answer").toBe(true);
+    }
+  });
+
+  it.each(ready.filter((l) => l.stages[1].intro).map((l) => [l.n, l]))("lesson %i: the pictorial intro comes before the figure, outside the notes", (n, l) => {
+    const stage = lessonDoc(TRACK_IDS[0], l).querySelector('[data-stage="pictorial"]');
+    const first = [...stage.querySelectorAll("p.sense")].find((p) => p.textContent === l.stages[1].intro[0]);
+    expect(first).toBeTruthy();
+    expect(first.closest(".facil")).toBeNull();
+    const fig = stage.querySelector(".figure, form, fieldset");
+    if (fig) expect(before(first, fig)).toBe(true);
+  });
+});
+
 describe("facilitator content is labelled and kept apart from what learners work on", () => {
   it.each([[1, lessonDoc], [2, lesson2Doc], [3, lesson3Doc], [4, lesson4Doc], [5, lesson5Doc], [6, lesson6Doc], [7, lesson7Doc]])("lesson %i: every stage carries its notes in a labelled box", (n, make) => {
     const doc = make(TRACK_IDS[0]);

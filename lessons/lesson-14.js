@@ -93,6 +93,9 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "For each request: say yes, say no, or check first? What did you look at? How would you check?",
+      next: "Next, you'll put the steps for getting a hacked account back in order.",
       exercise: "requests",
       title: "Yes, no, or check first?",
       minutes: 12,

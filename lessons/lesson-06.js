@@ -108,6 +108,8 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "Name what each numbered part breaks, or say it works",
       exercise: "screen",
       title: "Use the screen. Find what it gets wrong",
       minutes: 12,
@@ -365,6 +367,8 @@ export default {
     },
     {
       kind: "pictorial",
+      // Learner-visible instructions: what to do before the reveal. Same in every track.
+      intro: ["Decide where each problem from the screen goes: how bad it is, and how many people it hits. Then show the grid and the order to fix them in."],
       title: "What to fix first",
       minutes: 10,
       targets: ["6.3"],

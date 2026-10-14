@@ -92,6 +92,9 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "For each response: safe or risky, and why?",
+      next: "Next, you'll build a plan for one of these situations.",
       exercise: "respond",
       title: "What would you do?",
       minutes: 12,

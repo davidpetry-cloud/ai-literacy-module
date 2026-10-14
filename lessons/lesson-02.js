@@ -88,6 +88,8 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "Mark each part: stated, vague or missing",
       exercise: "prompt-pair",
       title: "Find what the request left out",
       minutes: 14,

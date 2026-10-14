@@ -107,6 +107,8 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "For each numbered part: an accessibility failure, an addictive pattern, or it works",
       exercise: "audit",
       title: "Audit the screen",
       minutes: 12,

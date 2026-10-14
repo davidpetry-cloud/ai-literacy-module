@@ -105,6 +105,8 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "For each numbered feature: keep, change or stop, and what it touches most",
       exercise: "judge",
       title: "Judge the app",
       minutes: 12,
@@ -319,6 +321,8 @@ export default {
     },
     {
       kind: "pictorial",
+      // Learner-visible instructions: what to do before the reveal. Same in every track.
+      intro: ["Decide where each feature goes: how much people stay in control, and how much the AI does on its own. Then show the grid."],
       title: "Who stays in control?",
       minutes: 10,
       targets: ["8.2", "8.3"],

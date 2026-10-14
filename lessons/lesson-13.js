@@ -105,6 +105,9 @@ export default {
   stages: [
     {
       kind: "concrete",
+      // The question learners answer, shown before the items (UX audit 2026-10, findings 4 and 7).
+      ask: "For each message: genuine or scam? Which signs? How would you check?",
+      next: "Next, you'll sort what's safe to put into an AI tool.",
       exercise: "inbox",
       title: "Check it, or trust it?",
       minutes: 12,
