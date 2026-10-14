@@ -79,6 +79,8 @@ export const essentials = () => COURSE.lessons.filter((l) => l.category === "ess
 
 export const COURSE = {
   title: "Human-Centered AI Literacy",
+  // Shown on every lesson and the hub, so printed handouts carry it too.
+  author: "David Petry",
   tagline: "Using AI well, and protecting the people it touches.",
   framing:
     "Twelve lessons on using AI the way a careful professional uses any source. Learn what it is, how to ask it well, how to check what it says, and who signs off. Then judge what it builds, keep people at the center, and spot manipulation, from people and from AI. Essentials, such as staying secure, fit in at any point.",

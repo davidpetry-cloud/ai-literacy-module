@@ -18,6 +18,25 @@ const lesson2 = getLesson(2);
 const pairData = (track) => lesson2.stages[0].tracks[track].pair;
 const lesson2Doc = (track) => lessonDoc(track, lesson2);
 
+describe("authorship", () => {
+  it("names the author in the header of the hub and every ready lesson, in every track", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    expect(hub.querySelector("#top .facts").textContent).toContain(`Designed by ${COURSE.author}`);
+    for (const l of COURSE.lessons.filter((x) => x.ready)) {
+      for (const track of TRACK_IDS) {
+        expect(lessonDoc(track, l).querySelector("#top .facts").textContent).toContain(`Designed by ${COURSE.author}`);
+      }
+    }
+  });
+
+  it("carries a copyright line in every page's footer", () => {
+    for (const name of ["index.html", "lesson.html", "sources.html"]) {
+      expect(page(name).querySelector("footer").textContent).toContain(`© 2026 ${COURSE.author}.`);
+    }
+  });
+});
+
 describe("hub", () => {
   const doc = page("index.html");
   renderHub(doc);

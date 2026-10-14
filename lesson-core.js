@@ -1680,6 +1680,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now = new Date(), query =
       <span><b>${TRACK_IDS.length}</b> audience tracks</span>
       <span><b>${readyCount}</b> ready</span>
       <span><b>${counts.attested}</b> of ${Object.keys(CLAIMS).length} claims attested</span>
+      <span>Designed by <b>${esc(COURSE.author)}</b></span>
     </div>
     ${trackPicker(track)}`;
 
@@ -1844,6 +1845,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now = new Date
       <span><b>${COURSE.minutes}</b> minutes</span>
       <span><b>${lesson.objectives.length}</b> objectives</span>
       <span>Warm-up <b>${lesson.warmup.minutes}</b> · Concrete <b>${concrete.minutes}</b> · Pictorial <b>${pictorial.minutes}</b> · Abstract <b>${abstract.minutes}</b> · Check <b>${lesson.check.minutes}</b></span>
+      <span>Designed by <b>${esc(COURSE.author)}</b></span>
     </div>
     ${trackPicker(track)}`;
 
