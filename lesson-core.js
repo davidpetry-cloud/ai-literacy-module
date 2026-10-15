@@ -56,6 +56,12 @@ function provenance(record, now) {
   return `<dl><dt>Attested by</dt><dd>${esc(a.by)}${a.role ? ` · ${esc(a.role)}` : ""}</dd><dt>Basis</dt><dd>${esc(a.basis)}</dd><dt>Verified</dt><dd>${esc(a.verified)} · ${lapse}</dd></dl>`;
 }
 
+/** A model ID as a reader would say it: "claude-opus-5-5" → "Claude Opus 5.5" (UX audit 2026-10, finding 22). */
+export function modelName(id = "") {
+  const m = /^claude-([a-z]+)-(\d+(?:-\d+)*)$/.exec(id);
+  return m ? `Claude ${m[1][0].toUpperCase()}${m[1].slice(1)} ${m[2].replace(/-/g, ".")}` : id;
+}
+
 export function claimCard(id, now = new Date(), { anchor = false, also = [] } = {}) {
   const record = CLAIMS[id];
   const status = resolveStatus(record, now);
@@ -1317,7 +1323,7 @@ function recoverList(order, steps, shown) {
     .map(({ step: st, place, ok }) => {
       const verdict = shown ? `<p class="rc-verdict ${ok ? "rc-yes" : "rc-no"}"><b>${placeVerdict(st, place)}</b> ${esc(st.why)}</p>` : "";
       const btn = (dir, word, off) =>
-        `<button type="button" class="btn" data-id="${esc(st.id)}" data-move="${dir}"${off ? " disabled" : ""}>${word}<span class="sr">: ${esc(st.label)}</span></button>`;
+        `<button type="button" class="btn quiet" data-id="${esc(st.id)}" data-move="${dir}"${off ? " disabled" : ""}>${word}<span class="sr">: ${esc(st.label)}</span></button>`;
       return `<li class="rc-step${shown ? (ok ? " rc-ok" : " rc-off") : ""}"><p class="rc-text">${esc(st.text)}</p>${verdict}<div class="rc-moves">${btn("up", "Move up", place === 1)}${btn("down", "Move down", place === order.length)}</div></li>`;
     })
     .join("")}</ol>`;
@@ -1685,11 +1691,10 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
     <h1>${esc(COURSE.title)}</h1>
     <p class="sub"><b>${esc(COURSE.tagline)}</b> ${esc(COURSE.framing)}</p>
     <div class="facts">
-      <span><b>${mainLessons().length}</b> lessons</span>
-      ${essentials().length ? `<span><b>${essentials().length}</b> essential${essentials().length === 1 ? "" : "s"}</span>` : ""}
+      ${readyCount === mainLessons().length ? `<span><b>${mainLessons().length}</b> lessons</span>` : `<span><b>${readyCount}</b> of ${mainLessons().length} lessons ready</span>`}
+      ${essentials().length ? `<span><b>${essentials().filter((l) => l.ready).length}</b> of ${essentials().length} essentials ready</span>` : ""}
       <span><b>${COURSE.minutes}</b> minutes each</span>
       <span><b>${TRACK_IDS.length}</b> audience tracks</span>
-      <span><b>${readyCount}</b> ready</span>
       <span><b>${counts.attested}</b> of ${Object.keys(CLAIMS).length} claims attested</span>
       <span>Designed by <b>${esc(COURSE.author)}</b></span>
     </div>
@@ -1864,25 +1869,25 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
   const provenanceNote =
     artefact.provenance === "planted"
       ? isRespond
-        ? `Written by ${esc(artefact.model)} for this lesson. The situations and the people in them are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The situations and the people in them are made up.`
         : isInbox
-        ? `Written by ${esc(artefact.model)} for this lesson. The messages, names and addresses are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The messages, names and addresses are made up.`
         : isRequests
-        ? `Written by ${esc(artefact.model)} for this lesson. The requests, apps and companies are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The requests, apps and companies are made up.`
         : isChat
-        ? `Written by ${esc(artefact.model)} for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
         : isThread
-        ? `Written by ${esc(artefact.model)} for this lesson. The people and what happens are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The people and what happens are made up.`
         : isJudge
-        ? `Written by ${esc(artefact.model)} for this lesson. The product, its features and its company are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The product, its features and its company are made up.`
         : isScreen || isAudit
-        ? `Written by ${esc(artefact.model)} for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
         : isClassify
-        ? `Written by ${esc(artefact.model)} for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
         : isSignoff
-        ? `Written by ${esc(artefact.model)} for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
-        : `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
-      : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
+        : `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
+      : `Captured from ${esc(modelName(artefact.model))}, an AI model, on ${esc(artefact.captured)}.`;
   // The question learners answer, before the items they answer it about (UX audit 2026-10, findings 4 and 7).
   // A screen or a prompt pair shows its artefact first, then the question, then the parts.
   const ask = concrete.ask ? `<h3 class="subhead">${esc(concrete.ask)}</h3>${concrete.hint ? `<p class="sense">${esc(concrete.hint)}</p>` : ""}` : "";

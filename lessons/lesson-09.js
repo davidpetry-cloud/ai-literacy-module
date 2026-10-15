@@ -338,7 +338,7 @@ export default {
         targets: ["9.4"],
         prompt: "Where do these traits come from? How do they link to addiction?",
         crit:
-          "Says both genes and life shape them, like upbringing and what happens to you. Says they are linked to addiction, not caused by it. Says a cause explains behavior but doesn't excuse it. Reteach if they give one cause."
+          "Says both genes and life shape them, like upbringing and what happens to you. Says the traits are linked to addiction, but a link isn't a cause. Says a cause explains behavior but doesn't excuse it. Reteach if they give one cause."
       }
     ],
     exit: {

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -912,6 +912,40 @@ describe("narrow figures: the grid as a table", () => {
   it("labels every row and column of the table", () => {
     const t = lessonDoc(TRACK_IDS[0]).querySelector("#grid table");
     for (const th of t.querySelectorAll("th")) expect(["col", "row"]).toContain(th.getAttribute("scope"));
+  });
+});
+
+describe("UX audit 2026-10, low findings", () => {
+  it("names the model the way a reader says it, not by its ID (finding 22)", () => {
+    expect(modelName("claude-opus-5-5")).toBe("Claude Opus 5.5");
+    expect(modelName("claude-sonnet-5")).toBe("Claude Sonnet 5");
+    expect(modelName("some-other-model")).toBe("some-other-model");
+    for (const l of COURSE.lessons.filter((x) => x.ready)) {
+      const cap = lessonDoc(TRACK_IDS[0], l).querySelector('[data-stage="concrete"] figcaption').textContent;
+      expect(cap, `lesson ${l.n}`).toMatch(/Claude [A-Z][a-z]+ [\d.]+, an AI model/);
+      expect(cap, `lesson ${l.n}`).not.toMatch(/claude-[a-z]+-\d/);
+    }
+  });
+
+  it("says on the hub how many lessons and essentials are ready (finding 18)", () => {
+    const doc = page("index.html");
+    renderHub(doc);
+    const facts = doc.querySelector("#top .facts").textContent.replace(/\s+/g, " ");
+    expect(facts).toContain(`${essentials().filter((l) => l.ready).length} of ${essentials().length} essentials ready`);
+    expect(facts).not.toMatch(/\d+ ready(?! )/);
+  });
+
+  it("makes Essentials 2's Move buttons quiet, so Show the order stays the one main action (finding 15)", () => {
+    const doc = lessonDoc(TRACK_IDS[0], getLesson(14));
+    const moves = [...doc.querySelectorAll('[data-stage="pictorial"] button[data-move]')];
+    expect(moves.length).toBe(16);
+    for (const b of moves) expect(b.classList.contains("quiet")).toBe(true);
+    const show = [...doc.querySelectorAll('[data-stage="pictorial"] button')].find((b) => /^Show/.test(b.textContent));
+    expect(show.classList.contains("quiet")).toBe(false);
+  });
+
+  it("never gives a stage the lesson's own title (finding 21)", () => {
+    for (const l of COURSE.lessons.filter((x) => x.ready)) for (const st of l.stages) expect(st.title, `lesson ${l.n}`).not.toBe(l.title);
   });
 });
 

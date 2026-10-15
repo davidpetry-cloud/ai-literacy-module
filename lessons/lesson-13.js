@@ -138,7 +138,7 @@ export default {
                 from: "An automated caller, \"Lakeside Coach Tours booking assistant\"",
                 text: "Hello, I'm Lakeside Coach Tours' automated booking assistant. Our bank has changed. To keep your class trip on Friday, please pay the balance to our new account today. I can text you the details now. Shall I go ahead?",
                 key: "scam",
-                signs: ["urgency", "scarcity", "new-details"],
+                signs: ["urgency", "new-details"],
                 check: "Hang up. Call the company on the number in your original booking. Tell your school office before you pay anything.",
                 note: "It said it was an AI, and many firms do use them. Saying so doesn't make it honest. The new bank details are the warning sign."
               },
@@ -166,7 +166,7 @@ export default {
                 from: "A video call from \"the superintendent\"",
                 text: "The picture was blurry and the voice sounded flat. \"The superintendent\" asked you to email the full class list, with home addresses, tonight, for an urgent safety review.",
                 key: "scam",
-                signs: ["authority", "urgency", "current-events"],
+                signs: ["authority", "urgency"],
                 check: "End the call. Contact the district office the usual way. Students' details go only through your data protection lead.",
                 note: "Fake video calls can look real. A rushed request for children's data is a warning sign whoever seems to ask."
               },

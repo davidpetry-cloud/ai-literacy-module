@@ -228,6 +228,13 @@ describe("colour usage", () => {
     expect(rules.find((r) => r.sel === ".ref td").body).toContain("overflow-wrap:anywhere");
   });
 
+  // A quiet button stays light when hovered, so its dark text never lands on a dark band (finding 15).
+  it("keeps the quiet button light in every state, with the button ring", () => {
+    expect(rules.find((r) => r.sel === ".btn.quiet").body).toContain("background:var(--card)");
+    expect(rules.find((r) => r.sel === ".btn.quiet").body).toContain("color:var(--ink)");
+    expect(rules.find((r) => r.sel === ".btn.quiet:hover").body).toContain("background:var(--paper)");
+  });
+
   it("lets the prompt comparison's columns shrink below 280px, so it reflows at 320px", () => {
     expect(rules.find((r) => r.sel === ".cmp").body).toContain("minmax(min(100%,280px),1fr)");
   });

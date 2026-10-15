@@ -364,6 +364,11 @@ table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.
 .row-btns{display:flex;flex-wrap:wrap;gap:8px}
 .row-btns .btn{margin-bottom:12px}
 .btn:disabled{cursor:not-allowed;background:var(--card);color:var(--ink-3)}
+/* A quiet button for repeated small actions (Move up, Move down), so the one main action stands out,
+   as on Singapore Math, where the plain .btn is light and only .btn.go is dark (UX audit 2026-10, finding 15). */
+.btn.quiet{background:var(--card);color:var(--ink)}
+.btn.quiet:hover{background:var(--paper)}
+.btn.quiet:disabled{color:var(--ink-3)}
 svg.cc-sample{display:block;width:100%;max-width:360px;height:auto;font-family:var(--sans)}
 .cc-frame{stroke:var(--edge);stroke-width:2}
 .cc-empty{fill:var(--card)}
