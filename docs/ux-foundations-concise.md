@@ -94,7 +94,7 @@ taste, inside this standard.
 - **Flow:** motion the person drives (scroll-linked, View Transitions), each with a job; nothing moves on its own.
 - **Richness in the frame, quiet where people read:** coherence and signaling still win on teaching pages.
 - **Motion:** respect the device's reduce-motion setting; no on-site switch.
-- **Depth by illusion:** light, shade and shadow, never real 3D; text never warps.
+- **Depth by illusion:** light, shade and shadow, never real 3D; text never warps; a straight hover lift is fine.
 - **The floor doesn't move:** an idea that fails accessibility or slows a learner changes or goes.
 
 ## Privacy by design (Cavoukian, 2009; GDPR Art. 25)

@@ -226,13 +226,19 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   inline disclosures (`<summary>`) at least 44px.
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
   so re-rendering never removes it. New pages copy it from `lesson.html`.
-- **Colour by theme** (David, 2026-10-16): the lessons fall into three themes
-  (`GROUPS` in `course.js`: Using AI well 1–5, Building for people 6–8,
-  Recognising manipulation 9–12), each with one colour; each essential has its
-  own. Every colour is always paired with the lesson number and the theme's
-  name. Lessons in design get a dashed outline (essentials: a hatched tile).
+- **A colour per lesson, in theme families** (David, 2026-10-16): the lessons
+  fall into three themes (`GROUPS` in `course.js`: Using AI well 1–5 in
+  blue-teals, Building for people 6–8 in greens, Recognising manipulation 9–12
+  in warm earths), and every lesson and essential has its own colour within
+  them. No pinks and no fluorescents. Every colour is always paired with the
+  lesson number and the theme's name. Lessons in design get a dashed outline.
+- **Shapes and ornament:** essentials are outlined hexagons in a honeycomb
+  (a `.hex-frame` in the colour behind a `--card` face); lesson cards have
+  petal corners (`--r-xl` / `--r-sm`) and a double rule; theme labels end in
+  the `textures/ornament.svg` flourish, coloured by mask.
 - **Depth by illusion, never real 3D:** light, shade and shadow; nothing rotates,
-  skews or tilts, and hover doesn't move a card. Text never warps.
+  skews or tilts, so text never warps. Hover lifts a card straight up (6px) and
+  deepens its shadow (David: "bring the motion back").
 - **Motion follows the device's reduce-motion setting.** No on-site motion switch
   (David, 2026-10-16).
 

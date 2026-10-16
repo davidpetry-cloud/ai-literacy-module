@@ -153,7 +153,8 @@ content, same focus, same announcements.
 
 **Depth by illusion.** Create depth with light, shade, shadow and texture, the
 way a painter does, not with real 3D: nothing rotates, skews or tilts, so text
-never warps.
+never warps. Straight movement is fine: a card may lift on hover while its
+shadow deepens.
 
 **The floor doesn't move.** Accessibility, cognitive accessibility, privacy and
 mindful UX are the floor. An expressive idea that fails contrast, needs motion
