@@ -24,13 +24,14 @@
   --paper:#F3F6F8; --card:#FFFFFF; --line:#D3DCE4;
   --text:#16283C; --muted:#5B7189;
   --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#6A7183;
-  /* one colour per lesson, readable as text on a card; always paired with the lesson number */
-  --l1:#395F8F; --l2:#1E6589; --l3:#006A7E; --l4:#006D6F; --l5:#006E5E; --l6:#286D4A; --l7:#426A37; --l8:#586524; --l9:#6A5E16; --l10:#775715; --l11:#825022; --l12:#884B33; --l13:#665189; --l14:#59568E; --l15:#4A5A90; --on-lc:#FFFFFF;
+  /* one colour per theme (Lessons 1-5, 6-8, 9-12) and one per essential (David, 2026-10-16), readable as
+     text on a card; always paired with the lesson number and the theme's name */
+  --l1:#32618E; --l2:#32618E; --l3:#32618E; --l4:#32618E; --l5:#32618E; --l6:#416A38; --l7:#416A38; --l8:#416A38; --l9:#874C30; --l10:#874C30; --l11:#874C30; --l12:#874C30; --l13:#695086; --l14:#006D6D; --l15:#715B13; --on-lc:#FFFFFF;
   /* type scale: every font-size uses one of these (tests/ui.test.js) */
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
   --lh-display:1.08; --lh-heading:1.2; --lh-body:1.62; --measure:60ch; --measure-serif:50ch;
-  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px; --r-hex:48px / 50%;
+  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px;
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
   --edge:#7A8FA6; --btn-edge:#0F2338;
@@ -54,7 +55,7 @@
   --paper:#0F151C; --card:#1A222B; --line:#2B3641;
   --text:#DCE6EE; --muted:#93A7BC;
   --att:#3FB271; --att-text:#5CCB8A; --prop:#D9A441; --exp:#EE8A74; --rej:#A9B0C0;
-  --l1:#94C1FA; --l2:#7FC8F3; --l3:#6FCDE5; --l4:#6BD1D3; --l5:#74D2BE; --l6:#88D1A6; --l7:#9ECD92; --l8:#B7C780; --l9:#CCC076; --l10:#DDB875; --l11:#EBB07E; --l12:#F3AA8D; --l13:#C7B0F2; --l14:#B7B5F9; --l15:#A6BBFC; --on-lc:#0B1622;
+  --l1:#8EC3F9; --l2:#8EC3F9; --l3:#8EC3F9; --l4:#8EC3F9; --l5:#8EC3F9; --l6:#9DCD93; --l7:#9DCD93; --l8:#9DCD93; --l9:#F2AA8B; --l10:#F2AA8B; --l11:#F2AA8B; --l12:#F2AA8B; --l13:#CCAEEF; --l14:#6CD1D1; --l15:#D5BB74; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
   --shadow:#000000; --hi:#FFFFFF; --glow:#1C2733;
@@ -109,7 +110,6 @@ a{color:var(--ink-2)}
   display:inline-flex;align-items:center;gap:8px;margin:0 0 8px auto;cursor:pointer;min-height:48px;
   background:rgba(255,255,255,.18);border:2px solid var(--on-dark);border-radius:var(--r-pill);padding:8px 24px}
 .theme-toggle:hover{background:rgba(255,255,255,.3);border-color:var(--on-dark)}
-.hdr-tools{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0 8px;margin-left:auto}
 .top .eyebrow{font-family:var(--sans);font-size:var(--fs-xl);font-weight:700;color:var(--amber);margin:0 0 8px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;line-height:var(--lh-heading)}
 .top h1{font-family:var(--serif);font-weight:600;font-size:var(--fs-display);margin:0 0 8px;letter-spacing:-.015em;line-height:var(--lh-display)}
 .top .sub{color:var(--header-sub);margin:0 0 16px;max-width:var(--measure)}
@@ -147,18 +147,6 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .students-note{margin:0 0 16px}
 .students-note p{max-width:var(--measure)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-/* Hub (David, 2026-10-16): Essentials and Lessons side by side, Essentials on the left. It comes first in
-   the page, so screen readers, keyboards and phones (where the columns stack) meet it first too. */
-.hub-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:start}
-@media (min-width:961px){.hub-cols{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:32px}
-  .hub-cols #essentials .cards{grid-template-columns:minmax(0,1fr)}}
-/* Essentials as long hexagons, like hex tiles (David, 2026-10-16): pointed left and right, flat top and
-   bottom, text level. corner-shape:bevel turns the corner radius into straight cuts, and the border,
-   shadow and focus ring all follow the shape. Browsers without it keep the ordinary rounded card. */
-@supports (corner-shape:bevel){
-  #essentials .card{corner-shape:bevel;border-radius:var(--r-hex);border-width:2px;padding:24px 48px}
-  #essentials .card h3 a::after{corner-shape:bevel;border-radius:var(--r-hex)}
-}
 [data-lesson="1"]{--lc:var(--l1)} [data-lesson="2"]{--lc:var(--l2)} [data-lesson="3"]{--lc:var(--l3)}
 [data-lesson="4"]{--lc:var(--l4)} [data-lesson="5"]{--lc:var(--l5)}
 [data-lesson="6"]{--lc:var(--l6)} [data-lesson="7"]{--lc:var(--l7)} [data-lesson="8"]{--lc:var(--l8)}
@@ -188,7 +176,49 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .card{box-shadow:inset 0 1px 0 color-mix(in oklch,var(--hi) 7%,transparent),0 1px 1px color-mix(in oklch,var(--shadow) 16%,transparent),0 2px 4px color-mix(in oklch,var(--shadow) 10%,transparent),0 6px 12px -2px color-mix(in oklch,var(--shadow) 10%,transparent),0 18px 32px -12px color-mix(in oklch,var(--shadow) 22%,transparent);
   transition:transform .25s ease-out,box-shadow .25s ease-out}
 .card.pending{box-shadow:none}
-.card:has(h3 a:hover),.card:has(h3 a:focus-visible){transform:translateY(-6px);
+/* Depth as an illusion, never real 3D (David, 2026-10-16): each card is lit from the top-left like an
+   embossed tile: a faint highlight at the top and a little shade at the bottom, inside the card. Nothing
+   moves or rotates; hover deepens the light and shadow instead. */
+#lessons .card:not(.pending){background:linear-gradient(170deg,color-mix(in oklch,var(--hi) 4%,var(--card)) 0%,var(--card) 45%,color-mix(in oklch,var(--shadow) 3%,var(--card)) 100%)}
+.group-label{font-family:var(--sans);font-size:var(--fs-md);margin:24px 0 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.group-label b{font-family:var(--serif);color:var(--lc)}
+.group-label span{font-size:var(--fs-sm);color:var(--ink-3)}
+.lesson-group[data-group="using"]{--lc:var(--l1)} .lesson-group[data-group="building"]{--lc:var(--l6)} .lesson-group[data-group="manipulation"]{--lc:var(--l9)}
+
+/* Essentials: hexagons fitted together like a honeycomb, the most efficient way to tile a surface
+   (David, 2026-10-16). Each is a glazed tile in its own colour, lit from the top-left. clip-path draws
+   the shape in every browser; the shadow and the keyboard focus ring are drop-shadows on the li, so
+   they follow the hexagon. Text is level and sits on the colour (white in light, ink in dark). */
+.honeycomb{--hw:240px;--hh:calc(var(--hw) * .866);--hg:8px;list-style:none;margin:0;padding:0;display:grid;justify-content:center;
+  grid-template-columns:calc(var(--hw) * .75 + var(--hg)) calc(var(--hw) * .75 + var(--hg)) var(--hw);
+  grid-template-rows:repeat(3,calc(var(--hh) / 2 + var(--hg) / 2))}
+.honeycomb .hex{grid-row:1 / span 2;width:var(--hw);height:var(--hh);
+  filter:drop-shadow(0 2px 2px color-mix(in oklch,var(--shadow) 18%,transparent)) drop-shadow(0 10px 14px color-mix(in oklch,var(--shadow) 16%,transparent))}
+.honeycomb .hex:nth-child(2){grid-column:2;grid-row:2 / span 2}
+.honeycomb .hex:nth-child(3){grid-column:3}
+.hexcard{width:100%;height:100%;margin:0;padding:12px 24px;border:0;border-radius:0;box-shadow:none;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);color:var(--on-lc);
+  background:linear-gradient(165deg,color-mix(in oklch,var(--lc) 88%,white) 0%,var(--lc) 50%,color-mix(in oklch,var(--lc) 88%,black) 100%),var(--lc)}
+.hexcard .eyebrow{margin:0;justify-content:center}
+.hexcard .eyebrow .lesson-no{background:transparent;color:var(--on-lc);border:1.5px solid var(--on-lc);font-size:var(--fs-sm)}
+.hexcard h3{font-size:var(--fs-md);margin:0;max-width:16ch}
+.hexcard h3 a{color:var(--on-lc)}
+.hexcard h3 a::after{border-radius:0}
+.honeycomb .hex:has(h3 a:hover){filter:drop-shadow(0 2px 2px color-mix(in oklch,var(--shadow) 22%,transparent)) drop-shadow(0 16px 22px color-mix(in oklch,var(--shadow) 26%,transparent))}
+.honeycomb .hex:has(h3 a:focus-visible){filter:drop-shadow(3px 0 0 var(--focus)) drop-shadow(-3px 0 0 var(--focus)) drop-shadow(0 3px 0 var(--focus)) drop-shadow(0 -3px 0 var(--focus))}
+.hexcard h3 a:focus-visible::after{outline:none}
+/* In design: an unglazed tile, hatched in its colour, with the colour's text and the words "In design". */
+.hexcard.pending{color:var(--lc);background:repeating-linear-gradient(135deg,color-mix(in oklch,var(--lc) 12%,var(--card)) 0 10px,var(--card) 10px 20px),var(--card)}
+.hexcard.pending .eyebrow .lesson-no{color:var(--lc);border-color:var(--lc)}
+.hexcard.pending .in-design{color:var(--lc)}
+@media (max-width:760px){
+  .honeycomb{--hw:160px;grid-template-columns:calc(var(--hw) * .75 + var(--hg)) var(--hw);grid-template-rows:repeat(4,calc(var(--hh) / 2 + var(--hg) / 2))}
+  .honeycomb .hex:nth-child(3){grid-column:1;grid-row:3 / span 2}
+  .hexcard{padding:8px 16px}
+  .hexcard h3{font-size:var(--fs-base)}
+}
+.card:has(h3 a:hover),.card:has(h3 a:focus-visible){
   box-shadow:0 0 0 2px var(--lc),inset 0 1px 0 color-mix(in oklch,var(--hi) 9%,transparent),
     var(--sx,0px) calc(4px + var(--sy,0px)) 8px color-mix(in oklch,var(--shadow) 12%,transparent),
     calc(var(--sx,0px) * 2) calc(16px + var(--sy,0px) * 2) 24px -6px color-mix(in oklch,var(--shadow) 16%,transparent),
@@ -576,7 +606,6 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
   .top a.back,.theme-toggle{font-size:var(--fs-base);padding:8px 16px}
   .top a.back{padding-right:16px}
   .hdr-row{flex-wrap:nowrap}
-  .hdr-row:has(.back){flex-wrap:wrap}
   .tracks label{font-size:var(--fs-base)}
   .block{padding:16px 16px}
   .cards{grid-template-columns:1fr}
@@ -589,7 +618,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --teal:#1F8A7D;--teal-text:#136155;--teal-pale:#DCEFEB;--amber:#E4A03C;--amber-pale:#FAEDD6;
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
-    --l1:#395F8F;--l2:#1E6589;--l3:#006A7E;--l4:#006D6F;--l5:#006E5E;--l6:#286D4A;--l7:#426A37;--l8:#586524;--l9:#6A5E16;--l10:#775715;--l11:#825022;--l12:#884B33;--l13:#665189;--l14:#59568E;--l15:#4A5A90;--on-lc:#fff;
+    --l1:#32618E;--l2:#32618E;--l3:#32618E;--l4:#32618E;--l5:#32618E;--l6:#416A38;--l7:#416A38;--l8:#416A38;--l9:#874C30;--l10:#874C30;--l11:#874C30;--l12:#874C30;--l13:#695086;--l14:#006D6D;--l15:#715B13;--on-lc:#fff;
     --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--glow:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}

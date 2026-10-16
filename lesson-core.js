@@ -7,7 +7,7 @@
  * installed devDependency. tests/governance.test.js keeps the two in step.
  */
 import { resolveStatus, tally, STATUS, SOURCE } from "attestation-ledger";
-import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson, lessonLabel, mainLessons, essentials } from "./course.js";
+import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson, lessonLabel, mainLessons, essentials, GROUPS } from "./course.js";
 import { SOURCES } from "./sources.js";
 import { CLAIMS } from "./claims.js";
 
@@ -1711,8 +1711,18 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
           : "Objectives drafted, awaiting review."
       }</p>`}
     </article>`;
-  const lessons = mainLessons().map(card).join("");
-  const essentialCards = essentials().map(card).join("");
+  // Lessons in their three themes; each theme has one colour, and its name says it in words too.
+  const lessons = GROUPS.map((g) => {
+    const ls = mainLessons().filter((l) => g.lessons.includes(l.n));
+    const span = ls.length > 1 ? `Lessons ${ls[0].n}–${ls[ls.length - 1].n}` : `Lesson ${ls[0].n}`;
+    return `<div class="lesson-group" data-group="${g.id}"><p class="group-label"><b>${esc(g.name)}</b> <span>${span}</span></p><div class="cards">${ls.map(card).join("")}</div></div>`;
+  }).join("");
+  // Essentials as hexagons fitted together like a honeycomb: label and title only; the rest is on the page.
+  const hex = (l) => `<li class="hex"><article class="card hexcard${l.ready ? "" : " pending"}" data-lesson="${l.n}">
+      <p class="eyebrow"><span class="lesson-no">${esc(lessonLabel(l))}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
+      <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
+    </article></li>`;
+  const essentialCards = essentials().map(hex).join("");
 
   doc.querySelector("#content").innerHTML = `
     <section class="search" aria-labelledby="search-h"><h2 id="search-h">Search the course</h2>
@@ -1723,10 +1733,8 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
       <p class="so-status" id="search-status" aria-live="polite"></p>
       <ol class="search-results" id="search-results"></ol>
     </section>
-    <div class="hub-cols">
-      ${essentialCards ? `<section id="essentials"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
-      <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}<div class="cards">${lessons}</div></section>
-    </div>
+    ${essentialCards ? `<section id="essentials"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><ul class="honeycomb">${essentialCards}</ul></section>` : ""}
+    <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}${lessons}</section>
 
     <section><h2>How it's built</h2>
       <table class="basis"><thead><tr><th>Framework</th><th>Its one job here</th></tr></thead><tbody>

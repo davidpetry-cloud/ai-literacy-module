@@ -448,50 +448,28 @@ describe("theme toggle", () => {
     expect(css).toContain(':root[data-motion="off"]::view-transition-group(*)');
   });
 
-  // The site's own motion setting: user control, for anyone who can't change the device setting.
-  function loadMotion({ saved = null, systemReduce = false } = {}) {
+  // No on-site motion switch (David, 2026-10-16); motion follows the device's reduce-motion setting.
+  function loadMotion({ systemReduce = false } = {}) {
     const dom = new JSDOM(read("lesson.html").replace(/<script type="module">[\s\S]*?<\/script>/, ""), {
       url: "http://localhost/lesson.html",
       runScripts: "outside-only"
     });
     const w = dom.window;
     w.matchMedia = (q) => ({ matches: q.includes("reduced-motion") ? systemReduce : false, addEventListener() {} });
-    if (saved) w.localStorage.setItem("ai-literacy-motion", saved);
     w.eval(read("theme-toggle.js"));
     w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
     return w;
   }
-  const motion = (w) => w.document.documentElement.dataset.motion;
-  const mbtn = (w) => w.document.querySelector("[data-motion-toggle]");
 
-  it("puts a motion toggle beside the theme toggle in every page's header", () => {
+  it("has no motion button on any page", () => {
     for (const page of ["index.html", "lesson.html", "sources.html"]) {
-      const doc = new JSDOM(read(page)).window.document;
-      const b = doc.querySelector("header .hdr-row .hdr-tools [data-motion-toggle]");
-      expect(b, page).not.toBeNull();
-      expect(b.tagName, page).toBe("BUTTON");
-      expect(b.hasAttribute("aria-label"), page).toBe(false);
+      expect(new JSDOM(read(page)).window.document.querySelector("[data-motion-toggle]"), page).toBeNull();
     }
   });
 
-  it("follows the device's reduce-motion setting until the learner chooses", () => {
-    expect(motion(loadMotion({ systemReduce: true }))).toBe("off");
-    expect(motion(loadMotion({ systemReduce: false }))).toBe("on");
-    expect(motion(loadMotion({ saved: "on", systemReduce: true }))).toBe("on");
-    expect(motion(loadMotion({ saved: "off" }))).toBe("off");
-  });
-
-  it("turns motion off and on, saves it, names what a click will do, and says so", () => {
-    const w = loadMotion();
-    expect(mbtn(w).textContent).toBe("Reduce motion");
-    mbtn(w).click();
-    expect(motion(w)).toBe("off");
-    expect(mbtn(w).textContent).toBe("Allow motion");
-    expect(w.localStorage.getItem("ai-literacy-motion")).toBe("off");
-    expect(w.document.querySelector("#announce").textContent).toBe("Motion is off.");
-    mbtn(w).click();
-    expect(motion(w)).toBe("on");
-    expect(mbtn(w).textContent).toBe("Reduce motion");
+  it("follows the device's reduce-motion setting", () => {
+    expect(loadMotion({ systemReduce: true }).document.documentElement.dataset.motion).toBe("off");
+    expect(loadMotion({ systemReduce: false }).document.documentElement.dataset.motion).toBe("on");
   });
 
   it("stops every animation and transition when motion is off, whatever the device says", () => {
@@ -501,7 +479,8 @@ describe("theme toggle", () => {
   it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
     expect(css).toMatch(/\.card\{box-shadow:inset 0 1px 0/);
     expect(css).toContain(".card.pending{box-shadow:none}");
-    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
+    // Depth by illusion only: hover deepens light and shadow; nothing moves (David, 2026-10-16).
+    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{\s*box-shadow:/);
     expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
     // The scroll rise uses the separate translate property, so it never blocks the card's hover transform,
     // and it overshoots a little before settling, so the cards seem to have weight (gravity).

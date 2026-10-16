@@ -77,6 +77,14 @@ export const lessonLabel = (l) => l.label ?? `Lesson ${l.n}`;
 export const mainLessons = () => COURSE.lessons.filter((l) => !l.category);
 export const essentials = () => COURSE.lessons.filter((l) => l.category === "essentials");
 
+/** The lessons fall into three themes, and each theme has one colour (David, 2026-10-16). */
+export const GROUPS = [
+  { id: "using", name: "Using AI well", lessons: [1, 2, 3, 4, 5] },
+  { id: "building", name: "Building for people", lessons: [6, 7, 8] },
+  { id: "manipulation", name: "Recognising manipulation", lessons: [9, 10, 11, 12] }
+];
+export const groupOf = (lesson) => GROUPS.find((g) => g.lessons.includes(lesson.n));
+
 export const COURSE = {
   title: "Human-Centered AI Literacy",
   // Shown on every lesson and the hub, so printed handouts carry it too.

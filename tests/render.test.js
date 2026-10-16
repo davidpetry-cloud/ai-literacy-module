@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
 import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
-import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
+import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials, GROUPS } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
 const page = (name) => new JSDOM(readFileSync(new URL(`../${name}`, import.meta.url), "utf8")).window.document;
@@ -51,11 +51,18 @@ describe("hub", () => {
     expect(links).toEqual(ready);
   });
 
-  it("puts Essentials and Lessons side by side, Essentials first in the page so phones and screen readers meet it first", () => {
-    const cols = doc.querySelector(".hub-cols");
-    expect([...cols.children].map((c) => c.id)).toEqual(["essentials", "lessons"]);
-    expect(cols.querySelector("#essentials h2").textContent).toBe("Essentials");
-    expect(cols.querySelector("#lessons h2").textContent).toBe("Lessons");
+  it("shows Essentials first, as a honeycomb of hexagons, then the lessons in their three themes", () => {
+    const sections = [...doc.querySelectorAll("#content > section")].map((s) => s.id);
+    expect(sections.indexOf("essentials")).toBeLessThan(sections.indexOf("lessons"));
+    const hexes = doc.querySelectorAll("#essentials .honeycomb > li.hex > .card.hexcard");
+    expect(hexes).toHaveLength(essentials().length);
+    for (const h of hexes) expect(h.querySelector("h3")).not.toBeNull();
+    const groups = [...doc.querySelectorAll("#lessons .lesson-group")];
+    expect(groups.map((g) => g.dataset.group)).toEqual(GROUPS.map((g) => g.id));
+    groups.forEach((g, i) => {
+      expect(g.querySelector(".group-label b").textContent).toBe(GROUPS[i].name);
+      expect([...g.querySelectorAll(".card")].map((c) => Number(c.dataset.lesson))).toEqual(GROUPS[i].lessons);
+    });
   });
 
   it("shows every claim in the ledger with a text status label", () => {
@@ -2090,10 +2097,17 @@ describe("user control and context fixes (UX audit, 2026-09-24)", () => {
 describe("lesson colours", () => {
   const css = readFileSync(new URL("../course.css", import.meta.url), "utf8");
 
-  it("defines a distinct colour for every lesson", () => {
-    const colours = COURSE.lessons.map((l) => css.match(new RegExp(`--l${l.n}:(#[0-9A-Fa-f]{6})`))?.[1]);
-    for (const [i, c] of colours.entries()) expect(c, `lesson ${i + 1}`).toBeTruthy();
-    expect(new Set(colours.map((c) => c.toLowerCase())).size).toBe(colours.length);
+  // One colour per theme, one per essential, all six different (David, 2026-10-16).
+  it("gives each theme one colour and each essential its own, all different", () => {
+    const colour = (n) => css.match(new RegExp(`--l${n}:(#[0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
+    for (const l of COURSE.lessons) expect(colour(l.n), `lesson ${l.n}`).toBeTruthy();
+    const themeColours = GROUPS.map((g) => {
+      const cs = new Set(g.lessons.map(colour));
+      expect(cs.size, g.name).toBe(1);
+      return [...cs][0];
+    });
+    const essentialColours = essentials().map((l) => colour(l.n));
+    expect(new Set([...themeColours, ...essentialColours]).size).toBe(GROUPS.length + essentials().length);
   });
 
   it("tags every hub card and the lesson header with its lesson number", () => {
