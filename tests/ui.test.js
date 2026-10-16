@@ -503,12 +503,24 @@ describe("theme toggle", () => {
     expect(css).toContain(".card.pending{box-shadow:none}");
     expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
     expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
-    // The scroll rise uses the separate translate property, so it never blocks the card's hover transform.
-    expect(css).toContain("@keyframes rise{from{translate:0 32px}}");
+    // The scroll rise uses the separate translate property, so it never blocks the card's hover transform,
+    // and it overshoots a little before settling, so the cards seem to have weight (gravity).
+    expect(css).toContain("@keyframes rise{0%{translate:0 40px}75%{translate:0 -4px}100%{translate:0 0}}");
+    expect(css).not.toMatch(/@keyframes rise\{[^}]*transform/);
   });
 
   // David, 2026-10-16: text must never warp "like a fun mirror". 3D rotation and perspective skew
   // text, so the site's CSS uses neither; depth comes from shadows and straight movement only.
+  it("gives the page texture and light without touching text contrast: a self-hosted grain and a glow, off in print", () => {
+    expect(rules.find((r) => r.sel === "body").body).toMatch(/background:url\(textures\/grain\.svg\),radial-gradient\([^)]*var\(--glow\)/);
+    expect(read("textures/grain.svg")).toContain("feTurbulence");
+    expect(css).toMatch(/@media print\{[\s\S]*body\{background:#fff/);
+  });
+
+  it("puts a woven tile ribbon, which holds no text, on each lesson card", () => {
+    expect(css).toMatch(/#lessons \.card::before\{content:"";[^}]*repeating-linear-gradient\(135deg,var\(--lc\)/);
+  });
+
   it("never rotates in 3D or adds perspective, so text never warps", () => {
     expect(css).not.toMatch(/perspective\s*:|perspective\(|rotate[XYZ3]\w*\(|rotate\s*:\s*[xyz]\b/i);
   });

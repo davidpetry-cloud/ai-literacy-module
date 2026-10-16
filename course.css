@@ -30,11 +30,11 @@
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
   --lh-display:1.08; --lh-heading:1.2; --lh-body:1.62; --measure:60ch; --measure-serif:50ch;
-  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px; --r-hex:24px / 50%;
+  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px; --r-hex:48px / 50%;
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
   --edge:#7A8FA6; --btn-edge:#0F2338;
-  --shadow:#0F2338; --hi:#FFFFFF;
+  --shadow:#0F2338; --hi:#FFFFFF; --glow:#FFFFFF;
   --sans:"Lexend",system-ui,sans-serif;
   --serif:"Fraunces",Georgia,serif;
 }
@@ -57,7 +57,7 @@
   --l1:#94C1FA; --l2:#7FC8F3; --l3:#6FCDE5; --l4:#6BD1D3; --l5:#74D2BE; --l6:#88D1A6; --l7:#9ECD92; --l8:#B7C780; --l9:#CCC076; --l10:#DDB875; --l11:#EBB07E; --l12:#F3AA8D; --l13:#C7B0F2; --l14:#B7B5F9; --l15:#A6BBFC; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
-  --shadow:#000000; --hi:#FFFFFF;
+  --shadow:#000000; --hi:#FFFFFF; --glow:#1C2733;
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -84,12 +84,12 @@ html.vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out bot
   :root[data-motion="on"] .top[data-lesson]::after{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:var(--lc);transform-origin:0 50%;animation:progress linear both;animation-timeline:scroll(root);z-index:10;pointer-events:none}
 }
 :root[data-motion="on"] .key[open] > :not(summary){animation:reveal .18s ease-out!important}
-@keyframes rise{from{translate:0 32px}}
+@keyframes rise{0%{translate:0 40px}75%{translate:0 -4px}100%{translate:0 0}}
 @keyframes progress{from{transform:scaleX(0)}}
 /* Headings break into even lines; paragraphs avoid a lone last word. */
 h1,h2,h3,.card h3{text-wrap:balance}
 p,li,dd{text-wrap:pretty}
-body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:var(--lh-body);-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}
+body{margin:0;background:url(textures/grain.svg),radial-gradient(ellipse 90% 60% at 15% 0%,var(--glow),transparent 70%),var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:var(--lh-body);-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:var(--r-sm)}
 a{color:var(--ink-2)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -156,7 +156,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
    bottom, text level. corner-shape:bevel turns the corner radius into straight cuts, and the border,
    shadow and focus ring all follow the shape. Browsers without it keep the ordinary rounded card. */
 @supports (corner-shape:bevel){
-  #essentials .card{corner-shape:bevel;border-radius:var(--r-hex);border-width:2px;padding:24px 32px}
+  #essentials .card{corner-shape:bevel;border-radius:var(--r-hex);border-width:2px;padding:24px 48px}
   #essentials .card h3 a::after{corner-shape:bevel;border-radius:var(--r-hex)}
 }
 [data-lesson="1"]{--lc:var(--l1)} [data-lesson="2"]{--lc:var(--l2)} [data-lesson="3"]{--lc:var(--l3)}
@@ -165,6 +165,11 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 [data-lesson="9"]{--lc:var(--l9)} [data-lesson="10"]{--lc:var(--l10)} [data-lesson="11"]{--lc:var(--l11)} [data-lesson="12"]{--lc:var(--l12)} [data-lesson="13"]{--lc:var(--l13)} [data-lesson="14"]{--lc:var(--l14)} [data-lesson="15"]{--lc:var(--l15)}
 .card{background:var(--card);border:2px solid var(--lc,var(--line));border-top-width:8px;border-radius:var(--r-lg);padding:24px 24px}
 .card.pending{border-style:dashed;border-top-style:solid}
+/* Lesson cards carry a woven tile ribbon in their colour (David, 2026-10-16: texture, after Zsolnay tile
+   bands). It holds no text, so it never affects contrast. */
+#lessons .card{border-top-width:2px;padding-top:32px}
+#lessons .card::before{content:"";position:absolute;inset:0 0 auto;height:12px;border-radius:var(--r-lg) var(--r-lg) 0 0;pointer-events:none;
+  background:repeating-linear-gradient(135deg,var(--lc) 0 6px,color-mix(in oklch,var(--lc) 55%,var(--card)) 6px 9px,var(--lc) 9px 12px),var(--lc)}
 .card h3{font-family:var(--serif);font-size:var(--fs-lg);margin:0 0 8px;line-height:var(--lh-heading)}
 .card h3 a{color:var(--lc)}
 /* The whole card is the click target for a ready lesson (a "stretched link"): the title stays the one
@@ -180,7 +185,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
    focus they lift straight up, and with a mouse the pointer acts as a light, so the shadow falls away
    from it (lesson-core.js sets --sx/--sy, at most 6px, only when motion is on). Cards never rotate,
    so text never warps. Cards still in design stay flat: depth means ready. */
-.card{box-shadow:inset 0 1px 0 color-mix(in oklch,var(--hi) 7%,transparent),0 1px 2px color-mix(in oklch,var(--shadow) 10%,transparent),0 6px 12px -2px color-mix(in oklch,var(--shadow) 10%,transparent),0 18px 32px -12px color-mix(in oklch,var(--shadow) 22%,transparent);
+.card{box-shadow:inset 0 1px 0 color-mix(in oklch,var(--hi) 7%,transparent),0 1px 1px color-mix(in oklch,var(--shadow) 16%,transparent),0 2px 4px color-mix(in oklch,var(--shadow) 10%,transparent),0 6px 12px -2px color-mix(in oklch,var(--shadow) 10%,transparent),0 18px 32px -12px color-mix(in oklch,var(--shadow) 22%,transparent);
   transition:transform .25s ease-out,box-shadow .25s ease-out}
 .card.pending{box-shadow:none}
 .card:has(h3 a:hover),.card:has(h3 a:focus-visible){transform:translateY(-6px);
@@ -585,7 +590,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
     --l1:#395F8F;--l2:#1E6589;--l3:#006A7E;--l4:#006D6F;--l5:#006E5E;--l6:#286D4A;--l7:#426A37;--l8:#586524;--l9:#6A5E16;--l10:#775715;--l11:#825022;--l12:#884B33;--l13:#665189;--l14:#59568E;--l15:#4A5A90;--on-lc:#fff;
-    --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
+    --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--glow:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}
   .top,[data-page] .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none}
