@@ -533,12 +533,12 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .chat .who-said{font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;color:var(--ink-3)}
 .k-helpful{color:var(--att-text)} .k-flattery{color:var(--prop)} .k-guilt{color:var(--rej)} .k-pressure{color:var(--exp)} .k-product{color:var(--teal-text)} .k-human{color:var(--ink-2)}
 /* Essentials 1: an inbox of messages, and the what's-safe-to-share sorter */
-.inbox .messages,.requests .messages{padding-left:24px;margin:0;display:grid;gap:12px}
-.inbox .message,.requests .message{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
-.inbox .message p,.requests .message p{margin:0 0 4px}
-.inbox .msg-head,.requests .msg-head{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3)}
-.inbox .msg-kind,.requests .msg-kind{font-weight:700;color:var(--ink-2)}
-.inbox .msg-from,.inbox .msg-subject,.requests .msg-from{overflow-wrap:anywhere}
+.inbox .messages,.requests .messages,.calls .messages{padding-left:24px;margin:0;display:grid;gap:12px}
+.inbox .message,.requests .message,.calls .message{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
+.inbox .message p,.requests .message p,.calls .message p{margin:0 0 4px}
+.inbox .msg-head,.requests .msg-head,.calls .msg-head{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-3)}
+.inbox .msg-kind,.requests .msg-kind,.calls .msg-kind{font-weight:700;color:var(--ink-2)}
+.inbox .msg-from,.inbox .msg-subject,.requests .msg-from,.calls .msg-from{overflow-wrap:anywhere}
 .k-genuine{color:var(--att-text)} .k-scam{color:var(--exp)}
 .k-fine{color:var(--att-text)} .k-keep{color:var(--exp)}
 .sh-item{border:0;padding:0;margin:0 0 8px;min-width:0}
@@ -556,6 +556,24 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .requests .rq-asks li,.requests .rq-look li{margin-bottom:4px}
 .requests .rq-look{margin:4px 0 8px;padding-left:24px}
 .k-yes{color:var(--att-text)} .k-no{color:var(--exp)} .k-check{color:var(--prop)}
+/* Essentials 3: a written-out call with pause points, and the three-bin say-it-or-keep-it sorter */
+.calls .pc-parts{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:16px}
+.calls .call-line .who-said{font-family:var(--sans);font-weight:600;color:var(--ink-3)}
+.calls .call-note{font-style:italic;color:var(--ink-2)}
+.pc-pause{border:0;border-left:3px solid var(--edge);padding:0 0 0 12px;margin:8px 0;min-width:0}
+.pc-pause legend{font-weight:600;color:var(--ink);padding:0;margin-bottom:4px}
+.pc-choices{display:grid;gap:0}
+/* A long choice wraps beside its radio, which stays level with the first line. */
+.pc-choices label{align-items:flex-start;padding:8px 0}
+.pc-choices input{margin-top:2px}
+.pc-reveal{margin:0 0 4px}
+.pc-answer{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;background:var(--card);margin:4px 0 0}
+.pc-answer:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.pc-verdict{font-weight:600}
+.calls .sh-actions{margin:16px 0 0}
+.calls .sh-actions .btn{margin:0}
+.k-best{color:var(--att-text)}
+.k-any{color:var(--att-text)} .k-made{color:var(--prop)} .k-never{color:var(--exp)}
 .rc-list{padding-left:32px;margin:0 0 16px;display:grid;gap:8px;max-width:var(--measure)}
 .rc-step{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;background:var(--card)}
 .rc-step p{margin:0 0 8px}

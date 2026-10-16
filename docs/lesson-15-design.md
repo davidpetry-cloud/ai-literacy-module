@@ -8,7 +8,7 @@ to say" added at his request the same day. **Registered 2026-10-13**, after Esse
 the objectives, warm-up, check and exit ticket (`ready: false`), it is in `course.js`,
 and its colour is `--l15` indigo (#3730A3 light, #A5B4FC dark; David: no pink). The hub lists it under
 Essentials as in design. Stage design approved by David 2026-10-13 (generalise the
-`share` sorter to three bins). Next: build the stages, in a fresh session.
+`share` sorter to three bins). **Built 2026-10-16** (see "Built" at the end).
 
 **Why its own essential (David, 2026-10-13):** AI voice on the phone reaches past
 scams. Essentials 1 teaches spotting a scam call and checking it another way, and
@@ -279,3 +279,34 @@ companions are covered in Lesson 11 and not repeated here.
    sort and its tests unchanged). Allow ic3.gov, fcc.gov, ftc.gov, consumerfinance.gov
    and cisa.gov in the environment's network settings first, so the sources can be
    opened rather than checked through search (the Essentials 2 build couldn't).
+
+## Built (2026-10-16)
+
+Built as designed: `pause-call` in `lesson-core.js` (two calls per track, four pauses
+each, three choices, one best; best choices at varied places, tested), and the `share`
+sorter generalised to a stage's own `bins`, with Essentials 1's two-bin sort and its
+tests unchanged (a new test pins its drawing). Twelve sorter items; answer keys
+`e3-key-educators`, `e3-key-professionals`, `e3-key-students` and `e3-key-say`.
+
+Every source was opened on its own site on 2026-10-16 (`docs/lesson-15-research.md`
+had only search results). What changed from the plan above:
+
+1. **"Can you hear me":** the FCC's 2017 alert warns that a recorded "yes" *could* be
+   used to approve charges. The lesson says "has warned", not "callers have recorded".
+2. **CFPB figures left out.** The PDF does say all top 10 banks use chatbots and about
+   37% of the US population used one in 2022, but the lesson doesn't need the numbers.
+3. **The voicemail password** is the FCC's protection against *hacking*. The lesson
+   doesn't link it to voice cloning.
+4. **Added, for David to keep or drop:** a California row in "What it must tell you".
+   AB 1609 (Stats. 2026, ch. 733; chaptered 28 September 2026; read on
+   leginfo.legislature.ca.gov) applies from 1 January 2027 to businesses with over
+   $500 million in revenue: a customer service chatbot must not claim to be human, must
+   say it's a bot if a person could be fooled, and customers must be able to ask for a
+   person, on the phone too. Claim `california-human-agent-law`.
+5. **Political calls:** one facilitator line in the abstract stage, for adult US groups
+   only. DA 26-940 was opened (replies due 19 October 2026); no decision on 2026-10-16.
+   Claim `political-ai-calls-waiver` is time-limited: re-check before each use.
+6. **FCC 24-84** still looks like a proposal: the eCFR shows no amendment to
+   47 CFR § 64.1200 since 25 March 2026 (versions API, read 2026-10-16).
+7. `bank-fraud-call-ftc`, drafted for Essentials 1 but never added, is now in
+   `claims.js`, with the FTC alert re-read in a browser.

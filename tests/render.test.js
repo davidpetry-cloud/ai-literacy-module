@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, shareGrid, CALL_KIND, pauseVerdict, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials, GROUPS } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -1003,7 +1003,8 @@ describe("every activity says on the page what to do (UX audit 2026-10, findings
     const [concrete] = l.stages;
     const q = [...stage.querySelectorAll("h3.subhead")].find((h) => h.textContent === concrete.ask);
     expect(q, "question shown").toBeTruthy();
-    const answers = [...stage.querySelectorAll("details.key")].filter((d) => !d.classList.contains("textver"));
+    // A pause-call answer is a revealed region, not a <details>, so it counts too.
+    const answers = [...stage.querySelectorAll("details.key, .pc-answer")].filter((d) => !d.classList.contains("textver"));
     expect(answers.length).toBeGreaterThan(0);
     expect(before(q, answers[0]), "question before the first answer").toBe(true);
     expect(q.closest(".facil"), "not in the facilitator notes").toBeNull();
@@ -1966,6 +1967,142 @@ describe("essentials 2: one core across tracks", () => {
     expect(recoverMoveText(order, recoverStage.steps, "password", true)).toBe('Moved "New password" to place 3 of 8. ✓ Right place.');
     expect(placesText([7, 7])).toBe("place 7");
     expect(placesText([2, 6])).toBe("places 2 to 6");
+  });
+});
+
+const essentials3 = getLesson(15);
+const e3Doc = (track) => lessonDoc(track, essentials3);
+const callsData = (track) => essentials3.stages[0].tracks[track].calls;
+const sayStage = essentials3.stages[1];
+const reveal = (d, c, i) => d.querySelector(`.pc-reveal[data-call="${c}"][data-pause="${i}"]`);
+const pick = (d, c, i, j) => {
+  const r = d.querySelector(`input[name="pc-${c + 1}-${i + 1}"][value="${j}"]`);
+  r.checked = true;
+  r.dispatchEvent(new d.defaultView.Event("change", { bubbles: true }));
+};
+
+describe.each(TRACK_IDS)("essentials 3, %s track", (track) => {
+  const doc = e3Doc(track);
+
+  it("renders warm-up, concrete, pictorial, abstract, check in order, labelled Essentials 3", () => {
+    expect([...doc.querySelectorAll("[data-stage]")].map((s) => s.dataset.stage)).toEqual(["warmup", "concrete", "pictorial", "abstract", "check"]);
+    expect(doc.querySelector(".top .lesson-no").textContent).toBe("Essentials 3");
+    expect(doc.title).toBe(`Essentials 3: Talking With AI on the Phone — ${COURSE.title}`);
+    expect(doc.querySelector("header.top").dataset.lesson).toBe("15");
+  });
+
+  it("shows two written-out calls, each saying in words who started it, with every pause a question and three choices", () => {
+    const cs = doc.querySelectorAll('[data-stage="concrete"] .calls .messages > li');
+    expect(cs).toHaveLength(2);
+    callsData(track).items.forEach((call, c) => {
+      expect(cs[c].querySelector(".msg-kind").textContent).toBe("Phone call (written out)");
+      expect(cs[c].querySelector(".msg-from").textContent).toBe(`${CALL_KIND[call.kind]}. ${call.from}`);
+      const fs = cs[c].querySelectorAll("fieldset.pc-pause");
+      expect(fs).toHaveLength(call.pauses.length);
+      call.pauses.forEach((p, i) => {
+        expect(fs[i].querySelector("legend").textContent).toBe(`Pause ${i + 1}. ${p.ask}`);
+        expect(fs[i].querySelectorAll('input[type="radio"]')).toHaveLength(3);
+        expect(cs[c].querySelector(`#pc-${c + 1}-${i + 1}-answer`).hidden).toBe(true);
+      });
+    });
+    expect(doc.querySelector(".calls figcaption").textContent).toContain("made up");
+    expect(doc.querySelector('[data-stage="concrete"]').textContent).toContain("Next, you'll sort what's fine to say on a call, and what isn't.");
+  });
+
+  it("shows and hides an answer, hands it focus, and follows the learner's choice in words and a symbol", () => {
+    const d = e3Doc(track);
+    const p = callsData(track).items[0].pauses[1];
+    const best = p.choices.findIndex((ch) => ch.best), wrong = (best + 1) % 3;
+    const btn = reveal(d, 0, 1), answer = d.querySelector("#pc-1-2-answer");
+    expect(btn.textContent).toBe("Show the answer for call 1, pause 2");
+    expect(btn.getAttribute("aria-expanded")).toBe("false");
+    btn.click();
+    expect(answer.hidden).toBe(false);
+    expect(btn.getAttribute("aria-expanded")).toBe("true");
+    expect(btn.textContent).toBe("Hide the answer for call 1, pause 2");
+    expect(d.activeElement).toBe(answer);
+    expect(answer.textContent).toContain(`Best choice ${p.choices[best].text}`);
+    expect(answer.textContent).toContain("– You haven't chosen yet.");
+    pick(d, 0, 1, wrong);
+    expect(answer.textContent).toContain(`✕ You chose: ${p.choices[wrong].text}`);
+    pick(d, 0, 1, best);
+    expect(answer.textContent).toContain("✓ You chose the best answer.");
+    btn.click();
+    expect(answer.hidden).toBe(true);
+    expect(btn.textContent).toBe("Show the answer for call 1, pause 2");
+  });
+
+  it("starts one call again: clears its choices, hides its answers, says so, and leaves the other call alone", () => {
+    const d = e3Doc(track);
+    pick(d, 0, 0, 0);
+    pick(d, 1, 0, 1);
+    reveal(d, 0, 0).click();
+    d.querySelector('.pc-reset[data-call="0"]').click();
+    expect([...d.querySelectorAll('.call[data-call="0"] input')].some((r) => r.checked)).toBe(false);
+    expect(d.querySelector("#pc-1-1-answer").hidden).toBe(true);
+    expect(reveal(d, 0, 0).getAttribute("aria-expanded")).toBe("false");
+    expect(d.querySelector('input[name="pc-2-1"][value="1"]').checked).toBe(true);
+    expect(d.activeElement).toBe(d.querySelector('.call[data-call="0"] input'));
+    expect(d.querySelector("#announce").textContent).toBe("Started call 1 again. Nothing is chosen, and the answers are hidden.");
+  });
+
+  it("gives every choice and button a distinct accessible name with its visible words, and collects nothing", () => {
+    const names = [...doc.querySelectorAll('[data-stage="concrete"] .calls label, [data-stage="concrete"] .calls button')].map((x) => x.textContent);
+    expect(new Set(names).size).toBe(names.length);
+    expect(doc.querySelectorAll('[data-stage="concrete"] input[type="text"], [data-stage="concrete"] textarea')).toHaveLength(0);
+  });
+
+  it("sorts into three bins, names all three in the grid's description, and counts against the key", () => {
+    const d = e3Doc(track);
+    expect(d.querySelectorAll("#sh-form .sh-item")).toHaveLength(12);
+    expect([...d.querySelectorAll("#sh-form .sh-item")[0].querySelectorAll("label")].map((l) => l.textContent)).toEqual(sayStage.bins.map((b) => `${b.label}: item 1`));
+    const svg = () => d.querySelector("#sh-figure svg").getAttribute("aria-label");
+    expect(svg()).toContain("Grid with three rows, fine on any call, only on a call you made to the official number and never on a call, and 12 columns, the items.");
+    sortShare(d, { password: "never", "code-bank": "never" });
+    expect(d.querySelector("#sh-status").textContent).toBe("2 of 12 sorted.");
+    expect(svg()).toContain("Item 10: you chose never on a call.");
+    d.querySelector("#sh-reveal").click();
+    expect(d.querySelector("#sh-status").textContent).toBe("1 of 12 match the answers. 10 not sorted yet.");
+    const answers = d.querySelectorAll(".sh-answers li");
+    expect(answers[1].textContent).toContain("✓ You matched.");
+    expect(answers[9].textContent).toContain("✕ You chose never on a call.");
+    expect(answers[9].querySelector(".k").textContent).toBe("Only on a call you made to the official number");
+    expect([...d.querySelectorAll("table.grid-alt tbody th")].map((th) => th.textContent)).toEqual(sayStage.bins.map((b) => b.label));
+  });
+
+  it("shows the keys as claims, four two-column reference tables, and the lesson's own follow-up", () => {
+    expect(doc.querySelector('[data-stage="concrete"] .keyclaim [data-claim="' + callsData(track).claim + '"]')).not.toBeNull();
+    expect(doc.querySelector('[data-stage="pictorial"] .keyclaim [data-claim="e3-key-say"]')).not.toBeNull();
+    const tables = doc.querySelectorAll('[data-stage="abstract"] table.ref');
+    expect([...doc.querySelectorAll('[data-stage="abstract"] h3.subhead')].map((h) => h.textContent).slice(0, 4)).toEqual(["What an AI voice can do", "What it must tell you", "Say it, or keep it", "Protect your voice"]);
+    expect(tables).toHaveLength(4);
+    for (const t of tables) expect(t.querySelectorAll("thead th")).toHaveLength(2);
+    expect(doc.querySelector(".transfer").textContent).toContain("did you set a voicemail password");
+  });
+});
+
+describe("essentials 3: one core across tracks", () => {
+  const html = (t, sel) => e3Doc(t).querySelector(sel).innerHTML;
+
+  it("keeps warm-up, pictorial, abstract and check identical across tracks", () => {
+    for (const sel of ['[data-stage="warmup"]', '[data-stage="pictorial"]', '[data-stage="abstract"]', '[data-stage="check"]']) {
+      for (const t of TRACK_IDS.slice(1)) expect(html(t, sel), `${sel} ${t}`).toBe(html(TRACK_IDS[0], sel));
+    }
+  });
+
+  it("says a verdict in words and a symbol, for no choice, the best one and another", () => {
+    const p = callsData("educators").items[0].pauses[0];
+    expect(pauseVerdict(p, null)).toBe("– You haven't chosen yet.");
+    expect(pauseVerdict(p, p.choices.findIndex((c) => c.best))).toBe("✓ You chose the best answer.");
+    expect(pauseVerdict(p, 0)).toBe(`✕ You chose: ${p.choices[0].text}`);
+    expect(Object.keys(CALL_KIND)).toEqual(["incoming", "outgoing"]);
+  });
+
+  // The generalised sorter leaves Essentials 1's two-bin drawing exactly as it was.
+  it("draws Essentials 1's two-bin grid unchanged when no bins are given", () => {
+    const grid = shareGrid({}, shareItems);
+    expect(grid).toContain('viewBox="0 0 552 172"');
+    expect(grid).toContain('aria-label="Grid with two rows, fine to share and keep it out, and 9 columns, the items. Empty until you sort."');
   });
 });
 

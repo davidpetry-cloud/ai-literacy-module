@@ -1164,7 +1164,13 @@ function inboxExercise(inbox, provenanceNote) {
 }
 
 export const SHARE_LABEL = { fine: "Fine to share", keep: "Keep it out" };
-const SHARE_ORDER = ["fine", "keep"];
+// Essentials 1 sorts into two bins. A stage may bring its own bins (Essentials 3 has three);
+// `short` is the drawing's row label where the full one wouldn't fit beside the grid.
+const SHARE_BINS = Object.entries(SHARE_LABEL).map(([id, label]) => ({ id, label }));
+const binsOf = (stage) => stage.bins ?? SHARE_BINS;
+const binLabel = (bins, id) => bins.find((b) => b.id === id).label;
+const NUMBER_WORD = ["zero", "one", "two", "three", "four", "five"];
+const andList = (words) => (words.length < 3 ? words.join(" and ") : `${words.slice(0, -1).join(", ")} and ${words.at(-1)}`);
 
 /** Where the learner put each item, and how that compares with the key once shown. */
 export function shareStatus(choices, items, shown = false) {
@@ -1177,72 +1183,77 @@ export function shareStatus(choices, items, shown = false) {
   return { sorted, right, text };
 }
 
-function shareLabel(choices, items, shown) {
-  let label = `Grid with two rows, fine to share and keep it out, and ${items.length} columns, the items.`;
+function shareLabel(choices, items, shown, bins) {
+  let label = `Grid with ${NUMBER_WORD[bins.length]} rows, ${andList(bins.map((b) => b.label.toLowerCase()))}, and ${items.length} columns, the items.`;
   const placed = items.map((it, i) => ({ it, n: i + 1 })).filter(({ it }) => choices[it.id]);
-  label += placed.length ? " " + placed.map(({ it, n }) => `Item ${n}: you chose ${SHARE_LABEL[choices[it.id]].toLowerCase()}.`).join(" ") : " Empty until you sort.";
-  if (shown) label += " Answers: " + items.map((it, i) => `item ${i + 1}, ${SHARE_LABEL[it.key].toLowerCase()}`).join("; ") + ".";
+  label += placed.length ? " " + placed.map(({ it, n }) => `Item ${n}: you chose ${binLabel(bins, choices[it.id]).toLowerCase()}.`).join(" ") : " Empty until you sort.";
+  if (shown) label += " Answers: " + items.map((it, i) => `item ${i + 1}, ${binLabel(bins, it.key).toLowerCase()}`).join("; ") + ".";
   return label;
 }
 
-export function shareGrid(choices, items, { shown = false } = {}) {
-  const x0 = 130, y0 = 44, cw = 46, rh = 60, w = x0 + cw * items.length + 8, h = y0 + rh * SHARE_ORDER.length + 8;
+export function shareGrid(choices, items, { shown = false, bins = SHARE_BINS } = {}) {
+  // Row labels sit left of the grid; the column narrows past ten items so the drawing's labels stay 12.8px+ at its narrowest.
+  const rowText = (b) => b.short ?? b.label;
+  const x0 = Math.max(130, Math.ceil(12 + 8.6 * Math.max(...bins.map((b) => rowText(b).length))));
+  const y0 = 44, cw = items.length > 10 ? 40 : 46, rh = 60, w = x0 + cw * items.length + 8, h = y0 + rh * bins.length + 8;
   const cells = [];
   items.forEach((_, c) => cells.push(`<text x="${x0 + c * cw + cw / 2}" y="28" class="g-col">${c + 1}</text>`));
-  SHARE_ORDER.forEach((k, r) => {
-    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${SHARE_LABEL[k]}</text>`);
+  bins.forEach((b, r) => {
+    cells.push(`<text x="${x0 - 12}" y="${y0 + r * rh + rh / 2 + 5}" class="g-row">${esc(rowText(b))}</text>`);
     // Once shown, the answer's cell gets a dashed outline: shape, not colour, carries the key.
-    items.forEach((it, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell${shown && it.key === k ? " g-aim" : ""}"/>`));
+    items.forEach((it, c) => cells.push(`<rect x="${x0 + c * cw}" y="${y0 + r * rh}" width="${cw}" height="${rh}" class="g-cell${shown && it.key === b.id ? " g-aim" : ""}"/>`));
   });
   const marks = items
     .map((it, c) => {
-      const r = SHARE_ORDER.indexOf(choices[it.id]);
+      const r = bins.findIndex((b) => b.id === choices[it.id]);
       if (r < 0) return "";
       const cx = x0 + c * cw + cw / 2, cy = y0 + r * rh + rh / 2;
       return `<g class="g-mark"><circle cx="${cx}" cy="${cy}" r="15"/><text x="${cx}" y="${cy + 5}">${c + 1}</text></g>`;
     })
     .join("");
-  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(shareLabel(choices, items, shown))}">${cells.join("")}${marks}</svg>`;
+  return `<svg class="grid" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(shareLabel(choices, items, shown, bins))}">${cells.join("")}${marks}</svg>`;
 }
 
-export function shareView(choices, items, { shown = false } = {}) {
-  const rows = SHARE_ORDER.map((k) => ({ label: SHARE_LABEL[k], cells: [items.map((it, i) => ({ it, n: i + 1 })).filter(({ it }) => choices[it.id] === k).map(({ n }) => ({ word: "Item", n }))] }));
+export function shareView(choices, items, { shown = false, bins = SHARE_BINS } = {}) {
+  const rows = bins.map((b) => ({ label: b.label, cells: [items.map((it, i) => ({ it, n: i + 1 })).filter(({ it }) => choices[it.id] === b.id).map(({ n }) => ({ word: "Item", n }))] }));
   const answers = shown
     ? `<ol class="sh-answers">${items
         .map((it) => {
           const mine = choices[it.id];
-          const verdict = !mine ? "– Not sorted" : mine === it.key ? "✓ You matched" : `✕ You chose ${SHARE_LABEL[mine].toLowerCase()}`;
-          return `<li><b class="k k-${it.key}">${SHARE_LABEL[it.key]}</b> <span class="sh-verdict">${verdict}.</span> ${esc(it.why)}</li>`;
+          const verdict = !mine ? "– Not sorted" : mine === it.key ? "✓ You matched" : `✕ You chose ${binLabel(bins, mine).toLowerCase()}`;
+          return `<li><b class="k k-${it.key}">${esc(binLabel(bins, it.key))}</b> <span class="sh-verdict">${esc(verdict)}.</span> ${esc(it.why)}</li>`;
         })
         .join("")}</ol>`
     : "";
-  return shareGrid(choices, items, { shown }) + gridTable(shareLabel(choices, items, shown), "Where it goes", ["Items"], rows) + answers;
+  return shareGrid(choices, items, { shown, bins }) + gridTable(shareLabel(choices, items, shown, bins), "Where it goes", ["Items"], rows) + answers;
 }
 
 // Nothing typed, nothing sent: the sort lives only on this page, and Start again clears it.
 function shareSorter(stage) {
+  const bins = binsOf(stage);
   return `
       <form class="ck-form" id="sh-form" novalidate>
         ${stage.items
           .map(
-            (it, i) => `<fieldset class="sh-item"><legend><b>${i + 1}.</b> ${esc(it.text)}</legend><div class="sh-choices">${SHARE_ORDER.map(
-              (k) => `<label><input type="radio" name="sh-${esc(it.id)}" value="${k}"><span>${SHARE_LABEL[k]}<span class="sr">: item ${i + 1}</span></span></label>`
+            (it, i) => `<fieldset class="sh-item"><legend><b>${i + 1}.</b> ${esc(it.text)}</legend><div class="sh-choices">${bins.map(
+              (b) => `<label><input type="radio" name="sh-${esc(it.id)}" value="${esc(b.id)}"><span>${esc(b.label)}<span class="sr">: item ${i + 1}</span></span></label>`
             ).join("")}</div></fieldset>`
           )
           .join("")}
       </form>
       <div class="sh-actions"><button type="button" class="btn" id="sh-reveal">Show the answers</button> <button type="button" class="btn" id="sh-reset">Start again</button></div>
       <p class="so-status" id="sh-status" aria-live="polite">${esc(shareStatus({}, stage.items).text)}</p>
-      <div class="figure" id="sh-figure">${shareView({}, stage.items)}</div>`;
+      <div class="figure" id="sh-figure">${shareView({}, stage.items, { bins })}</div>`;
 }
 
 function wireShare(doc, stage) {
   const form = doc.querySelector("#sh-form"), btn = doc.querySelector("#sh-reveal"), fig = doc.querySelector("#sh-figure");
+  const bins = binsOf(stage);
   let shown = false;
   const choices = () => Object.fromEntries(stage.items.map((it) => [it.id, form.querySelector(`input[name="sh-${it.id}"]:checked`)?.value]).filter(([, v]) => v));
   const update = () => {
     doc.querySelector("#sh-status").textContent = shareStatus(choices(), stage.items, shown).text;
-    fig.innerHTML = shareView(choices(), stage.items, { shown });
+    fig.innerHTML = shareView(choices(), stage.items, { shown, bins });
     btn.textContent = shown ? "Hide the answers" : "Show the answers";
   };
   form.addEventListener("change", update);
@@ -1261,6 +1272,96 @@ function wireShare(doc, stage) {
     shown = false;
     update();
     form.querySelector("input").focus();
+  });
+}
+
+/* ---------- pause-call (Essentials 3): a written-out call, stopped at pause points ---------- */
+
+// Who started the call decides what's safe to say, so every call says which kind it is.
+export const CALL_KIND = { incoming: "A call you didn't make", outgoing: "A call you made" };
+
+/** What the learner picked at one pause, compared with the best choice, in words and a shape (✓, ✕ or –). */
+export function pauseVerdict(pause, picked) {
+  if (picked == null) return "– You haven't chosen yet.";
+  return pause.choices[picked]?.best ? "✓ You chose the best answer." : `✕ You chose: ${pause.choices[picked].text}`;
+}
+
+export function pauseAnswer(pause, picked) {
+  const best = pause.choices.find((c) => c.best);
+  return `<p><b class="k k-best">Best choice</b> ${esc(best.text)}</p><p class="pc-verdict">${esc(pauseVerdict(pause, picked))}</p><p>${esc(pause.why)}</p>`;
+}
+
+const callLines = (lines) =>
+  lines.map(([who, text]) => (who ? `<p class="call-line"><span class="who-said">${esc(who)}:</span> ${esc(text)}</p>` : `<p class="call-note">${esc(text)}</p>`)).join("");
+
+// Linear, not branching: everyone reads the same call, so a group can compare choices at each pause.
+// Nothing typed, nothing sent; Start again clears one call.
+function callsExercise(calls, provenanceNote) {
+  return `<figure class="passage calls">
+        <ol class="messages">${calls.items
+          .map((call, c) => {
+            const pauses = call.pauses
+              .map((p, i) => {
+                const where = `call ${c + 1}, pause ${i + 1}`;
+                const id = `pc-${c + 1}-${i + 1}`;
+                return `<li class="pc-part">${callLines(p.before)}<fieldset class="pc-pause"><legend><b>Pause ${i + 1}.</b> ${esc(p.ask)}</legend><div class="sh-choices pc-choices">${p.choices
+                  .map((ch, j) => `<label><input type="radio" name="${id}" value="${j}"><span>${esc(ch.text)}<span class="sr">: ${where}</span></span></label>`)
+                  .join("")}</div></fieldset><button type="button" class="btn quiet pc-reveal" data-call="${c}" data-pause="${i}" aria-expanded="false" aria-controls="${id}-answer">Show the answer<span class="sr"> for ${where}</span></button><div class="pc-answer" id="${id}-answer" hidden></div></li>`;
+              })
+              .join("");
+            return `<li class="message call" data-call="${c}"><p class="msg-head"><span class="msg-kind">Phone call (written out)</span> <span class="msg-from">${esc(CALL_KIND[call.kind])}. ${esc(call.from)}</span></p><ol class="pc-parts">${pauses}</ol>${
+              call.after ? callLines(call.after) : ""
+            }<div class="sh-actions"><button type="button" class="btn quiet pc-reset" data-call="${c}">Start again<span class="sr">: call ${c + 1}</span></button></div></li>`;
+          })
+          .join("")}</ol>
+        <figcaption>${provenanceNote}</figcaption>
+      </figure>`;
+}
+
+function wireCalls(doc, calls) {
+  const box = doc.querySelector(".calls");
+  const picked = (c, i) => {
+    const r = box.querySelector(`input[name="pc-${c + 1}-${i + 1}"]:checked`);
+    return r ? Number(r.value) : null;
+  };
+  const draw = (c, i) => {
+    box.querySelector(`#pc-${c + 1}-${i + 1}-answer`).innerHTML = pauseAnswer(calls.items[c].pauses[i], picked(c, i));
+  };
+  box.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const c = Number(b.dataset.call);
+    if (b.classList.contains("pc-reveal")) {
+      const i = Number(b.dataset.pause), answer = doc.getElementById(b.getAttribute("aria-controls"));
+      const open = b.getAttribute("aria-expanded") !== "true";
+      b.setAttribute("aria-expanded", String(open));
+      b.firstChild.textContent = open ? "Hide the answer" : "Show the answer";
+      answer.hidden = !open;
+      // On show, hand focus to the answer so it is read; on hide, stay on the button.
+      if (open) {
+        draw(c, i);
+        answer.tabIndex = -1;
+        answer.focus();
+      }
+    } else if (b.classList.contains("pc-reset")) {
+      const call = box.querySelector(`.call[data-call="${c}"]`);
+      for (const r of call.querySelectorAll("input")) r.checked = false;
+      for (const rb of call.querySelectorAll(".pc-reveal")) {
+        rb.setAttribute("aria-expanded", "false");
+        rb.firstChild.textContent = "Show the answer";
+      }
+      for (const a of call.querySelectorAll(".pc-answer")) a.hidden = true;
+      call.querySelector("input").focus();
+      const live = doc.querySelector("#announce");
+      if (live) live.textContent = `Started call ${c + 1} again. Nothing is chosen, and the answers are hidden.`;
+    }
+  });
+  // An open answer follows the learner's choice, so changing your mind updates the verdict.
+  box.addEventListener("change", (e) => {
+    const m = e.target.name?.match(/^pc-(\d+)-(\d+)$/);
+    if (!m) return;
+    const c = Number(m[1]) - 1, i = Number(m[2]) - 1;
+    if (!box.querySelector(`#pc-${m[1]}-${m[2]}-answer`).hidden) draw(c, i);
   });
 }
 
@@ -1650,7 +1751,7 @@ export function claimLessons() {
   const out = {};
   for (const l of COURSE.lessons.filter((x) => x.ready)) {
     for (const s of l.stages) {
-      const ids = [...(s.principles ?? []), s.claim, ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat ?? t.respond ?? t.inbox ?? t.requests)?.claim)];
+      const ids = [...(s.principles ?? []), s.claim, ...Object.values(s.tracks ?? {}).map((t) => (t.passage ?? t.pair ?? t.signoffs ?? t.classify ?? t.screen ?? t.thread ?? t.chat ?? t.respond ?? t.inbox ?? t.requests ?? t.calls)?.claim)];
       for (const id of ids.filter(Boolean)) if (!(out[id] ??= []).includes(l.n)) out[id].push(l.n);
     }
   }
@@ -1859,7 +1960,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
   const isRespond = exercise === "respond";
   const isInbox = exercise === "inbox";
   const isRequests = exercise === "requests";
-  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat, respond: art.respond, inbox: art.inbox, requests: art.requests }[exercise];
+  const isCalls = exercise === "pause-call";
+  const artefact = { passage: art.passage, "prompt-pair": art.pair, "sign-offs": art.signoffs, classify: art.classify, screen: art.screen, audit: art.screen, judge: art.screen, thread: art.thread, chat: art.chat, respond: art.respond, inbox: art.inbox, requests: art.requests, "pause-call": art.calls }[exercise];
 
   header.dataset.lesson = lesson.n;
   // Each lesson's tab says which lesson it is (WCAG 2.4.2, Page Titled).
@@ -1885,6 +1987,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
         ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The messages, names and addresses are made up.`
         : isRequests
         ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The requests, apps and companies are made up.`
+        : isCalls
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The calls, callers and companies are made up.`
         : isChat
         ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
         : isThread
@@ -1917,6 +2021,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
         ? inboxExercise(artefact, provenanceNote)
         : isRequests
         ? requestsExercise(artefact, provenanceNote)
+        : isCalls
+        ? callsExercise(artefact, provenanceNote)
         : isChat
         ? chatExercise(artefact, provenanceNote)
         : isThread
@@ -1928,6 +2034,8 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
         : passageExercise(artefact, provenanceNote);
   const scale = pictorial.figure === "check-scale";
   const overlap = pictorial.figure === "overlap";
+  // The sorter follows its figure, not the exercise: Essentials 1 and 3 both use it.
+  const share = pictorial.figure === "share";
   const pictorialBody = isPair
     ? `<div class="figure" id="compare">${promptCompare(artefact)}</div>`
     : isSignoff
@@ -1936,7 +2044,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
         ? contrastChecker(artefact.contrast)
         : isRespond
         ? planBuilder(pictorial, artefact.situations)
-        : isInbox
+        : share
         ? shareSorter(pictorial)
         : isRequests
         ? recoverBuilder(pictorial)
@@ -2037,11 +2145,12 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
   else if (isThread) wireGrid(doc, (revealed) => patternView(artefact.moments, { revealed }), "timeline");
   else if (isChat) wireGrid(doc, (revealed) => gainsView(artefact, { revealed }), "picture");
   else if (isRespond) wirePlan(doc, pictorial, artefact.situations);
-  else if (isInbox) wireShare(doc, pictorial);
+  else if (share) wireShare(doc, pictorial);
   else if (isRequests) wireRecover(doc, pictorial);
   else if (overlap) wireOverlap(doc, pictorial.overlap);
   else if (scale) wireGrid(doc, (revealed) => checkScaleView(artefact.uses, { revealed }), "scale");
   else wireGrid(doc, (revealed) => confidenceView(artefact.sentences, { revealed }));
+  if (isCalls) wireCalls(doc, artefact);
 }
 
 /** Previous and next ready lessons, keeping the reader's track. The last lesson leads back to the course overview. */
