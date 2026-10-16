@@ -547,7 +547,7 @@ describe("consistency", () => {
   it("rounds corners only with the radius tokens", () => {
     for (const r of nonRoot) {
       for (const [, val] of r.body.matchAll(/border-radius:\s*([^;]+)/g)) {
-        expect(val.replace(/var\(--r-(sm|md|lg|pill)\)|\b0\b/g, "").trim(), `${r.sel} ${val}`).toBe("");
+        expect(val.replace(/var\(--r-(sm|md|lg|pill|hex)\)|\b0\b/g, "").trim(), `${r.sel} ${val}`).toBe("");
       }
     }
   });

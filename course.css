@@ -30,7 +30,7 @@
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
   --lh-display:1.08; --lh-heading:1.2; --lh-body:1.62; --measure:60ch; --measure-serif:50ch;
-  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px;
+  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px; --r-hex:24px / 50%;
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
   --edge:#7A8FA6; --btn-edge:#0F2338;
@@ -152,6 +152,13 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .hub-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:start}
 @media (min-width:961px){.hub-cols{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:32px}
   .hub-cols #essentials .cards{grid-template-columns:minmax(0,1fr)}}
+/* Essentials as long hexagons, like hex tiles (David, 2026-10-16): pointed left and right, flat top and
+   bottom, text level. corner-shape:bevel turns the corner radius into straight cuts, and the border,
+   shadow and focus ring all follow the shape. Browsers without it keep the ordinary rounded card. */
+@supports (corner-shape:bevel){
+  #essentials .card{corner-shape:bevel;border-radius:var(--r-hex);border-width:2px;padding:24px 32px}
+  #essentials .card h3 a::after{corner-shape:bevel;border-radius:var(--r-hex)}
+}
 [data-lesson="1"]{--lc:var(--l1)} [data-lesson="2"]{--lc:var(--l2)} [data-lesson="3"]{--lc:var(--l3)}
 [data-lesson="4"]{--lc:var(--l4)} [data-lesson="5"]{--lc:var(--l5)}
 [data-lesson="6"]{--lc:var(--l6)} [data-lesson="7"]{--lc:var(--l7)} [data-lesson="8"]{--lc:var(--l8)}
