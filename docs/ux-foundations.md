@@ -146,10 +146,14 @@ fill in forms or compare data, because there coherence and signaling come first
 **Motion, the expressive way.** Prefer motion the person drives: tied to their
 scroll, their click or their choice, so it moves at their speed and stops when
 they stop. Nothing moves on its own. Every motion has a purpose you can name.
-Respect the device's reduce-motion setting, and also give a visible on-site
-"Reduce motion" / "Allow motion" choice, for anyone on a shared or managed
-device (user control). With motion off, nothing is lost: same content, same
-focus, same announcements.
+Respect the device's reduce-motion setting (people whom movement makes unwell
+rely on it). David decided against an on-site motion switch (2026-10-16), so the
+device setting is the one control. With motion off, nothing is lost: same
+content, same focus, same announcements.
+
+**Depth by illusion.** Create depth with light, shade, shadow and texture, the
+way a painter does, not with real 3D: nothing rotates, skews or tilts, so text
+never warps.
 
 **The floor doesn't move.** Accessibility, cognitive accessibility, privacy and
 mindful UX are the floor. An expressive idea that fails contrast, needs motion

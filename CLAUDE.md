@@ -55,7 +55,7 @@ needs, at any point in the course. An essential is an ordinary lesson file with
 `category: "essentials"`, a `label` ("Essentials 1") and an `idPrefix` ("E1") for its
 objective ids. It keeps a lesson number `n` for its page address only. Learners
 always see the label (`lessonLabel` in `course.js`), never "Lesson 13". The hub lists
-essentials in their own section beside the lessons, on the left (first in the page, so it stacks first on narrow screens; David, 2026-10-16), the hub counts them separately,
+essentials in their own section above the lessons, as a honeycomb of hexagons (David, 2026-10-16), the hub counts them separately,
 and previous/next links stay within a category. Every lesson rule above and below
 applies to essentials unchanged.
 
@@ -226,8 +226,15 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   inline disclosures (`<summary>`) at least 44px.
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
   so re-rendering never removes it. New pages copy it from `lesson.html`.
-- **Each lesson has its own colour** (`--l1`…`--l7`) as a ribbon and outline,
-  always paired with the lesson number. Lessons in design get a dashed outline.
+- **Colour by theme** (David, 2026-10-16): the lessons fall into three themes
+  (`GROUPS` in `course.js`: Using AI well 1–5, Building for people 6–8,
+  Recognising manipulation 9–12), each with one colour; each essential has its
+  own. Every colour is always paired with the lesson number and the theme's
+  name. Lessons in design get a dashed outline (essentials: a hatched tile).
+- **Depth by illusion, never real 3D:** light, shade and shadow; nothing rotates,
+  skews or tilts, and hover doesn't move a card. Text never warps.
+- **Motion follows the device's reduce-motion setting.** No on-site motion switch
+  (David, 2026-10-16).
 
 ## Voice
 

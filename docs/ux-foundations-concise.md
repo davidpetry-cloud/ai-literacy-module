@@ -93,7 +93,8 @@ taste, inside this standard.
 - **Colour with depth:** rich `oklch` palettes, still 4.5:1 in both themes.
 - **Flow:** motion the person drives (scroll-linked, View Transitions), each with a job; nothing moves on its own.
 - **Richness in the frame, quiet where people read:** coherence and signaling still win on teaching pages.
-- **Motion choice:** respect the device setting and offer an on-site "Reduce motion" / "Allow motion".
+- **Motion:** respect the device's reduce-motion setting; no on-site switch.
+- **Depth by illusion:** light, shade and shadow, never real 3D; text never warps.
 - **The floor doesn't move:** an idea that fails accessibility or slows a learner changes or goes.
 
 ## Privacy by design (Cavoukian, 2009; GDPR Art. 25)
