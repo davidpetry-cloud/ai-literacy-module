@@ -140,7 +140,7 @@ export const CLAIMS = {
   "l2-key-students": {
     text: "The answer key for the Lesson 2 students prompt pair is correct: each part of the vague request is labelled as the request shows it, each line of the structured output is traced to the parts that caused it, and each line marked invented has no basis in the request.",
     attestation: proposedBy(
-      "Written with the prompt pair. Check it by reading each request beside its output. It is a judgement about the text on the page, so no outside source is needed."
+      "Written with the prompt pair. Check it by reading each request beside its output. It is a judgement about the text on the page, so no outside source is needed. Revised 2026-10-15: the task in 'Help me with my essay' was keyed missing; it is now vague, as the educators' 'Write something' is, since 'help' names a task that could mean ideas, feedback or writing (UX audit 2026-10, finding 16)."
     )
   },
   "independent-source": {
@@ -720,7 +720,7 @@ export const CLAIMS = {
   "e1-key-educators": {
     text: "The answer key for the Essentials 1 educators inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.",
     attestation: proposedBy(
-      "The messages are made up. Check the automated booking call with changed bank details (it says it's an AI, which doesn't make it honest; EU AI Act Art. 50(1) makes such disclosure a duty for lawful providers from 2 August 2026, and scammers ignore it) and the gift-card voice message against the FBI PSA (I-120324-PSA) and the NCSC's signs; check that both genuine messages ask for nothing and come the usual way. Voice-bot call swapped in for the bank-details email on 2026-10-08 (docs/essentials-gaps-ai-calls-and-security.md). Judgements, not facts: attest that they are reasonable."
+      "The messages are made up. Check the automated booking call with changed bank details (it says it's an AI, which doesn't make it honest; EU AI Act Art. 50(1) makes such disclosure a duty for lawful providers from 2 August 2026, and scammers ignore it) and the gift-card voice message against the FBI PSA (I-120324-PSA) and the NCSC's signs; check that both genuine messages ask for nothing and come the usual way. Voice-bot call swapped in for the bank-details email on 2026-10-08 (docs/essentials-gaps-ai-calls-and-security.md). Revised 2026-10-15: two signs dropped because they didn't fit the course's own definitions: Scarcity on the coach call ('pay today to keep your trip' is urgency, not limited supply) and Current events on the video call (an 'urgent safety review' is not news, an event or a season) (UX audit 2026-10, finding 17). Judgements, not facts: attest that they are reasonable."
     )
   },
   "e1-key-professionals": {
@@ -802,7 +802,7 @@ export const CLAIMS = {
   "e2-key-students": {
     text: "The answer key for the Essentials 2 students requests is reasonable: each request's answer (say yes, say no or check first), what to look at and how to check follow from CISA's, the NCSC's and the FBI's advice, and every \"no\" and \"check first\" names a trusted adult.",
     attestation: proposedBy(
-      "The requests are made up, on the learner's own phone, and nothing is installed or typed (docs/student-safety.md). Check: the homework app from an ad asking for contacts, photos and location (check first, with a trusted adult; school-approved tools only); the free-coins site asking to send messages as you (no: consent phishing, FBI I-090126-PSA); the phone's security update and the school reading app's update from the official store (yes); the browser-update pop-up (no: CISA). The tests require a trusted adult in every 'no' and 'check first'. Judgements, not facts."
+      "The requests are made up, on the learner's own phone, and nothing is installed or typed (docs/student-safety.md). Check: the homework app from an ad asking for contacts, photos and location (check first, with a trusted adult; school-approved tools only); the free-coins site asking to send messages as you (no: consent phishing, FBI I-090126-PSA); the phone's security update and the school reading app's update from the official store (yes); the browser-update pop-up (no: CISA). The tests require a trusted adult in every 'no' and 'check first'. Revised 2026-10-15: the homework app stays Check first, and its note now says why a student checks rather than refuses: it asks for more than homework needs, so the answer is usually no, and a trusted adult can say whether school allows it (UX audit 2026-10, finding 14). Judgements, not facts."
     )
   },
   "e2-key-recover": {

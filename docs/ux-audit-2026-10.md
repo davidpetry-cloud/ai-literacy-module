@@ -87,17 +87,17 @@ hour each.
 | 11 | E2 students: "tell a trusted adult first" vs a fixed step 1 (**fixed 2026-10-14**) | Wellbeing and Consistency | Medium | Students, E2 | 15 min |
 | 12 | L7 table files reflow under Robust; the key says Perceivable (**fixed 2026-10-14**) | Accessibility (WCAG 2.2) | Medium | All tracks, L7 (students key) | 10 min |
 | 13 | L4 educators "sound" sign-off blesses a medicine rule that may be unsafe (**fixed 2026-10-14**) | User-centricity; safety | Low–medium | Educators, L4 | 10 min + source check |
-| 14 | E2 students "Homework Hero" keyed check first against the lesson's own rule | Consistency | Low–medium | Students, E2 | 10 min |
-| 15 | E2's sixteen Move buttons outweigh everything else | Hierarchy (Gestalt) | Low–medium | All tracks, E2 | 30 min |
-| 16 | L2 keys the same kind of gap two ways | Consistency | Low | Educators and students, L2 | 5 min |
-| 17 | E1 educators: two scam signs that don't fit their own definitions | Consistency | Low | Educators, E1 | 10 min |
-| 18 | Hub: "3 essentials" and "12 ready" don't add up | Context | Low | Everyone on the hub | 10 min |
+| 14 | E2 students "Homework Hero" keyed check first against the lesson's own rule (**fixed 2026-10-15**) | Consistency | Low–medium | Students, E2 | 10 min |
+| 15 | E2's sixteen Move buttons outweigh everything else (**fixed 2026-10-15**) | Hierarchy (Gestalt) | Low–medium | All tracks, E2 | 30 min |
+| 16 | L2 keys the same kind of gap two ways (**fixed 2026-10-15**) | Consistency | Low | Educators and students, L2 | 5 min |
+| 17 | E1 educators: two scam signs that don't fit their own definitions (**fixed 2026-10-15**) | Consistency | Low | Educators, E1 | 10 min |
+| 18 | Hub: "3 essentials" and "12 ready" don't add up (**fixed 2026-10-15**) | Context | Low | Everyone on the hub | 10 min |
 | 19 | Essentials 1 and 2 share almost the same red | Hierarchy (Gestalt) | Low | Everyone on the hub, light theme | 30 min, **your call** |
 | 20 | Dashed outlines mean three things again | Consistency | Low | L11 and E2, hub | 20 min, **your call** |
-| 21 | L12's abstract stage title is in title case and repeats the lesson title | Consistency (CLAUDE.md shared wording) | Low | All tracks, L12 | 5 min |
-| 22 | Provenance lines show a model ID, not a name | User-centricity | Low | All tracks, every planted passage | 15 min |
-| 23 | L9's post-check criterion on addiction reads two ways | Usability (Nielsen) | Low | All tracks, L9 | 5 min |
-| 24 | E2: "A new password is step three" when the key allows two or three | Consistency | Low | All tracks, E2 | 5 min |
+| 21 | L12's abstract stage title is in title case and repeats the lesson title (**fixed 2026-10-15**) | Consistency (CLAUDE.md shared wording) | Low | All tracks, L12 | 5 min |
+| 22 | Provenance lines show a model ID, not a name (**fixed 2026-10-15**) | User-centricity | Low | All tracks, every planted passage | 15 min |
+| 23 | L9's post-check criterion on addiction reads two ways (**fixed 2026-10-15**) | Usability (Nielsen) | Low | All tracks, L9 | 5 min |
+| 24 | E2: "A new password is step three" when the key allows two or three (**fixed 2026-10-15**) | Consistency | Low | All tracks, E2 | 5 min |
 
 ---
 
@@ -563,7 +563,9 @@ adrenaline pens."
 **Effort:** 10 minutes, plus a source check. **Tests:** `readability`.
 **Claim:** `l4-key-educators` (Proposed).
 
-## 14. Essentials 2, students: "Homework Hero" keyed against the lesson's rule
+## 14. Essentials 2, students: "Homework Hero" keyed against the lesson's rule — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. Kept **Check first**, as recommended. The note now says why: the app asks for more than homework needs, so the answer is usually no, and a trusted adult can say whether school allows it.
 
 **What's wrong.** An ad for an app that asks to see contacts, photos and
 location ("Homework doesn't need those") is keyed **Check first**. The
@@ -584,7 +586,9 @@ them whether school allows it, and the answer will usually be no.
 `render`. **Claim:**
 `e2-key-students` (Proposed).
 
-## 15. Essentials 2: sixteen Move buttons outweigh everything else
+## 15. Essentials 2: sixteen Move buttons outweigh everything else — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. The Move buttons use a new quiet style, `.btn.quiet` (card background, ink text and the 2px ring), and stay light when hovered. "Show the order" stays the one dark button. This moves *toward* Singapore Math, where the plain `.btn` is light and only `.btn.go` is dark.
 
 **What's wrong.** The recovery builder gives each of its eight steps a dark,
 filled "Move up" and "Move down" button. That is sixteen primary-styled
@@ -604,7 +608,9 @@ new pairing goes into `PAIRS` first); `ui-audit` non-text check. **Baseline:**
 check Singapore Math has a secondary button. If it doesn't, this is a small
 step away from the baseline, for a reason.
 
-## 16. Lesson 2: the same gap keyed two ways
+## 16. Lesson 2: the same gap keyed two ways — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. The students' task is now keyed **vague**, as the educators' is.
 
 **What's wrong.** Educators' "Write *something*…" has Task keyed **vague**,
 because "'Something' could be an email, a flyer or a letter". Students'
@@ -618,7 +624,9 @@ different keys.
 **Effort:** 5 minutes. **Tests:** `alignment`. **Claim:** `l2-key-students`
 (Proposed).
 
-## 17. Essentials 1, educators: two signs that don't fit their definitions
+## 17. Essentials 1, educators: two signs that don't fit their definitions — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. Dropped Scarcity from the coach call and Current events from the video call.
 
 **What's wrong.** The abstract table defines **Current events** as "the
 news, a big event, or a time of year". The fake superintendent's "urgent
@@ -633,7 +641,9 @@ or payment).
 **Effort:** 10 minutes. **Tests:** `alignment`. **Claim:** `e1-key-educators`
 (Proposed).
 
-## 18. Hub: "3 essentials" and "12 ready"
+## 18. Hub: "3 essentials" and "12 ready" — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. The hub now reads "12 lessons · 2 of 3 essentials ready", and the bare "12 ready" is gone. If a numbered lesson isn't ready, it says "N of 12 lessons ready".
 
 **What's wrong.** The hub's facts read "12 lessons · 3 essentials · … · 12
 ready". Essentials 3 is in design, so only two can be opened, and "12 ready"
@@ -677,7 +687,9 @@ accept the two uses and say so in the visual refresh notes.
 
 **Effort:** 20 minutes. **Tests:** `ui` (the dashed rule). **Your call.**
 
-## 21. Lesson 12: a stage title in title case
+## 21. Lesson 12: a stage title in title case — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. The abstract stage is now "Abstract · What protects you".
 
 **What's wrong.** The abstract stage is "Abstract · Protect Yourself and Your
 Gifts". `CLAUDE.md` keeps stage names in sentence case. This one also
@@ -689,7 +701,9 @@ gifts".
 **Effort:** 5 minutes. **Tests:** `render` (it checks lesson titles; a stage
 title check could be added).
 
-## 22. Provenance lines show a model ID
+## 22. Provenance lines show a model ID — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. Every provenance line now reads "Written by Claude Opus 5.5, an AI model, for this lesson…". `modelName()` turns the ID into a name, and the ID stays in the data.
 
 **What's wrong.** "Written by claude-opus-5-5 for this lesson…" shows the
 system's identifier. A learner reads "claude-opus-5-5" as a code, not a
@@ -704,7 +718,9 @@ ID in the data for the provenance record.
 **Effort:** 15 minutes. **Tests:** `render` (provenance text); `alignment`
 (provenance fields unchanged).
 
-## 23. Lesson 9: a criterion that reads two ways
+## 23. Lesson 9: a criterion that reads two ways — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. Now reads "Says the traits are linked to addiction, but a link isn't a cause."
 
 **What's wrong.** Post-check p4 says learners say the traits "are linked to
 addiction, not caused by it". It could mean the traits aren't caused by
@@ -715,7 +731,9 @@ not a cause".
 
 **Effort:** 5 minutes. **Tests:** `readability`.
 
-## 24. Essentials 2: "a new password is step three"
+## 24. Essentials 2: "a new password is step three" — **fixed 2026-10-15**
+
+**Fixed** in the low-findings tidy-up. Now reads "A new password comes early, not last."
 
 **What's wrong.** The pictorial script says "A new password is step three,
 not the last step". The key allows place two or three.

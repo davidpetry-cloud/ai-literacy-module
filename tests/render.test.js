@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -915,6 +915,40 @@ describe("narrow figures: the grid as a table", () => {
   });
 });
 
+describe("UX audit 2026-10, low findings", () => {
+  it("names the model the way a reader says it, not by its ID (finding 22)", () => {
+    expect(modelName("claude-opus-5-5")).toBe("Claude Opus 5.5");
+    expect(modelName("claude-sonnet-5")).toBe("Claude Sonnet 5");
+    expect(modelName("some-other-model")).toBe("some-other-model");
+    for (const l of COURSE.lessons.filter((x) => x.ready)) {
+      const cap = lessonDoc(TRACK_IDS[0], l).querySelector('[data-stage="concrete"] figcaption').textContent;
+      expect(cap, `lesson ${l.n}`).toMatch(/Claude [A-Z][a-z]+ [\d.]+, an AI model/);
+      expect(cap, `lesson ${l.n}`).not.toMatch(/claude-[a-z]+-\d/);
+    }
+  });
+
+  it("says on the hub how many lessons and essentials are ready (finding 18)", () => {
+    const doc = page("index.html");
+    renderHub(doc);
+    const facts = doc.querySelector("#top .facts").textContent.replace(/\s+/g, " ");
+    expect(facts).toContain(`${essentials().filter((l) => l.ready).length} of ${essentials().length} essentials ready`);
+    expect(facts).not.toMatch(/\d+ ready(?! )/);
+  });
+
+  it("makes Essentials 2's Move buttons quiet, so Show the order stays the one main action (finding 15)", () => {
+    const doc = lessonDoc(TRACK_IDS[0], getLesson(14));
+    const moves = [...doc.querySelectorAll('[data-stage="pictorial"] button[data-move]')];
+    expect(moves.length).toBe(16);
+    for (const b of moves) expect(b.classList.contains("quiet")).toBe(true);
+    const show = [...doc.querySelectorAll('[data-stage="pictorial"] button')].find((b) => /^Show/.test(b.textContent));
+    expect(show.classList.contains("quiet")).toBe(false);
+  });
+
+  it("never gives a stage the lesson's own title (finding 21)", () => {
+    for (const l of COURSE.lessons.filter((x) => x.ready)) for (const st of l.stages) expect(st.title, `lesson ${l.n}`).not.toBe(l.title);
+  });
+});
+
 describe("a phone table says what its drawing says (UX audit 2026-10, finding 6)", () => {
   it("lesson 9: the table gives both averages, as the drawing does", () => {
     const l = getLesson(9);
@@ -1111,6 +1145,37 @@ describe("reference tables reflow at 320px (WCAG 1.4.10)", () => {
   it.each(COURSE.lessons.filter((l) => l.ready).map((l) => [l.n, l]))("lesson %i: no table is hidden at phone width without a stacked list in its place", (n, lesson) => {
     const doc = lessonDoc(TRACK_IDS[0], lesson);
     for (const w of doc.querySelectorAll(".ref-wrap")) expect(w.querySelector(".ref-list"), w.textContent.slice(0, 60)).not.toBeNull();
+  });
+});
+
+describe("track switch transition", () => {
+  // The re-render always happens; a View Transition wraps it only when allowed and available.
+  const fakeDoc = ({ calm, vt }) => {
+    const calls = [];
+    const doc = { defaultView: { matchMedia: (q) => ({ matches: q.includes("reduced-motion") && calm }) } };
+    if (vt) doc.startViewTransition = (fn) => { calls.push("vt"); fn(); };
+    return { doc, calls };
+  };
+  it("runs the update inside a View Transition when motion is allowed and the browser has one", async () => {
+    const { withTransition } = await import("../lesson-core.js");
+    for (const [calm, vt, wrapped] of [[false, true, 1], [true, true, 0], [false, false, 0]]) {
+      const { doc, calls } = fakeDoc({ calm, vt });
+      let ran = 0;
+      withTransition(doc, () => ran++);
+      expect(ran, `calm ${calm}, vt ${vt}`).toBe(1);
+      expect(calls.length, `calm ${calm}, vt ${vt}`).toBe(wrapped);
+    }
+  });
+});
+
+describe("3D hub cards", () => {
+  const rect = { left: 0, top: 0, width: 200, height: 100 };
+  it("moves a card's shadow away from the pointer, up to 6px at the edges, and not at all in the middle", async () => {
+    const { lightFor } = await import("../lesson-core.js");
+    expect(lightFor(100, 50, rect)).toEqual({ sx: 0, sy: 0 });
+    expect(lightFor(200, 100, rect)).toEqual({ sx: -6, sy: -6 }); // pointer bottom right: shadow up and left
+    expect(lightFor(0, 0, rect)).toEqual({ sx: 6, sy: 6 });
+    expect(lightFor(9999, -9999, rect)).toEqual({ sx: -6, sy: 6 }); // clamped
   });
 });
 

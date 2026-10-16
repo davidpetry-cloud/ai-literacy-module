@@ -56,6 +56,12 @@ function provenance(record, now) {
   return `<dl><dt>Attested by</dt><dd>${esc(a.by)}${a.role ? ` · ${esc(a.role)}` : ""}</dd><dt>Basis</dt><dd>${esc(a.basis)}</dd><dt>Verified</dt><dd>${esc(a.verified)} · ${lapse}</dd></dl>`;
 }
 
+/** A model ID as a reader would say it: "claude-opus-5-5" → "Claude Opus 5.5" (UX audit 2026-10, finding 22). */
+export function modelName(id = "") {
+  const m = /^claude-([a-z]+)-(\d+(?:-\d+)*)$/.exec(id);
+  return m ? `Claude ${m[1][0].toUpperCase()}${m[1].slice(1)} ${m[2].replace(/-/g, ".")}` : id;
+}
+
 export function claimCard(id, now = new Date(), { anchor = false, also = [] } = {}) {
   const record = CLAIMS[id];
   const status = resolveStatus(record, now);
@@ -1317,7 +1323,7 @@ function recoverList(order, steps, shown) {
     .map(({ step: st, place, ok }) => {
       const verdict = shown ? `<p class="rc-verdict ${ok ? "rc-yes" : "rc-no"}"><b>${placeVerdict(st, place)}</b> ${esc(st.why)}</p>` : "";
       const btn = (dir, word, off) =>
-        `<button type="button" class="btn" data-id="${esc(st.id)}" data-move="${dir}"${off ? " disabled" : ""}>${word}<span class="sr">: ${esc(st.label)}</span></button>`;
+        `<button type="button" class="btn quiet" data-id="${esc(st.id)}" data-move="${dir}"${off ? " disabled" : ""}>${word}<span class="sr">: ${esc(st.label)}</span></button>`;
       return `<li class="rc-step${shown ? (ok ? " rc-ok" : " rc-off") : ""}"><p class="rc-text">${esc(st.text)}</p>${verdict}<div class="rc-moves">${btn("up", "Move up", place === 1)}${btn("down", "Move down", place === order.length)}</div></li>`;
     })
     .join("")}</ol>`;
@@ -1685,11 +1691,10 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
     <h1>${esc(COURSE.title)}</h1>
     <p class="sub"><b>${esc(COURSE.tagline)}</b> ${esc(COURSE.framing)}</p>
     <div class="facts">
-      <span><b>${mainLessons().length}</b> lessons</span>
-      ${essentials().length ? `<span><b>${essentials().length}</b> essential${essentials().length === 1 ? "" : "s"}</span>` : ""}
+      ${readyCount === mainLessons().length ? `<span><b>${mainLessons().length}</b> lessons</span>` : `<span><b>${readyCount}</b> of ${mainLessons().length} lessons ready</span>`}
+      ${essentials().length ? `<span><b>${essentials().filter((l) => l.ready).length}</b> of ${essentials().length} essentials ready</span>` : ""}
       <span><b>${COURSE.minutes}</b> minutes each</span>
       <span><b>${TRACK_IDS.length}</b> audience tracks</span>
-      <span><b>${readyCount}</b> ready</span>
       <span><b>${counts.attested}</b> of ${Object.keys(CLAIMS).length} claims attested</span>
       <span>Designed by <b>${esc(COURSE.author)}</b></span>
     </div>
@@ -1864,25 +1869,25 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
   const provenanceNote =
     artefact.provenance === "planted"
       ? isRespond
-        ? `Written by ${esc(artefact.model)} for this lesson. The situations and the people in them are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The situations and the people in them are made up.`
         : isInbox
-        ? `Written by ${esc(artefact.model)} for this lesson. The messages, names and addresses are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The messages, names and addresses are made up.`
         : isRequests
-        ? `Written by ${esc(artefact.model)} for this lesson. The requests, apps and companies are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The requests, apps and companies are made up.`
         : isChat
-        ? `Written by ${esc(artefact.model)} for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, as if an AI tool had replied. The tool and the chat are made up.`
         : isThread
-        ? `Written by ${esc(artefact.model)} for this lesson. The people and what happens are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The people and what happens are made up.`
         : isJudge
-        ? `Written by ${esc(artefact.model)} for this lesson. The product, its features and its company are made up.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The product, its features and its company are made up.`
         : isScreen || isAudit
-        ? `Written by ${esc(artefact.model)} for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, as if an AI had built it. The screen is made up, with problems planted on purpose.`
         : isClassify
-        ? `Written by ${esc(artefact.model)} for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The request and the answer are made up, with mistakes planted on purpose.`
         : isSignoff
-        ? `Written by ${esc(artefact.model)} for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
-        : `Written by ${esc(artefact.model)} for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
-      : `Captured from ${esc(artefact.model)} on ${esc(artefact.captured)}.`;
+        ? `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson. The document, the people and their sign-offs are made up, with problems planted on purpose.`
+        : `Written by ${esc(modelName(artefact.model))}, an AI model, for this lesson, with ${isPair ? "gaps and guesses" : "errors"} planted on purpose.`
+      : `Captured from ${esc(modelName(artefact.model))}, an AI model, on ${esc(artefact.captured)}.`;
   // The question learners answer, before the items they answer it about (UX audit 2026-10, findings 4 and 7).
   // A screen or a prompt pair shows its artefact first, then the question, then the parts.
   const ask = concrete.ask ? `<h3 class="subhead">${esc(concrete.ask)}</h3>${concrete.hint ? `<p class="sense">${esc(concrete.hint)}</p>` : ""}` : "";
@@ -2133,6 +2138,44 @@ function readTrack(win) {
   return TRACK_IDS[0];
 }
 
+// Run a page change as a View Transition (a short cross-fade) when the browser has them and the
+// learner hasn't asked for less motion; otherwise the change is instant, as before (WCAG 2.3.3).
+export function withTransition(doc, update) {
+  const win = doc.defaultView;
+  // The site's motion setting (theme-toggle.js) wins; without it, follow the device setting.
+  const pref = doc.documentElement?.dataset?.motion;
+  const calm = pref ? pref === "off" : win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  if (calm || typeof doc.startViewTransition !== "function") return update();
+  doc.documentElement?.classList.remove("vt-theme"); // never play the theme's circle on a track change
+  doc.startViewTransition(update);
+}
+
+// The pointer acts as a light over a hub card: the card's shadow falls away from it, up to `max`
+// pixels at the edges. The card itself never rotates, so its text never warps (David, 2026-10-16).
+export function lightFor(x, y, rect, max = 6) {
+  const dx = Math.max(-1, Math.min(1, ((x - rect.left) / rect.width) * 2 - 1));
+  const dy = Math.max(-1, Math.min(1, ((y - rect.top) / rect.height) * 2 - 1));
+  const r = (v) => Math.round(v * 100) / 100 + 0;
+  return { sx: r(-dx * max), sy: r(-dy * max) };
+}
+
+// Mouse only, and only when the site's motion setting is on; touch and keyboard get the plain lift.
+function wireLight(doc) {
+  const root = doc.documentElement;
+  doc.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse" || root.dataset.motion === "off") return;
+    const card = e.target.closest?.(".card:not(.pending)");
+    if (!card) return;
+    const { sx, sy } = lightFor(e.clientX, e.clientY, card.getBoundingClientRect());
+    card.style.setProperty("--sx", `${sx}px`);
+    card.style.setProperty("--sy", `${sy}px`);
+  });
+  doc.addEventListener("pointerout", (e) => {
+    const card = e.target.closest?.(".card");
+    if (card && !card.contains(e.relatedTarget)) { card.style.removeProperty("--sx"); card.style.removeProperty("--sy"); }
+  });
+}
+
 export function boot(doc) {
   const win = doc.defaultView;
   const page = doc.body.dataset.page;
@@ -2153,14 +2196,17 @@ export function boot(doc) {
     const url = new URL(win.location.href);
     url.searchParams.set("track", track);
     win.history.replaceState(null, "", url);
-    draw();
-    doc.querySelector(`input[name="track"][value="${track}"]`)?.focus();
-    // The whole page re-rendered around the radio. Say so, for anyone who can't see it (context; WCAG 4.1.3).
-    const announce = doc.querySelector("#announce");
-    if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
+    withTransition(doc, () => {
+      draw();
+      doc.querySelector(`input[name="track"][value="${track}"]`)?.focus();
+      // The whole page re-rendered around the radio. Say so, for anyone who can't see it (context; WCAG 4.1.3).
+      const announce = doc.querySelector("#announce");
+      if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
+    });
   });
 
   win.addEventListener("hashchange", () => openClaimGroup(doc, win.location.hash));
+  if (page === "hub") wireLight(doc);
   draw();
   if (page === "hub" && win.location.hash) doc.getElementById(win.location.hash.slice(1))?.scrollIntoView();
   doc.body.dataset.ready = "true";

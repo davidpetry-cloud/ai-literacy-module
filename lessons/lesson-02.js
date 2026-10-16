@@ -222,7 +222,7 @@ export default {
             vague: {
               prompt: "Help me with my essay on climate change.",
               gaps: {
-                task: { key: "missing", note: "\"Help\" could mean ideas, feedback or writing it. The model chose writing it." },
+                task: { key: "vague", note: "\"Help\" could mean ideas, feedback or writing it. The model chose writing it." },
                 context: { key: "vague", note: "It gives the topic, but not the grade, the kind of essay, or your own thesis." },
                 constraints: { key: "missing", note: "Nothing about keeping your voice or not writing it for you." },
                 format: { key: "missing", note: "Nothing about the shape, so it came back as an essay paragraph." }

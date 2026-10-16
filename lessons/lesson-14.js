@@ -281,7 +281,7 @@ export default {
                   access: "Your contacts, photos and location. Homework doesn't need those."
                 },
                 check: "Don't tap the ad. Ask a trusted adult. Use only the AI tools your school allows.",
-                note: "Fake apps can look real. A trusted adult can help you check if your school allows it."
+                note: "Fake apps can look real, and this one asks for more than homework needs, so the answer is usually no. You check first with a trusted adult, who can tell you if your school allows it."
               },
               {
                 kind: "connect",
@@ -376,7 +376,7 @@ export default {
         "Press Start again if the group wants a second try."
       ],
       say: [
-        ["Facilitator", "A new password is step three, not the last step."],
+        ["Facilitator", "A new password comes early, not last."],
         ["Expected", "\"I'd warn my friends first.\" Say: lock the account first, or the attacker keeps sending messages as you."],
         ["Facilitator", "Nothing you choose here is saved or sent."]
       ],

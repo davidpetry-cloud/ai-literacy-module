@@ -34,6 +34,7 @@
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
   --edge:#7A8FA6; --btn-edge:#0F2338;
+  --shadow:#0F2338; --hi:#FFFFFF;
   --sans:"Lexend",system-ui,sans-serif;
   --serif:"Fraunces",Georgia,serif;
 }
@@ -56,9 +57,38 @@
   --l1:#6FA8E0; --l2:#B39AEB; --l3:#4FC3C9; --l4:#E3C04F; --l5:#EE9A5C; --l6:#B3CF5A; --l7:#C99A7A; --l8:#81C784; --l9:#A0AEC0; --l10:#9DB0EE; --l11:#67C6DE; --l12:#D1D5DB; --l13:#F87171; --l14:#FDBA74; --l15:#A5B4FC; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
+  --shadow:#000000; --hi:#FFFFFF;
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* `*` doesn't reach View Transition pseudo-elements, so switch those off too (the scripts skip them as well),
+   unless the learner has chosen "Allow motion" on the site, which beats the device setting (user control). */
+@media (prefers-reduced-motion:reduce){:root:not([data-motion="on"])::view-transition-group(*),:root:not([data-motion="on"])::view-transition-old(*),:root:not([data-motion="on"])::view-transition-new(*){animation:none!important}}
+/* "Reduce motion" on the site (theme-toggle.js sets data-motion) stops everything, whatever the device says. */
+:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}
+:root[data-motion="off"]::view-transition-group(*),:root[data-motion="off"]::view-transition-old(*),:root[data-motion="off"]::view-transition-new(*){animation:none!important}
+/* View Transitions: a track change uses the browser's own short cross-fade; a theme change spreads
+   in a circle from the toggle (theme-toggle.js sets --vt-x/--vt-y). Short, and once per click. */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
+html.vt-theme::view-transition-old(root){animation:none}
+html.vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out both}
+@keyframes vt-reveal{from{clip-path:circle(0 at var(--vt-x,50%) var(--vt-y,0))}to{clip-path:circle(150vmax at var(--vt-x,50%) var(--vt-y,0))}}
+/* Scroll-linked motion (David, 2026-10-16): it moves only as fast as the reader scrolls, stops when
+   they stop and runs back when they scroll up, so nothing moves on its own. Two jobs only: a
+   progress line in the lesson's colour (where am I?) and sections rising into place (flow).
+   Only when the site's motion setting is on (data-motion, from the device setting unless the learner
+   chose), and only in browsers with scroll timelines; no opacity, only movement. !important lets a
+   learner's "Allow motion" beat the device-wide reduce rule above. */
+@supports (animation-timeline:view()){
+  :root[data-motion="on"] [data-stage],:root[data-motion="on"] .card{animation:rise linear both!important;animation-timeline:view()!important;animation-range:entry 0% entry 70%!important}
+  :root[data-motion="on"] .top[data-lesson]::after{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:var(--lc);transform-origin:0 50%;animation:progress linear both;animation-timeline:scroll(root);z-index:10;pointer-events:none}
+}
+:root[data-motion="on"] .key[open] > :not(summary){animation:reveal .18s ease-out!important}
+@keyframes rise{from{translate:0 32px}}
+@keyframes progress{from{transform:scaleX(0)}}
+/* Headings break into even lines; paragraphs avoid a lone last word. */
+h1,h2,h3,.card h3{text-wrap:balance}
+p,li,dd{text-wrap:pretty}
 body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:var(--lh-body);-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:var(--r-sm)}
 a{color:var(--ink-2)}
@@ -79,6 +109,7 @@ a{color:var(--ink-2)}
   display:inline-flex;align-items:center;gap:8px;margin:0 0 8px auto;cursor:pointer;min-height:48px;
   background:rgba(255,255,255,.18);border:2px solid var(--on-dark);border-radius:var(--r-pill);padding:8px 24px}
 .theme-toggle:hover{background:rgba(255,255,255,.3);border-color:var(--on-dark)}
+.hdr-tools{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0 8px;margin-left:auto}
 .top .eyebrow{font-family:var(--sans);font-size:var(--fs-xl);font-weight:700;color:var(--amber);margin:0 0 8px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;line-height:var(--lh-heading)}
 .top h1{font-family:var(--serif);font-weight:600;font-size:var(--fs-display);margin:0 0 8px;letter-spacing:-.015em;line-height:var(--lh-display)}
 .top .sub{color:var(--header-sub);margin:0 0 16px;max-width:var(--measure)}
@@ -130,10 +161,21 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .card{position:relative}
 .card h3 a::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg)}
 .card:has(h3 a){cursor:pointer}
-.card:has(h3 a:hover){box-shadow:0 0 0 2px var(--lc)}
 .card:has(h3 a:hover) h3 a{text-decoration-thickness:2px}
 .card h3 a:focus-visible{outline:none}
 .card h3 a:focus-visible::after{outline:3px solid var(--focus);outline-offset:4px}
+/* 3D cards (David, 2026-10-16): built cards sit raised like tiles set in a wall; on hover or keyboard
+   focus they lift straight up, and with a mouse the pointer acts as a light, so the shadow falls away
+   from it (lesson-core.js sets --sx/--sy, at most 6px, only when motion is on). Cards never rotate,
+   so text never warps. Cards still in design stay flat: depth means ready. */
+.card{box-shadow:inset 0 1px 0 color-mix(in oklch,var(--hi) 7%,transparent),0 1px 2px color-mix(in oklch,var(--shadow) 10%,transparent),0 6px 12px -2px color-mix(in oklch,var(--shadow) 10%,transparent),0 18px 32px -12px color-mix(in oklch,var(--shadow) 22%,transparent);
+  transition:transform .25s ease-out,box-shadow .25s ease-out}
+.card.pending{box-shadow:none}
+.card:has(h3 a:hover),.card:has(h3 a:focus-visible){transform:translateY(-6px);
+  box-shadow:0 0 0 2px var(--lc),inset 0 1px 0 color-mix(in oklch,var(--hi) 9%,transparent),
+    var(--sx,0px) calc(4px + var(--sy,0px)) 8px color-mix(in oklch,var(--shadow) 12%,transparent),
+    calc(var(--sx,0px) * 2) calc(16px + var(--sy,0px) * 2) 24px -6px color-mix(in oklch,var(--shadow) 16%,transparent),
+    calc(var(--sx,0px) * 3) calc(32px + var(--sy,0px) * 3) 48px -16px color-mix(in oklch,var(--shadow) 28%,transparent)}
 /* The lesson number is the same coloured badge on the hub as on lesson pages (consistency), large enough to scan for (hierarchy: below the 20px title). */
 .card .eyebrow{font-family:var(--sans);display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px}
 .card .eyebrow .lesson-no{font-size:var(--fs-md)}
@@ -364,6 +406,11 @@ table.ref{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 1.
 .row-btns{display:flex;flex-wrap:wrap;gap:8px}
 .row-btns .btn{margin-bottom:12px}
 .btn:disabled{cursor:not-allowed;background:var(--card);color:var(--ink-3)}
+/* A quiet button for repeated small actions (Move up, Move down), so the one main action stands out,
+   as on Singapore Math, where the plain .btn is light and only .btn.go is dark (UX audit 2026-10, finding 15). */
+.btn.quiet{background:var(--card);color:var(--ink)}
+.btn.quiet:hover{background:var(--paper)}
+.btn.quiet:disabled{color:var(--ink-3)}
 svg.cc-sample{display:block;width:100%;max-width:360px;height:auto;font-family:var(--sans)}
 .cc-frame{stroke:var(--edge);stroke-width:2}
 .cc-empty{fill:var(--card)}
@@ -512,6 +559,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
   .top a.back,.theme-toggle{font-size:var(--fs-base);padding:8px 16px}
   .top a.back{padding-right:16px}
   .hdr-row{flex-wrap:nowrap}
+  .hdr-row:has(.back){flex-wrap:wrap}
   .tracks label{font-size:var(--fs-base)}
   .block{padding:16px 16px}
   .cards{grid-template-columns:1fr}
@@ -525,13 +573,14 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
     --l1:#1F6FB2;--l2:#6D4BB0;--l3:#0F7A80;--l4:#8A6A00;--l5:#B8561A;--l6:#5C7A10;--l7:#5C3317;--l8:#2E7D32;--l9:#4A5568;--l10:#243B7A;--l11:#155E75;--l12:#374151;--l13:#991B1B;--l14:#9A3412;--l15:#3730A3;--on-lc:#fff;
-    --edge:#666;--btn-edge:#0F2338;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
+    --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}
   .top,[data-page] .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none}
   .top h1,.facts b{color:#000}
   .facts,.top .sub,.top .eyebrow{color:#333}
   .tracks,.btn,.back,.theme-toggle,.foot{display:none}
+  .card{box-shadow:none;transform:none}
   .lesson{grid-template-columns:minmax(0,1fr)}
   .side{position:static}
   .block,.card{break-inside:avoid}

@@ -366,7 +366,7 @@ export default {
     },
     {
       kind: "abstract",
-      title: "Protect Yourself and Your Gifts",
+      title: "What protects you",
       minutes: 8,
       targets: ["12.1", "12.2", "12.3"],
       principles: ["gaslighting-defined", "gut-feeling-evidence", "fbi-teens-online", "never-promise-secrecy", "mandated-reporting-us", "sextortion-advice", "child-helplines"],

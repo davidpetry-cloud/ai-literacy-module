@@ -228,6 +228,13 @@ describe("colour usage", () => {
     expect(rules.find((r) => r.sel === ".ref td").body).toContain("overflow-wrap:anywhere");
   });
 
+  // A quiet button stays light when hovered, so its dark text never lands on a dark band (finding 15).
+  it("keeps the quiet button light in every state, with the button ring", () => {
+    expect(rules.find((r) => r.sel === ".btn.quiet").body).toContain("background:var(--card)");
+    expect(rules.find((r) => r.sel === ".btn.quiet").body).toContain("color:var(--ink)");
+    expect(rules.find((r) => r.sel === ".btn.quiet:hover").body).toContain("background:var(--paper)");
+  });
+
   it("lets the prompt comparison's columns shrink below 280px, so it reflows at 320px", () => {
     expect(rules.find((r) => r.sel === ".cmp").body).toContain("minmax(min(100%,280px),1fr)");
   });
@@ -409,6 +416,106 @@ describe("theme toggle", () => {
 
   it("lets a saved choice override the system", () => {
     expect(theme(load({ saved: "light", systemDark: true }))).toBe("light");
+  });
+
+  // A View Transition only when the browser has one and the learner allows motion; the theme always changes.
+  function loadWith({ calm, vt }) {
+    const dom = new JSDOM(read("lesson.html").replace(/<script type="module">[\s\S]*?<\/script>/, ""), {
+      url: "http://localhost/lesson.html",
+      runScripts: "outside-only"
+    });
+    const w = dom.window;
+    w.matchMedia = (q) => ({ matches: q.includes("reduced-motion") ? calm : false, addEventListener() {} });
+    const calls = [];
+    if (vt) w.document.startViewTransition = (fn) => { calls.push(fn); fn(); return { finished: Promise.resolve() }; };
+    w.eval(read("theme-toggle.js"));
+    w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    return { w, calls };
+  }
+
+  it("spreads the new theme with a View Transition only when motion is allowed and the browser has one", () => {
+    for (const [calm, vt, expected] of [[false, true, 1], [true, true, 0], [false, false, 0]]) {
+      const { w, calls } = loadWith({ calm, vt });
+      btn(w).click();
+      expect(theme(w), `calm ${calm}, vt ${vt}`).toBe("dark");
+      expect(btn(w).textContent).toContain("Light mode");
+      expect(calls.length, `calm ${calm}, vt ${vt}`).toBe(expected);
+    }
+  });
+
+  it("switches View Transitions off for reduced motion in CSS too, since * doesn't reach their pseudo-elements", () => {
+    expect(css).toMatch(/@media \(prefers-reduced-motion:reduce\)\{:root:not\(\[data-motion="on"\]\)::view-transition-group\(\*\)/);
+    expect(css).toContain(':root[data-motion="off"]::view-transition-group(*)');
+  });
+
+  // The site's own motion setting: user control, for anyone who can't change the device setting.
+  function loadMotion({ saved = null, systemReduce = false } = {}) {
+    const dom = new JSDOM(read("lesson.html").replace(/<script type="module">[\s\S]*?<\/script>/, ""), {
+      url: "http://localhost/lesson.html",
+      runScripts: "outside-only"
+    });
+    const w = dom.window;
+    w.matchMedia = (q) => ({ matches: q.includes("reduced-motion") ? systemReduce : false, addEventListener() {} });
+    if (saved) w.localStorage.setItem("ai-literacy-motion", saved);
+    w.eval(read("theme-toggle.js"));
+    w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    return w;
+  }
+  const motion = (w) => w.document.documentElement.dataset.motion;
+  const mbtn = (w) => w.document.querySelector("[data-motion-toggle]");
+
+  it("puts a motion toggle beside the theme toggle in every page's header", () => {
+    for (const page of ["index.html", "lesson.html", "sources.html"]) {
+      const doc = new JSDOM(read(page)).window.document;
+      const b = doc.querySelector("header .hdr-row .hdr-tools [data-motion-toggle]");
+      expect(b, page).not.toBeNull();
+      expect(b.tagName, page).toBe("BUTTON");
+      expect(b.hasAttribute("aria-label"), page).toBe(false);
+    }
+  });
+
+  it("follows the device's reduce-motion setting until the learner chooses", () => {
+    expect(motion(loadMotion({ systemReduce: true }))).toBe("off");
+    expect(motion(loadMotion({ systemReduce: false }))).toBe("on");
+    expect(motion(loadMotion({ saved: "on", systemReduce: true }))).toBe("on");
+    expect(motion(loadMotion({ saved: "off" }))).toBe("off");
+  });
+
+  it("turns motion off and on, saves it, names what a click will do, and says so", () => {
+    const w = loadMotion();
+    expect(mbtn(w).textContent).toBe("Reduce motion");
+    mbtn(w).click();
+    expect(motion(w)).toBe("off");
+    expect(mbtn(w).textContent).toBe("Allow motion");
+    expect(w.localStorage.getItem("ai-literacy-motion")).toBe("off");
+    expect(w.document.querySelector("#announce").textContent).toBe("Motion is off.");
+    mbtn(w).click();
+    expect(motion(w)).toBe("on");
+    expect(mbtn(w).textContent).toBe("Reduce motion");
+  });
+
+  it("stops every animation and transition when motion is off, whatever the device says", () => {
+    expect(css).toContain(':root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}');
+  });
+
+  it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
+    expect(css).toMatch(/\.card\{box-shadow:inset 0 1px 0/);
+    expect(css).toContain(".card.pending{box-shadow:none}");
+    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
+    expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
+    // The scroll rise uses the separate translate property, so it never blocks the card's hover transform.
+    expect(css).toContain("@keyframes rise{from{translate:0 32px}}");
+  });
+
+  // David, 2026-10-16: text must never warp "like a fun mirror". 3D rotation and perspective skew
+  // text, so the site's CSS uses neither; depth comes from shadows and straight movement only.
+  it("never rotates in 3D or adds perspective, so text never warps", () => {
+    expect(css).not.toMatch(/perspective\s*:|perspective\(|rotate[XYZ3]\w*\(|rotate\s*:\s*[xyz]\b/i);
+  });
+
+  it("ties the scroll effects to the scrollbar, only when motion is on and the browser has scroll timelines", () => {
+    expect(css).toMatch(/@supports \(animation-timeline:view\(\)\)\{\s*:root\[data-motion="on"\] \[data-stage\]/);
+    expect(css).toContain("animation-timeline:scroll(root)");
   });
 
   it("flips, saves, and renames itself for what a click will do next", () => {
