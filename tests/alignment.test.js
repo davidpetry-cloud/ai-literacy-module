@@ -16,7 +16,7 @@ const PARTS = ["task", "context", "constraints", "format"];
 const LEVELS = ["glance", "spot", "full"];
 const GAPS = ["stated", "vague", "missing"];
 // Each exercise type has its own rules; a lesson's concrete stage names its type.
-const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond", "inbox", "requests"];
+const EXERCISES = ["passage", "prompt-pair", "sign-offs", "classify", "screen", "audit", "judge", "thread", "chat", "respond", "inbox", "requests", "pause-call"];
 const VERDICTS = ["keep", "change", "stop"];
 const TOUCHES = ["dignity", "children", "relationships"];
 const WCAG_PRINCIPLES = ["Perceivable", "Operable", "Understandable", "Robust"];
@@ -147,7 +147,7 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
   it("names a known exercise type, and a pictorial figure that fits it", () => {
     expect(EXERCISES).toContain(exerciseOf(lesson));
     const figure = lesson.stages.find((s) => s.kind === "pictorial").figure;
-    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"], inbox: ["share"], requests: ["recover"] }[exerciseOf(lesson)]).toContain(figure);
+    expect({ passage: ["confidence-grid", "check-scale", "overlap"], "prompt-pair": ["prompt-compare"], "sign-offs": ["sign-off"], classify: ["checklist"], screen: ["fix-first"], audit: ["contrast"], judge: ["control"], thread: ["pattern"], chat: ["gains"], respond: ["plan"], inbox: ["share"], requests: ["recover"], "pause-call": ["share"] }[exerciseOf(lesson)]).toContain(figure);
   });
 
   describe.runIf(exerciseOf(lesson) === "passage")("concrete stage: passage", () => {
@@ -896,6 +896,99 @@ describe.each(ready.map((l) => [l.n, l]))("ready lesson %i", (n, lesson) => {
 
     it("puts each track's answer key under a ledger claim", () => {
       for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(requests(t).claim);
+    });
+  });
+
+  describe.runIf(exerciseOf(lesson) === "pause-call")("concrete stage: pause-call", () => {
+    const concrete = lesson.stages.find((s) => s.kind === "concrete");
+    const pictorial = lesson.stages.find((s) => s.kind === "pictorial");
+    const calls = (t) => concrete.tracks[t].calls;
+    const bestAt = (p) => p.choices.findIndex((c) => c.best);
+
+    // The approved design: one call you didn't make, then one you made, each stopped at four pauses.
+    it("has a context and two calls for every track, a call you didn't make and then one you made, each with four keyed pauses", () => {
+      for (const t of TRACK_IDS) {
+        expect(concrete.tracks[t]?.context, t).toBeTruthy();
+        expect(calls(t).items.map((c) => c.kind), t).toEqual(["incoming", "outgoing"]);
+        for (const c of calls(t).items) {
+          expect(c.from, t).toBeTruthy();
+          expect(c.pauses, t).toHaveLength(4);
+          for (const p of c.pauses) {
+            expect(p.before.length, p.ask).toBeGreaterThan(0);
+            for (const [who, line] of p.before) expect(typeof who === "string" && line, p.ask).toBeTruthy();
+            for (const f of ["ask", "why"]) expect(p[f], `${t} ${f}`).toBeTruthy();
+            expect(p.choices, p.ask).toHaveLength(3);
+            expect(p.choices.filter((ch) => ch.best), p.ask).toHaveLength(1);
+            expect(new Set(p.choices.map((ch) => ch.text)).size, p.ask).toBe(3);
+          }
+        }
+        expect(["planted", "captured"], t).toContain(calls(t).provenance);
+        expect(calls(t).model, t).toBeTruthy();
+      }
+    });
+
+    it("doesn't let the best choice be guessed from position", () => {
+      const orders = TRACK_IDS.map((t) => calls(t).items.flatMap((c) => c.pauses.map(bestAt)).join());
+      expect(new Set(orders).size).toBe(TRACK_IDS.length);
+      for (const t of TRACK_IDS) for (const c of calls(t).items) expect(new Set(c.pauses.map(bestAt)).size, `${t} ${c.kind}`).toBeGreaterThan(1);
+    });
+
+    // E3.1 rides on the first reveal: the caller sounded human and was a bot.
+    it("reveals at the first pause of the unexpected call that it was an AI voice bot", () => {
+      for (const t of TRACK_IDS) expect(calls(t).items[0].pauses[0].why, t).toMatch(/AI voice bot/);
+    });
+
+    // E3.2: on a call you didn't make, the best choice never calls a number the call supplied, or gives a detail.
+    it("never makes calling the caller's own number, or giving a detail, the best choice on a call you didn't make", () => {
+      for (const t of TRACK_IDS) {
+        for (const p of calls(t).items[0].pauses) {
+          const best = p.choices.find((ch) => ch.best).text;
+          expect(best, t).not.toMatch(/straight back|number (it|the caller) gives|caller's direct number|^Read out|^Give|^Tell it/i);
+        }
+        expect(calls(t).items[0].pauses.some((p) => /can you hear me/i.test(p.before.map(([, l]) => l).join(" "))), t).toBe(true);
+      }
+    });
+
+    // E3.3: the honest agent says it's an AI, asks for more than it needs, and loops; the best choices keep the password and ask for a person.
+    it("has the company's AI say it's an AI, and makes keeping the password and asking for a person the best choices", () => {
+      for (const t of TRACK_IDS) {
+        const out = calls(t).items[1];
+        expect(out.pauses[0].before.find(([who]) => who === "AI agent")[1], t).toMatch(/an AI assistant/);
+        const bests = out.pauses.map((p) => p.choices.find((ch) => ch.best).text).join(" ");
+        expect(bests, t).toMatch(/won't share the password/);
+        expect(bests, t).toMatch(/speak to a person/);
+        for (const p of out.pauses) expect(p.choices.find((ch) => ch.best).text, t).not.toMatch(/^(Give it|Read out|Both|All three|The password)/);
+      }
+    });
+
+    // Safeguarding (docs/student-safety.md): the learner's own phone, nobody calls anyone, a trusted adult in every hang-up.
+    it("keeps students to their own phone, has a parent or carer make the call, and names a trusted adult in every students hang-up", () => {
+      expect(concrete.tracks.students.context).toMatch(/your own phone/);
+      expect(concrete.tracks.students.context).toMatch(/Nobody makes a call/);
+      expect(calls("students").items[1].from).toMatch(/parent or carer/);
+      for (const c of calls("students").items) for (const p of c.pauses) for (const ch of p.choices) if (/hang up/i.test(ch.text)) expect(ch.text).toMatch(/trusted adult/);
+    });
+
+    it("sorts twelve things to say into three bins, all used, with a reason each and the key under a ledger claim", () => {
+      expect(pictorial.figure).toBe("share");
+      expect(pictorial.bins.map((b) => b.id)).toEqual(["any", "made", "never"]);
+      for (const b of pictorial.bins) expect(b.label && b.short, b.id).toBeTruthy();
+      expect(pictorial.items).toHaveLength(12);
+      expect(new Set(pictorial.items.map((it) => it.id)).size).toBe(12);
+      for (const it of pictorial.items) {
+        expect(["any", "made", "never"], it.text).toContain(it.key);
+        expect(it.why, it.text).toBeTruthy();
+      }
+      expect(new Set(pictorial.items.map((it) => it.key))).toEqual(new Set(["any", "made", "never"]));
+      // The approved middle bin: the same kind of thing is fine or never, depending on who called whom.
+      const key = (id) => pictorial.items.find((it) => it.id === id).key;
+      expect([key("password"), key("pin"), key("code-them"), key("yes"), key("money")]).toEqual(["never", "never", "never", "never", "never"]);
+      expect([key("code-bank"), key("order"), key("name-reason")]).toEqual(["made", "made", "made"]);
+      expect(CLAIMS).toHaveProperty(pictorial.claim);
+    });
+
+    it("puts each track's answer key under a ledger claim", () => {
+      for (const t of TRACK_IDS) expect(CLAIMS).toHaveProperty(calls(t).claim);
     });
   });
 

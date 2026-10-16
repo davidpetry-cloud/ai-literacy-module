@@ -7,7 +7,8 @@ source: knowing what it is, asking it well, checking what it says, deciding who
 signs off, judging the screens it builds, keeping people at the center,
 recognizing manipulation, from people and from AI. Lessons 9–12 are the
 Dark Triad series. Essentials are shorter habits that fit in at any point:
-staying secure, and keeping your devices and accounts safe. There are three
+staying secure, keeping your devices and accounts safe, and talking with AI on
+the phone. There are three
 audience tracks: educators, professionals and students.
 
 Designed by David Petry.
@@ -74,7 +75,7 @@ timings add up to 45 minutes.
 |---|---|---|
 | 1 | Staying Secure in the Age of AI | Built |
 | 2 | Keeping Your Devices and Accounts Safe | Built |
-| 3 | Talking With AI on the Phone | In design |
+| 3 | Talking With AI on the Phone | Built |
 
 Every lesson's claims start as model proposals. The hub shows how many have
 been attested so far.

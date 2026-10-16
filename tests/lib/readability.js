@@ -36,6 +36,11 @@ export function readability(texts) {
 // (gap notes, invented notes, what each part changed) reads as key text.
 function concreteTexts(concrete, t) {
   const art = concrete.tracks[t];
+  if (art.calls) {
+    // What's said on the call, the questions and the choices read as passage text; the reasons are the key.
+    const ps = art.calls.items.flatMap((c) => [...c.pauses, ...(c.after ? [{ before: c.after, choices: [] }] : [])]);
+    return { passage: [...art.calls.items.map((c) => c.from), ...ps.flatMap((p) => [...p.before.map(([, line]) => line), p.ask, ...p.choices.map((ch) => ch.text)])].filter(Boolean), key: ps.map((p) => p.why).filter(Boolean) };
+  }
   if (art.requests) {
     // What the screen says reads as passage text; the notes, what to look at and how to check are the key.
     const rs = art.requests.items;
