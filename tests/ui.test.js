@@ -498,6 +498,15 @@ describe("theme toggle", () => {
     expect(css).toContain(':root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}');
   });
 
+  it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
+    expect(css).toMatch(/\.card\{box-shadow:inset 0 1px 0/);
+    expect(css).toContain(".card.pending{box-shadow:none}");
+    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\)/);
+    expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
+    // The scroll rise uses the separate translate property, so it never blocks the card's hover transform.
+    expect(css).toContain("@keyframes rise{from{translate:0 32px}}");
+  });
+
   it("ties the scroll effects to the scrollbar, only when motion is on and the browser has scroll timelines", () => {
     expect(css).toMatch(/@supports \(animation-timeline:view\(\)\)\{\s*:root\[data-motion="on"\] \[data-stage\]/);
     expect(css).toContain("animation-timeline:scroll(root)");

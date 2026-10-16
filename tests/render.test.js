@@ -1168,6 +1168,17 @@ describe("track switch transition", () => {
   });
 });
 
+describe("3D hub cards", () => {
+  const rect = { left: 0, top: 0, width: 200, height: 100 };
+  it("tilts a card towards the pointer, up to 4 degrees at the edges, and not at all in the middle", async () => {
+    const { tiltFor } = await import("../lesson-core.js");
+    expect(tiltFor(100, 50, rect)).toEqual({ rx: 0, ry: 0 });
+    expect(tiltFor(200, 100, rect)).toEqual({ rx: -4, ry: 4 });
+    expect(tiltFor(0, 0, rect)).toEqual({ rx: 4, ry: -4 });
+    expect(tiltFor(9999, -9999, rect)).toEqual({ rx: 4, ry: 4 }); // clamped
+  });
+});
+
 describe("lesson navigation", () => {
   const nav = (n, track = "students") => lessonDoc(track, getLesson(n)).querySelector("nav.lesson-nav");
 
