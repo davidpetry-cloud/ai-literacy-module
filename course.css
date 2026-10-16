@@ -59,6 +59,17 @@
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* `*` doesn't reach View Transition pseudo-elements, so switch those off too (the scripts skip them as well). */
+@media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+/* View Transitions: a track change uses the browser's own short cross-fade; a theme change spreads
+   in a circle from the toggle (theme-toggle.js sets --vt-x/--vt-y). Short, and once per click. */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
+html.vt-theme::view-transition-old(root){animation:none}
+html.vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out both}
+@keyframes vt-reveal{from{clip-path:circle(0 at var(--vt-x,50%) var(--vt-y,0))}to{clip-path:circle(150vmax at var(--vt-x,50%) var(--vt-y,0))}}
+/* Headings break into even lines; paragraphs avoid a lone last word. */
+h1,h2,h3,.card h3{text-wrap:balance}
+p,li,dd{text-wrap:pretty}
 body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:var(--lh-body);-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:var(--r-sm)}
 a{color:var(--ink-2)}

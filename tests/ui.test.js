@@ -418,6 +418,35 @@ describe("theme toggle", () => {
     expect(theme(load({ saved: "light", systemDark: true }))).toBe("light");
   });
 
+  // A View Transition only when the browser has one and the learner allows motion; the theme always changes.
+  function loadWith({ calm, vt }) {
+    const dom = new JSDOM(read("lesson.html").replace(/<script type="module">[\s\S]*?<\/script>/, ""), {
+      url: "http://localhost/lesson.html",
+      runScripts: "outside-only"
+    });
+    const w = dom.window;
+    w.matchMedia = (q) => ({ matches: q.includes("reduced-motion") ? calm : false, addEventListener() {} });
+    const calls = [];
+    if (vt) w.document.startViewTransition = (fn) => { calls.push(fn); fn(); return { finished: Promise.resolve() }; };
+    w.eval(read("theme-toggle.js"));
+    w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+    return { w, calls };
+  }
+
+  it("spreads the new theme with a View Transition only when motion is allowed and the browser has one", () => {
+    for (const [calm, vt, expected] of [[false, true, 1], [true, true, 0], [false, false, 0]]) {
+      const { w, calls } = loadWith({ calm, vt });
+      btn(w).click();
+      expect(theme(w), `calm ${calm}, vt ${vt}`).toBe("dark");
+      expect(btn(w).textContent).toContain("Light mode");
+      expect(calls.length, `calm ${calm}, vt ${vt}`).toBe(expected);
+    }
+  });
+
+  it("switches View Transitions off for reduced motion in CSS too, since * doesn't reach their pseudo-elements", () => {
+    expect(css).toMatch(/@media \(prefers-reduced-motion:reduce\)\{::view-transition-group\(\*\),::view-transition-old\(\*\),::view-transition-new\(\*\)\{animation:none!important\}\}/);
+  });
+
   it("flips, saves, and renames itself for what a click will do next", () => {
     const w = load();
     expect(btn(w).textContent).toContain("Dark mode");

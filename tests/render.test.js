@@ -1148,6 +1148,26 @@ describe("reference tables reflow at 320px (WCAG 1.4.10)", () => {
   });
 });
 
+describe("track switch transition", () => {
+  // The re-render always happens; a View Transition wraps it only when allowed and available.
+  const fakeDoc = ({ calm, vt }) => {
+    const calls = [];
+    const doc = { defaultView: { matchMedia: (q) => ({ matches: q.includes("reduced-motion") && calm }) } };
+    if (vt) doc.startViewTransition = (fn) => { calls.push("vt"); fn(); };
+    return { doc, calls };
+  };
+  it("runs the update inside a View Transition when motion is allowed and the browser has one", async () => {
+    const { withTransition } = await import("../lesson-core.js");
+    for (const [calm, vt, wrapped] of [[false, true, 1], [true, true, 0], [false, false, 0]]) {
+      const { doc, calls } = fakeDoc({ calm, vt });
+      let ran = 0;
+      withTransition(doc, () => ran++);
+      expect(ran, `calm ${calm}, vt ${vt}`).toBe(1);
+      expect(calls.length, `calm ${calm}, vt ${vt}`).toBe(wrapped);
+    }
+  });
+});
+
 describe("lesson navigation", () => {
   const nav = (n, track = "students") => lessonDoc(track, getLesson(n)).querySelector("nav.lesson-nav");
 

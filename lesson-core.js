@@ -2138,6 +2138,16 @@ function readTrack(win) {
   return TRACK_IDS[0];
 }
 
+// Run a page change as a View Transition (a short cross-fade) when the browser has them and the
+// learner hasn't asked for less motion; otherwise the change is instant, as before (WCAG 2.3.3).
+export function withTransition(doc, update) {
+  const win = doc.defaultView;
+  const calm = win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  if (calm || typeof doc.startViewTransition !== "function") return update();
+  doc.documentElement?.classList.remove("vt-theme"); // never play the theme's circle on a track change
+  doc.startViewTransition(update);
+}
+
 export function boot(doc) {
   const win = doc.defaultView;
   const page = doc.body.dataset.page;
@@ -2158,11 +2168,13 @@ export function boot(doc) {
     const url = new URL(win.location.href);
     url.searchParams.set("track", track);
     win.history.replaceState(null, "", url);
-    draw();
-    doc.querySelector(`input[name="track"][value="${track}"]`)?.focus();
-    // The whole page re-rendered around the radio. Say so, for anyone who can't see it (context; WCAG 4.1.3).
-    const announce = doc.querySelector("#announce");
-    if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
+    withTransition(doc, () => {
+      draw();
+      doc.querySelector(`input[name="track"][value="${track}"]`)?.focus();
+      // The whole page re-rendered around the radio. Say so, for anyone who can't see it (context; WCAG 4.1.3).
+      const announce = doc.querySelector("#announce");
+      if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
+    });
   });
 
   win.addEventListener("hashchange", () => openClaimGroup(doc, win.location.hash));

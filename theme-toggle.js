@@ -36,10 +36,19 @@
     document.addEventListener("click", function(e){
       if(!e.target.closest || !e.target.closest("[data-theme-toggle]")) return;
       var next = root.getAttribute("data-theme")==="dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
       saved=next;
       try{ localStorage.setItem(KEY, next); }catch(err){}
-      syncAll();
+      function apply(){ root.setAttribute("data-theme", next); syncAll(); }
+      // The new theme spreads in a circle from the button (a View Transition). With reduced
+      // motion, or a browser without View Transitions, it changes at once, as before.
+      var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(calm || typeof document.startViewTransition!=="function"){ apply(); return; }
+      var b = e.target.closest("[data-theme-toggle]").getBoundingClientRect();
+      root.style.setProperty("--vt-x", Math.round(b.left + b.width/2) + "px");
+      root.style.setProperty("--vt-y", Math.round(b.top + b.height/2) + "px");
+      root.classList.add("vt-theme");
+      var t = document.startViewTransition(apply);
+      t.finished.then(function(){ root.classList.remove("vt-theme"); }, function(){ root.classList.remove("vt-theme"); });
     });
   });
 })();
