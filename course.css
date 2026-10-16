@@ -21,8 +21,9 @@
   --teal:#1F8A7D; --teal-text:#136155; --teal-pale:#DCEFEB;
   --amber:#E4A03C; --amber-pale:#FAEDD6;
   --peri:#6B7FB3; --peri-pale:#E4E9F4; --rose:#C2536B; --rose-pale:#F6E3E8;
-  --paper:#F3F6F8; --card:#FFFFFF; --line:#D3DCE4;
-  --text:#16283C; --muted:#5B7189;
+  /* light pages are warm limestone, like Budapest's stone facades, not bright white (David, 2026-10-16) */
+  --paper:#F5EFE6; --card:#FDFBF6; --line:#DDD6CB;
+  --text:#16283C; --muted:#556A82;
   --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#6A7183;
   /* one colour per theme (Lessons 1-5, 6-8, 9-12) and one per essential (David, 2026-10-16), readable as
      text on a card; always paired with the lesson number and the theme's name */
@@ -34,8 +35,8 @@
   --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px;
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
-  --edge:#7A8FA6; --btn-edge:#0F2338;
-  --shadow:#0F2338; --hi:#FFFFFF; --glow:#FFFFFF;
+  --edge:#71859C; --btn-edge:#0F2338;
+  --shadow:#3A2A14; --hi:#FFFFFF; --glow:#FFF9EB;
   --sans:"Lexend",system-ui,sans-serif;
   --serif:"Fraunces",Georgia,serif;
 }
