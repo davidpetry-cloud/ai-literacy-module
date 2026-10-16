@@ -6,7 +6,7 @@
 **Status:** objectives approved by David on 2026-10-13, with "what to say and what not
 to say" added at his request the same day. **Registered 2026-10-13**, after Essentials 2 merged: `lessons/lesson-15.js` holds
 the objectives, warm-up, check and exit ticket (`ready: false`), it is in `course.js`,
-and its colour is `--l15` indigo (#3730A3 light, #A5B4FC dark; David: no pink). The hub lists it under
+and its colour was `--l15` indigo (#3730A3 light, #A5B4FC dark; David: no pink); on 2026-10-16 the Essentials moved to Zsolnay ceramic glazes, and `--l15` is now burnished amber (#563E00 light, #EBA25F dark). The hub lists it under
 Essentials as in design. Stage design approved by David 2026-10-13 (generalise the
 `share` sorter to three bins). **Built 2026-10-16** (see "Built" at the end).
 

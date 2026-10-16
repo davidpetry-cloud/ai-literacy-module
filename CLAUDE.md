@@ -231,7 +231,9 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   fall into three themes (`GROUPS` in `course.js`: Using AI well 1–5 in
   blue-teals, Building for people 6–8 in greens, Recognising manipulation 9–12
   in warm earths), and every lesson and essential has its own colour within
-  them. No pinks and no fluorescents. Every colour is always paired with the
+  them. The Essentials are a family of their own, Zsolnay ceramic glazes (David,
+  2026-10-16): cobalt (1), glaze green (2) and burnished amber (3), each tuned to
+  sit further from its nearest lesson colour than the closest two lessons do. No pinks and no fluorescents. Every colour is always paired with the
   lesson number and the theme's name. Lessons in design get a dashed outline.
 - **Shapes and ornament:** essentials are outlined hexagons in a honeycomb
   (a `.hex-frame` in the colour behind a `--card` face); lesson cards have

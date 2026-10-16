@@ -26,9 +26,9 @@
   --text:#16283C; --muted:#556A82;
   --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#61687A;
   /* a different colour for every lesson, in a hue family per theme (David, 2026-10-16): blue-teals for 1-5,
-     greens for 6-8, warm earths for 9-12; the essentials indigo, violet and gold; no pinks, nothing fluorescent.
+     greens for 6-8, warm earths for 9-12; the essentials Zsolnay ceramic glazes, cobalt, glaze green and burnished amber (David, 2026-10-16); no pinks, nothing fluorescent.
      Readable as text on a card; always paired with the lesson number and the theme's name. */
-  --l1:#006259; --l2:#00747E; --l3:#005C78; --l4:#356B96; --l5:#3A5084; --l6:#5A6F32; --l7:#2F5F32; --l8:#277659; --l9:#7B4026; --l10:#8E5731; --l11:#72480B; --l12:#7D621F; --l13:#42477D; --l14:#795A90; --l15:#615A10; --on-lc:#FFFFFF;
+  --l1:#006259; --l2:#00747E; --l3:#005C78; --l4:#356B96; --l5:#3A5084; --l6:#5A6F32; --l7:#2F5F32; --l8:#277659; --l9:#7B4026; --l10:#8E5731; --l11:#72480B; --l12:#7D621F; --l13:#163990; --l14:#025200; --l15:#563E00; --on-lc:#FFFFFF;
   /* type scale: every font-size uses one of these (tests/ui.test.js) */
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
@@ -57,7 +57,7 @@
   --paper:#0F151C; --card:#1A222B; --line:#2B3641;
   --text:#DCE6EE; --muted:#93A7BC;
   --att:#3FB271; --att-text:#5CCB8A; --prop:#D9A441; --exp:#EE8A74; --rej:#A9B0C0;
-  --l1:#81D6CB; --l2:#5DB4BE; --l3:#85D0EE; --l4:#77ABD7; --l5:#A9C4FC; --l6:#98AE73; --l7:#A2D3A2; --l8:#6FB697; --l9:#F4B397; --l10:#CF9671; --l11:#E8BB87; --l12:#BCA165; --l13:#B7BFFB; --l14:#B596CD; --l15:#C3BE7D; --on-lc:#0B1622;
+  --l1:#81D6CB; --l2:#5DB4BE; --l3:#85D0EE; --l4:#77ABD7; --l5:#A9C4FC; --l6:#98AE73; --l7:#A2D3A2; --l8:#6FB697; --l9:#F4B397; --l10:#CF9671; --l11:#E8BB87; --l12:#BCA165; --l13:#96ACFE; --l14:#80C57F; --l15:#EBA25F; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
   --shadow:#000000; --hi:#FFFFFF; --glow:#1C2733;
@@ -646,7 +646,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --teal:#1F8A7D;--teal-text:#136155;--teal-pale:#DCEFEB;--amber:#E4A03C;--amber-pale:#FAEDD6;
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
-    --l1:#006259;--l2:#00747E;--l3:#005C78;--l4:#356B96;--l5:#3A5084;--l6:#5A6F32;--l7:#2F5F32;--l8:#277659;--l9:#7B4026;--l10:#8E5731;--l11:#72480B;--l12:#7D621F;--l13:#42477D;--l14:#795A90;--l15:#615A10;--on-lc:#fff;
+    --l1:#006259;--l2:#00747E;--l3:#005C78;--l4:#356B96;--l5:#3A5084;--l6:#5A6F32;--l7:#2F5F32;--l8:#277659;--l9:#7B4026;--l10:#8E5731;--l11:#72480B;--l12:#7D621F;--l13:#163990;--l14:#025200;--l15:#563E00;--on-lc:#fff;
     --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--glow:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}
