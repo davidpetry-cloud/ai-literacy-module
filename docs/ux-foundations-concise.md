@@ -83,6 +83,19 @@ compete with the learning.
 | Signaling | Headings, contrast and bands mark the parts; question, answer, rule and example don't blend together |
 | Segmenting | Long content comes in learner-paced steps; nothing advances on its own |
 
+## Expression: Budapest, not small-town USA (David, 2026-10-16)
+
+It should look like a person designed it, never a template: innovation,
+exploration, texture, flow, beauty, inspiration, invention. A direction of
+taste, inside this standard.
+
+- **Craft and texture:** custom details, grain or tile motifs on frames, never behind body text.
+- **Colour with depth:** rich `oklch` palettes, still 4.5:1 in both themes.
+- **Flow:** motion the person drives (scroll-linked, View Transitions), each with a job; nothing moves on its own.
+- **Richness in the frame, quiet where people read:** coherence and signaling still win on teaching pages.
+- **Motion choice:** respect the device setting and offer an on-site "Reduce motion" / "Allow motion".
+- **The floor doesn't move:** an idea that fails accessibility or slows a learner changes or goes.
+
 ## Privacy by design (Cavoukian, 2009; GDPR Art. 25)
 
 | Principle | In code, check that… |
@@ -129,6 +142,7 @@ For any screen that shows, suggests or acts on AI output. Theme names follow
 - [ ] Plain words, one instruction per step, nothing relies on memory
 - [ ] On a teaching page, the essential parts are cued and don't blend together
 - [ ] Collects only what it needs; private by default; no needless third-party requests
+- [ ] Looks made, not templated; motion follows the person, has a job, and can be turned off
 
 With AI output, also:
 

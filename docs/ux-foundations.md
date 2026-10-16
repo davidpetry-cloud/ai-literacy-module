@@ -120,6 +120,42 @@ material manageable ("essential processing"). His evidence comes mainly from
 lessons that combine words and pictures. Applying it to the design of any
 teaching page is this standard's extension, not his claim.
 
+## Expression: Budapest, not small-town USA
+
+David's design direction (2026-10-16): everything should look like a person
+designed it, never a template. His comparison is the architecture of Budapest
+(Art Nouveau craft, ceramic tile, the baths' mosaics, the bridges over the
+Danube) against small-town USA. His words: innovation, exploration, texture,
+flow, beauty, inspiration, invention. This is a direction of taste, not a
+research finding, and it works inside the rest of this standard, never instead
+of it.
+
+| Quality | Means | In code, check that… |
+|---|---|---|
+| Craft | It looks made, not assembled from a kit | Custom details (SVG ornament, considered borders and dividers, a type pairing with character); no stock component-library or generic "AI site" look |
+| Texture | Surfaces have depth | Subtle grain, pattern or tile motifs on frames and bands, never behind body text; text still passes contrast over them in both themes |
+| Colour with depth | Rich, warm palettes | Built in `oklch` so shades stay even; every pairing still checked at 4.5:1 (3:1 for UI parts) in both themes |
+| Flow | The page leads the eye | Rhythm, curves and layered layouts; motion that follows the reader (scroll-linked, View Transitions) and has a job: orientation, continuity or feedback |
+| Invention | Small, purposeful discoveries | A custom interaction or detail that teaches or helps; nothing that exists only to impress |
+
+**Where expression goes.** Richness belongs in the frame: headers, hubs, section
+openings, transitions and empty states. Quiet belongs where people read, learn,
+fill in forms or compare data, because there coherence and signaling come first
+(see above). A squint test still has to show the parts of a teaching page apart.
+
+**Motion, the expressive way.** Prefer motion the person drives: tied to their
+scroll, their click or their choice, so it moves at their speed and stops when
+they stop. Nothing moves on its own. Every motion has a purpose you can name.
+Respect the device's reduce-motion setting, and also give a visible on-site
+"Reduce motion" / "Allow motion" choice, for anyone on a shared or managed
+device (user control). With motion off, nothing is lost: same content, same
+focus, same announcements.
+
+**The floor doesn't move.** Accessibility, cognitive accessibility, privacy and
+mindful UX are the floor. An expressive idea that fails contrast, needs motion
+to make sense, hides meaning in colour alone, or slows a learner down is changed
+until it passes, or it goes.
+
 ## Privacy by design
 
 Privacy is part of the design from the start, not a setting added later. Ann
@@ -327,6 +363,7 @@ David attests them against the sources above.
 - [ ] Plain words, one instruction per step, nothing relies on memory (cognitive accessibility)
 - [ ] On a page that teaches, the essential parts are cued and don't blend together (signaling)
 - [ ] Collects only what it needs; private by default; says what happens to data; no third-party requests it doesn't need (privacy by design)
+- [ ] Looks made, not templated; richness in the frame, quiet where people read; every motion follows the person, has a job, and can be turned off on the site (expression)
 
 If the screen shows, suggests or acts on AI output, also check:
 
