@@ -165,14 +165,17 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .card h3 a:focus-visible{outline:none}
 .card h3 a:focus-visible::after{outline:3px solid var(--focus);outline-offset:4px}
 /* 3D cards (David, 2026-10-16): built cards sit raised like tiles set in a wall; on hover or keyboard
-   focus they lift, and with a mouse they tilt a little towards the pointer (lesson-core.js sets
-   --rx/--ry, at most 4deg, only when motion is on). Cards still in design stay flat: depth means ready. */
-.cards{perspective:1400px}
+   focus they lift straight up, and with a mouse the pointer acts as a light, so the shadow falls away
+   from it (lesson-core.js sets --sx/--sy, at most 6px, only when motion is on). Cards never rotate,
+   so text never warps. Cards still in design stay flat: depth means ready. */
 .card{box-shadow:inset 0 1px 0 color-mix(in oklch,var(--hi) 7%,transparent),0 1px 2px color-mix(in oklch,var(--shadow) 10%,transparent),0 6px 12px -2px color-mix(in oklch,var(--shadow) 10%,transparent),0 18px 32px -12px color-mix(in oklch,var(--shadow) 22%,transparent);
   transition:transform .25s ease-out,box-shadow .25s ease-out}
 .card.pending{box-shadow:none}
-.card:has(h3 a:hover),.card:has(h3 a:focus-visible){transform:translateY(-6px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
-  box-shadow:0 0 0 2px var(--lc),inset 0 1px 0 color-mix(in oklch,var(--hi) 9%,transparent),0 4px 8px color-mix(in oklch,var(--shadow) 12%,transparent),0 16px 24px -6px color-mix(in oklch,var(--shadow) 16%,transparent),0 32px 48px -16px color-mix(in oklch,var(--shadow) 28%,transparent)}
+.card:has(h3 a:hover),.card:has(h3 a:focus-visible){transform:translateY(-6px);
+  box-shadow:0 0 0 2px var(--lc),inset 0 1px 0 color-mix(in oklch,var(--hi) 9%,transparent),
+    var(--sx,0px) calc(4px + var(--sy,0px)) 8px color-mix(in oklch,var(--shadow) 12%,transparent),
+    calc(var(--sx,0px) * 2) calc(16px + var(--sy,0px) * 2) 24px -6px color-mix(in oklch,var(--shadow) 16%,transparent),
+    calc(var(--sx,0px) * 3) calc(32px + var(--sy,0px) * 3) 48px -16px color-mix(in oklch,var(--shadow) 28%,transparent)}
 /* The lesson number is the same coloured badge on the hub as on lesson pages (consistency), large enough to scan for (hierarchy: below the 20px title). */
 .card .eyebrow{font-family:var(--sans);display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px}
 .card .eyebrow .lesson-no{font-size:var(--fs-md)}

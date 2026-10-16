@@ -2150,29 +2150,29 @@ export function withTransition(doc, update) {
   doc.startViewTransition(update);
 }
 
-// How far a hub card tilts towards the pointer: the card's top edge leans back when the pointer is
-// low, and its sides turn towards it, up to `max` degrees at the edges (David, 2026-10-16: 3D cards).
-export function tiltFor(x, y, rect, max = 4) {
+// The pointer acts as a light over a hub card: the card's shadow falls away from it, up to `max`
+// pixels at the edges. The card itself never rotates, so its text never warps (David, 2026-10-16).
+export function lightFor(x, y, rect, max = 6) {
   const dx = Math.max(-1, Math.min(1, ((x - rect.left) / rect.width) * 2 - 1));
   const dy = Math.max(-1, Math.min(1, ((y - rect.top) / rect.height) * 2 - 1));
   const r = (v) => Math.round(v * 100) / 100 + 0;
-  return { rx: r(-dy * max), ry: r(dx * max) };
+  return { sx: r(-dx * max), sy: r(-dy * max) };
 }
 
 // Mouse only, and only when the site's motion setting is on; touch and keyboard get the plain lift.
-function wireTilt(doc) {
+function wireLight(doc) {
   const root = doc.documentElement;
   doc.addEventListener("pointermove", (e) => {
     if (e.pointerType !== "mouse" || root.dataset.motion === "off") return;
     const card = e.target.closest?.(".card:not(.pending)");
     if (!card) return;
-    const { rx, ry } = tiltFor(e.clientX, e.clientY, card.getBoundingClientRect());
-    card.style.setProperty("--rx", `${rx}deg`);
-    card.style.setProperty("--ry", `${ry}deg`);
+    const { sx, sy } = lightFor(e.clientX, e.clientY, card.getBoundingClientRect());
+    card.style.setProperty("--sx", `${sx}px`);
+    card.style.setProperty("--sy", `${sy}px`);
   });
   doc.addEventListener("pointerout", (e) => {
     const card = e.target.closest?.(".card");
-    if (card && !card.contains(e.relatedTarget)) { card.style.removeProperty("--rx"); card.style.removeProperty("--ry"); }
+    if (card && !card.contains(e.relatedTarget)) { card.style.removeProperty("--sx"); card.style.removeProperty("--sy"); }
   });
 }
 
@@ -2206,7 +2206,7 @@ export function boot(doc) {
   });
 
   win.addEventListener("hashchange", () => openClaimGroup(doc, win.location.hash));
-  if (page === "hub") wireTilt(doc);
+  if (page === "hub") wireLight(doc);
   draw();
   if (page === "hub" && win.location.hash) doc.getElementById(win.location.hash.slice(1))?.scrollIntoView();
   doc.body.dataset.ready = "true";

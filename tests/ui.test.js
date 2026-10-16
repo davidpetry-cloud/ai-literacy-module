@@ -501,10 +501,16 @@ describe("theme toggle", () => {
   it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
     expect(css).toMatch(/\.card\{box-shadow:inset 0 1px 0/);
     expect(css).toContain(".card.pending{box-shadow:none}");
-    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\)/);
+    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
     expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
     // The scroll rise uses the separate translate property, so it never blocks the card's hover transform.
     expect(css).toContain("@keyframes rise{from{translate:0 32px}}");
+  });
+
+  // David, 2026-10-16: text must never warp "like a fun mirror". 3D rotation and perspective skew
+  // text, so the site's CSS uses neither; depth comes from shadows and straight movement only.
+  it("never rotates in 3D or adds perspective, so text never warps", () => {
+    expect(css).not.toMatch(/perspective\s*:|perspective\(|rotate[XYZ3]\w*\(|rotate\s*:\s*[xyz]\b/i);
   });
 
   it("ties the scroll effects to the scrollbar, only when motion is on and the browser has scroll timelines", () => {

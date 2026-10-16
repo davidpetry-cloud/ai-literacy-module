@@ -1170,12 +1170,12 @@ describe("track switch transition", () => {
 
 describe("3D hub cards", () => {
   const rect = { left: 0, top: 0, width: 200, height: 100 };
-  it("tilts a card towards the pointer, up to 4 degrees at the edges, and not at all in the middle", async () => {
-    const { tiltFor } = await import("../lesson-core.js");
-    expect(tiltFor(100, 50, rect)).toEqual({ rx: 0, ry: 0 });
-    expect(tiltFor(200, 100, rect)).toEqual({ rx: -4, ry: 4 });
-    expect(tiltFor(0, 0, rect)).toEqual({ rx: 4, ry: -4 });
-    expect(tiltFor(9999, -9999, rect)).toEqual({ rx: 4, ry: 4 }); // clamped
+  it("moves a card's shadow away from the pointer, up to 6px at the edges, and not at all in the middle", async () => {
+    const { lightFor } = await import("../lesson-core.js");
+    expect(lightFor(100, 50, rect)).toEqual({ sx: 0, sy: 0 });
+    expect(lightFor(200, 100, rect)).toEqual({ sx: -6, sy: -6 }); // pointer bottom right: shadow up and left
+    expect(lightFor(0, 0, rect)).toEqual({ sx: 6, sy: 6 });
+    expect(lightFor(9999, -9999, rect)).toEqual({ sx: -6, sy: 6 }); // clamped
   });
 });
 
