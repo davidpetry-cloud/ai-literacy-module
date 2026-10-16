@@ -59,14 +59,31 @@
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-/* `*` doesn't reach View Transition pseudo-elements, so switch those off too (the scripts skip them as well). */
-@media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+/* `*` doesn't reach View Transition pseudo-elements, so switch those off too (the scripts skip them as well),
+   unless the learner has chosen "Allow motion" on the site, which beats the device setting (user control). */
+@media (prefers-reduced-motion:reduce){:root:not([data-motion="on"])::view-transition-group(*),:root:not([data-motion="on"])::view-transition-old(*),:root:not([data-motion="on"])::view-transition-new(*){animation:none!important}}
+/* "Reduce motion" on the site (theme-toggle.js sets data-motion) stops everything, whatever the device says. */
+:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}
+:root[data-motion="off"]::view-transition-group(*),:root[data-motion="off"]::view-transition-old(*),:root[data-motion="off"]::view-transition-new(*){animation:none!important}
 /* View Transitions: a track change uses the browser's own short cross-fade; a theme change spreads
    in a circle from the toggle (theme-toggle.js sets --vt-x/--vt-y). Short, and once per click. */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
 html.vt-theme::view-transition-old(root){animation:none}
 html.vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out both}
 @keyframes vt-reveal{from{clip-path:circle(0 at var(--vt-x,50%) var(--vt-y,0))}to{clip-path:circle(150vmax at var(--vt-x,50%) var(--vt-y,0))}}
+/* Scroll-linked motion (David, 2026-10-16): it moves only as fast as the reader scrolls, stops when
+   they stop and runs back when they scroll up, so nothing moves on its own. Two jobs only: a
+   progress line in the lesson's colour (where am I?) and sections rising into place (flow).
+   Only when the site's motion setting is on (data-motion, from the device setting unless the learner
+   chose), and only in browsers with scroll timelines; no opacity, only movement. !important lets a
+   learner's "Allow motion" beat the device-wide reduce rule above. */
+@supports (animation-timeline:view()){
+  :root[data-motion="on"] [data-stage],:root[data-motion="on"] .card{animation:rise linear both!important;animation-timeline:view()!important;animation-range:entry 0% entry 70%!important}
+  :root[data-motion="on"] .top[data-lesson]::after{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:var(--lc);transform-origin:0 50%;animation:progress linear both;animation-timeline:scroll(root);z-index:10;pointer-events:none}
+}
+:root[data-motion="on"] .key[open] > :not(summary){animation:reveal .18s ease-out!important}
+@keyframes rise{from{transform:translateY(32px)}}
+@keyframes progress{from{transform:scaleX(0)}}
 /* Headings break into even lines; paragraphs avoid a lone last word. */
 h1,h2,h3,.card h3{text-wrap:balance}
 p,li,dd{text-wrap:pretty}
@@ -90,6 +107,7 @@ a{color:var(--ink-2)}
   display:inline-flex;align-items:center;gap:8px;margin:0 0 8px auto;cursor:pointer;min-height:48px;
   background:rgba(255,255,255,.18);border:2px solid var(--on-dark);border-radius:var(--r-pill);padding:8px 24px}
 .theme-toggle:hover{background:rgba(255,255,255,.3);border-color:var(--on-dark)}
+.hdr-tools{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0 8px;margin-left:auto}
 .top .eyebrow{font-family:var(--sans);font-size:var(--fs-xl);font-weight:700;color:var(--amber);margin:0 0 8px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;line-height:var(--lh-heading)}
 .top h1{font-family:var(--serif);font-weight:600;font-size:var(--fs-display);margin:0 0 8px;letter-spacing:-.015em;line-height:var(--lh-display)}
 .top .sub{color:var(--header-sub);margin:0 0 16px;max-width:var(--measure)}
@@ -528,6 +546,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
   .top a.back,.theme-toggle{font-size:var(--fs-base);padding:8px 16px}
   .top a.back{padding-right:16px}
   .hdr-row{flex-wrap:nowrap}
+  .hdr-row:has(.back){flex-wrap:wrap}
   .tracks label{font-size:var(--fs-base)}
   .block{padding:16px 16px}
   .cards{grid-template-columns:1fr}

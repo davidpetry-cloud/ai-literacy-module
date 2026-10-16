@@ -2142,7 +2142,9 @@ function readTrack(win) {
 // learner hasn't asked for less motion; otherwise the change is instant, as before (WCAG 2.3.3).
 export function withTransition(doc, update) {
   const win = doc.defaultView;
-  const calm = win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  // The site's motion setting (theme-toggle.js) wins; without it, follow the device setting.
+  const pref = doc.documentElement?.dataset?.motion;
+  const calm = pref ? pref === "off" : win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   if (calm || typeof doc.startViewTransition !== "function") return update();
   doc.documentElement?.classList.remove("vt-theme"); // never play the theme's circle on a track change
   doc.startViewTransition(update);
