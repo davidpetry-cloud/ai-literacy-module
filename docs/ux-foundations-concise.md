@@ -91,6 +91,7 @@ taste, inside this standard.
 
 - **Craft and texture:** custom details, grain or tile motifs on frames, never behind body text.
 - **Colour with depth:** rich `oklch` palettes, still 4.5:1 in both themes.
+- **Warm light, no glare:** light themes on warm sandstone, never bright white; white is for print only.
 - **Flow:** motion the person drives (scroll-linked, View Transitions), each with a job; nothing moves on its own.
 - **Richness in the frame, quiet where people read:** coherence and signaling still win on teaching pages.
 - **Motion:** respect the device's reduce-motion setting; no on-site switch.

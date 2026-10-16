@@ -18,13 +18,14 @@
   color-scheme:light;
   --ink:#0F2338; --ink-2:#1B3A5C; --ink-3:#33557A;
   --header-bg:#0F2338; --btn-bg:#0F2338; --btn-bg-hover:#1B3A5C; --chip-bg:#33557A;
-  --teal:#1F8A7D; --teal-text:#136155; --teal-pale:#DCEFEB;
-  --amber:#E4A03C; --amber-pale:#FAEDD6;
-  --peri:#6B7FB3; --peri-pale:#E4E9F4; --rose:#C2536B; --rose-pale:#F6E3E8;
-  /* light pages are warm limestone, like Budapest's stone facades, not bright white (David, 2026-10-16) */
-  --paper:#F5EFE6; --card:#FAF4E9; --line:#DDD6CB;
-  --text:#16283C; --muted:#556A82;
-  --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#61687A;
+  --teal:#1F8A7D; --teal-text:#136155; --teal-pale:#D3E5DD;
+  --amber:#E4A03C; --amber-pale:#F1E0C3;
+  --peri:#6B7FB3; --peri-pale:#DCDFE8; --rose:#C2536B; --rose-pale:#EEDCD6;
+  /* light pages are warm sandstone, like Budapest's stone facades in late sun: no bright white anywhere, so
+     nothing glares (David, 2026-10-16: "a warmer background that does not hurt the eyes") */
+  --paper:#EBE1CF; --card:#F2E9DA; --line:#D3C6B0;
+  --text:#16283C; --muted:#4B5E74;
+  --att:#2A8A55; --att-text:#1F6E44; --prop:#805506; --exp:#A8391F; --rej:#5A6172;
   /* a different colour for every lesson, in a hue family per theme (David, 2026-10-16): blue-teals for 1-5,
      greens for 6-8, warm earths for 9-12; the essentials Zsolnay ceramic glazes, cobalt, glaze green and burnished amber (David, 2026-10-16); no pinks, nothing fluorescent.
      Readable as text on a card; always paired with the lesson number and the theme's name. */
@@ -36,8 +37,8 @@
   --r-sm:4px; --r-md:8px; --r-lg:10px; --r-xl:24px; --r-pill:999px;
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
-  --edge:#71859C; --btn-edge:#0F2338;
-  --shadow:#3A2A14; --hi:#FFFFFF; --glow:#FBF4E8;
+  --edge:#66798F; --btn-edge:#0F2338;
+  --shadow:#3A2A14; --hi:#F8F1E4; --glow:#F3E9D8;
   --sans:"Lexend",system-ui,sans-serif;
   --serif:"Fraunces",Georgia,serif;
 }
