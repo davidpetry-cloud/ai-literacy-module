@@ -147,6 +147,11 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .students-note{margin:0 0 16px}
 .students-note p{max-width:var(--measure)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+/* Hub (David, 2026-10-16): Essentials and Lessons side by side, Essentials on the left. It comes first in
+   the page, so screen readers, keyboards and phones (where the columns stack) meet it first too. */
+.hub-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:start}
+@media (min-width:961px){.hub-cols{grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:32px}
+  .hub-cols #essentials .cards{grid-template-columns:minmax(0,1fr)}}
 [data-lesson="1"]{--lc:var(--l1)} [data-lesson="2"]{--lc:var(--l2)} [data-lesson="3"]{--lc:var(--l3)}
 [data-lesson="4"]{--lc:var(--l4)} [data-lesson="5"]{--lc:var(--l5)}
 [data-lesson="6"]{--lc:var(--l6)} [data-lesson="7"]{--lc:var(--l7)} [data-lesson="8"]{--lc:var(--l8)}

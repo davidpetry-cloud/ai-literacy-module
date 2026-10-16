@@ -41,11 +41,21 @@ describe("hub", () => {
   const doc = page("index.html");
   renderHub(doc);
 
+  // The hub shows Essentials and Lessons side by side, Essentials first (David, 2026-10-16).
+  const hubOrder = () => [...essentials(), ...mainLessons()];
+
   it("lists every lesson and links only the ready ones", () => {
     expect(doc.querySelectorAll(".card")).toHaveLength(COURSE.lessons.length);
     const links = [...doc.querySelectorAll(".card h3 a")].map((a) => a.getAttribute("href"));
-    const ready = COURSE.lessons.filter((l) => l.ready).map((l) => `lesson.html?n=${l.n}&track=${TRACK_IDS[0]}`);
+    const ready = hubOrder().filter((l) => l.ready).map((l) => `lesson.html?n=${l.n}&track=${TRACK_IDS[0]}`);
     expect(links).toEqual(ready);
+  });
+
+  it("puts Essentials and Lessons side by side, Essentials first in the page so phones and screen readers meet it first", () => {
+    const cols = doc.querySelector(".hub-cols");
+    expect([...cols.children].map((c) => c.id)).toEqual(["essentials", "lessons"]);
+    expect(cols.querySelector("#essentials h2").textContent).toBe("Essentials");
+    expect(cols.querySelector("#lessons h2").textContent).toBe("Lessons");
   });
 
   it("shows every claim in the ledger with a text status label", () => {
@@ -2089,7 +2099,7 @@ describe("lesson colours", () => {
   it("tags every hub card and the lesson header with its lesson number", () => {
     const hub = page("index.html");
     renderHub(hub);
-    expect([...hub.querySelectorAll(".card")].map((c) => c.dataset.lesson)).toEqual(COURSE.lessons.map((l) => String(l.n)));
+    expect([...hub.querySelectorAll(".card")].map((c) => c.dataset.lesson)).toEqual([...essentials(), ...mainLessons()].map((l) => String(l.n)));
     const doc = lessonDoc(TRACK_IDS[0]);
     expect(doc.querySelector("header.top").dataset.lesson).toBe("1");
     expect(doc.querySelector(".lesson-no").textContent).toBe("Lesson 1");

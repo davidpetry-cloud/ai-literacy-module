@@ -55,7 +55,7 @@ needs, at any point in the course. An essential is an ordinary lesson file with
 `category: "essentials"`, a `label` ("Essentials 1") and an `idPrefix` ("E1") for its
 objective ids. It keeps a lesson number `n` for its page address only. Learners
 always see the label (`lessonLabel` in `course.js`), never "Lesson 13". The hub lists
-essentials in their own section below the lessons, the hub counts them separately,
+essentials in their own section beside the lessons, on the left (first in the page, so it stacks first on narrow screens; David, 2026-10-16), the hub counts them separately,
 and previous/next links stay within a category. Every lesson rule above and below
 applies to essentials unchanged.
 

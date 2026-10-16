@@ -1723,8 +1723,10 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
       <p class="so-status" id="search-status" aria-live="polite"></p>
       <ol class="search-results" id="search-results"></ol>
     </section>
-    <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}<div class="cards">${lessons}</div></section>
-    ${essentialCards ? `<section id="essentials"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
+    <div class="hub-cols">
+      ${essentialCards ? `<section id="essentials"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
+      <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}<div class="cards">${lessons}</div></section>
+    </div>
 
     <section><h2>How it's built</h2>
       <table class="basis"><thead><tr><th>Framework</th><th>Its one job here</th></tr></thead><tbody>
