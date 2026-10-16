@@ -54,7 +54,7 @@ describe("hub", () => {
   it("shows Essentials first, as a honeycomb of hexagons, then the lessons in their three themes", () => {
     const sections = [...doc.querySelectorAll("#content > section")].map((s) => s.id);
     expect(sections.indexOf("essentials")).toBeLessThan(sections.indexOf("lessons"));
-    const hexes = doc.querySelectorAll("#essentials .honeycomb > li.hex > .card.hexcard");
+    const hexes = doc.querySelectorAll("#essentials .honeycomb > li.hex > .hex-frame > .card.hexcard");
     expect(hexes).toHaveLength(essentials().length);
     for (const h of hexes) expect(h.querySelector("h3")).not.toBeNull();
     const groups = [...doc.querySelectorAll("#lessons .lesson-group")];
@@ -2097,17 +2097,11 @@ describe("user control and context fixes (UX audit, 2026-09-24)", () => {
 describe("lesson colours", () => {
   const css = readFileSync(new URL("../course.css", import.meta.url), "utf8");
 
-  // One colour per theme, one per essential, all six different (David, 2026-10-16).
-  it("gives each theme one colour and each essential its own, all different", () => {
+  // A different colour for every lesson and essential (David, 2026-10-16), in a hue family per theme.
+  it("gives every lesson and essential its own colour", () => {
     const colour = (n) => css.match(new RegExp(`--l${n}:(#[0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
     for (const l of COURSE.lessons) expect(colour(l.n), `lesson ${l.n}`).toBeTruthy();
-    const themeColours = GROUPS.map((g) => {
-      const cs = new Set(g.lessons.map(colour));
-      expect(cs.size, g.name).toBe(1);
-      return [...cs][0];
-    });
-    const essentialColours = essentials().map((l) => colour(l.n));
-    expect(new Set([...themeColours, ...essentialColours]).size).toBe(GROUPS.length + essentials().length);
+    expect(new Set(COURSE.lessons.map((l) => colour(l.n))).size).toBe(COURSE.lessons.length);
   });
 
   it("tags every hub card and the lesson header with its lesson number", () => {

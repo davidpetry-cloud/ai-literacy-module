@@ -479,8 +479,9 @@ describe("theme toggle", () => {
   it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
     expect(css).toMatch(/\.card\{box-shadow:inset 0 1px 0/);
     expect(css).toContain(".card.pending{box-shadow:none}");
-    // Depth by illusion only: hover deepens light and shadow; nothing moves (David, 2026-10-16).
-    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{\s*box-shadow:/);
+    // Hover and keyboard focus lift a card straight up (no rotation, so text never warps; David, 2026-10-16).
+    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
+    expect(css).toMatch(/\.honeycomb \.hex:has\(h3 a:hover\),\.honeycomb \.hex:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
     expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
     // The scroll rise uses the separate translate property, so it never blocks the card's hover transform,
     // and it overshoots a little before settling, so the cards seem to have weight (gravity).
@@ -496,8 +497,16 @@ describe("theme toggle", () => {
     expect(css).toMatch(/@media print\{[\s\S]*body\{background:#fff/);
   });
 
-  it("puts a woven tile ribbon, which holds no text, on each lesson card", () => {
-    expect(css).toMatch(/#lessons \.card::before\{content:"";[^}]*repeating-linear-gradient\(135deg,var\(--lc\)/);
+  it("gives lesson cards petal corners and a double-rule frame, and each theme an ornamental divider", () => {
+    expect(css).toContain("#lessons .card{border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)}");
+    expect(css).toMatch(/#lessons \.card:not\(\.pending\)\{[^}]*box-shadow:inset 0 0 0 4px var\(--card\),inset 0 0 0 5px/);
+    expect(css).toMatch(/\.group-label::after\{[^}]*url\(textures\/ornament\.svg\)/);
+    expect(read("textures/ornament.svg")).toContain("<path");
+  });
+
+  it("draws the Essentials as outlined hexagons: a coloured frame around a card-coloured face", () => {
+    expect(css).toMatch(/\.hex-frame\{[^}]*background:var\(--lc\);clip-path:polygon/);
+    expect(css).toMatch(/\.hexcard\{[^}]*color:var\(--lc\)/);
   });
 
   it("never rotates in 3D or adds perspective, so text never warps", () => {
@@ -538,7 +547,7 @@ describe("consistency", () => {
   it("rounds corners only with the radius tokens", () => {
     for (const r of nonRoot) {
       for (const [, val] of r.body.matchAll(/border-radius:\s*([^;]+)/g)) {
-        expect(val.replace(/var\(--r-(sm|md|lg|pill|hex)\)|\b0\b/g, "").trim(), `${r.sel} ${val}`).toBe("");
+        expect(val.replace(/var\(--r-(sm|md|lg|xl|pill)\)|\b0\b/g, "").trim(), `${r.sel} ${val}`).toBe("");
       }
     }
   });

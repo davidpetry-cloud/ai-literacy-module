@@ -22,21 +22,22 @@
   --amber:#E4A03C; --amber-pale:#FAEDD6;
   --peri:#6B7FB3; --peri-pale:#E4E9F4; --rose:#C2536B; --rose-pale:#F6E3E8;
   /* light pages are warm limestone, like Budapest's stone facades, not bright white (David, 2026-10-16) */
-  --paper:#F5EFE6; --card:#FDFBF6; --line:#DDD6CB;
+  --paper:#F5EFE6; --card:#FAF4E9; --line:#DDD6CB;
   --text:#16283C; --muted:#556A82;
-  --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#6A7183;
-  /* one colour per theme (Lessons 1-5, 6-8, 9-12) and one per essential (David, 2026-10-16), readable as
-     text on a card; always paired with the lesson number and the theme's name */
-  --l1:#32618E; --l2:#32618E; --l3:#32618E; --l4:#32618E; --l5:#32618E; --l6:#416A38; --l7:#416A38; --l8:#416A38; --l9:#874C30; --l10:#874C30; --l11:#874C30; --l12:#874C30; --l13:#695086; --l14:#006D6D; --l15:#715B13; --on-lc:#FFFFFF;
+  --att:#2A8A55; --att-text:#1F6E44; --prop:#96650F; --exp:#B23E27; --rej:#61687A;
+  /* a different colour for every lesson, in a hue family per theme (David, 2026-10-16): blue-teals for 1-5,
+     greens for 6-8, warm earths for 9-12; the essentials indigo, violet and gold; no pinks, nothing fluorescent.
+     Readable as text on a card; always paired with the lesson number and the theme's name. */
+  --l1:#006259; --l2:#00747E; --l3:#005C78; --l4:#356B96; --l5:#3A5084; --l6:#5A6F32; --l7:#2F5F32; --l8:#277659; --l9:#7B4026; --l10:#8E5731; --l11:#72480B; --l12:#7D621F; --l13:#42477D; --l14:#795A90; --l15:#615A10; --on-lc:#FFFFFF;
   /* type scale: every font-size uses one of these (tests/ui.test.js) */
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
   --lh-display:1.08; --lh-heading:1.2; --lh-body:1.62; --measure:60ch; --measure-serif:50ch;
-  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-pill:999px;
+  --r-sm:4px; --r-md:8px; --r-lg:10px; --r-xl:24px; --r-pill:999px;
   --focus:#B06A00;
   /* non-text edges, 3:1 on a card: grid lines, and the ring that keeps a button visible */
   --edge:#71859C; --btn-edge:#0F2338;
-  --shadow:#3A2A14; --hi:#FFFFFF; --glow:#FFF9EB;
+  --shadow:#3A2A14; --hi:#FFFFFF; --glow:#FBF4E8;
   --sans:"Lexend",system-ui,sans-serif;
   --serif:"Fraunces",Georgia,serif;
 }
@@ -56,7 +57,7 @@
   --paper:#0F151C; --card:#1A222B; --line:#2B3641;
   --text:#DCE6EE; --muted:#93A7BC;
   --att:#3FB271; --att-text:#5CCB8A; --prop:#D9A441; --exp:#EE8A74; --rej:#A9B0C0;
-  --l1:#8EC3F9; --l2:#8EC3F9; --l3:#8EC3F9; --l4:#8EC3F9; --l5:#8EC3F9; --l6:#9DCD93; --l7:#9DCD93; --l8:#9DCD93; --l9:#F2AA8B; --l10:#F2AA8B; --l11:#F2AA8B; --l12:#F2AA8B; --l13:#CCAEEF; --l14:#6CD1D1; --l15:#D5BB74; --on-lc:#0B1622;
+  --l1:#81D6CB; --l2:#5DB4BE; --l3:#85D0EE; --l4:#77ABD7; --l5:#A9C4FC; --l6:#98AE73; --l7:#A2D3A2; --l8:#6FB697; --l9:#F4B397; --l10:#CF9671; --l11:#E8BB87; --l12:#BCA165; --l13:#B7BFFB; --l14:#B596CD; --l15:#C3BE7D; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
   --shadow:#000000; --hi:#FFFFFF; --glow:#1C2733;
@@ -154,11 +155,11 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 [data-lesson="9"]{--lc:var(--l9)} [data-lesson="10"]{--lc:var(--l10)} [data-lesson="11"]{--lc:var(--l11)} [data-lesson="12"]{--lc:var(--l12)} [data-lesson="13"]{--lc:var(--l13)} [data-lesson="14"]{--lc:var(--l14)} [data-lesson="15"]{--lc:var(--l15)}
 .card{background:var(--card);border:2px solid var(--lc,var(--line));border-top-width:8px;border-radius:var(--r-lg);padding:24px 24px}
 .card.pending{border-style:dashed;border-top-style:solid}
-/* Lesson cards carry a woven tile ribbon in their colour (David, 2026-10-16: texture, after Zsolnay tile
-   bands). It holds no text, so it never affects contrast. */
-#lessons .card{border-top-width:2px;padding-top:32px}
-#lessons .card::before{content:"";position:absolute;inset:0 0 auto;height:12px;border-radius:var(--r-lg) var(--r-lg) 0 0;pointer-events:none;
-  background:repeating-linear-gradient(135deg,var(--lc) 0 6px,color-mix(in oklch,var(--lc) 55%,var(--card)) 6px 9px,var(--lc) 9px 12px),var(--lc)}
+/* Lesson cards: petal corners (large on two opposite corners, small on the others, an Art Nouveau
+   curve) and a double-rule frame, an outer rule in the lesson's colour and a fine inner one (David,
+   2026-10-16: borders of shapes and curves). Both follow the corners. */
+#lessons .card{border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)}
+#lessons .card h3 a::after{border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)}
 .card h3{font-family:var(--serif);font-size:var(--fs-lg);margin:0 0 8px;line-height:var(--lh-heading)}
 .card h3 a{color:var(--lc)}
 /* The whole card is the click target for a ready lesson (a "stretched link"): the title stays the one
@@ -180,11 +181,19 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 /* Depth as an illusion, never real 3D (David, 2026-10-16): each card is lit from the top-left like an
    embossed tile: a faint highlight at the top and a little shade at the bottom, inside the card. Nothing
    moves or rotates; hover deepens the light and shadow instead. */
-#lessons .card:not(.pending){background:linear-gradient(170deg,color-mix(in oklch,var(--hi) 4%,var(--card)) 0%,var(--card) 45%,color-mix(in oklch,var(--shadow) 3%,var(--card)) 100%)}
-.group-label{font-family:var(--sans);font-size:var(--fs-md);margin:24px 0 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+#lessons .card:not(.pending){background:linear-gradient(170deg,color-mix(in oklch,var(--hi) 4%,var(--card)) 0%,var(--card) 45%,color-mix(in oklch,var(--shadow) 3%,var(--card)) 100%);
+  box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 5px color-mix(in oklch,var(--lc) 55%,var(--card)),0 1px 1px color-mix(in oklch,var(--shadow) 16%,transparent),0 2px 4px color-mix(in oklch,var(--shadow) 10%,transparent),0 6px 12px -2px color-mix(in oklch,var(--shadow) 10%,transparent),0 18px 32px -12px color-mix(in oklch,var(--shadow) 22%,transparent)}
+#lessons .card:not(.pending):has(h3 a:hover),#lessons .card:not(.pending):has(h3 a:focus-visible){
+  box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 5px var(--lc),0 0 0 2px var(--lc),
+    var(--sx,0px) calc(4px + var(--sy,0px)) 8px color-mix(in oklch,var(--shadow) 12%,transparent),
+    calc(var(--sx,0px) * 2) calc(16px + var(--sy,0px) * 2) 24px -6px color-mix(in oklch,var(--shadow) 16%,transparent),
+    calc(var(--sx,0px) * 3) calc(32px + var(--sy,0px) * 3) 48px -16px color-mix(in oklch,var(--shadow) 28%,transparent)}
+.group-label{font-family:var(--sans);font-size:var(--fs-md);margin:32px 0 16px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.group-label::after{content:"";flex:1 1 96px;min-width:96px;height:16px;background:var(--lc);
+  mask:linear-gradient(transparent 7px,black 7px 9px,transparent 9px) left center / calc(100% - 68px) 16px no-repeat,url(textures/ornament.svg) right center / 64px 16px no-repeat}
 .group-label b{font-family:var(--serif);color:var(--lc)}
 .group-label span{font-size:var(--fs-sm);color:var(--ink-3)}
-.lesson-group[data-group="using"]{--lc:var(--l1)} .lesson-group[data-group="building"]{--lc:var(--l6)} .lesson-group[data-group="manipulation"]{--lc:var(--l9)}
+.lesson-group[data-group="using"]{--lc:var(--l3)} .lesson-group[data-group="building"]{--lc:var(--l7)} .lesson-group[data-group="manipulation"]{--lc:var(--l10)}
 
 /* Essentials: hexagons fitted together like a honeycomb, the most efficient way to tile a surface
    (David, 2026-10-16). Each is a glazed tile in its own colour, lit from the top-left. clip-path draws
@@ -193,33 +202,33 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .honeycomb{--hw:240px;--hh:calc(var(--hw) * .866);--hg:8px;list-style:none;margin:0;padding:0;display:grid;justify-content:center;
   grid-template-columns:calc(var(--hw) * .75 + var(--hg)) calc(var(--hw) * .75 + var(--hg)) var(--hw);
   grid-template-rows:repeat(3,calc(var(--hh) / 2 + var(--hg) / 2))}
-.honeycomb .hex{grid-row:1 / span 2;width:var(--hw);height:var(--hh);
-  filter:drop-shadow(0 2px 2px color-mix(in oklch,var(--shadow) 18%,transparent)) drop-shadow(0 10px 14px color-mix(in oklch,var(--shadow) 16%,transparent))}
+.honeycomb .hex{grid-row:1 / span 2;width:var(--hw);height:var(--hh);transition:transform .25s ease-out,filter .25s ease-out;
+  filter:drop-shadow(0 2px 2px color-mix(in oklch,var(--shadow) 16%,transparent)) drop-shadow(0 10px 14px color-mix(in oklch,var(--shadow) 14%,transparent))}
 .honeycomb .hex:nth-child(2){grid-column:2;grid-row:2 / span 2}
 .honeycomb .hex:nth-child(3){grid-column:3}
+.hex-frame{width:100%;height:100%;padding:4px;background:var(--lc);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 .hexcard{width:100%;height:100%;margin:0;padding:12px 24px;border:0;border-radius:0;box-shadow:none;text-align:center;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);color:var(--on-lc);
-  background:linear-gradient(165deg,color-mix(in oklch,var(--lc) 88%,white) 0%,var(--lc) 50%,color-mix(in oklch,var(--lc) 88%,black) 100%),var(--lc)}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);color:var(--lc);
+  background:linear-gradient(165deg,color-mix(in oklch,var(--hi) 5%,var(--card)) 0%,var(--card) 50%,color-mix(in oklch,var(--shadow) 4%,var(--card)) 100%),var(--card)}
 .hexcard .eyebrow{margin:0;justify-content:center}
-.hexcard .eyebrow .lesson-no{background:transparent;color:var(--on-lc);border:1.5px solid var(--on-lc);font-size:var(--fs-sm)}
+.hexcard .eyebrow .lesson-no{font-size:var(--fs-sm)}
 .hexcard h3{font-size:var(--fs-md);margin:0;max-width:16ch}
-.hexcard h3 a{color:var(--on-lc)}
 .hexcard h3 a::after{border-radius:0}
-.honeycomb .hex:has(h3 a:hover){filter:drop-shadow(0 2px 2px color-mix(in oklch,var(--shadow) 22%,transparent)) drop-shadow(0 16px 22px color-mix(in oklch,var(--shadow) 26%,transparent))}
+.honeycomb .hex:has(h3 a:hover),.honeycomb .hex:has(h3 a:focus-visible){transform:translateY(-6px);
+  filter:drop-shadow(0 4px 4px color-mix(in oklch,var(--shadow) 18%,transparent)) drop-shadow(0 18px 24px color-mix(in oklch,var(--shadow) 24%,transparent))}
 .honeycomb .hex:has(h3 a:focus-visible){filter:drop-shadow(3px 0 0 var(--focus)) drop-shadow(-3px 0 0 var(--focus)) drop-shadow(0 3px 0 var(--focus)) drop-shadow(0 -3px 0 var(--focus))}
 .hexcard h3 a:focus-visible::after{outline:none}
-/* In design: an unglazed tile, hatched in its colour, with the colour's text and the words "In design". */
-.hexcard.pending{color:var(--lc);background:repeating-linear-gradient(135deg,color-mix(in oklch,var(--lc) 12%,var(--card)) 0 10px,var(--card) 10px 20px),var(--card)}
-.hexcard.pending .eyebrow .lesson-no{color:var(--lc);border-color:var(--lc)}
-.hexcard.pending .in-design{color:var(--lc)}
+.hexcard,.hexcard .lesson-no{transition:none}
+/* In design: a dashed outline (the frame is broken into dashes) and the words "In design". */
+.hex.pending .hex-frame{background:repeating-conic-gradient(from 0deg,var(--lc) 0 18deg,transparent 18deg 30deg)}
 @media (max-width:760px){
   .honeycomb{--hw:160px;grid-template-columns:calc(var(--hw) * .75 + var(--hg)) var(--hw);grid-template-rows:repeat(4,calc(var(--hh) / 2 + var(--hg) / 2))}
   .honeycomb .hex:nth-child(3){grid-column:1;grid-row:3 / span 2}
-  .hexcard{padding:8px 16px}
+  .hexcard{padding:8px 16px;gap:4px}
   .hexcard h3{font-size:var(--fs-base)}
 }
-.card:has(h3 a:hover),.card:has(h3 a:focus-visible){
+.card:has(h3 a:hover),.card:has(h3 a:focus-visible){transform:translateY(-6px);
   box-shadow:0 0 0 2px var(--lc),inset 0 1px 0 color-mix(in oklch,var(--hi) 9%,transparent),
     var(--sx,0px) calc(4px + var(--sy,0px)) 8px color-mix(in oklch,var(--shadow) 12%,transparent),
     calc(var(--sx,0px) * 2) calc(16px + var(--sy,0px) * 2) 24px -6px color-mix(in oklch,var(--shadow) 16%,transparent),
@@ -619,7 +628,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --teal:#1F8A7D;--teal-text:#136155;--teal-pale:#DCEFEB;--amber:#E4A03C;--amber-pale:#FAEDD6;
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
-    --l1:#32618E;--l2:#32618E;--l3:#32618E;--l4:#32618E;--l5:#32618E;--l6:#416A38;--l7:#416A38;--l8:#416A38;--l9:#874C30;--l10:#874C30;--l11:#874C30;--l12:#874C30;--l13:#695086;--l14:#006D6D;--l15:#715B13;--on-lc:#fff;
+    --l1:#006259;--l2:#00747E;--l3:#005C78;--l4:#356B96;--l5:#3A5084;--l6:#5A6F32;--l7:#2F5F32;--l8:#277659;--l9:#7B4026;--l10:#8E5731;--l11:#72480B;--l12:#7D621F;--l13:#42477D;--l14:#795A90;--l15:#615A10;--on-lc:#fff;
     --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--glow:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}

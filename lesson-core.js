@@ -1718,10 +1718,11 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
     return `<div class="lesson-group" data-group="${g.id}"><p class="group-label"><b>${esc(g.name)}</b> <span>${span}</span></p><div class="cards">${ls.map(card).join("")}</div></div>`;
   }).join("");
   // Essentials as hexagons fitted together like a honeycomb: label and title only; the rest is on the page.
-  const hex = (l) => `<li class="hex"><article class="card hexcard${l.ready ? "" : " pending"}" data-lesson="${l.n}">
+  // The frame is the hexagon's coloured outline; the card inside it is the hexagon's face.
+  const hex = (l) => `<li class="hex${l.ready ? "" : " pending"}" data-lesson="${l.n}"><div class="hex-frame"><article class="card hexcard${l.ready ? "" : " pending"}" data-lesson="${l.n}">
       <p class="eyebrow"><span class="lesson-no">${esc(lessonLabel(l))}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
       <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
-    </article></li>`;
+    </article></div></li>`;
   const essentialCards = essentials().map(hex).join("");
 
   doc.querySelector("#content").innerHTML = `
