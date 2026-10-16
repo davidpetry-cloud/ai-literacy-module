@@ -381,7 +381,7 @@ approved stage design (`docs/lesson-15-design.md`, Built). Unlike Essentials 2, 
 source was opened on its own site (the FCC's guide and the FTC alert in the browser
 pane, because those sites refuse scripted requests). The professionals' "IT help desk"
 call stayed, because CISA/FBI AA23-320A (revised 29 July 2025) has the one-time-code
-line (decision 3). Two things go past the approved design, for David to keep or drop:
+line (decision 3). Two things go past the approved design, and David kept both (2026-10-16):
 a California row in "What it must tell you" (AB 1609, chaptered 28 September 2026,
 in force 1 January 2027: no bot may claim to be human, and customers can ask for a
 person, on the phone too; claim `california-human-agent-law`), and a facilitator line

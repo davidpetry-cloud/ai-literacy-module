@@ -297,13 +297,13 @@ had only search results). What changed from the plan above:
    37% of the US population used one in 2022, but the lesson doesn't need the numbers.
 3. **The voicemail password** is the FCC's protection against *hacking*. The lesson
    doesn't link it to voice cloning.
-4. **Added, for David to keep or drop:** a California row in "What it must tell you".
+4. **Added at build time; David kept it (2026-10-16):** a California row in "What it must tell you".
    AB 1609 (Stats. 2026, ch. 733; chaptered 28 September 2026; read on
    leginfo.legislature.ca.gov) applies from 1 January 2027 to businesses with over
    $500 million in revenue: a customer service chatbot must not claim to be human, must
    say it's a bot if a person could be fooled, and customers must be able to ask for a
    person, on the phone too. Claim `california-human-agent-law`.
-5. **Political calls:** one facilitator line in the abstract stage, for adult US groups
+5. **Political calls (added at build time; David kept it, 2026-10-16):** one facilitator line in the abstract stage, for adult US groups
    only. DA 26-940 was opened (replies due 19 October 2026); no decision on 2026-10-16.
    Claim `political-ai-calls-waiver` is time-limited: re-check before each use.
 6. **FCC 24-84** still looks like a proposal: the eCFR shows no amendment to
