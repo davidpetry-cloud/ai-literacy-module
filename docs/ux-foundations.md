@@ -135,6 +135,7 @@ of it.
 | Craft | It looks made, not assembled from a kit | Custom details (SVG ornament, considered borders and dividers, a type pairing with character); no stock component-library or generic "AI site" look |
 | Texture | Surfaces have depth | Subtle grain, pattern or tile motifs on frames and bands, never behind body text; text still passes contrast over them in both themes |
 | Colour with depth | Rich, warm palettes | Built in `oklch` so shades stay even; every pairing still checked at 4.5:1 (3:1 for UI parts) in both themes |
+| Warm light, no glare | Light themes rest the eyes | A warm sandstone page (e.g. #EBE1CF) with cards one gentle step lighter (#F2E9DA); no bright white on screen, only in print (David, 2026-10-16); pairings re-checked on the warmer surfaces |
 | Flow | The page leads the eye | Rhythm, curves and layered layouts; motion that follows the reader (scroll-linked, View Transitions) and has a job: orientation, continuity or feedback |
 | Invention | Small, purposeful discoveries | A custom interaction or detail that teaches or helps; nothing that exists only to impress |
 
