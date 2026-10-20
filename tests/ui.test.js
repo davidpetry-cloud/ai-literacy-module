@@ -98,7 +98,7 @@ describe("header edge", () => {
   // Since 2026-10-20 the edge is the Singapore Math wave: an amber line along the crest of the Danube.
   it("closes the hub and Sources header with the wave and its amber line", () => {
     expect(rules.find((r) => r.sel === '[data-page="hub"] .top::before,[data-page="sources"] .top::before')?.body).toMatch(/mask-image:url\(textures\/wave-line\.svg\);background:var\(--amber\)/);
-    for (const f of ["rosette", "wave-fill", "wave-line", "flourish"]) expect(read(`textures/${f}.svg`), f).toContain("<svg");
+    for (const f of ["roof-diamonds", "wave-fill", "wave-line", "flourish"]) expect(read(`textures/${f}.svg`), f).toContain("<svg");
   });
 
   it("shows the amber rule at 3:1 against the dark page, and the header itself against the light page", () => {
@@ -527,8 +527,8 @@ describe("theme toggle", () => {
   });
 
   // Essentials sit in a dark frame of their own, like the Singapore Math hub's access band.
-  it("sets the Essentials in a dark band on the rosette lattice, with solid cards so the pattern never shows through text", () => {
-    expect(rules.find((r) => r.sel === "#essentials.band").body).toMatch(/background:var\(--header-bg\)[\s\S]*url\(textures\/rosette\.svg\)/);
+  it("sets the Essentials in a dark band on the Zsolnay roof diamonds, with solid cards so the pattern never shows through text", () => {
+    expect(rules.find((r) => r.sel === "#essentials.band").body).toMatch(/background:var\(--header-bg\)[\s\S]*url\(textures\/roof-diamonds\.svg\)/);
     expect(rules.find((r) => r.sel === "#essentials.band .card").body).toMatch(/background:color-mix\(in oklch,var\(--header-bg\),var\(--on-dark\) 8%\)/);
   });
 

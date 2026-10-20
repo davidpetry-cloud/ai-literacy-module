@@ -152,11 +152,11 @@ main.wrap{padding-top:32px}
 /* The hub and Sources headers have no lesson-colour band, and in dark mode the header and page are
    almost the same colour, so an amber rule marks the header's edge (as on Singapore Math). */
 /* The hub and Sources headers wear the Singapore Math frame (David, 2026-10-20): grain, a lamplight glow and
-   the compass-rosette lattice, closed by the Danube wave with an amber line along its crest. The amber line
+   Zsolnay roof diamonds (David's pick over the rosette), closed by the Danube wave with an amber line along its crest. The amber line
    is also the header's edge against the dark page. */
 [data-page="hub"] .top,[data-page="sources"] .top{position:relative;padding-bottom:48px;
-  background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/rosette.svg);
-  background-size:160px 160px,auto,56px 56px}
+  background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/roof-diamonds.svg);
+  background-size:160px 160px,auto,32px 32px}
 [data-page="hub"] .top::after,[data-page="hub"] .top::before,[data-page="sources"] .top::after,[data-page="sources"] .top::before{
   content:"";position:absolute;left:0;right:0;bottom:-1px;height:40px;pointer-events:none;
   mask:url(textures/wave-fill.svg) center / 100% 100% no-repeat;background:var(--paper)}
@@ -218,10 +218,10 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .group-label span{color:var(--ink-3);letter-spacing:.04em}
 .lesson-group[data-group="using"]{--lc:var(--l3)} .lesson-group[data-group="building"]{--lc:var(--l7)} .lesson-group[data-group="manipulation"]{--lc:var(--l11)}
 /* Essentials: a dark frame of their own, like the Singapore Math hub's access band (David, 2026-10-20). The
-   cards inside are solid, a lighter step of the frame, so the lattice never shows through text. */
+   cards inside are solid, a lighter step of the frame, so the pattern never shows through text. */
 #essentials.band{color:var(--on-dark);background:var(--header-bg);border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);padding:32px 32px 48px;
-  background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/rosette.svg);
-  background-size:160px 160px,auto,56px 56px}
+  background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/roof-diamonds.svg);
+  background-size:160px 160px,auto,32px 32px}
 #essentials.band h2{color:var(--on-dark)}
 [data-page="hub"] #content > #essentials.band > h2::after{background:var(--amber)}
 #essentials.band .lede{color:var(--header-sub)}
