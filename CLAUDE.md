@@ -164,9 +164,13 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 - **Labels that carry meaning** (status badges, answer-key labels) sit on their
   own `--card` background, so they pass wherever they're placed.
 - **Type:** Lexend for all non-heading text, Fraunces for headings; both are
-  self-hosted. Body text is 16px with 1.62 line height.
+  self-hosted. Body text is 17px with 1.62 line height, after Apple's Human
+  Interface Guidelines (David, 2026-10-20, as in Singapore Math):
+  `html{font-size:106.25%}`, so 1rem = 17px and the reader's own browser text
+  size still applies. Nothing is under 11px, and every page works with text at
+  200% (the sidebar is sized in rem and the one-column breakpoint in em).
 - **One type scale, no one-off sizes.** Every `font-size` is a `--fs-*`
-  token: xs 12.8 · sm 14.4 · base 16 · md 18 · lg 20 · xl 27.2px · display.
+  token: xs 13.6 · sm 15.3 · base 17 · md 19.1 · lg 21.3 · xl 28.9px · display.
   The heading order is fixed and tested:
   - page title: display;
   - section heading and the "Lesson N · Track" line: xl;
@@ -229,7 +233,8 @@ plus headroom:
 No sentence anywhere may run over 35 words. If a lesson fails, rewrite it
 shorter and plainer. Never raise a ceiling to make a lesson pass.
 - **Tap targets:** buttons, header pills and radios are at least 44px tall;
-  inline disclosures (`<summary>`) at least 44px.
+  inline disclosures (`<summary>`) at least 44px. Never under 28px (Apple's
+  minimum; WCAG's is 24px).
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
   so re-rendering never removes it. New pages copy it from `lesson.html`.
 - **A colour per lesson, in theme families** (David, 2026-10-16): the lessons
@@ -248,7 +253,11 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   skews or tilts, so text never warps. Hover lifts a card straight up (6px) and
   deepens its shadow (David: "bring the motion back").
 - **Motion follows the device's reduce-motion setting.** No on-site motion switch
-  (David, 2026-10-16).
+  (David, 2026-10-16). With reduce motion on, movement becomes a fade (David,
+  2026-10-20, after Apple's guidelines, as in Singapore Math): nothing slides,
+  zooms or scales; colour and shadow changes still ease; a hover lift stays put;
+  track and theme changes are a plain View Transition cross-fade (the theme's
+  circle needs motion on).
 
 ## Voice
 

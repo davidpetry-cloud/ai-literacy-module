@@ -49,10 +49,11 @@
       saved=next;
       try{ localStorage.setItem(KEY, next); }catch(err){}
       function apply(){ root.setAttribute("data-theme", next); syncAll(); }
-      // The new theme spreads in a circle from the button (a View Transition). With reduced
-      // motion, or a browser without View Transitions, it changes at once, as before.
-      var calm = root.getAttribute("data-motion")==="off";
-      if(calm || typeof document.startViewTransition!=="function"){ apply(); return; }
+      // The new theme spreads in a circle from the button (a View Transition). With reduce motion on,
+      // it's a plain cross-fade instead: a fade doesn't travel (David, 2026-10-20, after Apple's
+      // guidelines). A browser without View Transitions changes it at once.
+      if(typeof document.startViewTransition!=="function"){ apply(); return; }
+      if(root.getAttribute("data-motion")==="off"){ document.startViewTransition(apply); return; }
       var b = e.target.closest("[data-theme-toggle]").getBoundingClientRect();
       root.style.setProperty("--vt-x", Math.round(b.left + b.width/2) + "px");
       root.style.setProperty("--vt-y", Math.round(b.top + b.height/2) + "px");

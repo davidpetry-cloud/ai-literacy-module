@@ -1167,16 +1167,17 @@ describe("reference tables reflow at 320px (WCAG 1.4.10)", () => {
 });
 
 describe("track switch transition", () => {
-  // The re-render always happens; a View Transition wraps it only when allowed and available.
+  // The re-render always happens; a View Transition (a cross-fade) wraps it whenever the browser has one,
+  // with reduce motion too, because a fade doesn't travel (David, 2026-10-20, after Apple's guidelines).
   const fakeDoc = ({ calm, vt }) => {
     const calls = [];
     const doc = { defaultView: { matchMedia: (q) => ({ matches: q.includes("reduced-motion") && calm }) } };
     if (vt) doc.startViewTransition = (fn) => { calls.push("vt"); fn(); };
     return { doc, calls };
   };
-  it("runs the update inside a View Transition when motion is allowed and the browser has one", async () => {
+  it("runs the update inside a View Transition whenever the browser has one, reduce motion or not", async () => {
     const { withTransition } = await import("../lesson-core.js");
-    for (const [calm, vt, wrapped] of [[false, true, 1], [true, true, 0], [false, false, 0]]) {
+    for (const [calm, vt, wrapped] of [[false, true, 1], [true, true, 1], [false, false, 0]]) {
       const { doc, calls } = fakeDoc({ calm, vt });
       let ran = 0;
       withTransition(doc, () => ran++);
