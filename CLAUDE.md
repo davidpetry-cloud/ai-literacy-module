@@ -57,7 +57,7 @@ needs, at any point in the course. An essential is an ordinary lesson file with
 `category: "essentials"`, a `label` ("Essentials 1") and an `idPrefix` ("E1") for its
 objective ids. It keeps a lesson number `n` for its page address only. Learners
 always see the label (`lessonLabel` in `course.js`), never "Lesson 13". The hub lists
-essentials in their own section above the lessons, as a honeycomb of hexagons (David, 2026-10-16), the hub counts them separately,
+essentials in their own section above the lessons, in a dark framed band like the Singapore Math hub's access section (David, 2026-10-20), the hub counts them separately,
 and previous/next links stay within a category. Every lesson rule above and below
 applies to essentials unchanged.
 
@@ -237,21 +237,27 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   minimum; WCAG's is 24px).
 - **The header row** (back pill + theme toggle) is static HTML, outside `#top`,
   so re-rendering never removes it. New pages copy it from `lesson.html`.
-- **A colour per lesson, in theme families** (David, 2026-10-16): the lessons
-  fall into three themes (`GROUPS` in `course.js`: Using AI well 1–5 in
-  blue-teals, Building for people 6–8 in greens, Recognising manipulation 9–12
-  in warm earths), and every lesson and essential has its own colour within
-  them. The Essentials are a family of their own, Zsolnay ceramic glazes (David,
-  2026-10-16): cobalt (1), glaze green (2) and burnished amber (3), each tuned to
-  sit further from its nearest lesson colour than the closest two lessons do. No pinks and no fluorescents. Every colour is always paired with the
-  lesson number and the theme's name. Lessons in design get a dashed outline.
-- **Shapes and ornament:** essentials are outlined hexagons in a honeycomb
-  (a `.hex-frame` in the colour behind a `--card` face); lesson cards have
-  petal corners (`--r-xl` / `--r-sm`) and a double rule; theme labels end in
-  the `textures/ornament.svg` flourish, coloured by mask.
+- **A colour per lesson, from natural materials** (David, 2026-10-20: earthy,
+  texture oriented, not childish): the lessons fall into three themes (`GROUPS`
+  in `course.js`), each a value ramp from deep to lighter, low in saturation:
+  Using AI well 1–5 in fired clay, Building for people 6–8 in moss and olive,
+  Recognising manipulation 9–12 in warm charcoal and ash. The Essentials are cool
+  stones: slate (1), verdigris (2) and basalt (3). `--lN` is the accent (borders,
+  links, labels), readable as text on a card; `--fN` is the fill under `--on-lc`
+  text, deep in both themes. No pinks and no fluorescents. Every colour is always
+  paired with the lesson number and the theme's name.
+- **The hub copies the Singapore Math hub** (David, 2026-10-20): the header wears
+  its frame (grain, lamplight and the `textures/rosette.svg` lattice) and closes
+  with the Danube wave and its amber line; hub section headings carry the
+  `textures/flourish.svg` flourish; lesson cards are its unit cards (petal corners
+  `--r-xl`/`--r-sm`, a 6px top rule in the lesson colour with a fine inner line, a
+  soft `--lift`, a chip, an objectives count, the title, one line of framing, and
+  an outlined status); the Essentials sit in a dark framed band with solid cards,
+  like its access section. Lessons in design get a dashed outline and a dashed
+  "In design" status. Number chips carry the `textures/stone.svg` grain.
 - **Depth by illusion, never real 3D:** light, shade and shadow; nothing rotates,
   skews or tilts, so text never warps. Hover lifts a card straight up (6px) and
-  deepens its shadow (David: "bring the motion back").
+  deepens its shadow (David: "bring the motion back"); the shadow is `--lift-hi`.
 - **Motion follows the device's reduce-motion setting.** No on-site motion switch
   (David, 2026-10-16). With reduce motion on, movement becomes a fade (David,
   2026-10-20, after Apple's guidelines, as in Singapore Math): nothing slides,
