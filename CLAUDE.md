@@ -247,7 +247,8 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   text, deep in both themes. No pinks and no fluorescents. Every colour is always
   paired with the lesson number and the theme's name.
 - **The hub copies the Singapore Math hub** (David, 2026-10-20): the header wears
-  its frame (grain, lamplight and the `textures/rosette.svg` lattice) and closes
+  its frame (grain, lamplight and, David's pick, the `textures/roof-diamonds.svg`
+  Zsolnay roof-tile pattern, on dark frames only; the page keeps its paper grain) and closes
   with the Danube wave and its amber line; hub section headings carry the
   `textures/flourish.svg` flourish; lesson cards are its unit cards (petal corners
   `--r-xl`/`--r-sm`, a 6px top rule in the lesson colour with a fine inner line, a
