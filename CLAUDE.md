@@ -46,6 +46,7 @@ docs/dark-triad-series.md  plan for a later series on recognising exploitative b
 docs/security-and-privacy-checks.md  how the site protects privacy and security, and how an organisation can verify it
 docs/student-safety.md     student safety and data protection protocol: children's law by country (checked 2026-10-05), how the course follows it
 docs/fact-check-2026-10.md fact recheck of all twelve lessons (October 2026): sources by field, fixes, cautions
+docs/link-check-2026-10.md link check of every outside address (20 October 2026): what moved, what was fixed, which sites block scripts
 docs/ux-foundations.md     David's portable UX/UI standard (full; `ux-foundations-concise.md` is the Occam-trimmed twin, keep both in step)
 ```
 
