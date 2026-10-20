@@ -253,8 +253,10 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   `textures/flourish.svg` flourish; lesson cards are its unit cards (petal corners
   `--r-xl`/`--r-sm`, a 6px top rule in the lesson colour with a fine inner line, a
   soft `--lift`, a chip, an objectives count, the title, one line of framing, and
-  an outlined status); the Essentials sit in a dark framed band with solid cards,
-  like its access section. Lessons in design get a dashed outline and a dashed
+  an outlined status); the Essentials sit in a full-width dark band with solid
+  cards, like its access section, opened and closed by the Danube wave (David:
+  a box cut into the page looked "boxy"); the Evaluation levels are the same
+  cards in stone and earth, cool to warm: slate, verdigris, olive, clay. Lessons in design get a dashed outline and a dashed
   "In design" status. Number chips carry the `textures/stone.svg` grain.
 - **Depth by illusion, never real 3D:** light, shade and shadow; nothing rotates,
   skews or tilts, so text never warps. Hover lifts a card straight up (6px) and

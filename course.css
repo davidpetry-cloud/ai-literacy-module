@@ -219,9 +219,28 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 .lesson-group[data-group="using"]{--lc:var(--l3)} .lesson-group[data-group="building"]{--lc:var(--l7)} .lesson-group[data-group="manipulation"]{--lc:var(--l11)}
 /* Essentials: a dark frame of their own, like the Singapore Math hub's access band (David, 2026-10-20). The
    cards inside are solid, a lighter step of the frame, so the pattern never shows through text. */
-#essentials.band{color:var(--on-dark);background:var(--header-bg);border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);padding:32px 32px 48px;
+/* The band runs the full width of the screen (David, 2026-10-20: a box cut into the page looked "boxy"), opening
+   and closing with the Danube wave and its amber line, like the header. Its background is a separate layer as wide
+   as the screen; the cards inside stay on the page's own column. */
+/* The section's own background sits behind its content only (content-box), hidden under the wide layer; it is
+   there so contrast checks, which look for the nearest background, measure the band and not the page. */
+#essentials.band{position:relative;isolation:isolate;color:var(--on-dark);padding:48px 0;margin-bottom:48px;background:var(--header-bg) content-box}
+/* The wide layer is cut to the wave at top and bottom with a mask, so the real page (its glow and grain) shows
+   above and below; nothing is painted over it. */
+#essentials.band .band-bg{position:absolute;inset:0 calc(50% - 50vw);z-index:-1;background:var(--header-bg);
   background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/roof-diamonds.svg);
-  background-size:160px 160px,auto,32px 32px}
+  background-size:160px 160px,auto,32px 32px;
+  mask:url(textures/wave-fill.svg) top / 100% 40px no-repeat,linear-gradient(black,black) center / 100% calc(100% - 78px) no-repeat,url(textures/wave-cap.svg) bottom / 100% 40px no-repeat}
+/* The amber line along each crest. */
+#essentials.band::before,#essentials.band::after{content:"";position:absolute;left:calc(50% - 50vw);right:calc(50% - 50vw);height:40px;pointer-events:none;
+  mask:url(textures/wave-line.svg) center / 100% 100% no-repeat;background:var(--amber)}
+#essentials.band::before{top:0}
+#essentials.band::after{bottom:0}
+/* Room between the waves and what sits inside them. */
+#essentials.band > h2{padding-top:16px}
+#essentials.band .cards{margin-bottom:32px}
+/* A layer wider than the page column must never cause a sideways scroll. */
+body[data-page="hub"]{overflow-x:clip}
 #essentials.band h2{color:var(--on-dark)}
 [data-page="hub"] #content > #essentials.band > h2::after{background:var(--amber)}
 #essentials.band .lede{color:var(--header-sub)}
@@ -245,16 +264,20 @@ table.basis{border-collapse:collapse;width:100%;max-width:calc(var(--measure) * 
 /* Evaluation: Kirkpatrick's four levels, cool to warm as they move from the day itself to lasting results.
    Each level also carries its number and name, so colour is never the only cue. */
 ol.eval-levels{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;max-width:calc(var(--measure) * 1.6)}
-.lvl{background:var(--lvl-pale);border:1.5px solid var(--lvl);border-left:8px solid var(--lvl);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:16px 16px 16px 24px;color:var(--text)}
-.lvl h3{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 4px;color:var(--text);line-height:var(--lh-heading)}
-.lvl-no{display:block;font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
-.lvl-who{font-size:var(--fs-sm);font-weight:600;margin:0 0 8px;color:var(--text)}
+/* The levels are cards like the lessons and Essentials (David, 2026-10-20: "make it flow with the others"), in the
+   same materials, still cool to warm from the day itself to lasting results: slate, verdigris, olive, clay. */
+.lvl{position:relative;background:var(--card);border:1.5px solid var(--edge);border-top:6px solid var(--lvl);border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);
+  padding:24px;outline:1px solid color-mix(in oklch,var(--lvl) 24%,transparent);outline-offset:-8px;box-shadow:var(--lift);color:var(--text)}
+.lvl h3{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 4px;color:var(--ink);line-height:var(--lh-heading)}
+.lvl-no{display:block;width:fit-content;margin:0 0 8px;font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  background:url(textures/stone.svg),var(--lvlf);color:var(--on-lc);padding:2px 12px;border-radius:var(--r-lg) var(--r-sm) var(--r-lg) var(--r-sm)}
+.lvl-who{font-size:var(--fs-sm);font-weight:600;margin:0 0 8px;color:var(--muted)}
 .lvl p{margin:0 0 8px}
 .lvl p:last-child{margin-bottom:0}
-.lvl-1{--lvl:var(--peri);--lvl-pale:var(--peri-pale)}
-.lvl-2{--lvl:var(--teal);--lvl-pale:var(--teal-pale)}
-.lvl-3{--lvl:var(--prop);--lvl-pale:var(--amber-pale)}
-.lvl-4{--lvl:var(--rose);--lvl-pale:var(--rose-pale)}
+.lvl-1{--lvl:var(--l13);--lvlf:var(--f13)}
+.lvl-2{--lvl:var(--l14);--lvlf:var(--f14)}
+.lvl-3{--lvl:var(--l7);--lvlf:var(--f7)}
+.lvl-4{--lvl:var(--l3);--lvlf:var(--f3)}
 .tally{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--sans)}
 
 /* claims and status badges — shape and text as well as colour */
@@ -642,7 +665,6 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     .passage ol,.inbox .messages,.requests .messages,.calls .messages{padding-left:16px}
     .inbox .message,.requests .message,.calls .message{padding:12px}
     /* The Essentials band and the cards inside it don't each add a full gutter either. */
-    #essentials.band{padding:24px 12px 32px}
     .card{padding:16px}
   }
   .basis td:first-child{width:auto}
