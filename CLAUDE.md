@@ -133,7 +133,9 @@ what it does. `tests/ui.test.js` enforces everything below from `course.css`.
 - **Both themes, always.** Every colour token in `:root` has a twin in
   `:root[data-theme="dark"]`. Print forces light, on white paper. On screen, the
   light theme is warm sandstone (`--paper` #EBE1CF, `--card` #F2E9DA) with no bright
-  white anywhere (David, 2026-10-16: white is for print only). Check new UI in both themes
+  white anywhere (David, 2026-10-16: white is for print only). The dark theme is the Danube at
+  night (`--paper` #081B2E, `--card` #0F2840, a teal lamplight `--glow`), not grey
+  (David, 2026-10-20). Check new UI in both themes
   and at 320px (WCAG reflow) as well as 375px before calling it done.
 - **Contrast is 4.5:1 minimum** for all text, in both themes. The allowed
   text/surface pairings are listed in `PAIRS` in the UI test. A new pairing
