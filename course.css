@@ -66,18 +66,23 @@
   --shadow:#000000; --hi:#FFFFFF; --glow:#16435A;
 }
 *{box-sizing:border-box}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-/* `*` doesn't reach View Transition pseudo-elements, so switch those off too (the scripts skip them as well),
-   unless the learner has chosen "Allow motion" on the site, which beats the device setting (user control). */
-@media (prefers-reduced-motion:reduce){:root:not([data-motion="on"])::view-transition-group(*),:root:not([data-motion="on"])::view-transition-old(*),:root:not([data-motion="on"])::view-transition-new(*){animation:none!important}}
-/* "Reduce motion" on the site (theme-toggle.js sets data-motion) stops everything, whatever the device says. */
-:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}
-:root[data-motion="off"]::view-transition-group(*),:root[data-motion="off"]::view-transition-old(*),:root[data-motion="off"]::view-transition-new(*){animation:none!important}
-/* View Transitions: a track change uses the browser's own short cross-fade; a theme change spreads
-   in a circle from the toggle (theme-toggle.js sets --vt-x/--vt-y). Short, and once per click. */
+/* Body text is 17px, after Apple's Human Interface Guidelines (David, 2026-10-20): 1rem = 17px, and a
+   percentage keeps the reader's own browser text size in charge. Every --fs-* step scales with it. */
+html{font-size:106.25%}
+/* Reduce motion (David, 2026-10-20, after Apple's Human Interface Guidelines): nothing slides, zooms or
+   scales. What would have moved changes at once; colour and shadow changes still ease, and page changes
+   become a plain cross-fade, so a change is seen, not missed. It follows the device setting, which
+   theme-toggle.js copies to data-motion before first paint (no on-site switch, David 2026-10-16). */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:color,background-color,border-color,outline-color,box-shadow!important}}
+:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition-property:color,background-color,border-color,outline-color,box-shadow!important}
+/* Without its slide, a hover lift would jump, so the card stays put and only its shadow deepens. */
+:root[data-motion="off"] .card,:root[data-motion="off"] .honeycomb .hex{transform:none!important}
+/* View Transitions: a track change uses the browser's own short cross-fade, kept with reduce motion
+   because a fade doesn't travel (`*` doesn't reach these pseudo-elements). A theme change spreads in a
+   circle from the toggle (theme-toggle.js sets --vt-x/--vt-y) only when motion is on; otherwise it fades. */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
-html.vt-theme::view-transition-old(root){animation:none}
-html.vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out both}
+:root[data-motion="on"].vt-theme::view-transition-old(root){animation:none}
+:root[data-motion="on"].vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out both}
 @keyframes vt-reveal{from{clip-path:circle(0 at var(--vt-x,50%) var(--vt-y,0))}to{clip-path:circle(150vmax at var(--vt-x,50%) var(--vt-y,0))}}
 /* Scroll-linked motion (David, 2026-10-16): it moves only as fast as the reader scrolls, stops when
    they stop and runs back when they scroll up, so nothing moves on its own. Two jobs only: a
@@ -95,7 +100,7 @@ html.vt-theme::view-transition-new(root){animation:vt-reveal .5s ease-in-out bot
 /* Headings break into even lines; paragraphs avoid a lone last word. */
 h1,h2,h3,.card h3{text-wrap:balance}
 p,li,dd{text-wrap:pretty}
-body{margin:0;background:url(textures/grain.svg),radial-gradient(ellipse 90% 60% at 15% 0%,var(--glow),transparent 70%),var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;line-height:var(--lh-body);-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}
+body{margin:0;background:url(textures/grain.svg),radial-gradient(ellipse 90% 60% at 15% 0%,var(--glow),transparent 70%),var(--paper);color:var(--text);font-family:var(--sans);font-size:1rem;line-height:var(--lh-body);-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:var(--r-sm)}
 a{color:var(--ink-2)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -304,7 +309,8 @@ details[open] > summary::before{content:"▾"}
 details[open] > summary::before{content:"▾" / ""}
 
 /* lesson */
-.lesson{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:24px;align-items:start}
+/* The sidebar is sized in rem, so it grows with the reader's text size (WCAG 1.4.4: 200% text without loss). */
+.lesson{display:grid;grid-template-columns:minmax(0,1fr) 17.5rem;gap:24px;align-items:start}
 .obj{background:var(--card);border:1.5px solid var(--edge);border-left:4px solid var(--amber);padding:16px 24px;border-radius:0 var(--r-md) var(--r-md) 0;margin-bottom:16px}
 .obj p{margin:0 0 8px}
 .obj ul{margin:0;padding-left:0;list-style:none}
@@ -597,13 +603,14 @@ svg.grid{width:100%;min-width:560px;height:auto;font-family:var(--sans)}
 .g-row{font-size:15px;font-weight:600;fill:var(--ink-3);text-anchor:end}
 .g-mark circle{fill:var(--btn-bg);stroke:var(--btn-edge);stroke-width:2}
 /* Narrow figure: the drawing would need a sideways scroll that hides half of it, so show the same grid as a table. */
-/* Auto layout lets each column fit its longest word; equal fixed columns split "Glanc / e" and
+/* 2px side padding: with 17px text, four columns of single words still fit a 320px phone.
+   Auto layout lets each column fit its longest word; equal fixed columns split "Glanc / e" and
    "automa / tion" at 320px (UX audit 2026-10, finding 1). The audit's reflow check guards the total. */
 table.grid-alt{display:none;width:100%;border-collapse:collapse;table-layout:auto;font-size:var(--fs-sm)}
 .grid-alt th{overflow-wrap:break-word}
 .grid-alt thead th:first-child{width:36%}
 .grid-alt.by-row thead th:first-child{width:auto}
-.grid-alt th,.grid-alt td{border:1.5px solid var(--edge);padding:8px 4px;text-align:center;vertical-align:middle}
+.grid-alt th,.grid-alt td{border:1.5px solid var(--edge);padding:8px 2px;text-align:center;vertical-align:middle}
 .grid-alt thead th{color:var(--ink-3);font-weight:600}
 .grid-alt tbody th{color:var(--ink-3);font-weight:600;text-align:left;padding:8px 4px}
 .tmark{display:inline-block;min-width:32px;padding:2px 4px;background:var(--btn-bg);color:var(--on-dark);border:2px solid var(--btn-edge);border-radius:var(--r-pill);font-weight:700;line-height:var(--lh-heading)}
@@ -626,7 +633,8 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
 
 .foot{font-size:var(--fs-sm);color:var(--muted);padding-bottom:48px}
 
-@media (max-width:900px){
+/* In em, so a larger browser text size also brings the one-column layout (56.25em = 900px at the default size). */
+@media (max-width:56.25em){
   .lesson{grid-template-columns:minmax(0,1fr)}
   .side{position:static}
   .top #top{display:block}
@@ -640,6 +648,14 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
   .tracks label{font-size:var(--fs-base)}
   .block{padding:16px 16px}
   .cards{grid-template-columns:1fr}
+  /* Narrowest phones: 17px text needs the room, so blocks don't double the page's 16px gutter. */
+  @media (max-width:400px){
+    .block{padding:16px 12px}
+    /* Nested boxes (a passage holding messages or calls) don't each add a full gutter. */
+    .passage{padding:12px 8px 8px}
+    .passage ol,.inbox .messages,.requests .messages,.calls .messages{padding-left:16px}
+    .inbox .message,.requests .message,.calls .message{padding:12px}
+  }
   .basis td:first-child{width:auto}
 }
 @media print{

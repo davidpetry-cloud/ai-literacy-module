@@ -301,7 +301,8 @@ describe("type", () => {
 
   it("sizes all text from the scale — no one-off font sizes", () => {
     for (const r of beforePrint) {
-      if (r.sel === "body" || svgText.test(r.sel)) continue;
+      // The root sets the size every --fs-* step scales from (17px body text, after Apple's guidelines).
+      if (r.sel === "body" || r.sel === "html" || svgText.test(r.sel)) continue;
       for (const [, value] of r.body.matchAll(/font-size:\s*([^;]+)/g)) {
         expect(value.trim(), r.sel).toMatch(/^var\(--fs-(xs|sm|base|md|lg|xl|display)\)$/);
       }
@@ -345,9 +346,12 @@ describe("type", () => {
     expect(rules.find((r) => r.sel === sel)?.body, sel).toContain(`font-size:var(--fs-${step})`);
   });
 
-  it("keeps body text at 16px with 1.6+ line height", () => {
+  // Apple's Human Interface Guidelines (David, 2026-10-20): 17px body text, set as a percentage so the
+  // reader's own browser text size still applies.
+  it("keeps body text at 17px with 1.6+ line height", () => {
+    expect(rules.find((r) => r.sel === "html").body).toContain("font-size:106.25%");
     const body = rules.find((r) => r.sel === "body").body;
-    expect(body).toContain("font-size:16px");
+    expect(body).toContain("font-size:1rem");
     const lh = body.match(/line-height:var\(--(lh-[\w]+)\)/)[1];
     expect(Number(light[lh])).toBeGreaterThanOrEqual(1.6);
   });
@@ -433,19 +437,23 @@ describe("theme toggle", () => {
     return { w, calls };
   }
 
-  it("spreads the new theme with a View Transition only when motion is allowed and the browser has one", () => {
-    for (const [calm, vt, expected] of [[false, true, 1], [true, true, 0], [false, false, 0]]) {
+  // With reduce motion on, the theme still changes through a View Transition, but as a plain cross-fade:
+  // the circle that spreads from the button needs motion on (David, 2026-10-20, after Apple's guidelines).
+  it("spreads the new theme in a circle when motion is on, cross-fades it when motion is off, and changes it at once without View Transitions", () => {
+    for (const [calm, vt, expected, circle] of [[false, true, 1, true], [true, true, 1, false], [false, false, 0, false]]) {
       const { w, calls } = loadWith({ calm, vt });
       btn(w).click();
       expect(theme(w), `calm ${calm}, vt ${vt}`).toBe("dark");
       expect(btn(w).textContent).toContain("Light mode");
       expect(calls.length, `calm ${calm}, vt ${vt}`).toBe(expected);
+      expect(w.document.documentElement.classList.contains("vt-theme"), `calm ${calm}, vt ${vt}`).toBe(circle);
     }
   });
 
-  it("switches View Transitions off for reduced motion in CSS too, since * doesn't reach their pseudo-elements", () => {
-    expect(css).toMatch(/@media \(prefers-reduced-motion:reduce\)\{:root:not\(\[data-motion="on"\]\)::view-transition-group\(\*\)/);
-    expect(css).toContain(':root[data-motion="off"]::view-transition-group(*)');
+  it("keeps page changes a plain cross-fade with reduce motion: nothing switches View Transitions off, and the circle needs motion on", () => {
+    expect(css).not.toMatch(/::view-transition-(?:group|old|new)\(\*\)\{animation:none/);
+    expect(css).toContain(':root[data-motion="on"].vt-theme::view-transition-new(root){animation:vt-reveal');
+    expect(css).not.toMatch(/(?:^|\})html\.vt-theme::view-transition/);
   });
 
   // No on-site motion switch (David, 2026-10-16); motion follows the device's reduce-motion setting.
@@ -472,8 +480,14 @@ describe("theme toggle", () => {
     expect(loadMotion({ systemReduce: false }).document.documentElement.dataset.motion).toBe("on");
   });
 
-  it("stops every animation and transition when motion is off, whatever the device says", () => {
-    expect(css).toContain(':root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important}');
+  // With reduce motion on, nothing slides, zooms or scales: animations stop, only colour and shadow
+  // transitions remain, and a hover lift stays put (David, 2026-10-20, after Apple's guidelines).
+  it("turns movement into change at once or a fade when motion is off, whatever the device says", () => {
+    const keep = "transition-property:color,background-color,border-color,outline-color,box-shadow!important";
+    expect(css).toContain(`:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;${keep}}`);
+    expect(css).toContain(`@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;${keep}}}`);
+    expect(css).not.toMatch(/transition-property:[^;}]*\b(?:transform|translate|scale)\b/);
+    expect(css).toContain(':root[data-motion="off"] .card,:root[data-motion="off"] .honeycomb .hex{transform:none!important}');
   });
 
   it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
@@ -610,7 +624,7 @@ describe("Lesson 7 worked example: the course audits true", async () => {
       expect(css).toMatch(/@container \(max-width:\d+px\)\{\s*svg\.grid\{display:none\}\s*table\.grid-alt\{display:table\}/);
     },
     motion: () => {
-      expect(css).toMatch(/@media \(prefers-reduced-motion:reduce\)\{\*\{animation:none!important;transition:none!important\}\}/);
+      expect(css).toMatch(/@media \(prefers-reduced-motion:reduce\)\{\*,\*::before,\*::after\{animation:none!important;transition-property:color,background-color,border-color,outline-color,box-shadow!important\}\}/);
     },
     status: () => {
       for (const page of ["index.html", "lesson.html"]) expect(read(page)).toMatch(/id="announce"[^>]*aria-live="polite"|aria-live="polite"[^>]*id="announce"/);

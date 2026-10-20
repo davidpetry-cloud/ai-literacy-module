@@ -2258,14 +2258,11 @@ function readTrack(win) {
   return TRACK_IDS[0];
 }
 
-// Run a page change as a View Transition (a short cross-fade) when the browser has them and the
-// learner hasn't asked for less motion; otherwise the change is instant, as before (WCAG 2.3.3).
+// Run a page change as a View Transition (a short cross-fade) when the browser has them; otherwise the
+// change is instant. The cross-fade stays with reduce motion on, because a fade doesn't travel
+// (David, 2026-10-20, after Apple's guidelines); the CSS keeps it a plain fade.
 export function withTransition(doc, update) {
-  const win = doc.defaultView;
-  // The site's motion setting (theme-toggle.js) wins; without it, follow the device setting.
-  const pref = doc.documentElement?.dataset?.motion;
-  const calm = pref ? pref === "off" : win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  if (calm || typeof doc.startViewTransition !== "function") return update();
+  if (typeof doc.startViewTransition !== "function") return update();
   doc.documentElement?.classList.remove("vt-theme"); // never play the theme's circle on a track change
   doc.startViewTransition(update);
 }
