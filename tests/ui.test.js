@@ -527,8 +527,15 @@ describe("theme toggle", () => {
   });
 
   // Essentials sit in a dark frame of their own, like the Singapore Math hub's access band.
-  it("sets the Essentials in a dark band on the Zsolnay roof diamonds, with solid cards so the pattern never shows through text", () => {
-    expect(rules.find((r) => r.sel === "#essentials.band").body).toMatch(/background:var\(--header-bg\)[\s\S]*url\(textures\/roof-diamonds\.svg\)/);
+  // Full width, opened and closed by the Danube wave (David, 2026-10-20: a box cut into the page looked "boxy").
+  it("sets the Essentials in a full-width dark band on the Zsolnay roof diamonds, with waves, solid cards and no sideways scroll", () => {
+    const bg = rules.find((r) => r.sel === "#essentials.band .band-bg").body;
+    expect(bg).toContain("inset:0 calc(50% - 50vw)");
+    expect(bg).toMatch(/background:var\(--header-bg\)[\s\S]*url\(textures\/roof-diamonds\.svg\)/);
+    expect(bg).toMatch(/mask:url\(textures\/wave-fill\.svg\) top[^;]*url\(textures\/wave-cap\.svg\) bottom/);
+    expect(rules.find((r) => r.sel === "#essentials.band").body).toContain("background:var(--header-bg) content-box");
+    expect(css).toMatch(/#essentials\.band::before,#essentials\.band::after\{[^}]*mask:url\(textures\/wave-line\.svg\)[^}]*background:var\(--amber\)/);
+    expect(rules.find((r) => r.sel === 'body[data-page="hub"]').body).toContain("overflow-x:clip");
     expect(rules.find((r) => r.sel === "#essentials.band .card").body).toMatch(/background:color-mix\(in oklch,var\(--header-bg\),var\(--on-dark\) 8%\)/);
   });
 
@@ -661,17 +668,18 @@ describe("Lesson 7 worked example: the course audits true", async () => {
 // Hub Evaluation: four levels, cool to warm. Text sits on each level's pale tint,
 // and each accent stripe stands out from both the tint and the page.
 describe("Evaluation levels colour", () => {
-  const LEVELS = { 1: ["--peri", "--peri-pale"], 2: ["--teal", "--teal-pale"], 3: ["--prop", "--amber-pale"], 4: ["--rose", "--rose-pale"] };
+  // The levels flow with the other cards (David, 2026-10-20): stone and earth, cool to warm, no pastel tints.
+  const LEVELS = { 1: ["--l13", "--f13"], 2: ["--l14", "--f14"], 3: ["--l7", "--f7"], 4: ["--l3", "--f3"] };
 
-  it.each(Object.entries(LEVELS))("level %s uses its accent and tint tokens", (n, [accent, pale]) => {
+  it.each(Object.entries(LEVELS))("level %s uses its accent and fill tokens", (n, [accent, fill]) => {
     const body = rules.find((r) => r.sel === `.lvl-${n}`)?.body;
     expect(body).toContain(`--lvl:var(${accent})`);
-    expect(body).toContain(`--lvl-pale:var(${pale})`);
+    expect(body).toContain(`--lvlf:var(${fill})`);
   });
 
-  it.each(Object.entries(THEMES))("%s theme: text passes 4.5:1 on every tint, and every stripe 3:1 on the page", (_, theme) => {
-    for (const [, [accent, pale]] of Object.entries(LEVELS)) {
-      expect(contrast(theme, "--text", pale), `--text on ${pale}`).toBeGreaterThanOrEqual(4.5);
+  it.each(Object.entries(THEMES))("%s theme: the level chip's text passes 4.5:1 on its fill, and every top rule 3:1 on the page", (_, theme) => {
+    for (const [, [accent, fill]] of Object.entries(LEVELS)) {
+      expect(contrast(theme, "--on-lc", fill), `--on-lc on ${fill}`).toBeGreaterThanOrEqual(4.5);
       expect(contrast(theme, accent, "--paper"), `${accent} on --paper`).toBeGreaterThanOrEqual(3);
     }
   });

@@ -1830,7 +1830,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
       <p class="so-status" id="search-status" aria-live="polite"></p>
       <ol class="search-results" id="search-results"></ol>
     </section>
-    ${essentialCards ? `<section id="essentials" class="band"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
+    ${essentialCards ? `<section id="essentials" class="band"><div class="band-bg" aria-hidden="true"></div><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
     <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}${lessons}</section>
 
     <section><h2>How it's built</h2>
