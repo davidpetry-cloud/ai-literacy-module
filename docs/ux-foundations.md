@@ -54,8 +54,8 @@ Organised by the four WCAG principles (POUR), with David's practical groups.
 
 | WCAG principle | Group | Check |
 |---|---|---|
-| Perceivable | Text and visuals | Contrast 4.5:1 for text, 3:1 for large text and UI parts (1.4.3, 1.4.11); colour is never the only cue (1.4.1); text alternatives (1.1.1); text resizes (1.4.4) |
-| Operable | Navigation and interaction | Works by keyboard (2.1.1); visible focus (2.4.7); targets at least 24px (2.5.8); moving content can be paused (2.2.2); time limits can be extended (2.2.1) |
+| Perceivable | Text and visuals | Contrast 4.5:1 for text, 3:1 for large text and UI parts (1.4.3, 1.4.11); colour is never the only cue (1.4.1); text alternatives (1.1.1); body text 17px, nothing under 11px, and it enlarges to 200% without breaking (1.4.4) |
+| Operable | Navigation and interaction | Works by keyboard (2.1.1); visible focus (2.4.7); targets 44px by default and never under 28px (WCAG's own minimum is 24px, 2.5.8); moving content can be paused (2.2.2); time limits can be extended (2.2.1) |
 | Understandable | Content clarity | Labels and instructions (3.3.2); errors named in words with a fix (3.3.1, 3.3.3); consistent navigation (3.2.3) |
 | Robust | Mobile and device compatibility | Controls have a name and role (4.1.2); status messages are announced (4.1.3); reflows at 320px with no sideways scroll (1.4.10, filed under Perceivable in the standard) |
 
@@ -69,6 +69,16 @@ because some content can't meet every AAA criterion.
 
 Check with a contrast checker; never judge by eye. Test both light and dark
 themes, and respect `prefers-reduced-motion`.
+
+**Sizes** follow Apple's *Human Interface Guidelines* (David, 2026-10-20).
+Apple measures in points; on the web a point is one CSS pixel at normal zoom.
+- **Touch targets:** 44×44px by default, never under 28×28px. Both are above
+  WCAG's 24px minimum (2.5.8); 44px is WCAG's AAA level (2.5.5).
+- **Text:** 17px for body text, nothing under 11px, and the page still works
+  with text enlarged to 200% (1.4.4).
+- **Pages for children or for projection keep a higher floor.** The Grade 6
+  curriculum's smallest text is 12.5px, for 12-year-old readers and classroom
+  projectors; Apple's 11px is a floor for adults on a phone, not a target.
 
 ## Cognitive accessibility: beyond level AA
 
@@ -151,6 +161,11 @@ Respect the device's reduce-motion setting (people whom movement makes unwell
 rely on it). David decided against an on-site motion switch (2026-10-16), so the
 device setting is the one control. With motion off, nothing is lost: same
 content, same focus, same announcements.
+
+**With reduce motion on, movement becomes a fade** (David, 2026-10-20,
+following Apple's guidelines). Anything that would slide, zoom or scale fades
+in place or changes at once instead. A fade doesn't travel across the screen,
+so it keeps the sense of change without the movement that makes people unwell.
 
 **Depth by illusion.** Create depth with light, shade, shadow and texture, the
 way a painter does, not with real 3D: nothing rotates, skews or tilts, so text
@@ -263,7 +278,7 @@ WCAG numbers are 2.2 success criteria.
 - **Means:** it works for people who see, hear, move and think differently, and on any device. The target is WCAG 2.2 AA (see below).
 - **AI-built screens break it with:** colour-only error states; icon buttons with no name; low-contrast grey text; fixed widths that break on phones; placeholders instead of labels.
 - **Check:** keyboard-only pass (Tab through everything, and every control must be reachable, visible when focused and usable); a contrast tool in both themes; zoom to 200% and a 320px width; a screen-reader pass of names and roles; automated checks for what can be automated.
-- **Fix:** real `<label>`s, text alongside colour, visible focus, 24px+ targets (44px is better and is the AAA level), reflowing layouts.
+- **Fix:** real `<label>`s, text alongside colour, visible focus, 44px targets (never under 28px), 17px body text, reflowing layouts.
 - **Beyond AA:** plain words, one instruction per step, and nothing that relies on memory. See "Cognitive accessibility" above.
 
 ### Usability: the task gets done with little effort
@@ -320,6 +335,14 @@ credit, wording here is this standard's own). The research beneath them:
 
 **Accessibility** is the W3C's WCAG 2.2 (2023): four principles (perceivable, operable, understandable, robust) and levels A, AA and AAA.
 
+**Sizes and reduced-motion fades** follow Apple, *Human Interface Guidelines*:
+the Accessibility page (minimum text and control sizes, enlarging text to 200%,
+replacing movement with fades under Reduce Motion; last changed 9 June 2025)
+and the Motion page, read at
+https://developer.apple.com/design/human-interface-guidelines on 2026-10-20.
+Adopted by David the same day. Apple's numbers are for its platforms; using
+them on the web is this standard's choice.
+
 **Mindful UX** draws on work on deceptive design ("dark patterns", Harry Brignull, 2010), the FTC's *Bringing Dark Patterns to Light* (2022), and Article 25 of the EU Digital Services Act.
 
 **Cognitive accessibility** is W3C, *Making Content Usable for People with
@@ -362,14 +385,15 @@ David attests them against the sources above.
 - [ ] Anything that loses work can be undone or confirmed (user control)
 - [ ] The main action is the most prominent thing; destructive actions aren't (hierarchy)
 - [ ] Labels use the user's words, one name per action (user-centricity, consistency)
-- [ ] Works by keyboard, focus visible, targets at least 24px, names on controls
+- [ ] Works by keyboard, focus visible, targets 44px (never under 28px), names on controls
+- [ ] Body text 17px, nothing under 11px (higher for children); enlarges to 200% without breaking
 - [ ] Contrast checked in both themes; colour never the only cue
-- [ ] No sideways scroll at 320px; reduced motion respected
+- [ ] No sideways scroll at 320px; with reduce motion on, movement becomes a fade
 - [ ] No addictive patterns; calm defaults
 - [ ] Plain words, one instruction per step, nothing relies on memory (cognitive accessibility)
 - [ ] On a page that teaches, the essential parts are cued and don't blend together (signaling)
 - [ ] Collects only what it needs; private by default; says what happens to data; no third-party requests it doesn't need (privacy by design)
-- [ ] Looks made, not templated; richness in the frame, quiet where people read; every motion follows the person, has a job, and can be turned off on the site (expression)
+- [ ] Looks made, not templated; richness in the frame, quiet where people read; every motion follows the person, has a job, and follows the device's reduce-motion setting (expression)
 
 If the screen shows, suggests or acts on AI output, also check:
 

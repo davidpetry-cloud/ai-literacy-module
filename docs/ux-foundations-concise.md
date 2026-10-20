@@ -43,13 +43,17 @@ The grouping is David's; each idea rests on the theory named.
 
 | Principle | Group | Check |
 |---|---|---|
-| Perceivable | Text and visuals | Contrast 4.5:1 text, 3:1 large text and UI parts (AAA: 7:1 and 4.5:1); colour never the only cue; text alternatives; text resizes |
-| Operable | Navigation and interaction | Keyboard; visible focus; 24px targets; moving content can pause; time limits can extend |
+| Perceivable | Text and visuals | Contrast 4.5:1 text, 3:1 large text and UI parts (AAA: 7:1 and 4.5:1); colour never the only cue; text alternatives; body text 17px, never under 11px, enlarges to 200% |
+| Operable | Navigation and interaction | Keyboard; visible focus; 44px targets, never under 28px; moving content can pause; time limits can extend |
 | Understandable | Content clarity | Labels; errors in words with a fix; consistent navigation |
 | Robust | Mobile and device | Names and roles on controls; status messages announced; reflow at 320px |
 
 A is the minimum, AA the target, AAA where you can (the W3C doesn't recommend
 requiring it site-wide). Measure contrast with a tool, in both themes.
+
+Sizes follow Apple's Human Interface Guidelines (a point is a CSS pixel).
+Pages for children or projection keep a higher text floor (the Grade 6
+curriculum: 12.5px).
 
 ## Cognitive accessibility (W3C, 2021)
 
@@ -94,7 +98,7 @@ taste, inside this standard.
 - **Warm light, no glare:** light themes on warm sandstone, never bright white; white is for print only.
 - **Flow:** motion the person drives (scroll-linked, View Transitions), each with a job; nothing moves on its own.
 - **Richness in the frame, quiet where people read:** coherence and signaling still win on teaching pages.
-- **Motion:** respect the device's reduce-motion setting; no on-site switch.
+- **Motion:** respect the device's reduce-motion setting; no on-site switch. With it on, movement becomes a fade.
 - **Depth by illusion:** light, shade and shadow, never real 3D; text never warps; a straight hover lift is fine.
 - **The floor doesn't move:** an idea that fails accessibility or slows a learner changes or goes.
 
@@ -137,14 +141,15 @@ For any screen that shows, suggests or acts on AI output. Theme names follow
 - [ ] Anything that loses work can be undone or confirmed
 - [ ] The main action stands out; destructive actions don't
 - [ ] The user's words, one name per action
-- [ ] Keyboard, visible focus, 24px targets, names on controls
+- [ ] Keyboard, visible focus, 44px targets (never under 28px), names on controls
+- [ ] Body text 17px, never under 11px (higher for children); enlarges to 200%
 - [ ] Contrast checked in both themes; colour never the only cue
-- [ ] No sideways scroll at 320px; reduced motion respected
+- [ ] No sideways scroll at 320px; with reduce motion on, movement becomes a fade
 - [ ] Calm defaults; no addictive patterns
 - [ ] Plain words, one instruction per step, nothing relies on memory
 - [ ] On a teaching page, the essential parts are cued and don't blend together
 - [ ] Collects only what it needs; private by default; no needless third-party requests
-- [ ] Looks made, not templated; motion follows the person, has a job, and can be turned off
+- [ ] Looks made, not templated; motion follows the person, has a job, and follows the device's reduce-motion setting
 
 With AI output, also:
 
