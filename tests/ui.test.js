@@ -35,6 +35,8 @@ const contrast = (theme, a, b) => {
   return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 };
 const LESSONS = Object.keys(light).filter((t) => /^l\d+$/.test(t)).map((t) => `--${t}`);
+// Each lesson's fill (--fN): deep in both themes, under --on-lc text (David, 2026-10-20).
+const FILLS = Object.keys(light).filter((t) => /^f\d+$/.test(t)).map((t) => `--${t}`);
 const LIGHT_SURFACES = ["--card", "--paper", "--peri-pale", "--amber-pale", "--rose-pale"];
 
 // Which text colours may sit on which surfaces. Adding a pairing here is a
@@ -50,7 +52,7 @@ const PAIRS = {
   "--prop": ["--card"],
   "--exp": ["--card"],
   "--rej": ["--card"],
-  "--on-lc": LESSONS,
+  "--on-lc": FILLS,
   "--on-dark": ["--header-bg", "--btn-bg", "--btn-bg-hover", "--chip-bg"],
   "--amber": ["--header-bg"],
   "--header-muted": ["--header-bg"],
@@ -93,8 +95,10 @@ describe.each(Object.keys(THEMES))("%s theme contrast", (name) => {
 // Visual refresh item 1 (David, 2026-10-08). In dark mode the header and the page are almost the same
 // colour, so the hub and Sources headers need an edge that shows. In light mode the dark header is its own edge.
 describe("header edge", () => {
-  it("marks the hub and Sources header with an amber rule", () => {
-    expect(rules.find((r) => r.sel === '[data-page="hub"] .top,[data-page="sources"] .top')?.body).toContain("border-bottom:4px solid var(--amber)");
+  // Since 2026-10-20 the edge is the Singapore Math wave: an amber line along the crest of the Danube.
+  it("closes the hub and Sources header with the wave and its amber line", () => {
+    expect(rules.find((r) => r.sel === '[data-page="hub"] .top::before,[data-page="sources"] .top::before')?.body).toMatch(/mask-image:url\(textures\/wave-line\.svg\);background:var\(--amber\)/);
+    for (const f of ["rosette", "wave-fill", "wave-line", "flourish"]) expect(read(`textures/${f}.svg`), f).toContain("<svg");
   });
 
   it("shows the amber rule at 3:1 against the dark page, and the header itself against the light page", () => {
@@ -179,7 +183,7 @@ describe("colour usage", () => {
   // and a recovery step in the wrong place. The last two carry meaning by shape, not colour alone.
   it("uses a dashed border only where the shape carries a meaning", () => {
     const dashed = rules.filter((r) => /border[\w-]*:[^;]*dashed/.test(r.body)).map((r) => r.sel).sort();
-    expect(dashed).toEqual([".card.pending", ".chat .turn.you", ".rc-step.rc-off"].sort());
+    expect(dashed).toEqual([".card.pending", ".status.soon", ".chat .turn.you", ".rc-step.rc-off"].sort());
   });
 
   it("makes the whole hub card the click target, with a focus ring around the card", () => {
@@ -487,15 +491,14 @@ describe("theme toggle", () => {
     expect(css).toContain(`:root[data-motion="off"] *,:root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;${keep}}`);
     expect(css).toContain(`@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;${keep}}}`);
     expect(css).not.toMatch(/transition-property:[^;}]*\b(?:transform|translate|scale)\b/);
-    expect(css).toContain(':root[data-motion="off"] .card,:root[data-motion="off"] .honeycomb .hex{transform:none!important}');
+    expect(css).toContain(':root[data-motion="off"] .card{transform:none!important}');
   });
 
   it("raises built hub cards, keeps cards in design flat, lifts on hover and keyboard focus, and prints flat", () => {
-    expect(css).toMatch(/\.card\{box-shadow:inset 0 1px 0/);
-    expect(css).toContain(".card.pending{box-shadow:none}");
+    expect(css).toMatch(/\.card\{[^}]*box-shadow:var\(--lift\)/);
+    expect(css).toMatch(/\.card\.pending\{box-shadow:none/);
     // Hover and keyboard focus lift a card straight up (no rotation, so text never warps; David, 2026-10-16).
-    expect(css).toMatch(/\.card:has\(h3 a:hover\),\.card:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
-    expect(css).toMatch(/\.honeycomb \.hex:has\(h3 a:hover\),\.honeycomb \.hex:has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
+    expect(css).toMatch(/\.card:not\(\.pending\):has\(h3 a:hover\),\.card:not\(\.pending\):has\(h3 a:focus-visible\)\{transform:translateY\(-6px\);/);
     expect(css).toMatch(/@media print\{[\s\S]*\.card\{box-shadow:none;transform:none\}/);
     // The scroll rise uses the separate translate property, so it never blocks the card's hover transform,
     // and it overshoots a little before settling, so the cards seem to have weight (gravity).
@@ -511,16 +514,22 @@ describe("theme toggle", () => {
     expect(css).toMatch(/@media print\{[\s\S]*body\{background:#fff/);
   });
 
-  it("gives lesson cards petal corners and a double-rule frame, and each theme an ornamental divider", () => {
-    expect(css).toContain("#lessons .card{border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)}");
-    expect(css).toMatch(/#lessons \.card:not\(\.pending\)\{[^}]*box-shadow:inset 0 0 0 4px var\(--card\),inset 0 0 0 5px/);
-    expect(css).toMatch(/\.group-label::after\{[^}]*url\(textures\/ornament\.svg\)/);
-    expect(read("textures/ornament.svg")).toContain("<path");
+  // The Singapore Math unit-card style (David, 2026-10-20): petal corners, a thick top rule in the lesson's
+  // colour with a fine inner line, a soft lift, and an outlined status; spaced-capital theme labels.
+  it("draws hub cards in the Singapore Math unit-card style, and each theme a clean rule", () => {
+    const card = rules.find((r) => r.sel === ".card").body;
+    expect(card).toContain("border-top:6px solid var(--lc,var(--edge))");
+    expect(card).toContain("border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)");
+    expect(card).toMatch(/outline:1px solid color-mix\(in oklch,var\(--lc,var\(--edge\)\) 24%,transparent\);outline-offset:-8px/);
+    expect(rules.find((r) => r.sel === ".status").body).toContain("border:1.5px solid var(--lc,var(--edge))");
+    expect(css).toMatch(/\.group-label\{[^}]*text-transform:uppercase/);
+    expect(css).toMatch(/\.group-label::after\{[^}]*height:2px;background:var\(--lc\)/);
   });
 
-  it("draws the Essentials as outlined hexagons: a coloured frame around a card-coloured face", () => {
-    expect(css).toMatch(/\.hex-frame\{[^}]*background:var\(--lc\);clip-path:polygon/);
-    expect(css).toMatch(/\.hexcard\{[^}]*color:var\(--lc\)/);
+  // Essentials sit in a dark frame of their own, like the Singapore Math hub's access band.
+  it("sets the Essentials in a dark band on the rosette lattice, with solid cards so the pattern never shows through text", () => {
+    expect(rules.find((r) => r.sel === "#essentials.band").body).toMatch(/background:var\(--header-bg\)[\s\S]*url\(textures\/rosette\.svg\)/);
+    expect(rules.find((r) => r.sel === "#essentials.band .card").body).toMatch(/background:color-mix\(in oklch,var\(--header-bg\),var\(--on-dark\) 8%\)/);
   });
 
   it("never rotates in 3D or adds perspective, so text never warps", () => {

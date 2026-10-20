@@ -51,12 +51,15 @@ describe("hub", () => {
     expect(links).toEqual(ready);
   });
 
-  it("shows Essentials first, as a honeycomb of hexagons, then the lessons in their three themes", () => {
+  it("shows Essentials first, in their own band, then the lessons in their three themes", () => {
     const sections = [...doc.querySelectorAll("#content > section")].map((s) => s.id);
     expect(sections.indexOf("essentials")).toBeLessThan(sections.indexOf("lessons"));
-    const hexes = doc.querySelectorAll("#essentials .honeycomb > li.hex > .hex-frame > .card.hexcard");
-    expect(hexes).toHaveLength(essentials().length);
-    for (const h of hexes) expect(h.querySelector("h3")).not.toBeNull();
+    const cards = doc.querySelectorAll("#essentials.band .cards > .card");
+    expect(cards).toHaveLength(essentials().length);
+    for (const c of cards) {
+      expect(c.querySelector("h3")).not.toBeNull();
+      expect(c.querySelector(".status").textContent).toBe(getLesson(Number(c.dataset.lesson)).ready ? "Ready" : "In design");
+    }
     const groups = [...doc.querySelectorAll("#lessons .lesson-group")];
     expect(groups.map((g) => g.dataset.group)).toEqual(GROUPS.map((g) => g.id));
     groups.forEach((g, i) => {
@@ -1187,17 +1190,6 @@ describe("track switch transition", () => {
   });
 });
 
-describe("3D hub cards", () => {
-  const rect = { left: 0, top: 0, width: 200, height: 100 };
-  it("moves a card's shadow away from the pointer, up to 6px at the edges, and not at all in the middle", async () => {
-    const { lightFor } = await import("../lesson-core.js");
-    expect(lightFor(100, 50, rect)).toEqual({ sx: 0, sy: 0 });
-    expect(lightFor(200, 100, rect)).toEqual({ sx: -6, sy: -6 }); // pointer bottom right: shadow up and left
-    expect(lightFor(0, 0, rect)).toEqual({ sx: 6, sy: 6 });
-    expect(lightFor(9999, -9999, rect)).toEqual({ sx: -6, sy: 6 }); // clamped
-  });
-});
-
 describe("lesson navigation", () => {
   const nav = (n, track = "students") => lessonDoc(track, getLesson(n)).querySelector("nav.lesson-nav");
 
@@ -1354,7 +1346,8 @@ describe("lesson number badges (consistency, 2026-10-05)", () => {
     const hub = page("index.html");
     renderHub(hub);
     for (const card of hub.querySelectorAll(".card")) {
-      expect(card.querySelector(".eyebrow .lesson-no").textContent).toBe(lessonLabel(getLesson(Number(card.dataset.lesson))));
+      expect(card.querySelector(".card-top .lesson-no").textContent).toBe(lessonLabel(getLesson(Number(card.dataset.lesson))));
+      expect(card.querySelector(".card-top .meta").textContent).toBe(`${getLesson(Number(card.dataset.lesson)).objectives.length} objectives`);
     }
     expect(lessonDoc(TRACK_IDS[0]).querySelector(".top .lesson-no")).not.toBeNull();
   });

@@ -1801,30 +1801,25 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
     </div>
     ${trackPicker(track)}`;
 
+  // Cards in the Singapore Math unit-card style (David, 2026-10-20): a coloured chip and a quiet meta line, the
+  // title, one line of framing, and a status. The objectives are on the lesson page itself, and in search.
+  const status = (l) => (l.ready ? `<span class="status ready">Ready</span>` : `<span class="status soon">In design</span>`);
+  const link = (l) => (l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title));
   const card = (l) => `<article class="card${l.ready ? "" : " pending"}" data-lesson="${l.n}">
-      <p class="eyebrow"><span class="lesson-no">${esc(lessonLabel(l))}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
-      <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
+      <p class="card-top"><span class="lesson-no">${esc(lessonLabel(l))}</span> <span class="meta">${l.objectives.length} objectives</span></p>
+      <h3>${link(l)}</h3>
       <p>${esc(l.framing)}</p>
-      <ul class="objs">${l.objectives.map((o) => `<li><span class="bloom">${esc(o.bloom)}</span>${esc(o.text)}</li>`).join("")}</ul>
-      ${l.ready ? "" : `<p class="note">${
-        l.objectivesApproved
-          ? `Objectives approved ${esc(l.objectivesApproved)}. Assessments and activities come next.`
-          : "Objectives drafted, awaiting review."
-      }</p>`}
+      ${status(l)}
     </article>`;
-  // Lessons in their three themes; each theme has one colour, and its name says it in words too.
+  // Lessons in their three themes; each theme has one colour family, and its name says it in words too.
   const lessons = GROUPS.map((g) => {
     const ls = mainLessons().filter((l) => g.lessons.includes(l.n));
     const span = ls.length > 1 ? `Lessons ${ls[0].n}–${ls[ls.length - 1].n}` : `Lesson ${ls[0].n}`;
     return `<div class="lesson-group" data-group="${g.id}"><p class="group-label"><b>${esc(g.name)}</b> <span>${span}</span></p><div class="cards">${ls.map(card).join("")}</div></div>`;
   }).join("");
-  // Essentials as hexagons fitted together like a honeycomb: label and title only; the rest is on the page.
-  // The frame is the hexagon's coloured outline; the card inside it is the hexagon's face.
-  const hex = (l) => `<li class="hex${l.ready ? "" : " pending"}" data-lesson="${l.n}"><div class="hex-frame"><article class="card hexcard${l.ready ? "" : " pending"}" data-lesson="${l.n}">
-      <p class="eyebrow"><span class="lesson-no">${esc(lessonLabel(l))}</span>${l.ready ? "" : ` <span class="in-design">In design</span>`}</p>
-      <h3>${l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title)}</h3>
-    </article></div></li>`;
-  const essentialCards = essentials().map(hex).join("");
+  // Essentials sit in a dark frame of their own, like the Singapore Math hub's access band: solid cards on the
+  // rosette lattice, so they read as a different kind of thing from the lessons.
+  const essentialCards = essentials().map((l) => card(l)).join("");
 
   doc.querySelector("#content").innerHTML = `
     <section class="search" aria-labelledby="search-h"><h2 id="search-h">Search the course</h2>
@@ -1835,7 +1830,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
       <p class="so-status" id="search-status" aria-live="polite"></p>
       <ol class="search-results" id="search-results"></ol>
     </section>
-    ${essentialCards ? `<section id="essentials"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><ul class="honeycomb">${essentialCards}</ul></section>` : ""}
+    ${essentialCards ? `<section id="essentials" class="band"><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
     <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}${lessons}</section>
 
     <section><h2>How it's built</h2>
@@ -2267,32 +2262,6 @@ export function withTransition(doc, update) {
   doc.startViewTransition(update);
 }
 
-// The pointer acts as a light over a hub card: the card's shadow falls away from it, up to `max`
-// pixels at the edges. The card itself never rotates, so its text never warps (David, 2026-10-16).
-export function lightFor(x, y, rect, max = 6) {
-  const dx = Math.max(-1, Math.min(1, ((x - rect.left) / rect.width) * 2 - 1));
-  const dy = Math.max(-1, Math.min(1, ((y - rect.top) / rect.height) * 2 - 1));
-  const r = (v) => Math.round(v * 100) / 100 + 0;
-  return { sx: r(-dx * max), sy: r(-dy * max) };
-}
-
-// Mouse only, and only when the site's motion setting is on; touch and keyboard get the plain lift.
-function wireLight(doc) {
-  const root = doc.documentElement;
-  doc.addEventListener("pointermove", (e) => {
-    if (e.pointerType !== "mouse" || root.dataset.motion === "off") return;
-    const card = e.target.closest?.(".card:not(.pending)");
-    if (!card) return;
-    const { sx, sy } = lightFor(e.clientX, e.clientY, card.getBoundingClientRect());
-    card.style.setProperty("--sx", `${sx}px`);
-    card.style.setProperty("--sy", `${sy}px`);
-  });
-  doc.addEventListener("pointerout", (e) => {
-    const card = e.target.closest?.(".card");
-    if (card && !card.contains(e.relatedTarget)) { card.style.removeProperty("--sx"); card.style.removeProperty("--sy"); }
-  });
-}
-
 export function boot(doc) {
   const win = doc.defaultView;
   const page = doc.body.dataset.page;
@@ -2323,7 +2292,6 @@ export function boot(doc) {
   });
 
   win.addEventListener("hashchange", () => openClaimGroup(doc, win.location.hash));
-  if (page === "hub") wireLight(doc);
   draw();
   if (page === "hub" && win.location.hash) doc.getElementById(win.location.hash.slice(1))?.scrollIntoView();
   doc.body.dataset.ready = "true";
