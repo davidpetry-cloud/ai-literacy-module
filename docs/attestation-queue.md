@@ -399,7 +399,7 @@ Already attested: `usability-goals`.
 
   > Interfaces can steer people against their own interests through deceptive design, often called dark patterns. A design that respects time, attention and choice avoids them, and uses calmer defaults and natural pause points.
 
-  - **Open:** [Brignull, deceptive.design](https://www.deceptive.design/) · [FTC (2022), Bringing Dark Patterns to Light](https://www.ftc.gov/reports/bringing-dark-patterns-light) · [Digital Services Act, Regulation (EU) 2022/2065 (Art. 25)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)
+  - **Open:** [Brignull, deceptive.design](https://deceptive.design/) · [FTC (2022), Bringing Dark Patterns to Light](https://www.ftc.gov/reports/bringing-dark-patterns-light) · [Digital Services Act, Regulation (EU) 2022/2065 (Art. 25)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)
   - **Check** that Brignull coined 'dark patterns' (2010), the FTC report, and DSA Article 25. 'Calmer defaults' and 'natural pause points' are the course's terms.
 
 - [ ] **`wellbeing-habits`** · Fact claim: check it against the source
@@ -595,7 +595,7 @@ Already attested: `usability-goals`.
 
   > Controlling abuse is best understood as a pattern of behavior over time, such as isolating someone, monitoring them, controlling their money or independence, threats and humiliation, rather than as single incidents. The law in England defines the offence by behavior that is repeated or continuous.
 
-  - **Open:** [Home Office (2023), Controlling or coercive behaviour guidance (PDF)](https://assets.publishing.service.gov.uk/media/642d3f9e7de82b001231364d/Controlling_or_Coercive_Behaviour_Statutory_Guidance_-_final.pdf) · [Serious Crime Act 2015, s. 76 †](https://www.legislation.gov.uk/ukpga/2015/9/section/76) · Stark (2007), Coercive Control (no link on file)
+  - **Open:** [Home Office (2023), Controlling or coercive behaviour guidance](https://www.gov.uk/government/publications/controlling-or-coercive-behaviour-statutory-guidance-framework) · [Serious Crime Act 2015, s. 76 †](https://www.legislation.gov.uk/ukpga/2015/9/section/76) · Stark (2007), Coercive Control (no link on file)
   - **Check** the behaviours the Home Office guidance lists, and 'repeatedly or continuously' in section 76.
 
 - [ ] **`grooming-stages`** · Fact claim: check it against the source
@@ -662,7 +662,7 @@ Already attested: `usability-goals`.
 
   > The answer key for the Lesson 10 educators thread is reasonable: each moment's label (ordinary or warning sign) and pattern follow from the research on controlling behavior.
 
-  - **Open:** [Home Office (2023), Controlling or coercive behaviour guidance (PDF)](https://assets.publishing.service.gov.uk/media/642d3f9e7de82b001231364d/Controlling_or_Coercive_Behaviour_Statutory_Guidance_-_final.pdf)
+  - **Open:** [Home Office (2023), Controlling or coercive behaviour guidance](https://www.gov.uk/government/publications/controlling-or-coercive-behaviour-statutory-guidance-framework)
   - **Check:** The thread is made up. Check weeks 4 to 6 against the Home Office guidance (isolating, checking, threats) and week 2 against the flattery-then-request pattern.
 
 - [ ] **`l10-key-professionals`** · Answer key: check that it's reasonable
@@ -761,7 +761,7 @@ Also cites, listed earlier: `gut-feeling-evidence` (Lesson 10), `fbi-teens-onlin
 
   > For financially motivated sextortion, the FBI advises people not to pay, to block the person but save the profile and messages, to ask a trusted adult or law enforcement for help, and to report it to a local FBI field office, 1-800-CALL-FBI, tips.fbi.gov or local law enforcement. It says this is not the victim's fault. Criminals also use AI to put a person's face on a fake image and threaten to share it; the same advice applies. For people under 18, NCMEC's Take It Down service can help remove images.
 
-  - **Open:** [FBI, Financially motivated sextortion](https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams/sextortion/financially-motivated-sextortion) · [FBI, Sextortion](https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams/sextortion) · [NCMEC, Take It Down](https://takeitdown.ncmec.org/) · [FBI, Inside the FBI: Keeping Teens Safe on the Web (4 Sept 2026)](https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web) · [FBI IC3 PSA I-120324-PSA (3 Dec 2024)](https://www.ic3.gov/PSA/2024/PSA241203)
+  - **Open:** [FBI, Financially motivated sextortion](https://www.fbi.gov/how-we-can-help-you/common-frauds-and-scams/sextortion/financially-motivated-sextortion) · [FBI, Sextortion](https://www.fbi.gov/how-we-can-help-you/common-frauds-and-scams/sextortion) · [NCMEC, Take It Down](https://takeitdown.ncmec.org/) · [FBI, Inside the FBI: Keeping Teens Safe on the Web (4 Sept 2026)](https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web) · [FBI IC3 PSA I-120324-PSA (3 Dec 2024)](https://www.ic3.gov/PSA/2024/PSA241203)
   - **Check** each step of the FBI's advice, the reporting routes, 'not your fault', and that Take It Down is for people under 18.
   - **Review cycle:** the rationale suggests `ttlDays: 365`.
 
@@ -794,7 +794,7 @@ Also cites, listed earlier: `gut-feeling-evidence` (Lesson 10), `fbi-teens-onlin
 
   > The answer key for the Lesson 12 students situations is reasonable: the threat situation follows the FBI's advice (don't pay; block but don't delete; tell a trusted adult), and every situation points to a trusted adult.
 
-  - **Open:** [FBI, Financially motivated sextortion](https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams/sextortion/financially-motivated-sextortion) · [NCMEC, Take It Down](https://takeitdown.ncmec.org/) · [FBI, Inside the FBI: Keeping Teens Safe on the Web (4 Sept 2026)](https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web)
+  - **Open:** [FBI, Financially motivated sextortion](https://www.fbi.gov/how-we-can-help-you/common-frauds-and-scams/sextortion/financially-motivated-sextortion) · [NCMEC, Take It Down](https://takeitdown.ncmec.org/) · [FBI, Inside the FBI: Keeping Teens Safe on the Web (4 Sept 2026)](https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web)
   - **Check** situation 1 against the FBI's sextortion advice (don't pay; block but don't delete; tell a trusted adult) and Take It Down. Every situation should point to a trusted adult.
 
 ## Essentials 1 · Staying Secure in the Age of AI
