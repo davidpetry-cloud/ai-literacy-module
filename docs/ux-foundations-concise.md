@@ -95,11 +95,13 @@ taste, inside this standard.
 
 - **Craft and texture:** custom details, grain or tile motifs on frames, never behind body text.
 - **Colour with depth:** rich `oklch` palettes, still 4.5:1 in both themes.
+- **Colour by colour theory:** a hue family per theme, a distinct colour per item; no pinks or fluorescents; outlines over solid fills.
+- **Type with character:** expressive display type for headings, calm type for reading.
 - **Warm light, no glare:** light themes on warm sandstone, never bright white; white is for print only.
 - **Flow:** motion the person drives (scroll-linked, View Transitions), each with a job; nothing moves on its own.
 - **Richness in the frame, quiet where people read:** coherence and signaling still win on teaching pages.
 - **Motion:** respect the device's reduce-motion setting; no on-site switch. With it on, movement becomes a fade.
-- **Depth by illusion:** light, shade and shadow, never real 3D; text never warps; a straight hover lift is fine.
+- **Depth by illusion:** light, shade and shadow, never real 3D; text never warps; a straight hover lift is fine. Exception: real 3D inside a geometry tool where the solid is what's taught, labels kept flat (`grade6-singapore-math-cpa/docs/3d-tools.md`).
 - **The floor doesn't move:** an idea that fails accessibility or slows a learner changes or goes.
 
 ## Privacy by design (Cavoukian, 2009; GDPR Art. 25)

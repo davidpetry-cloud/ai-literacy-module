@@ -145,6 +145,8 @@ of it.
 | Craft | It looks made, not assembled from a kit | Custom details (SVG ornament, considered borders and dividers, a type pairing with character); no stock component-library or generic "AI site" look |
 | Texture | Surfaces have depth | Subtle grain, pattern or tile motifs on frames and bands, never behind body text; text still passes contrast over them in both themes |
 | Colour with depth | Rich, warm palettes | Built in `oklch` so shades stay even; every pairing still checked at 4.5:1 (3:1 for UI parts) in both themes |
+| Colour by colour theory | Colour carries structure | A hue family per theme or section, and a distinct colour for each item inside it; no pinks and no fluorescents; outlines of shapes and curves (borders, ornament) rather than solid fills; every colour still paired with a word or number, never the only cue |
+| Type with character | Headings have a voice; reading is calm | An expressive display face for headings, a calm, readable face for body text; self-hosted, from the type scale |
 | Warm light, no glare | Light themes rest the eyes | A warm sandstone page (e.g. #EBE1CF) with cards one gentle step lighter (#F2E9DA); no bright white on screen, only in print (David, 2026-10-16); pairings re-checked on the warmer surfaces |
 | Flow | The page leads the eye | Rhythm, curves and layered layouts; motion that follows the reader (scroll-linked, View Transitions) and has a job: orientation, continuity or feedback |
 | Invention | Small, purposeful discoveries | A custom interaction or detail that teaches or helps; nothing that exists only to impress |
@@ -171,6 +173,12 @@ so it keeps the sense of change without the movement that makes people unwell.
 way a painter does, not with real 3D: nothing rotates, skews or tilts, so text
 never warps. Straight movement is fine: a card may lift on hover while its
 shadow deepens.
+
+**One exception: real 3D in a geometry tool** (David, 2026-10-16). Where the 3D
+solid itself is what's taught (a net folding into a prism, say), the solid may
+be real 3D, with its labels kept flat and readable. Everything around it follows
+the rule above. The standard for such tools is
+`grade6-singapore-math-cpa/docs/3d-tools.md`.
 
 **The floor doesn't move.** Accessibility, cognitive accessibility, privacy and
 mindful UX are the floor. An expressive idea that fails contrast, needs motion
