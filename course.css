@@ -48,20 +48,22 @@
 }
 /* dark theme — toggled via [data-theme] on <html>, see theme-toggle.js.
    The header stays a dark band in both themes; only body chrome inverts. */
+/* dark pages are the Danube at night: deep river ink, cards one step lighter, and a soft glow from the top
+   left like lamplight on the water (David, 2026-10-20: "the gray is a bit boring") */
 :root[data-theme="dark"]{
   color-scheme:dark;
   --ink:#EAF2F9; --ink-2:#BFD4E8; --ink-3:#93AEC9;
-  --header-bg:#0A1420; --btn-bg:#1F5F96; --btn-bg-hover:#2A6FA8; --chip-bg:#2B4A6B;
+  --header-bg:#06121C; --btn-bg:#1F5F96; --btn-bg-hover:#2A6FA8; --chip-bg:#2B4A6B;
   --teal:#3FBFA9; --teal-text:#5FE0C7; --teal-pale:#153732;
   --amber:#E9AD55; --amber-pale:#3A2C13;
   --peri:#8FA0D6; --peri-pale:#232B47; --rose:#E07992; --rose-pale:#3A1E27;
-  --paper:#0F151C; --card:#1A222B; --line:#2B3641;
+  --paper:#081B2E; --card:#0F2840; --line:#1F3F5A;
   --text:#DCE6EE; --muted:#93A7BC;
   --att:#3FB271; --att-text:#5CCB8A; --prop:#D9A441; --exp:#EE8A74; --rej:#A9B0C0;
   --l1:#81D6CB; --l2:#5DB4BE; --l3:#85D0EE; --l4:#77ABD7; --l5:#A9C4FC; --l6:#98AE73; --l7:#A2D3A2; --l8:#6FB697; --l9:#F4B397; --l10:#CF9671; --l11:#E8BB87; --l12:#BCA165; --l13:#96ACFE; --l14:#80C57F; --l15:#EBA25F; --on-lc:#0B1622;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
-  --shadow:#000000; --hi:#FFFFFF; --glow:#1C2733;
+  --shadow:#000000; --hi:#FFFFFF; --glow:#16435A;
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
