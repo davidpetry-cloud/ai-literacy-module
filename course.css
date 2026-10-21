@@ -652,6 +652,10 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
 .align td{color:var(--att-text);font-weight:700}
 
 .foot{font-size:var(--fs-sm);color:var(--muted);padding-bottom:48px}
+.foot p{margin:0 0 8px;max-width:var(--measure)}
+/* Footer links sit in their own row, not in the sentence, so each can be a full 44px tap target (Apple's HIG). */
+.foot-links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0 24px}
+.foot-links a{display:inline-flex;align-items:center;min-height:44px}
 
 /* In em, so a larger browser text size also brings the one-column layout (56.25em = 900px at the default size). */
 @media (max-width:56.25em){
