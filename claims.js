@@ -13,7 +13,13 @@
  * The original model proposal is kept in git history. Do not edit the text of
  * a claim while attesting it — if the wording is wrong, reject it with a
  * reason and propose a replacement.
+ *
+ * The easier way (David, 2026-10-21): run `npm run attest` in a terminal. The
+ * attestation desk writes your sign-off to attestations.js, and the block at
+ * the end of this file applies it, so nothing here needs editing or deleting.
  */
+
+import { ATTESTATIONS } from "./attestations.js";
 
 const proposedBy = (rationale, model = "claude-opus-5-5") => ({
   source: "model",
@@ -888,3 +894,21 @@ export const CLAIMS = {
     )
   }
 };
+
+/**
+ * The desk's sign-offs (attestations.js) over the blocks above. An attestation
+ * replaces the block; a rejection is added to it, so the proposal stays on the
+ * record. BASE keeps the blocks as written here, for the desk and for Undo.
+ */
+export function mergeAttestation(base, entry) {
+  if (!entry) return base;
+  if (entry.rejection && !entry.source) return { ...base, rejection: entry.rejection };
+  return entry;
+}
+
+export const BASE = Object.fromEntries(Object.entries(CLAIMS).map(([id, c]) => [id, c.attestation]));
+
+for (const [id, entry] of Object.entries(ATTESTATIONS)) {
+  if (!CLAIMS[id]) throw new Error(`attestations.js signs "${id}", which is not a claim in claims.js.`);
+  CLAIMS[id].attestation = mergeAttestation(CLAIMS[id].attestation, entry);
+}

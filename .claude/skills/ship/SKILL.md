@@ -16,9 +16,12 @@ it. **Never** skip a step to get something out.
   so and stop.
 - Look through the diff. Anything that looks like a secret, a stray scratch
   file or `node_modules` gets flagged, not committed.
-- If `claims.js` changed, show which claims changed status. A
+- If `claims.js` or `attestations.js` changed, show which claims changed status. A
   `source: "practitioner"` block must have been written by David, not in a
   Claude session. If one appears and you can't confirm David wrote it, stop and ask.
+  Sign-offs in `attestations.js` come from the attestation desk, which David runs
+  himself; this session never touched that file (the guard refuses it).
+- Commit sign-offs on their own, as the audit log: `attest: <ids> (<sources>)`.
 
 ## 2. Test
 

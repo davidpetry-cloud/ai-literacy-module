@@ -8,6 +8,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "node scripts/serve.js",
+    "attest": "node scripts/attest.mjs",
+    "desk:preview": "node scripts/desk-preview.mjs",
     "csp": "node scripts/csp.mjs"
   },
   "engines": {

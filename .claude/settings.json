@@ -2,7 +2,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Edit|Write|Bash",
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash|mcp__terminal__run_in_terminal|mcp__Claude_Browser__.*|mcp__claude-in-chrome__.*",
         "hooks": [
           {
             "type": "command",

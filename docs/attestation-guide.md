@@ -17,6 +17,39 @@ Status is never stored. The page works it out from the attestation block
 (`resolveStatus()` in attestation-ledger), so a sign-off lapses on its own when
 its review date passes.
 
+## The easy way: the attestation desk
+
+You don't have to edit code to attest (David, 2026-10-21).
+
+1. **Open Terminal** in the project folder and run `npm run attest`. The desk
+   opens in your browser at `http://127.0.0.1:8091/`. It runs only on your
+   computer, and only while that terminal is open.
+2. **Choose a lesson.** "Needs you" shows the claims still proposed or lapsed.
+   Each claim shows its exact text, why the model proposed it, and links to its
+   sources. Each lesson also lists the sources it cites.
+3. **Open the sources and check the claim yourself.** Then choose:
+   - **Sign off:** write the basis (the source, where in it, what you did),
+     pick a review cycle, and tick "I opened the sources and checked this
+     myself". Your name, role and today's date are filled in.
+   - **Reject:** say what's wrong. The claim stays on the record, struck
+     through, with your reason.
+   - Or leave it for later.
+4. **Changed your mind?** "Undo my last decision" puts the claim back as it was.
+5. **When you're done,** press Control-C in the terminal, then run `npm test`
+   and `/ship`. Commit messages are the audit log, as below.
+
+The desk saves each decision to `attestations.js` straight away. The site
+applies that file over `claims.js` when it loads, so nothing in `claims.js` is
+edited or deleted. The desk turns away a weak sign-off: no name, a basis too
+short to name a source, the model's own reasoning pasted back as the basis, or
+no tick. Nobody else can use it: it refuses to start without a terminal a
+person is typing in, it only answers its own page on this computer, and the
+project's guard stops a Claude session from starting it, opening it or editing
+`attestations.js`.
+
+The examples below still describe what a good sign-off contains, and the old
+way (editing `claims.js` by hand) still works.
+
 ## Five practices, and where each goes
 
 | Practice | What it means | Field |
@@ -143,7 +176,8 @@ in the basis; you remain the signer.
 
 1. **Work one lesson at a time.** Open the sources listed in each claim's
    rationale, and check each claim.
-2. **Edit the attestation blocks** as in the examples above.
+2. **Sign off or reject each claim** at the attestation desk (`npm run attest`),
+   or edit the attestation blocks as in the examples above.
 3. **Run `npm test`.** The governance suite checks that every practitioner block
    names who signed, on what basis, and on a readable date.
 4. **Run `/ship`.** It checks the practitioner blocks came from you, then

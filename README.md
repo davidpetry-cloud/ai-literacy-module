@@ -78,7 +78,9 @@ timings add up to 45 minutes.
 | 3 | Talking With AI on the Phone | Built |
 
 Every lesson's claims start as model proposals. The hub shows how many have
-been attested so far.
+been attested so far. The author checks and signs them at a private
+attestation desk on his own computer (`npm run attest`; see
+[docs/attestation-guide.md](docs/attestation-guide.md)).
 
 ## Running it
 

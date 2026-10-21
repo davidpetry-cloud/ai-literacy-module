@@ -5,6 +5,9 @@
 //           field in claims.js (source: "practitioner", by, verified), and any shell
 //           command that could write to claims.js or throw away uncommitted edits.
 //           David edits claims.js by hand, so nothing here gets in his way.
+//           The attestation desk (2026-10-21): attestations.js is written only by the desk
+//           (`npm run attest`), which David runs himself, so Claude may not edit that file
+//           at all, start the desk (in a shell or the terminal panel), or open it in a browser.
 //   post    PostToolUse on Edit|Write. Reminds Claude to run `npm run csp` after
 //           touching the import map or a mock screen's inline script.
 //   status  statusLine: "Claims attested 6/106".
@@ -18,6 +21,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const CLAIMS = join(ROOT, "claims.js");
+const DESK_PORT = 8091;
 
 // The fields resolveStatus() reads to decide a claim is attested. A model claim's
 // `by: null` and `verified: null` don't match, so proposing claims stays allowed.
@@ -50,20 +54,35 @@ export function applyEdit(text, { old_string, new_string, replace_all }) {
 const WRITES = /\bsed\s+(-\w*\s+)*-\w*i|\bperl\s+-\w*i|\btee\b|\bcp\b|\bmv\b|\brm\b|\btruncate\b|>>?\s*["']?[^\s;&|]*claims\.js|writeFile|\bopen\s*\(|\bpython3?\b|\bnode\s+(-e|-p|--eval)|\bruby\b|\bgit\s+(checkout|restore|reset|stash|apply|am|cherry-pick|revert)\b/;
 const INTERPRETER = /\bpython3?\b|\bnode\s+(-e|-p|--eval)|\bruby\b|\bperl\b|\bdeno\b|\bbun\b/;
 
-export function riskyCommand(command) {
-  if (!/claims\.js\b/.test(command)) return false;
-  if (/>>?\s*["']?[^\s;&|"']*claims\.js/.test(command)) return true; // a redirect into it, quoted or not
+export function riskyCommand(command, name = "claims") {
+  const file = new RegExp(`\\b${name}\\.js\\b`);
+  if (!file.test(command)) return false;
+  if (new RegExp(`>>?\\s*["']?[^\\s;&|"']*${name}\\.js`).test(command)) return true; // a redirect into it, quoted or not
   // Named only inside quoted text (a commit message, a grep pattern) is not a write,
   // unless a script interpreter could act on that text.
   const unquoted = command.replace(/'[^']*'|"(?:\\.|[^"\\])*"/g, "''");
-  if (!/claims\.js\b/.test(unquoted) && !INTERPRETER.test(command)) return false;
+  if (!file.test(unquoted) && !INTERPRETER.test(command)) return false;
   return WRITES.test(command);
 }
+
+// Starting the attestation desk is David's job alone. Running its tests (tests/attest.test.js) is fine.
+// Reading the desk's code (grep, cat, git diff) is fine too; only running it is refused.
+// Quoted text (a commit message) is only text, unless a shell or interpreter could run it.
+const DESK = /\bnpm\s+(run(-script)?\s+)?attest(?![\w:.-])|\b(node|bun|deno|npx|tsx)\b[^;&|]*\battest\.mjs\b|(^|[;&|]\s*)\.?\/?scripts\/attest\.mjs\b/;
+export const startsDesk = (command) => {
+  const runsText = INTERPRETER.test(command) || /\b(sh|bash|zsh)\s+(-\w+\s+)*-c\b|\beval\b|\bxargs\b|\bosascript\b/.test(command);
+  return DESK.test(runsText ? command : command.replace(/'[^']*'|"(?:\\.|[^"\\])*"/g, "''"));
+};
 
 const REFUSAL =
   "Refused by the project's attestation guard. In this project a model proposes and only David attests: " +
   "Claude must never add, change or remove `source: \"practitioner\"`, `by` or `verified` in claims.js. " +
   "Propose claims with proposedBy(...) instead, and tell David which ones are ready for him to check.";
+
+const DESK_REFUSAL =
+  "Refused by the project's attestation guard. attestations.js is written only by the attestation desk, " +
+  "and only David runs the desk (`npm run attest`) or uses its page. Claude may not edit that file, start the desk, " +
+  "or open the desk in a browser. Tell David which claims are ready for him to check instead.";
 
 function deny(reason) {
   return { hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: reason } };
@@ -71,11 +90,21 @@ function deny(reason) {
 
 export function pre(input) {
   const { tool_name: tool, tool_input: args = {} } = input;
+  if (/^mcp__(Claude_Browser|claude-in-chrome)__/.test(tool)) {
+    return new RegExp(`(127\\.0\\.0\\.1|localhost|\\[::1\\]|0\\.0\\.0\\.0):${DESK_PORT}\\b`).test(JSON.stringify(args)) ? deny(DESK_REFUSAL) : null;
+  }
+  if (tool === "mcp__terminal__run_in_terminal") {
+    const command = args.command ?? JSON.stringify(args);
+    return startsDesk(command) || riskyCommand(command, "attestations") || riskyCommand(command) ? deny(DESK_REFUSAL) : null;
+  }
   if (tool === "Bash") {
-    return riskyCommand(args.command ?? "")
+    const command = args.command ?? "";
+    if (startsDesk(command) || riskyCommand(command, "attestations")) return deny(DESK_REFUSAL);
+    return riskyCommand(command)
       ? deny(`${REFUSAL} Shell commands that could write to claims.js or discard edits to it are refused too; use the Edit tool so the guard can check the change.`)
       : null;
   }
+  if (args.file_path && basename(args.file_path) === "attestations.js") return deny(DESK_REFUSAL);
   if (!args.file_path || basename(args.file_path) !== "claims.js") return null;
   let before = "";
   try {
@@ -115,12 +144,22 @@ export function count(text) {
   };
 }
 
-function summary() {
+// The count the site itself shows: claims.js with the desk's sign-offs applied, judged by the ledger
+// (so a lapsed sign-off isn't counted). Falls back to reading claims.js as text if that can't load.
+async function summary() {
   try {
-    const { attested, total } = count(readFileSync(CLAIMS, "utf8"));
-    return `Claims attested ${attested}/${total}`;
+    const { pathToFileURL } = await import("node:url");
+    const { CLAIMS: claims } = await import(`${pathToFileURL(CLAIMS).href}?v=${Date.now()}`);
+    const { resolveStatus } = await import(pathToFileURL(join(ROOT, "node_modules/attestation-ledger/src/index.js")).href);
+    const all = Object.values(claims);
+    return `Claims attested ${all.filter((c) => resolveStatus(c) === "attested").length}/${all.length}`;
   } catch {
-    return "";
+    try {
+      const { attested, total } = count(readFileSync(CLAIMS, "utf8"));
+      return `Claims attested ${attested}/${total}`;
+    } catch {
+      return "";
+    }
   }
 }
 
@@ -142,16 +181,16 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     try {
       out = pre(input);
     } catch (err) {
-      // Fail closed for claims.js, open for everything else.
-      const path = input.tool_input?.file_path ?? input.tool_input?.command ?? "";
-      if (/claims\.js\b/.test(path)) out = deny(`${REFUSAL} (The guard itself failed: ${err.message}.)`);
+      // Fail closed for claims.js, attestations.js and the desk; open for everything else.
+      const path = JSON.stringify(input.tool_input ?? {});
+      if (/claims\.js\b|attestations\.js\b|attest\.mjs\b|attest\b|:8091\b/.test(path)) out = deny(`${REFUSAL} (The guard itself failed: ${err.message}.)`);
     }
   } else if (mode === "post") {
     out = post(input);
   } else if (mode === "status") {
-    process.stdout.write(summary());
+    process.stdout.write(await summary());
   } else if (mode === "start") {
-    const line = summary();
+    const line = await summary();
     if (line) out = { systemMessage: `${line}. Only David attests.` };
   }
   if (out) process.stdout.write(JSON.stringify(out));

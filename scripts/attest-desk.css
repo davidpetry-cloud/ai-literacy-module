@@ -1,0 +1,56 @@
+/* The attestation desk (scripts/attest.mjs). Built from course.css's tokens, so it reads in both themes
+   and keeps the course's contrast, type scale, spacing scale and 44px targets. */
+.desk-preview{margin:0;padding:8px 16px;text-align:center;background:var(--amber-pale);color:var(--text);border-bottom:2px solid var(--amber)}
+.desk-top{background:var(--header-bg);color:var(--on-dark);padding:24px 16px 16px}
+.desk-top > *{max-width:52rem;margin-left:auto;margin-right:auto}
+.desk-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.desk-kicker{margin:0;font-size:var(--fs-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--header-sub)}
+.desk-top h1{font-family:var(--serif);font-size:var(--fs-display);line-height:var(--lh-display);font-weight:600;margin:8px auto 12px}
+.desk-lede{color:var(--header-sub);margin-top:0;margin-bottom:8px}
+.desk-top code{color:var(--on-dark)}
+.desk-counts{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:16px;margin-bottom:0;color:var(--header-sub)}
+.desk-counts b{color:var(--on-dark)}
+#main{max-width:52rem;margin:0 auto;padding:24px 16px 48px}
+.desk-filters{display:flex;flex-wrap:wrap;gap:12px 24px;margin:0 0 24px}
+.desk-filters label{display:flex;flex-direction:column;gap:4px;font-weight:600;color:var(--ink-2);flex:1 1 240px}
+.desk select,.desk input,.desk textarea{font:inherit;font-size:var(--fs-base);font-weight:400;color:var(--text);background:var(--card);border:2px solid var(--edge);border-radius:var(--r-md);padding:8px 12px;min-height:44px;max-width:100%;box-sizing:border-box}
+.desk textarea{width:100%;resize:vertical;line-height:var(--lh-body)}
+.dc-group > h2{font-family:var(--serif);font-size:var(--fs-xl);line-height:var(--lh-heading);margin:32px 0 12px}
+.dc-sources{margin:0 0 16px}
+.dc-sources ul{padding-left:24px;margin:8px 0 0}
+.dc-sources li{margin:0 0 8px;overflow-wrap:anywhere}
+.desk summary{cursor:pointer;font-weight:600;color:var(--ink-2);min-height:44px;display:flex;align-items:center;gap:8px}
+.desk summary::before{content:"▸";display:inline-block}
+.desk details[open] > summary::before{content:"▾"}
+.desk summary::-webkit-details-marker{display:none}
+.desk summary{list-style:none}
+.dc{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-lg);padding:24px;margin:0 0 16px;box-shadow:var(--lift)}
+.dc:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.dc-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 12px}
+.dc-id{font-size:var(--fs-sm);color:var(--muted)}
+.dc-also{font-size:var(--fs-sm);color:var(--muted)}
+.dc-text{font-family:var(--serif);font-size:var(--fs-md);font-weight:500;line-height:var(--lh-heading);margin:0 0 12px;max-width:var(--measure-serif)}
+.dc[data-status="rejected"] .dc-text{text-decoration:line-through;text-decoration-thickness:1px}
+.dc-why p,.dc-record dd,.dc-note{max-width:var(--measure);overflow-wrap:anywhere}
+.dc-record{margin:0 0 12px;display:grid;grid-template-columns:max-content 1fr;gap:4px 16px}
+.dc-record dt{font-weight:600;color:var(--ink-2)}
+.dc-record dd{margin:0}
+.dc-note{font-weight:600;color:var(--ink-2)}
+.dc-actions{display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:12px}
+.dc-actions .btn{margin-bottom:0}
+.dc-form{border-top:1.5px solid var(--edge);margin-top:16px;padding-top:16px}
+.dc-f-head{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 12px}
+.dc-f label{font-weight:600;color:var(--ink-2)}
+.dc-f > p{margin:0 0 16px;display:flex;flex-direction:column;gap:4px}
+.dc-f .hint{font-weight:400;color:var(--muted);max-width:var(--measure)}
+.dc-f fieldset{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.dc-f legend{font-weight:600;color:var(--ink-2);padding:0 4px}
+.dc-radio{display:flex;align-items:center;gap:12px;min-height:44px;font-weight:400!important;color:var(--text)!important}
+.dc-radio input,.dc-check input{min-height:0;width:24px;height:24px;margin:0;flex:none;accent-color:var(--ink-2)}
+.dc-check label{display:flex;align-items:center;gap:12px;min-height:44px;color:var(--text)}
+.dc-pair{display:flex;flex-wrap:wrap;gap:0 16px}
+.dc-pair p{flex:1 1 200px;margin:0 0 16px;display:flex;flex-direction:column;gap:4px}
+.dc-error{font-weight:600;color:var(--exp);margin:0 0 8px}
+.dc-error:empty{display:none}
+.dc-error:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.dc-done{font-family:var(--serif);font-size:var(--fs-md)}

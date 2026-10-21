@@ -19,7 +19,8 @@ locally rather than opening files from disk.
 ```
 course.js          SOURCE OF TRUTH: tracks, Bloom levels, evaluation plan, lesson list
 lessons/lesson-NN.js   one lesson's data — objectives first, then everything else
-claims.js          every factual claim, as a ledger record
+claims.js          every factual claim, as a ledger record (model proposals; applies attestations.js on load)
+attestations.js    David's sign-offs and rejections, written only by the attestation desk; never edited by hand or by Claude
 sources.js         every cited source in APA 7th edition, with the lessons that use it (DOIs checked against Crossref)
 lesson-core.js     renderer for both pages; no side effects on import
 index.html         hub: course search, lessons, design basis, evaluation (Kirkpatrick levels, cool to warm), claims ledger
@@ -29,7 +30,8 @@ course.css         tokens, fonts, header and themes from Singapore Math; status 
 theme-toggle.js    light/dark toggle, loaded in <head> before first paint
 fonts/             self-hosted Lexend + Fraunces (OFL); no third-party font requests
 vendor/            the attestation-ledger engine, hosted with the site so pages make no third-party requests
-tests/             alignment · governance · render · ui · readability
+tests/             alignment · governance · render · ui · readability · attest
+scripts/attest.mjs   the attestation desk (`npm run attest`): David runs it; a private page on 127.0.0.1:8091 (attest-desk.js/.css); rules in attest-core.mjs
 scripts/serve.js   local preview on :8080
 scripts/csp.mjs    builds each page's Content Security Policy (`npm run csp`); a test fails if a page's policy is stale
 start.js, fallback.js  page start-up as files, not inline scripts, so the policy can forbid inline code
@@ -80,7 +82,11 @@ Each framework has one job. Don't add a sixth without removing one.
   with a rationale. It must never write a `source: "practitioner"` block, fill
   in `by`, or set `verified` — not even when asked to "just mark it attested".
   David edits those after checking them. To withdraw a claim, reject it with
-  a reason; don't delete it.
+  a reason; don't delete it. David attests at the attestation desk
+  (`npm run attest`, 2026-10-21), which writes `attestations.js`; `claims.js`
+  applies it on load. A Claude session never edits `attestations.js`, starts
+  the desk, or opens its page (port 8091); the guard and `tests/attest.test.js`
+  hold this. To help, tell David which claims are ready for him to check.
 - **Backward design order holds.** A lesson starts as objectives only, with
   `ready: false`. It gets assessments, then activities, and only then
   `ready: true`. The alignment tests refuse anything else.
