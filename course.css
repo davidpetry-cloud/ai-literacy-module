@@ -27,13 +27,13 @@
   --text:#16283C; --muted:#4B5E74;
   --att:#2A8A55; --att-text:#1F6E44; --prop:#805506; --exp:#A8391F; --rej:#5A6172;
   /* a colour for every lesson, from natural materials (David, 2026-10-20: "earthy, texture oriented", not
-     childish): fired clay for 1-5, moss and olive for 6-8, warm charcoal and ash for 9-12, each a value ramp
+     childish): fired clay for 1-5, moss and olive for 6-8, forest pine for 9-12 (David, 2026-10-21, instead of charcoal), each a value ramp
      from deep to lighter, low in saturation. The essentials are cool stones: slate, verdigris and basalt. No
      pinks, nothing fluorescent. --lN is the accent (borders, links, labels), readable as text on a card; --fN
      is the fill. Every colour is always paired with the lesson number and the theme's name. */
-  --l1:#5E2E1D; --l2:#6B3821; --l3:#764429; --l4:#7F5134; --l5:#885E40; --l6:#3F471C; --l7:#525726; --l8:#676635; --l9:#362C24; --l10:#463B31; --l11:#574B40; --l12:#685B4F; --l13:#2D4A6A; --l14:#235754; --l15:#483C56; --on-lc:#FFFFFF;
+  --l1:#5E2E1D; --l2:#6B3821; --l3:#764429; --l4:#7F5134; --l5:#885E40; --l6:#3F471C; --l7:#525726; --l8:#676635; --l9:#114228; --l10:#225136; --l11:#326145; --l12:#417154; --l13:#2D4A6A; --l14:#235754; --l15:#483C56; --on-lc:#FFFFFF;
   /* fills: the same deep colour, for chips, tiles and bars that carry --on-lc text */
-  --f1:#5E2E1D; --f2:#6B3821; --f3:#764429; --f4:#7F5134; --f5:#885E40; --f6:#3F471C; --f7:#525726; --f8:#676635; --f9:#362C24; --f10:#463B31; --f11:#574B40; --f12:#685B4F; --f13:#2D4A6A; --f14:#235754; --f15:#483C56;
+  --f1:#5E2E1D; --f2:#6B3821; --f3:#764429; --f4:#7F5134; --f5:#885E40; --f6:#3F471C; --f7:#525726; --f8:#676635; --f9:#114228; --f10:#225136; --f11:#326145; --f12:#417154; --f13:#2D4A6A; --f14:#235754; --f15:#483C56;
   /* type scale: every font-size uses one of these (tests/ui.test.js) */
   --fs-xs:.8rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.125rem; --fs-lg:1.25rem; --fs-xl:1.7rem;
   --fs-display:clamp(2.1rem,4.5vw,2.9rem);
@@ -68,9 +68,9 @@
   --paper:#081B2E; --card:#0F2840; --line:#1F3F5A;
   --text:#DCE6EE; --muted:#93A7BC;
   --att:#3FB271; --att-text:#5CCB8A; --prop:#D9A441; --exp:#EE8A74; --rej:#A9B0C0;
-  --l1:#CA8E77; --l2:#D2987D; --l3:#DBA383; --l4:#E1AE8D; --l5:#E7BA98; --l6:#A6B27B; --l7:#B6BD86; --l8:#C8C893; --l9:#AEA298; --l10:#BBAEA3; --l11:#C9BBAE; --l12:#D6C8BA; --l13:#96B4D7; --l14:#8FC3BF; --l15:#B8AACB; --on-lc:#FFFFFF;
+  --l1:#CA8E77; --l2:#D2987D; --l3:#DBA383; --l4:#E1AE8D; --l5:#E7BA98; --l6:#A6B27B; --l7:#B6BD86; --l8:#C8C893; --l9:#84B194; --l10:#90BEA0; --l11:#9CCBAC; --l12:#A9D8B9; --l13:#96B4D7; --l14:#8FC3BF; --l15:#B8AACB; --on-lc:#FFFFFF;
   /* fills stay deep in dark mode too, so chips and tiles are rich, not pastel; text on them is light */
-  --f1:#72412F; --f2:#804B34; --f3:#8B573C; --f4:#956548; --f5:#946A4C; --f6:#525A2F; --f7:#656B3A; --f8:#757543; --f9:#483D35; --f10:#594D44; --f11:#6A5E53; --f12:#7C6F62; --f13:#3F5D7E; --f14:#386B67; --f15:#5B4F6A;
+  --f1:#72412F; --f2:#804B34; --f3:#8B573C; --f4:#956548; --f5:#946A4C; --f6:#525A2F; --f7:#656B3A; --f8:#757543; --f9:#275239; --f10:#345F45; --f11:#406C51; --f12:#4D795D; --f13:#3F5D7E; --f14:#386B67; --f15:#5B4F6A;
   --focus:#E9AD55;
   --edge:#5F7488; --btn-edge:#93AEC9;
   --shadow:#000000; --hi:#FFFFFF; --glow:#16435A;
@@ -688,7 +688,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     --teal:#1F8A7D;--teal-text:#136155;--teal-pale:#DCEFEB;--amber:#E4A03C;--amber-pale:#FAEDD6;
     --peri:#6B7FB3;--peri-pale:#E4E9F4;--rose:#C2536B;--rose-pale:#F6E3E8;
     --att:#2A8A55;--att-text:#1F6E44;--prop:#96650F;--exp:#B23E27;--rej:#6A7183;
-    --l1:#5E2E1D;--l2:#6B3821;--l3:#764429;--l4:#7F5134;--l5:#885E40;--l6:#3F471C;--l7:#525726;--l8:#676635;--l9:#362C24;--l10:#463B31;--l11:#574B40;--l12:#685B4F;--l13:#2D4A6A;--l14:#235754;--l15:#483C56;--on-lc:#fff;--f1:#5E2E1D;--f2:#6B3821;--f3:#764429;--f4:#7F5134;--f5:#885E40;--f6:#3F471C;--f7:#525726;--f8:#676635;--f9:#362C24;--f10:#463B31;--f11:#574B40;--f12:#685B4F;--f13:#2D4A6A;--f14:#235754;--f15:#483C56;
+    --l1:#5E2E1D;--l2:#6B3821;--l3:#764429;--l4:#7F5134;--l5:#885E40;--l6:#3F471C;--l7:#525726;--l8:#676635;--l9:#114228;--l10:#225136;--l11:#326145;--l12:#417154;--l13:#2D4A6A;--l14:#235754;--l15:#483C56;--on-lc:#fff;--f1:#5E2E1D;--f2:#6B3821;--f3:#764429;--f4:#7F5134;--f5:#885E40;--f6:#3F471C;--f7:#525726;--f8:#676635;--f9:#114228;--f10:#225136;--f11:#326145;--f12:#417154;--f13:#2D4A6A;--f14:#235754;--f15:#483C56;
     --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--glow:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}

@@ -241,7 +241,7 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   texture oriented, not childish): the lessons fall into three themes (`GROUPS`
   in `course.js`), each a value ramp from deep to lighter, low in saturation:
   Using AI well 1–5 in fired clay, Building for people 6–8 in moss and olive,
-  Recognising manipulation 9–12 in warm charcoal and ash. The Essentials are cool
+  Recognising manipulation 9–12 in forest pine (David, 2026-10-21; it was charcoal). The Essentials are cool
   stones: slate (1), verdigris (2) and basalt (3). `--lN` is the accent (borders,
   links, labels), readable as text on a card; `--fN` is the fill under `--on-lc`
   text, deep in both themes. No pinks and no fluorescents. Every colour is always
