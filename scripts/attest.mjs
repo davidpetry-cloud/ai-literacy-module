@@ -180,9 +180,17 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     process.exit(1);
   }
   const desk = await createDesk();
+  const url = `http://127.0.0.1:${PORT}/`;
+  const show = () => process.platform === "darwin" && spawn("open", [url], { stdio: "ignore", detached: true }).unref();
+  // Started twice: say so in plain words and bring the open desk forward, instead of a Node stack trace.
+  desk.on("error", (err) => {
+    if (err.code !== "EADDRINUSE") throw err;
+    console.log(`\nThe attestation desk is already running, in another terminal window or tab.\nIt's at ${url} (opening it now). To stop it, press Control-C in the window where it's running.\n`);
+    show();
+    process.exit(0);
+  });
   desk.listen(PORT, "127.0.0.1", () => {
-    const url = `http://127.0.0.1:${PORT}/`;
     console.log(`\nAttestation desk: ${url}\nSign-offs are saved to attestations.js as you go. Press Control-C to stop.\n`);
-    if (process.platform === "darwin") spawn("open", [url], { stdio: "ignore", detached: true }).unref();
+    show();
   });
 }
