@@ -673,7 +673,7 @@ describe("Lesson 7 worked example: the course audits true", async () => {
 // and each accent stripe stands out from both the tint and the page.
 describe("Evaluation levels colour", () => {
   // The levels flow with the other cards (David, 2026-10-20): stone and earth, cool to warm, no pastel tints.
-  const LEVELS = { 1: ["--l13", "--f13"], 2: ["--l14", "--f14"], 3: ["--l7", "--f7"], 4: ["--l3", "--f3"] };
+  const LEVELS = { 1: ["--l13", "--f13"], 2: ["--l14", "--f14"], 3: ["--l10", "--f10"], 4: ["--l3", "--f3"] };
 
   it.each(Object.entries(LEVELS))("level %s uses its accent and fill tokens", (n, [accent, fill]) => {
     const body = rules.find((r) => r.sel === `.lvl-${n}`)?.body;

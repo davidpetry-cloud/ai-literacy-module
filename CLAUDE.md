@@ -240,9 +240,9 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
 - **A colour per lesson, from natural materials** (David, 2026-10-20: earthy,
   texture oriented, not childish): the lessons fall into three themes (`GROUPS`
   in `course.js`), each a value ramp from deep to lighter, low in saturation:
-  Using AI well 1–5 in fired clay, Building for people 6–8 in moss and olive,
+  Using AI well 1–5 in fired clay, Building for people 6–8 in steely blue (David, 2026-10-21, from his colour study; it was olive),
   Recognising manipulation 9–12 in forest pine (David, 2026-10-21; it was charcoal). The Essentials are cool
-  stones: slate (1), verdigris (2) and basalt (3). `--lN` is the accent (borders,
+  stones: cobalt slate (1, nudged toward cobalt on 2026-10-21 to stay clear of steely blue), verdigris (2) and basalt (3). `--lN` is the accent (borders,
   links, labels), readable as text on a card; `--fN` is the fill under `--on-lc`
   text, deep in both themes. No pinks and no fluorescents. Every colour is always
   paired with the lesson number and the theme's name.
@@ -260,7 +260,7 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   decorative arrow (the title stays the card's one link); the Essentials sit in a full-width dark band with solid
   cards, like its access section, opened and closed by the Danube wave (David:
   a box cut into the page looked "boxy"); the Evaluation levels are the same
-  cards in stone and earth, cool to warm: slate, verdigris, olive, clay. Lessons in design get a dashed outline and a dashed
+  cards in stone and earth, cool to warm: slate, verdigris, pine, clay. Lessons in design get a dashed outline and a dashed
   "In design" status. Number chips carry the `textures/stone.svg` grain.
 - **Depth by illusion, never real 3D:** light, shade and shadow; nothing rotates,
   skews or tilts, so text never warps. Hover lifts a card straight up (6px) and
