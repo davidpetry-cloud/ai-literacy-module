@@ -720,7 +720,7 @@ export const CLAIMS = {
   "uk-159": {
     text: "In the UK, calling 159 connects you safely to your bank: it reaches most banks, and scammers can't fake the number.",
     attestation: proposedBy(
-      "Stop Scams UK, '159 Phone number' (stopscamsuk.org.uk/159), read 2026-10-08: 159 connects customers of more than 99% of UK retail bank current accounts with their bank, and 'cannot be spoofed or impersonated'. Stop Scams UK is an industry body (banks, telecoms, tech), not a government agency. 'Most banks' simplifies '99% of retail bank current accounts'."
+      "Stop Scams UK, '159 Phone number' (stopscamsuk.org.uk/our-programmes/159-phone-number/; the old address /159 redirects there), read 2026-10-08 and re-read 2026-10-21: 159 'now connects customers of more than 99% of the UK's retail bank current accounts safely and directly with their bank', and 'cannot be spoofed or impersonated'. Stop Scams UK is an industry body (banks, telecoms, tech), not a government agency. 'Most banks' simplifies '99% of retail bank current accounts'."
     )
   },
   "e1-key-educators": {
@@ -864,9 +864,9 @@ export const CLAIMS = {
     )
   },
   "political-ai-calls-waiver": {
-    text: "In the US, a political group has asked the FCC to let political callers use recorded or AI voices to call cell phones without consent. As of 16 October 2026, the FCC had not decided.",
+    text: "In the US, a political group has asked the FCC to let political callers use recorded or AI voices to call cell phones without consent. As of 21 October 2026, the FCC had not decided, and said it had no plans to act on it.",
     attestation: proposedBy(
-      "FCC Consumer and Governmental Affairs Bureau, Public Notice DA 26-940 (released 4 September 2026, CG Docket No. 02-278), opened on docs.fcc.gov 2026-10-16: Club for Growth seeks 'a limited waiver of section 64.1200(a)(1)(iii)' and 'an exemption from section 227(b)(1)(A)(iii)' 'to allow calling parties to make noncommercial, political calls to wireless telephone numbers using an artificial or prerecorded voice – including an AI-generated voice – without obtaining prior express consent'; petition filed 31 August 2026; comments due 5 October, replies 19 October 2026. No decision found by web search on 2026-10-16 (AP, 7 October 2026: a ruling could come 'as soon as late October'). Time-limited: re-check before every use, and withdraw or reword after a decision. A facilitator note for adult US groups only, never for students."
+      "FCC Consumer and Governmental Affairs Bureau, Public Notice DA 26-940 (released 4 September 2026, CG Docket No. 02-278), opened on docs.fcc.gov 2026-10-16: Club for Growth seeks 'a limited waiver of section 64.1200(a)(1)(iii)' and 'an exemption from section 227(b)(1)(A)(iii)' 'to allow calling parties to make noncommercial, political calls to wireless telephone numbers using an artificial or prerecorded voice – including an AI-generated voice – without obtaining prior express consent'; petition filed 31 August 2026; comments due 5 October, replies 19 October 2026. No decision found by web search on 2026-10-16 (AP, 7 October 2026: a ruling could come 'as soon as late October'). Re-checked 2026-10-21: still no decision; replies closed 19 October, most reply comments opposed it (Communications Daily, 21 October 2026), and an FCC spokesperson told Al Jazeera (19 October 2026) that 'there are zero plans' to move to an order on this or the other petition. Time-limited: re-check before every use, and withdraw or reword after a decision. A facilitator note for adult US groups only, never for students."
     )
   },
   "e3-key-educators": {

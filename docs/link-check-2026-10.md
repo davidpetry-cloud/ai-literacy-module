@@ -31,14 +31,13 @@ site was down on the day, so it needs a second look.
 
 The same links in `docs/attestation-queue.md` were updated too.
 
-## Still to check
+## Followed up (21 October 2026)
 
-- **Stop Scams UK, *159 phone number*** (`stopscamsuk.org.uk/159`, Essentials 1, claim
-  `uk-159`). On 20 October the whole site was down: Cloudflare reported that the
-  site's own server wasn't answering (error 522), at every address tried. That's an
-  outage, not a moved page. An earlier, unfinished pass in October 2026 found the page at
-  `/our-programmes/159-phone-number/`. Open both addresses once the site is back,
-  and if `/159` doesn't reach the page, change the link in `sources.js`.
+- **Stop Scams UK, *159 phone number*** (Essentials 1, claim `uk-159`). On 20 October
+  the whole site was down (Cloudflare error 522). It was back on 21 October: `/159`
+  now redirects to `/our-programmes/159-phone-number/`, so the source links there
+  directly. The page still says 159 reaches "more than 99%" of UK retail bank current
+  accounts and "cannot be spoofed or impersonated", so the claim stands.
 
 ## Sites that block scripts but work in a browser
 

@@ -874,7 +874,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > In the UK, calling 159 connects you safely to your bank: it reaches most banks, and scammers can't fake the number.
 
-  - **Open:** [Stop Scams UK, 159](https://stopscamsuk.org.uk/159)
+  - **Open:** [Stop Scams UK, 159](https://stopscamsuk.org.uk/our-programmes/159-phone-number/)
   - **Check** that 159 reaches customers of over 99% of UK retail bank current accounts and can't be spoofed. Stop Scams UK is an industry body, not a government agency.
 
 ### Answer keys
@@ -890,7 +890,7 @@ Also cites, listed earlier: `fbi-teens-online` (Lesson 10).
 
   > The answer key for the Essentials 1 professionals inbox is reasonable: each message's label (genuine or scam), its signs and how to check follow from the NCSC's five signs and the FBI's advice.
 
-  - **Open:** [FBI IC3 PSA I-120324-PSA (3 Dec 2024)](https://www.ic3.gov/PSA/2024/PSA241203) · [FTC alert, Miller (8 July 2024)](https://consumer.ftc.gov/consumer-alerts/2024/06/got-call-about-fraud-activity-your-bank-account-it-could-be-scammer) · [Stop Scams UK, 159](https://stopscamsuk.org.uk/159) · [FCC 24-17 Declaratory Ruling (PDF)](https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf)
+  - **Open:** [FBI IC3 PSA I-120324-PSA (3 Dec 2024)](https://www.ic3.gov/PSA/2024/PSA241203) · [FTC alert, Miller (8 July 2024)](https://consumer.ftc.gov/consumer-alerts/2024/06/got-call-about-fraud-activity-your-bank-account-it-could-be-scammer) · [Stop Scams UK, 159](https://stopscamsuk.org.uk/our-programmes/159-phone-number/) · [FCC 24-17 Declaratory Ruling (PDF)](https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf)
   - **Check** the look-alike supplier address, the fake video call from a finance director, and the 'bank fraud team' bot call against the FTC alert (no bank asks for a code), 159 and FCC 24-17 para. 4.
 
 - [ ] **`e1-key-students`** · Answer key: check that it's reasonable
