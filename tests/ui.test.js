@@ -514,13 +514,17 @@ describe("theme toggle", () => {
     expect(css).toMatch(/@media print\{[\s\S]*body\{background:#fff/);
   });
 
-  // The Singapore Math unit-card style (David, 2026-10-20): petal corners, a thick top rule in the lesson's
-  // colour with a fine inner line, a soft lift, and an outlined status; spaced-capital theme labels.
-  it("draws hub cards in the Singapore Math unit-card style, and each theme a clean rule", () => {
+  // Hub cards (David, 2026-10-21): petal corners, a band on top in the lesson's deep fill with the number and
+  // its theme's shapes in three tints, a soft lift, and an outlined status; spaced-capital theme labels.
+  it("draws hub cards with a coloured band of number and shapes, and each theme a clean rule", () => {
     const card = rules.find((r) => r.sel === ".card").body;
-    expect(card).toContain("border-top:6px solid var(--lc,var(--edge))");
     expect(card).toContain("border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)");
-    expect(card).toMatch(/outline:1px solid color-mix\(in oklch,var\(--lc,var\(--edge\)\) 24%,transparent\);outline-offset:-8px/);
+    const band = rules.find((r) => r.sel === ".card-band").body;
+    expect(band).toContain("background:url(textures/stone.svg),var(--lcf,var(--lc))");
+    expect(band).toContain("border-radius:var(--r-xl) var(--r-sm) 0 0");
+    // The number is white on the deep fill, the same pairing as the lesson chip.
+    expect(rules.find((r) => r.sel === ".card-num").body).toContain("color:var(--on-lc)");
+    for (const t of ["t1", "t2", "t3"]) expect(rules.find((r) => r.sel === `.motif .${t}`).body).toMatch(/fill:color-mix\(in oklch,var\(--lcf,var\(--lc\)\),var\(--on-lc\) \d+%\)/);
     expect(rules.find((r) => r.sel === ".status").body).toContain("border:1.5px solid var(--lc,var(--edge))");
     expect(css).toMatch(/\.group-label\{[^}]*text-transform:uppercase/);
     expect(css).toMatch(/\.group-label::after\{[^}]*height:2px;background:var\(--lc\)/);

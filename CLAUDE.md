@@ -250,10 +250,14 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   its frame (grain, lamplight and, David's pick, the `textures/roof-diamonds.svg`
   Zsolnay roof-tile pattern, on dark frames only; the page keeps its paper grain) and closes
   with the Danube wave and its amber line; hub section headings carry the
-  `textures/flourish.svg` flourish; lesson cards are its unit cards (petal corners
-  `--r-xl`/`--r-sm`, a 6px top rule in the lesson colour with a fine inner line, a
-  soft `--lift`, a chip, an objectives count, the title, one line of framing, and
-  an outlined status); the Essentials sit in a full-width dark band with solid
+  `textures/flourish.svg` flourish; lesson cards have petal corners (`--r-xl`/`--r-sm`) and a soft `--lift`, and
+  open with a band in the lesson's fill (David, 2026-10-21): the number large
+  ("01", or "E1" for an essential) and the theme's shapes in three tints, so a
+  theme reads by shape as well as colour: arches for Using AI well, columns for
+  Building for people, discs for Recognising manipulation, Zsolnay diamonds for
+  the Essentials. The band is `aria-hidden`; below it come a chip, an objectives
+  count, the title, one line of framing, an outlined status and a small
+  decorative arrow (the title stays the card's one link); the Essentials sit in a full-width dark band with solid
   cards, like its access section, opened and closed by the Danube wave (David:
   a box cut into the page looked "boxy"); the Evaluation levels are the same
   cards in stone and earth, cool to warm: slate, verdigris, olive, clay. Lessons in design get a dashed outline and a dashed

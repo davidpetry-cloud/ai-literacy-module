@@ -7,7 +7,7 @@
  * installed devDependency. tests/governance.test.js keeps the two in step.
  */
 import { resolveStatus, tally, STATUS, SOURCE } from "attestation-ledger";
-import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson, lessonLabel, mainLessons, essentials, GROUPS } from "./course.js";
+import { COURSE, TRACKS, TRACK_IDS, EVALUATION, getLesson, lessonLabel, mainLessons, essentials, GROUPS, groupOf } from "./course.js";
 import { SOURCES } from "./sources.js";
 import { CLAIMS } from "./claims.js";
 
@@ -1783,6 +1783,25 @@ function openClaimGroup(doc, hash) {
   if (group) group.open = true;
 }
 
+// The hub cards' band shapes, one family per theme (David, 2026-10-21), after Budapest: the baths' arches for
+// using AI well, columns for building for people, discs for recognising manipulation, and the Zsolnay roof
+// diamonds for the Essentials. Three tints of the lesson colour, light to the right. Decorative only.
+const arch = (x, w, h) => `M${x} 80V${80 - h + w / 2}A${w / 2} ${w / 2} 0 0 1 ${x + w} ${80 - h + w / 2}V80Z`;
+const diamond = (cx) => `M${cx} 4L${cx + 20} 42L${cx} 80L${cx - 20} 42Z`;
+const MOTIFS = {
+  using: [arch(0, 36, 40), arch(48, 36, 58), arch(96, 36, 76)],
+  building: ["M0 20H36V80H0Z", "M48 10H84V80H48Z", "M96 0H132V80H96Z"],
+  manipulation: ["M38 4A38 38 0 1 1 37.9 4Z", "M84 4H94A38 38 0 0 1 94 80H84Z"],
+  essentials: [diamond(20), diamond(66), diamond(112)]
+};
+export function motif(id) {
+  const paths = MOTIFS[id];
+  if (!paths) return "";
+  const tint = (i) => (paths.length === 2 ? ["t2", "t3"][i] : `t${i + 1}`);
+  return `<svg class="motif" viewBox="0 0 132 80" aria-hidden="true" focusable="false">${paths.map((d, i) => `<path class="${tint(i)}" d="${d}"/>`).join("")}</svg>`;
+}
+const GO = `<span class="go" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><path d="M5 11L11 5M6 5H11V10"/></svg></span>`;
+
 export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), query = "", onQuery } = {}) {
   const now = calendarDay(clock);
   const counts = tally(Object.values(CLAIMS), now);
@@ -1805,11 +1824,17 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
   // title, one line of framing, and a status. The objectives are on the lesson page itself, and in search.
   const status = (l) => (l.ready ? `<span class="status ready">Ready</span>` : `<span class="status soon">In design</span>`);
   const link = (l) => (l.ready ? `<a href="lesson.html?n=${l.n}&amp;track=${track}">${esc(l.title)}</a>` : esc(l.title));
+  // A coloured band on top (David, 2026-10-21): the number large, and its theme's shapes in tints of the lesson
+  // colour, so each theme also reads by shape, not by colour alone. The band is decoration: the chip says the same.
+  const bandNo = (l) => (l.category === "essentials" ? l.idPrefix : String(l.n).padStart(2, "0"));
   const card = (l) => `<article class="card${l.ready ? "" : " pending"}" data-lesson="${l.n}">
-      <p class="card-top"><span class="lesson-no">${esc(lessonLabel(l))}</span> <span class="meta">${l.objectives.length} objectives</span></p>
-      <h3>${link(l)}</h3>
-      <p>${esc(l.framing)}</p>
-      ${status(l)}
+      <div class="card-band" aria-hidden="true"><span class="card-num">${esc(bandNo(l))}</span>${motif(l.category === "essentials" ? "essentials" : groupOf(l)?.id)}</div>
+      <div class="card-body">
+        <p class="card-top"><span class="lesson-no">${esc(lessonLabel(l))}</span> <span class="meta">${l.objectives.length} objectives</span></p>
+        <h3>${link(l)}</h3>
+        <p>${esc(l.framing)}</p>
+        <p class="card-foot">${status(l)}${l.ready ? GO : ""}</p>
+      </div>
     </article>`;
   // Lessons in their three themes; each theme has one colour family, and its name says it in words too.
   const lessons = GROUPS.map((g) => {

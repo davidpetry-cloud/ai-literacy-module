@@ -1351,6 +1351,29 @@ describe("lesson number badges (consistency, 2026-10-05)", () => {
     }
     expect(lessonDoc(TRACK_IDS[0]).querySelector(".top .lesson-no")).not.toBeNull();
   });
+
+  // David, 2026-10-21: a coloured band with the number large and its theme's shapes, so a theme reads by shape
+  // as well as colour. The band is hidden from screen readers, because the chip and title already say it all.
+  it("tops each hub card with a hidden band: its number, and one shape family per theme", () => {
+    const hub = page("index.html");
+    renderHub(hub);
+    const shapes = {};
+    for (const card of hub.querySelectorAll(".card")) {
+      const l = getLesson(Number(card.dataset.lesson));
+      const band = card.querySelector(":scope > .card-band");
+      expect(band.getAttribute("aria-hidden")).toBe("true");
+      expect(band.querySelector(".card-num").textContent).toBe(l.category === "essentials" ? l.idPrefix : String(l.n).padStart(2, "0"));
+      const theme = l.category === "essentials" ? "essentials" : GROUPS.find((g) => g.lessons.includes(l.n)).id;
+      const d = [...band.querySelectorAll(".motif path")].map((p) => p.getAttribute("d")).join(" ");
+      expect(d, `lesson ${l.n}`).not.toBe("");
+      (shapes[theme] ??= new Set()).add(d);
+      // A small arrow on built cards only; it is decoration, so the title stays the card's one link.
+      expect(card.querySelectorAll(".card-foot .go")).toHaveLength(l.ready ? 1 : 0);
+    }
+    // The same shapes across a theme, and different shapes between themes.
+    for (const set of Object.values(shapes)) expect(set.size).toBe(1);
+    expect(new Set(Object.values(shapes).map((set) => [...set][0])).size).toBe(Object.keys(shapes).length);
+  });
 });
 
 describe("essentials (David, 2026-10-05)", () => {

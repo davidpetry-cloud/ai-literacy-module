@@ -185,20 +185,31 @@ h2{font-family:var(--serif);font-weight:600;font-size:var(--fs-xl);color:var(--i
 [data-lesson="4"]{--lc:var(--l4);--lcf:var(--f4)} [data-lesson="5"]{--lc:var(--l5);--lcf:var(--f5)}
 [data-lesson="6"]{--lc:var(--l6);--lcf:var(--f6)} [data-lesson="7"]{--lc:var(--l7);--lcf:var(--f7)} [data-lesson="8"]{--lc:var(--l8);--lcf:var(--f8)}
 [data-lesson="9"]{--lc:var(--l9);--lcf:var(--f9)} [data-lesson="10"]{--lc:var(--l10);--lcf:var(--f10)} [data-lesson="11"]{--lc:var(--l11);--lcf:var(--f11)} [data-lesson="12"]{--lc:var(--l12);--lcf:var(--f12)} [data-lesson="13"]{--lc:var(--l13);--lcf:var(--f13)} [data-lesson="14"]{--lc:var(--l14);--lcf:var(--f14)} [data-lesson="15"]{--lc:var(--l15);--lcf:var(--f15)}
-/* Cards in the Singapore Math unit-card style (David, 2026-10-20): petal corners, a thick rule along the top
-   in the lesson's colour with a fine inner line, a soft lift, a coloured chip and a quiet meta line, the
-   title, one line of framing, and a status. The objectives are on the lesson page itself. */
-.card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--edge);border-top:6px solid var(--lc,var(--edge));
-  border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);padding:24px;
-  outline:1px solid color-mix(in oklch,var(--lc,var(--edge)) 24%,transparent);outline-offset:-8px;
+/* Hub cards (David, 2026-10-21, after a "calmer place to begin" colour study): petal corners, a band on top in
+   the lesson's deep fill with the number large and its theme's shapes in three tints, then a calm body: a
+   coloured chip and a quiet meta line, the title, one line of framing, a status and a small arrow. */
+.card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--edge);
+  border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);padding:0;
   box-shadow:var(--lift);transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .2s}
+.card-band{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:112px;padding:0 16px 0 24px;
+  background:url(textures/stone.svg),var(--lcf,var(--lc));border-radius:var(--r-xl) var(--r-sm) 0 0}
+.card-num{font-family:var(--serif);font-size:var(--fs-display);font-weight:500;line-height:var(--lh-display);letter-spacing:-.02em;color:var(--on-lc);font-variant-numeric:lining-nums}
+.motif{display:block;flex:none;align-self:flex-end;width:158px;height:96px}
+.motif .t1{fill:color-mix(in oklch,var(--lcf,var(--lc)),var(--on-lc) 24%)}
+.motif .t2{fill:color-mix(in oklch,var(--lcf,var(--lc)),var(--on-lc) 46%)}
+.motif .t3{fill:color-mix(in oklch,var(--lcf,var(--lc)),var(--on-lc) 70%)}
+.card-body{display:flex;flex-direction:column;flex:1;padding:24px}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0}
+.go{display:grid;place-items:center;width:32px;height:32px;border-radius:var(--r-pill);border:1.5px solid var(--edge);color:var(--lc,var(--ink));transition:background-color .2s,color .2s,border-color .2s}
+.go svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.card:has(h3 a:hover) .go,.card:has(h3 a:focus-visible) .go{background:var(--lcf,var(--lc));border-color:var(--lcf,var(--lc));color:var(--on-lc)}
 .card.pending{box-shadow:none;border-style:dashed;border-top-style:solid}
 .card-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 8px;margin:0 0 12px;font-family:var(--sans)}
 .card-top .lesson-no{font-size:var(--fs-sm);border-radius:var(--r-lg) var(--r-sm) var(--r-lg) var(--r-sm);padding:2px 12px}
 .card .meta{font-size:var(--fs-sm);color:var(--muted)}
 .card h3{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 8px;line-height:var(--lh-heading);letter-spacing:-.01em}
 .card h3 a{color:var(--ink);text-decoration-color:color-mix(in oklch,var(--lc,var(--edge)) 60%,transparent);text-underline-offset:4px}
-.card > p:not(.card-top){margin:0 0 16px;color:var(--muted);font-size:var(--fs-sm);flex:1}
+.card-body > p:not(.card-top):not(.card-foot){margin:0 0 16px;color:var(--muted);font-size:var(--fs-sm);flex:1}
 /* The whole card is the click target for a ready lesson (a "stretched link"): the title stays the one
    link, so screen readers announce it once, and its ::after covers the card. Keyboard focus rings the card. */
 .card h3 a::after{content:"";position:absolute;inset:0;border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)}
@@ -244,10 +255,10 @@ body[data-page="hub"]{overflow-x:clip}
 #essentials.band h2{color:var(--on-dark)}
 [data-page="hub"] #content > #essentials.band > h2::after{background:var(--amber)}
 #essentials.band .lede{color:var(--header-sub)}
-#essentials.band .card{background:color-mix(in oklch,var(--header-bg),var(--on-dark) 8%);border-color:color-mix(in oklch,var(--on-dark) 24%,transparent);
-  border-top-color:color-mix(in oklch,var(--lcf) 55%,var(--on-dark));outline-color:color-mix(in oklch,var(--on-dark) 8%,transparent);box-shadow:none}
+#essentials.band .card{background:color-mix(in oklch,var(--header-bg),var(--on-dark) 8%);border-color:color-mix(in oklch,var(--on-dark) 24%,transparent);box-shadow:none}
+#essentials.band .go{color:var(--on-dark);border-color:color-mix(in oklch,var(--on-dark) 45%,transparent)}
 #essentials.band .card h3 a{color:var(--on-dark);text-decoration-color:color-mix(in oklch,var(--on-dark) 45%,transparent)}
-#essentials.band .card > p:not(.card-top){color:var(--header-sub)}
+#essentials.band .card-body > p:not(.card-top):not(.card-foot){color:var(--header-sub)}
 #essentials.band .card .meta{color:var(--header-sub)}
 #essentials.band .status{color:var(--on-dark);border-color:color-mix(in oklch,var(--lcf) 45%,var(--on-dark))}
 #essentials.band .card h3 a:focus-visible::after{outline-color:var(--amber)}
@@ -665,7 +676,8 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
     .passage ol,.inbox .messages,.requests .messages,.calls .messages{padding-left:16px}
     .inbox .message,.requests .message,.calls .message{padding:12px}
     /* The Essentials band and the cards inside it don't each add a full gutter either. */
-    .card{padding:16px}
+    .card-body{padding:16px}
+    .card-band{padding:0 12px 0 16px}
   }
   .basis td:first-child{width:auto}
 }
