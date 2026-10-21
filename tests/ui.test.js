@@ -375,8 +375,18 @@ describe("tap targets", () => {
     expect(minHeight(sel)).toBeGreaterThanOrEqual(44);
   });
 
-  it.each([".key summary", ".claim details summary"])("%s is at least 44px tall", (sel) => {
+  it.each([".key summary", ".claim details summary", ".foot-links a"])("%s is at least 44px tall", (sel) => {
     expect(minHeight(sel)).toBeGreaterThanOrEqual(44);
+  });
+
+  // A link inside a footer sentence is only one line tall, so the footer keeps its links in their own row.
+  it("keeps every footer link in the 44px link row, not in the footer's sentences", () => {
+    for (const p of ["index.html", "lesson.html", "sources.html"]) {
+      const foot = read(p).match(/<footer[^>]*>([\s\S]*?)<\/footer>/)[1];
+      const loose = foot.replace(/<ul class="foot-links">[\s\S]*?<\/ul>/, "");
+      expect(loose, p).not.toMatch(/<a\s/);
+      expect(foot, p).toMatch(/<ul class="foot-links">/);
+    }
   });
 
   it("shows a visible focus ring", () => {
