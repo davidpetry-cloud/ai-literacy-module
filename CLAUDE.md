@@ -254,7 +254,7 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   open with a band in the lesson's fill (David, 2026-10-21): the number large
   ("01", or "E1" for an essential) and the theme's shapes in three tints, so a
   theme reads by shape as well as colour: arches for Using AI well, columns for
-  Building for people, discs for Recognising manipulation, Zsolnay diamonds for
+  Building for people, spires for Recognising manipulation (not discs, which read as letters), Zsolnay diamonds for
   the Essentials. The band is `aria-hidden`; below it come a chip, an objectives
   count, the title, one line of framing, an outlined status and a small
   decorative arrow (the title stays the card's one link); the Essentials sit in a full-width dark band with solid
