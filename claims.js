@@ -108,27 +108,27 @@ export const CLAIMS = {
     )
   },
   "prompt-parts": {
-    text: "A clear request to an AI tool usually states four things: the task, the context, the constraints, and the format you want back.",
+    text: "A model writes its answer from what your request says, so a clear request states what the answer needs. This course splits it into four parts: the task, the context, the constraints, and the format you want back.",
     attestation: proposedBy(
-      "A common framing in the prompting guides model providers publish, cut down to four parts a non-specialist can remember. Says 'usually' because a short request can work when the context is obvious."
+      "Check: Jurafsky & Martin (2026), Speech and Language Processing, 3rd ed. draft of 19 August 2026, ch. 1, §1.2.1 'Prompting = conditional generation = token prediction!' (pp. 7–8), on the Sources page: the model generates each word conditioned on the prompt. That supports the first sentence. The second is this course's own teaching frame, a definition rather than a finding, so nothing outside the course needs to confirm the four names. Rewritten 2026-10-23: the old wording cited 'prompting guides model providers publish', which are not on the Sources page."
     )
   },
   "gaps-get-filled": {
-    text: "When a request leaves out details the output needs, a model often fills the gaps with plausible invented specifics, such as times, dates or how a project is going.",
+    text: "When a request leaves out details the output needs, a model can still write them in: plausible specifics, such as a time, a date or how a project is going, that nobody gave it.",
     attestation: proposedBy(
-      "Follows from model-predicts: the model writes likely text, and a specific-sounding detail is often more likely than a blank. Each track's vague output in Lesson 2 is built to show it."
+      "Check two Sources-page entries. (1) Jurafsky & Martin (2026), ch. 1, §1.2.1 (pp. 7–8): the model writes the most probable next words given the prompt, whether or not the prompt holds the facts. (2) Walters & Wilder (2023), Scientific Reports 13, 14045 (abstract and results): ChatGPT produced plausible citations, many of them fabricated, a documented case of invented specifics. Each track's vague output in Lesson 2 shows it on the page. Rewritten 2026-10-23: 'often' became 'can', which is what the sources support, and the basis now names listed sources."
     )
   },
   "example-steers-form": {
-    text: "Showing an example of the output you want is an effective way to steer its format and tone, often more effective than describing them.",
+    text: "Putting an example of the answer you want into the request shows the model the task and the shape to follow. It helps more with the form of the answer than with getting its facts right.",
     attestation: proposedBy(
-      "Giving examples (few-shot prompting) is widely documented as a way to control format and style. Worded as 'often more effective' rather than 'the most reliable way', which would overclaim."
+      "Check: Jurafsky & Martin (2026), ch. 1, §1.7 'Inference' (p. 19), on the Sources page: examples in a prompt are 'demonstrations' (few-shot prompting), and their main benefit 'seems more to demonstrate the task and the output format' than the right answers. Rewritten 2026-10-23: the old wording claimed tone and 'more effective than describing', which this source doesn't say, and cited no listed source."
     )
   },
   "structure-not-truth": {
     text: "A better-structured request makes an output more likely to fit what you need. It doesn't make the output reliable: any fact you didn't supply still needs checking.",
     attestation: proposedBy(
-      "Stops the lesson being read as 'good prompts give true answers', and links it back to Lesson 1. Facts you put in the context can come back right; anything the model adds is still predicted text."
+      "Check: Jurafsky & Martin (2026), ch. 1, §1.7 'Inference' (p. 19), on the Sources page: demonstrations help with the task and the output format, and even demonstrations with wrong answers still improve a system, so a well-built request shapes the form of an answer, not its truth. Lesson 1's fluency-not-evidence (Xiong et al., 2024, attested) covers the rest: a fluent answer is not evidence. Stops the lesson being read as 'good prompts give true answers'. Basis rewritten 2026-10-23 to name listed sources; the claim's wording is unchanged."
     )
   },
   "l2-key-educators": {
