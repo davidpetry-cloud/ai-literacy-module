@@ -152,42 +152,42 @@ export const CLAIMS = {
   "independent-source": {
     text: "Checking a claim means comparing it with a source that doesn't depend on the AI's answer: the original study, law, dataset or organisation. Another chatbot, or a page that repeats the claim, isn't independent.",
     attestation: proposedBy(
-      "Basic source-evaluation practice: a check only counts if the source could disagree with the AI. A chatbot or a page that copies the claim can't. Objective 3.1 rests on it.",
-      "claude-sonnet-5"
+      "Check: nothing outside the course. This is the course's definition of a check, not a research finding: a check only counts if the source could disagree with the AI, and a chatbot or a page that copies the claim can't. Attest it as a definition you agree with. Lesson 3's reveals apply it, checking each sentence against the original (Bloom 1984, Steiss et al. 2024, the FTC guide, Paruthi et al. 2016, the AAP 2014 statement, all on the Sources page). Objective 3.1 rests on it. Basis rewritten 2026-10-23: it had cited 'basic source-evaluation practice', which no listed source states.",
+      "claude-opus-5-5"
     )
   },
   "citations-unreliable": {
     text: "AI tools can produce citations that look real but point to nothing. A citation that does exist can also fail to say what it's cited for.",
     attestation: proposedBy(
-      "Invented and misattributed references are among the best-documented AI errors; lawyers were sanctioned in 2023 (Mata v. Avianca, S.D.N.Y.) for filing cases a chatbot made up. Follows from risk-zones. The second sentence covers the 'real, but doesn't say that' case Lesson 3 teaches. Check the case details before attesting.",
-      "claude-sonnet-5"
+      "Check: Walters & Wilder (2023), Scientific Reports 13, 14045, abstract (Sources page, with its DOI): many of the citations ChatGPT gave for literature reviews were fabricated, and many real ones had errors. That supports the first sentence. The second is shown on the page: Lesson 3's educators reveal quotes Bloom (1984), a real paper cited for something it doesn't say (open its DOI and read the first page). Mata v. Avianca, Inc., 678 F. Supp. 3d 443 (S.D.N.Y. 2023), on the Sources page, is a well-known case of lawyers sanctioned for filing cases a chatbot made up; it has no link there, so it is a supporting example, not the basis. Basis rewritten 2026-10-23 to rest on a linked listed source.",
+      "claude-opus-5-5"
     )
   },
   "check-fits-stakes": {
     text: "How much checking an output needs depends on what happens if it's wrong and how hard that is to undo, not on how the output sounds.",
     attestation: proposedBy(
-      "Proportionate verification is standard risk practice. Worded to rule out both 'check everything' and 'trust fluent output'. Objective 3.3 rests on it.",
-      "claude-sonnet-5"
+      "Check: nothing outside the course. This is the course's own rule of thumb, a judgement rather than a measured finding, and no listed source states it in these words: attest it as reasonable, not as quoted. Its second half follows from Lesson 1's fluency-not-evidence (Xiong et al., 2024, attested): how an output sounds is not a reliable signal. Worded to rule out both 'check everything' and 'trust fluent output'. Objective 3.3 rests on it. Basis rewritten 2026-10-23: it had cited 'standard risk practice', which no listed source states.",
+      "claude-opus-5-5"
     )
   },
   "l3-key-educators": {
     text: "The answer key for the Lesson 3 educators passage is correct: each sentence's label matches its cited source, the no-source sentence has no real review behind it, and each use is given a fitting level of checking.",
     attestation: proposedBy(
-      "Written with the passage. Steiss et al. (2024) and Bloom (1984) should be checked against the originals before this is attested. The level for each use is a judgement about consequences, not a fact. On 2026-10-14, at David's request for current sources, sentence 4 changed from Black & Wiliam (1998), 'Inside the Black Box', which it had called a review (it is the authors' short summary of their review), to Steiss et al. (2024), Learning and Instruction 91, 101894, doi:10.1016/j.learninstruc.2024.101894 (checked against Crossref). Its structured abstract (author manuscript, NSF repository) says 200 pieces of human and 200 of ChatGPT feedback on the same secondary-school essays were scored on five measures; human raters were slightly better on all but 'criteria-based', and well-trained educators gave higher-quality feedback than the free version of ChatGPT. The key stays Correct.",
+      "Check, all on the Sources page with DOIs: (1) Bloom (1984), Educational Researcher 13(6), first page: students tutored one to one did about two standard deviations better than in a conventional class; nothing about class size being the biggest factor, so sentence 2 is Wrong. (2) Steiss et al. (2024), Learning and Instruction 91, 101894, abstract: about 200 secondary-school essays, and trained teachers' feedback slightly better than ChatGPT's, so sentence 4 is Correct. (3) The 'Journal of Feedback Studies' review (sentence 3) is planted: there is no such journal to find. The level for each use is a judgement about consequences, not a fact. On 2026-10-14, at David's request for current sources, sentence 4 changed from Black & Wiliam (1998), 'Inside the Black Box', which it had called a review (it is the authors' short summary of their review), to Steiss et al. (2024), Learning and Instruction 91, 101894, doi:10.1016/j.learninstruc.2024.101894 (checked against Crossref). Its structured abstract (author manuscript, NSF repository) says 200 pieces of human and 200 of ChatGPT feedback on the same secondary-school essays were scored on five measures; human raters were slightly better on all but 'criteria-based', and well-trained educators gave higher-quality feedback than the free version of ChatGPT. The key stays Correct.",
       "claude-sonnet-5"
     )
   },
   "l3-key-professionals": {
     text: "The answer key for the Lesson 3 professionals passage is correct: each sentence's label matches its cited source, the no-source sentence has no real report behind it, and each use is given a fitting level of checking.",
     attestation: proposedBy(
-      "Written with the passage. The FTC's CAN-SPAM compliance guide (10 business days for opt-outs; valid physical postal address) should be checked before this is attested. The level for each use is a judgement about consequences. Revised 2026-09-24: the planted report's firm is now 'Tallowmere Compliance Group', because several real firms trade as 'Meridian Compliance'.",
+      "Check: Federal Trade Commission, 'CAN-SPAM Act: A Compliance Guide for Business' (Sources page, linked), the list of main requirements: 'Tell recipients where you're located' (a valid physical postal address, so sentence 2 is Correct) and 'Honor opt-out requests promptly' (within 10 business days, not 30, so sentence 1 is Wrong). The Tallowmere Compliance Group report (sentence 4) is planted: there is nothing to find. The level for each use is a judgement about consequences. Revised 2026-09-24: the planted report's firm is now 'Tallowmere Compliance Group', because several real firms trade as 'Meridian Compliance'.",
       "claude-sonnet-5"
     )
   },
   "l3-key-students": {
     text: "The answer key for the Lesson 3 students passage is correct: each sentence's label matches its cited source, the no-source sentence has no real study behind it, and each use is given a fitting level of checking.",
     attestation: proposedBy(
-      "Written with the passage. Paruthi et al. (2016, 8 to 10 hours for ages 13 to 18) and the AAP's 2014 school start time statement (8:30 a.m. or later) should be checked before this is attested. The level for each use is a judgement about consequences. Revised 2026-09-24: the planted study's university is now 'Brambleford University', because real institutions are named Lakeside University College.",
+      "Check, both on the Sources page with DOIs: (1) Paruthi et al. (2016), Journal of Clinical Sleep Medicine 12(6), 785–786, the recommendations: teenagers 13 to 18 years should sleep 8 to 10 hours per 24 hours, so sentence 2 is Correct. (2) Adolescent Sleep Working Group et al. (2014), Pediatrics 134(3), the abstract: middle and high schools should aim to start at 8:30 a.m. or later, so 'no earlier than 7:30' (sentence 4) is Wrong. The Brambleford University study (sentence 1) is planted: there is nothing to find. The level for each use is a judgement about consequences. Revised 2026-09-24: the planted study's university is now 'Brambleford University', because real institutions are named Lakeside University College.",
       "claude-sonnet-5"
     )
   },
