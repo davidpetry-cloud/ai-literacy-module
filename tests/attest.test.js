@@ -41,8 +41,21 @@ describe("the desk refuses a weak sign-off", () => {
   it("without the 'I checked the sources myself' tick", () => bad({ checked: false }, /Tick/));
   it("without a name", () => bad({ by: "  " }, /name/));
   it("with a basis too short to say source, place and check", () => bad({ basis: "Looks right." }, /basis in full/));
-  it("with the model's own reasoning pasted back as the basis", () => bad({ basis: current.rationale }, /own words/));
-  it("with the claim's own text as the basis", () => bad({ basis: claim.text }, /own words/));
+  // An old-style proposal argues its case with no "Check:" line; pasting that argument back is not a check.
+  const argument = "Follows from model-predicts: the model writes likely text, and a specific-sounding detail is often more likely than a blank.";
+  const oldStyle = { source: "model", model: "claude-opus-5-5", rationale: argument };
+  const withCheck = { source: "model", model: "claude-opus-5-5", rationale: "Check: Walters & Wilder (2023), Scientific Reports 13, 14045, abstract. Rewritten 2026-10-23: it cited nothing." };
+  it("with the model's argument pasted back as the basis", () => {
+    expect(() => makeAttestation(claim, oldStyle, { ...FIXTURE, basis: argument }, TODAY)).toThrow(/argument/);
+  });
+  it("with the claim's own text as the basis", () => bad({ basis: claim.text }, /copies the claim/));
+  it("but lets the basis quote the claim's Check line, which names where to look", () => {
+    expect(makeAttestation(claim, withCheck, { ...FIXTURE, basis: "Check: Walters & Wilder (2023), Scientific Reports 13, 14045, abstract." }, TODAY).basis).toMatch(/Walters/);
+  });
+  it("and judges a re-sign against the original proposal, not the earlier sign-off", () => {
+    const signed = { source: "practitioner", by: "X", basis: "b", verified: "2026-10-22" };
+    expect(() => makeAttestation(claim, signed, { ...FIXTURE, basis: argument }, TODAY, oldStyle.rationale)).toThrow(/argument/);
+  });
   it("with a review cycle other than 1, 2 or 3 years", () => bad({ ttlDays: 9999 }, /review cycle/));
   it("with a date in the future", () => bad({ verified: "2026-10-22" }, /future/));
   it("with a date that doesn't exist", () => bad({ verified: "2026-02-30" }, /real date/));

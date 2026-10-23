@@ -31,7 +31,7 @@ export function supersedesOf(current) {
  * no name, no real basis, the model's own reasoning pasted back as the basis, or no confirmation
  * that the sources were opened and checked.
  */
-export function makeAttestation(claim, current, form, today) {
+export function makeAttestation(claim, current, form, today, proposal = current?.rationale) {
   if (form.checked !== true) throw new Error("Tick \"I opened the sources and checked this myself\" first.");
   const by = clean(form.by);
   if (!by) throw new Error("Add your name. Anonymous sign-off is not sign-off.");
@@ -39,9 +39,16 @@ export function makeAttestation(claim, current, form, today) {
   if (basis.length < MIN_BASIS) {
     throw new Error(`Write the basis in full: the source, where in it, and what you did (at least ${MIN_BASIS} characters).`);
   }
-  const echoes = [claim?.text, current?.rationale].map(clean).filter(Boolean);
-  if (echoes.some((e) => e === basis || (basis.length > 60 && e.includes(basis)))) {
-    throw new Error("The basis repeats the claim or the model's reasoning. Say what you checked, in your own words.");
+  // The model's argument can't be pasted back as the basis, but its "Check:" line can be quoted: it names the
+  // sources and places to look, which is what a basis names (David hit this on 2026-10-23, copying from the
+  // desk's "What to check" box).
+  const rationale = clean(proposal);
+  const check = /\bCheck\b/.test(proposal ?? "") ? clean(checkLine(proposal)) : "";
+  const argument = rationale.replace(check, " ").trim();
+  const quotesCheck = check && check.includes(basis.replace(/^Check:\s*/i, ""));
+  const echoes = [claim?.text, argument].map(clean).filter(Boolean);
+  if (!quotesCheck && echoes.some((e) => e === basis || (basis.length > 60 && e.includes(basis)))) {
+    throw new Error("The basis copies the claim or the model's argument for it. Say what you checked: the source, where in it, and what you did.");
   }
   const ttlDays = Number(form.ttlDays);
   if (!TTL_CHOICES.includes(ttlDays)) throw new Error("Choose a review cycle of 1, 2 or 3 years.");

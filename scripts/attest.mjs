@@ -151,10 +151,11 @@ export async function createDesk({ file = join(root, "attestations.js"), port = 
       }
       const form = await body(req);
       const id = String(form.id ?? "");
+      req.claimId = id;
       if (!CLAIMS[id]) return json(res, 404, { error: `There is no claim called "${id}".` });
       const current = mergeAttestation(BASE[id], entries[id]);
       if (path === "/api/attest") {
-        entries = { ...entries, [id]: makeAttestation(CLAIMS[id], current, form, today()) };
+        entries = { ...entries, [id]: makeAttestation(CLAIMS[id], current, form, today(), BASE[id].rationale) };
         log(`Signed off   ${id}  (${entries[id].by}, ${entries[id].verified})`);
       } else if (path === "/api/reject") {
         entries = { ...entries, [id]: makeRejection(form, today()) };
@@ -170,6 +171,8 @@ export async function createDesk({ file = join(root, "attestations.js"), port = 
       await save();
       return json(res, 200, { claim: claimView(id) });
     } catch (err) {
+      // Said in the terminal too, so a refused sign-off is never silent (David, 2026-10-23).
+      log(`Not saved    ${req.claimId ?? ""}  ${err.message}`);
       return json(res, 400, { error: err.message });
     }
   });
