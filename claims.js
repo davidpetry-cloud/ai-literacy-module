@@ -310,79 +310,79 @@ export const CLAIMS = {
   "context-principle": {
     text: "A screen should always show people where they are and what just happened, for example with a message that confirms an action worked.",
     attestation: proposedBy(
-      "Nielsen's first heuristic, 'visibility of system status'. Two of Lesson 6's three screens break it with a silent action, and check item p2 turns on it."
+      "Check: Nielsen (1994), '10 Usability Heuristics for User Interface Design', Nielsen Norman Group (Sources page, linked), heuristic #1 'Visibility of system status'. Two of Lesson 6's three screens break it with a silent action, and check item p2 turns on it."
     )
   },
   "user-control-principle": {
     text: "People should be able to go back, undo and cancel, so that one mistake doesn't cost them their work.",
     attestation: proposedBy(
-      "Nielsen's heuristic 'user control and freedom'. All three of Lesson 6's screens break it in a different way: a final booking, a delete with no undo, and no Back button."
+      "Check: Nielsen (1994), '10 Usability Heuristics for User Interface Design', Nielsen Norman Group (Sources page, linked), heuristic #3 'User control and freedom' (undo, cancel, a clearly marked way out). All three of Lesson 6's screens break it in a different way: a final booking, a delete with no undo, and no Back button."
     )
   },
   "ai-ui-polish": {
     text: "A screen built by an AI tool can look finished while missing things people need, such as confirmation messages, clear labels, undo and accessible error messages, unless the request asks for them.",
     attestation: proposedBy(
-      "Follows from gaps-get-filled and prompt-parts: a model builds what the request describes and fills gaps with likely defaults, and visual polish is a likely default. 'Can' is deliberate. This rests on practice more than published study, so it needs David's own judgement."
+      "Check: nothing outside the course. This is the course's judgement, to attest as reasonable, not a published finding; Lesson 6's three made-up screens show it, each polished and each missing something the request didn't ask for. It follows from gaps-get-filled and prompt-parts (now grounded in Jurafsky & Martin ch. 1 and Walters & Wilder 2023): a model builds what the request describes and fills gaps with likely defaults, and visual polish is a likely default. 'Can' is deliberate. This rests on practice more than published study, so it needs David's own judgement."
     )
   },
   "l6-key-educators": {
     text: "The answer key for the Lesson 6 educators screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up, so check it by using the screen beside the key. The goal for each problem and its place on the grid are judgements; the reveal names a main goal and allows a second."
+      "Check: nothing outside the course. The screen is made up, so check it by using the screen beside the key. Each principle is as defined in Nielsen (1994), '10 Usability Heuristics' (Sources page, linked; #1 visibility of system status, #3 user control and freedom, #4 consistency and standards, #9 help users recognise, diagnose and recover from errors), and accessibility in WCAG 2.2 (linked).The goal for each problem and its place on the grid are judgements; the reveal names a main goal and allows a second."
     )
   },
   "l6-key-professionals": {
     text: "The answer key for the Lesson 6 professionals screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up, so check it by using the screen beside the key. Placing the red-only required labels as 'few' users assumes colour-vision and screen-reader users are a minority of this form's users; the harm for them is still high."
+      "Check: nothing outside the course. The screen is made up, so check it by using the screen beside the key. Each principle is as defined in Nielsen (1994), '10 Usability Heuristics' (Sources page, linked; #1 visibility of system status, #3 user control and freedom, #4 consistency and standards, #9 help users recognise, diagnose and recover from errors), and accessibility in WCAG 2.2 (linked).Placing the red-only required labels as 'few' users assumes colour-vision and screen-reader users are a minority of this form's users; the harm for them is still high."
     )
   },
   "l6-key-students": {
     text: "The answer key for the Lesson 6 students screen is correct: each part's principle, goal and harm-and-reach placing matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up, so check it by using the screen beside the key. Twelve required fields is filed under usability (effort) rather than user-centricity; either is defensible, and the note explains the choice. Revised 2026-10-14: part 3 (a red border with no message) was placed 'hits few', but its own note says nobody knows what to fix, which is every user (WCAG 3.3.1); it is now 'hits all', so it comes first in the fix order (UX audit 2026-10, finding 10)."
+      "Check: nothing outside the course. The screen is made up, so check it by using the screen beside the key. Each principle is as defined in Nielsen (1994), '10 Usability Heuristics' (Sources page, linked; #1 visibility of system status, #3 user control and freedom, #4 consistency and standards, #9 help users recognise, diagnose and recover from errors), and accessibility in WCAG 2.2 (linked).Twelve required fields is filed under usability (effort) rather than user-centricity; either is defensible, and the note explains the choice. Revised 2026-10-14: part 3 (a red border with no message) was placed 'hits few', but its own note says nobody knows what to fix, which is every user (WCAG 3.3.1); it is now 'hits all', so it comes first in the fix order (UX audit 2026-10, finding 10)."
     )
   },
   "wcag-structure": {
     text: "WCAG 2.2 organises accessibility under four principles: perceivable, operable, understandable and robust. Its testable success criteria sit at three levels: A (the minimum), AA (the usual target) and AAA (the highest).",
     attestation: proposedBy(
-      "W3C, Web Content Accessibility Guidelines (WCAG) 2.2, W3C Recommendation, October 2023. The W3C's conformance notes say AAA is not recommended as a general policy for entire sites, because some content can't meet it. AA as 'the usual target' reflects its use in laws and policies; check against the conformance section. The current edition of WCAG 2.2 is dated 12 December 2024; the Recommendation was first published 5 October 2023."
+      "Check: WCAG 2.2 (Sources page, linked): the four principles are the headings of the guidelines (1 Perceivable, 2 Operable, 3 Understandable, 4 Robust); the levels and the note on AAA are in 'Conformance', https://www.w3.org/TR/WCAG22/#conformance-reqs . W3C, Web Content Accessibility Guidelines (WCAG) 2.2, W3C Recommendation, October 2023. The W3C's conformance notes say AAA is not recommended as a general policy for entire sites, because some content can't meet it. AA as 'the usual target' reflects its use in laws and policies; check against the conformance section. The current edition of WCAG 2.2 is dated 12 December 2024; the Recommendation was first published 5 October 2023."
     )
   },
   "contrast-thresholds": {
     text: "WCAG sets contrast minimums: 4.5:1 for normal text and 3:1 for large text at level AA, 7:1 and 4.5:1 at AAA, and 3:1 for the parts of a screen you need to see to use it, such as input borders and icons.",
     attestation: proposedBy(
-      "WCAG 2.2 success criteria 1.4.3 Contrast (Minimum, AA), 1.4.6 Contrast (Enhanced, AAA) and 1.4.11 Non-text Contrast (AA). Large text is at least 18 point, or 14 point bold. The checker in Lesson 7 uses the WCAG relative-luminance formula; check a few pairs against another checker."
+      "Check: WCAG 2.2 (Sources page, linked): 1.4.3 Contrast (Minimum), AA, https://www.w3.org/TR/WCAG22/#contrast-minimum ; 1.4.6 Contrast (Enhanced), AAA, https://www.w3.org/TR/WCAG22/#contrast-enhanced ; 1.4.11 Non-text Contrast, AA, https://www.w3.org/TR/WCAG22/#non-text-contrast ; 'large scale text' in the glossary, https://www.w3.org/TR/WCAG22/#dfn-large-scale . Large text is at least 18 point, or 14 point bold. The checker in Lesson 7 uses the WCAG relative-luminance formula; check a few pairs against another checker."
     )
   },
   "mindful-ux": {
     text: "Interfaces can steer people against their own interests through deceptive design, often called dark patterns. A design that respects time, attention and choice avoids them, and uses calmer defaults and natural pause points.",
     attestation: proposedBy(
-      "'Dark patterns' was coined by Harry Brignull (2010). Sources: FTC staff report, Bringing Dark Patterns to Light (2022); EU Digital Services Act, Article 25, on online interface design. 'Calmer defaults' and 'natural pause points' are this course's terms for the practices David set out on 2026-09-24, not terms from those sources."
+      "Check, all on the Sources page and linked: Brignull, 'Deceptive patterns' (deceptive.design; he coined 'dark patterns' in 2010); FTC staff report, 'Bringing Dark Patterns to Light' (2022), its summary; EU Digital Services Act, Regulation (EU) 2022/2065 on EUR-Lex, Article 25 'Online interface design and organisation' (platforms may not design interfaces that deceive or manipulate users). 'Calmer defaults' and 'natural pause points' are this course's terms for the practices David set out on 2026-09-24, not terms from those sources."
     )
   },
   "wellbeing-habits": {
     text: "Small, repeated cues and defaults shape habits, so calmer defaults and natural pause points can support healthier use of technology.",
     attestation: proposedBy(
-      "Habit research finds that behaviour repeated in a stable context becomes cued by that context (Wood and Rünger, 2016, 'Psychology of Habit', Annual Review of Psychology). Worded as 'can support', not 'cause'. The personal-wellbeing framing is David's (2026-09-24)."
+      "Check: Wood & Rünger (2016), 'Psychology of Habit', Annual Review of Psychology 67, 289–314 (Sources page, DOI linked), the abstract: habits form as behaviour is repeated in a stable context, and context cues then trigger it. Worded as 'can support', not 'cause'. The personal-wellbeing framing is David's (2026-09-24)."
     )
   },
   "l7-key-educators": {
     text: "The answer key for the Lesson 7 educators screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up, so check it by using the screen beside the key and WCAG 2.2: 1.4.3 (AA), 4.1.2 (A), 2.2.1 (A). The instructions' contrast was measured at 2.44:1 (rounded down, as the checker does). Until 2026-10-14 part 4's buttons showed text symbols (＋ ✎ 🗑), which are their names, so a screen reader read them out and the 4.1.2 key was untrue; they are now drawn icons, hidden from screen readers, with no text, label or title, so the buttons have no name (UX audit 2026-10, finding 3)."
+      "Check: the screen is made up, so use it beside the key, with WCAG 2.2 (Sources page, linked) at these places: 1.4.3 Contrast (Minimum), AA, https://www.w3.org/TR/WCAG22/#contrast-minimum ; 4.1.2 Name, Role, Value, A, https://www.w3.org/TR/WCAG22/#name-role-value ; 2.2.1 Timing Adjustable, A, https://www.w3.org/TR/WCAG22/#timing-adjustable . The instructions' contrast was measured at 2.44:1 (rounded down, as the checker does). Until 2026-10-14 part 4's buttons showed text symbols (＋ ✎ 🗑), which are their names, so a screen reader read them out and the 4.1.2 key was untrue; they are now drawn icons, hidden from screen readers, with no text, label or title, so the buttons have no name (UX audit 2026-10, finding 3)."
     )
   },
   "l7-key-professionals": {
     text: "The answer key for the Lesson 7 professionals screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up. Check against WCAG 2.2: 1.4.1 (A), 2.5.8 (AA, 24 by 24 CSS pixels unless spacing exceptions apply), 3.3.3 (AA). The red border was measured at 1.94:1 against white."
+      "Check: the screen is made up, so use it beside the key, with WCAG 2.2 (Sources page, linked) at these places: 1.4.1 Use of Color, A, https://www.w3.org/TR/WCAG22/#use-of-color ; 2.5.8 Target Size (Minimum), AA, 24 by 24 CSS pixels unless spacing exceptions apply, https://www.w3.org/TR/WCAG22/#target-size-minimum ; 3.3.3 Error Suggestion, AA, https://www.w3.org/TR/WCAG22/#error-suggestion . The red border was measured at 1.94:1 against white."
     )
   },
   "l7-key-students": {
     text: "The answer key for the Lesson 7 students screen is correct: each part's kind, WCAG criterion and level, or pattern and calmer fix matches what the screen does, and exactly one part has no problem.",
     attestation: proposedBy(
-      "Written with the screen, which is made up. Check against WCAG 2.2: 2.2.2 (A; the carousel runs longer than 5 seconds with no pause), 1.4.10 (AA; filed under Perceivable, taught in the mobile and device group), 3.3.2 (A). The placeholder was measured at 2.16:1 (rounded down, as the checker does)."
+      "Check: the screen is made up, so use it beside the key, with WCAG 2.2 (Sources page, linked) at these places: 2.2.2 Pause, Stop, Hide, A (the carousel runs longer than 5 seconds with no pause), https://www.w3.org/TR/WCAG22/#pause-stop-hide ; 1.4.10 Reflow, AA (filed under Perceivable, taught in the mobile and device group), https://www.w3.org/TR/WCAG22/#reflow ; 3.3.2 Labels or Instructions, A, https://www.w3.org/TR/WCAG22/#labels-or-instructions . The placeholder was measured at 2.16:1 (rounded down, as the checker does)."
     )
   },
   "human-dignity-unesco": {
