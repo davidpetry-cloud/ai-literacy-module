@@ -640,19 +640,19 @@ export const CLAIMS = {
   "l12-key-educators": {
     text: "The answer key for the Lesson 12 educators situations is reasonable: each response's label (safe or risky) follows from the lesson's guidance, and the disclosure situation follows Keeping Children Safe in Education.",
     attestation: proposedBy(
-      "The situations are made up. Situation 3 must match KCSIE 2026 paragraph 14 (never promise secrecy; involve the safeguarding lead). The other keys are judgements: attest that they are reasonable."
+      "Check: Department for Education, 'Keeping children safe in education 2026' (Sources page, linked to the gov.uk page; open the statutory guidance), Part one, paragraph 14: never promise a child that what they tell you will be kept secret, and involve the designated safeguarding lead. The situations are made up. Situation 3 must match KCSIE 2026 paragraph 14 (never promise secrecy; involve the safeguarding lead). The other keys are judgements: attest that they are reasonable."
     )
   },
   "l12-key-professionals": {
     text: "The answer key for the Lesson 12 professionals situations is reasonable: each response's label (safe or risky) follows from the lesson's guidance on records, support and boundaries.",
     attestation: proposedBy(
-      "The situations are made up. Judgements, not facts: check that each safe response gives a record, support or a boundary, and that no safe response labels anyone."
+      "Check: nothing outside the course. The situations are made up. Judgements, not facts: check that each safe response gives a record, support or a boundary, and that no safe response labels anyone."
     )
   },
   "l12-key-students": {
     text: "The answer key for the Lesson 12 students situations is reasonable: the threat situation follows the FBI's advice (don't pay; block but don't delete; tell a trusted adult), and every situation points to a trusted adult.",
     attestation: proposedBy(
-      "The situations are made up and stop short of any abuse. Check situation 1 against the FBI's national alert on financial sextortion and NCMEC's Take It Down. The tests require a trusted adult in every students situation. The sextortion note says the advice holds even if the photo is fake (FBI podcast, September 2026)."
+      "Check, all on the Sources page and linked: (1) FBI, 'Financially motivated sextortion', its advice for young people and parents: don't pay, keep the messages, block the account, and tell a trusted adult. (2) NCMEC, 'Take It Down', the home page: a free service to help remove nude images taken of under-18s. (3) FBI, Inside the FBI podcast, 'Keeping teens safe on the web' (4 September 2026): the advice holds even when the image is fake. The situations are made up and stop short of any abuse. The tests require a trusted adult in every students situation. The sextortion note says the advice holds even if the photo is fake (FBI podcast, September 2026)."
     )
   },
 
