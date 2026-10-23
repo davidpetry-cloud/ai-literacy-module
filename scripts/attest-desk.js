@@ -16,6 +16,8 @@ function linkify(text) {
 
 const TTL_LABEL = { 365: "1 year: law, policy or fast-changing tools", 730: "2 years: standards and most claims (the usual choice)", 1095: "3 years: settled research or definitions" };
 const NEEDS = new Set(["proposed", "expired"]);
+// Needs you: still proposed, lapsed, or signed with a basis that doesn't mention what the check points to.
+const needsYou = (c) => NEEDS.has(c.status) || Boolean(c.hint);
 let data = null;
 const remembered = (() => {
   try { return JSON.parse(localStorage.getItem("desk-signer") ?? "null"); } catch { return null; }
@@ -41,7 +43,7 @@ function counts() {
 const byId = (id) => data.claims.find((c) => c.id === id);
 const shown = (c) => {
   const f = $("#f-status").value;
-  return f === "all" || (f === "needs" ? NEEDS.has(c.status) : c.status === f);
+  return f === "all" || (f === "needs" ? needsYou(c) : c.status === f);
 };
 
 function card(c) {
@@ -53,9 +55,10 @@ function card(c) {
     ? `<dl class="dc-record"><dt>Rejected by</dt><dd>${esc(c.rejection.by)}</dd><dt>Reason</dt><dd>${esc(c.rejection.reason)}</dd><dt>Reviewed</dt><dd>${esc(c.rejection.reviewed)}</dd></dl>`
     : "";
   const why = c.rationale
-    ? `<details class="dc-why"${NEEDS.has(c.status) ? " open" : ""}><summary>Why ${esc(c.model ?? "the model")} proposed it, with its sources</summary><p>${linkify(c.rationale)}</p></details>`
+    ? `<details class="dc-why"${needsYou(c) ? " open" : ""}><summary>Why ${esc(c.model ?? "the model")} proposed it, with its sources</summary><p>${linkify(c.rationale)}</p></details>`
     : "";
   const lapsed = c.status === "expired" ? `<p class="dc-note">This sign-off has passed its review date. Check the sources again, then sign it off again.</p>` : "";
+  const review = c.hint ? `<p class="dc-note dc-review"><b>Worth a second look.</b> ${esc(c.hint)} If it's right as it is, leave it. Otherwise press Sign off again and name what you checked.</p>` : "";
   const actions = `<div class="dc-actions">
       ${c.status === "rejected" ? "" : `<button type="button" class="btn" data-open="attest" aria-expanded="false">${c.status === "attested" ? "Sign off again" : "Sign off"}<span class="sr">: ${esc(c.id)}</span></button>`}
       ${c.status === "rejected" ? "" : `<button type="button" class="btn quiet" data-open="reject" aria-expanded="false">Reject<span class="sr">: ${esc(c.id)}</span></button>`}
@@ -64,12 +67,12 @@ function card(c) {
   return `<article class="dc" id="c-${esc(c.id)}" data-id="${esc(c.id)}" data-status="${c.status}" tabindex="-1" aria-labelledby="t-${esc(c.id)}">
     <p class="dc-top">${c.badge}<code class="dc-id">${esc(c.id)}</code>${also}</p>
     <h3 class="dc-text" id="t-${esc(c.id)}">${esc(c.text)}</h3>
-    ${lapsed}${signed}${rejected}${why}${actions}
+    ${lapsed}${review}${signed}${rejected}${why}${actions}
     <div class="dc-form" hidden></div>
   </article>`;
 }
 
-const need = (l) => l.ids.filter((id) => NEEDS.has(byId(id).status)).length;
+const need = (l) => l.ids.filter((id) => needsYou(byId(id))).length;
 
 function render(focusId = null) {
   counts();
@@ -106,6 +109,7 @@ function attestForm(c) {
   const p = `a-${c.id}`;
   return `<form class="dc-f" data-kind="attest" novalidate>
     <p class="dc-f-head">Sign off: say what you checked</p>
+    ${c.check ? `<div class="dc-what"><p class="dc-what-head">What to check</p><p>${linkify(c.check)}</p></div>` : ""}
     <p><label for="${p}-basis">Basis</label>
       <span class="hint" id="${p}-basis-hint">The source, where in it, and what you did. For example: "Checked against WCAG 2.2 (W3C, 2023), 1.4.3 and 1.4.11."</span>
       <textarea id="${p}-basis" name="basis" rows="4" aria-describedby="${p}-basis-hint" required></textarea></p>
@@ -164,7 +168,7 @@ function nextId(id) {
   const order = data.lessons.filter((l) => lf === "all" || String(l.n) === lf).flatMap((l) => l.ids);
   const at = order.indexOf(id);
   const after = order.slice(at + 1).concat(order.slice(0, Math.max(at, 0)));
-  return after.find((x) => NEEDS.has(byId(x).status) && shown(byId(x))) ?? (shown(byId(id)) ? id : null);
+  return after.find((x) => needsYou(byId(x)) && shown(byId(x))) ?? (shown(byId(id)) ? id : null);
 }
 
 function update(claim) {

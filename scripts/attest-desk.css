@@ -54,3 +54,8 @@
 .dc-error:empty{display:none}
 .dc-error:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
 .dc-done{font-family:var(--serif);font-size:var(--fs-md)}
+/* A sign-off worth a second look, and the claim's "What to check" line shown beside the form (2026-10-23). */
+.dc-review{border-left:4px solid var(--prop);background:var(--amber-pale);color:var(--text);padding:8px 12px;border-radius:0 var(--r-md) var(--r-md) 0;font-weight:400}
+.dc-what{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;margin:0 0 16px}
+.dc-what-head{font-weight:700;color:var(--ink-2);margin:0 0 4px}
+.dc-what p:last-child{margin:0;max-width:var(--measure);overflow-wrap:anywhere}

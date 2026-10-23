@@ -14,7 +14,7 @@ import { CLAIMS, BASE, mergeAttestation } from "../claims.js";
 import { COURSE, lessonLabel } from "../course.js";
 import { SOURCES } from "../sources.js";
 import { claimLessons, statusBadge, modelName } from "../lesson-core.js";
-import { makeAttestation, makeRejection, serialize, allowed, TTL_CHOICES } from "./attest-core.mjs";
+import { makeAttestation, makeRejection, serialize, allowed, basisHint, checkLine, TTL_CHOICES } from "./attest-core.mjs";
 
 export const PORT = 8091;
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -60,6 +60,9 @@ export async function createDesk({ file = join(root, "attestations.js"), port = 
       lessons: USES[id] ?? [],
       fromDesk: Boolean(entries[id]),
       rationale: BASE[id].rationale ?? null,
+      check: BASE[id].rationale ? checkLine(BASE[id].rationale) : null,
+      // A sign-off whose basis doesn't mention what its check points to: shown under "Needs you" for a second look.
+      hint: current.source === "practitioner" && !current.rejection ? basisHint(BASE[id].rationale, current.basis) : null,
       model: model?.model ? modelName(model.model) : null,
       attestation: current.source === "practitioner" ? { by: current.by, role: current.role, basis: current.basis, verified: current.verified, ttlDays: current.ttlDays ?? 730 } : null,
       rejection: current.rejection ?? null
@@ -103,7 +106,7 @@ export async function createDesk({ file = join(root, "attestations.js"), port = 
   </header>
   <main id="main">
     <div class="desk-filters">
-      <label>Show <select id="f-status"><option value="needs">Needs you: proposed or lapsed</option><option value="all">Every claim</option><option value="attested">Attested</option><option value="rejected">Rejected</option></select></label>
+      <label>Show <select id="f-status"><option value="needs">Needs you: proposed, lapsed, or worth a second look</option><option value="all">Every claim</option><option value="attested">Attested</option><option value="rejected">Rejected</option></select></label>
       <label>Lesson <select id="f-lesson"><option value="all">All lessons</option></select></label>
     </div>
     <p id="announce" class="sr" aria-live="polite"></p>

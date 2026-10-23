@@ -65,6 +65,34 @@ export function makeRejection(form, today) {
   return { rejection: { by, role: clean(form.role) || null, reason, reviewed: readDate(form.reviewed, today, "review") } };
 }
 
+// Words that start a "Check:" line or a change note, not names of sources.
+const NOT_SOURCES = new Set("Check Sources Lesson Lessons Each Both None Nothing Basis Rewritten Revised Written The This That Attest Course Page Where Open Read".split(" "));
+const IN_COURSE = /course|page|screen|definition|judg|shown|sign-off|ledger|standard|ux-foundations/i;
+
+/** The part of a claim's reasoning that says where to check: its "Check:" lines, or all of it if it has none. */
+export function checkLine(rationale = "") {
+  const at = rationale.indexOf("Check");
+  return (at === -1 ? rationale : rationale.slice(at)).split(/(?<=\.) (?=(?:Basis |Rewritten |Revised |Written with ))/)[0];
+}
+
+/**
+ * Whether a sign-off's basis mentions what its claim's "Check:" line points to (David, 2026-10-23: he couldn't
+ * find the weak ones to re-sign). A hint for a second look, never a block: the basis must name one of the
+ * check's sources (an author, an organisation, a year, a site), or, where the check is "nothing outside the
+ * course", say it was judged from the course itself. Returns null when it matches, or the reason when not.
+ */
+export function basisHint(rationale, basis) {
+  if (!basis || !rationale) return null;
+  const check = checkLine(rationale);
+  const names = (check.match(/\b[A-Z][A-Za-z&'.-]{2,}\b|\b(?:19|20)\d\d\b|[a-z0-9.-]+\.(?:gov|org|com|uk|eu|edu|int)\b/g) ?? []).map((w) => w.replace(/['’]s$/, "")).filter((w) => !NOT_SOURCES.has(w));
+  const b = basis.toLowerCase();
+  if (names.some((w) => b.includes(w.toLowerCase()))) return null;
+  if (/^Check: nothing outside the course/i.test(check) && IN_COURSE.test(basis)) return null;
+  return /^Check: nothing outside the course/i.test(check)
+    ? "The check is the course itself (a definition, a judgement, or the page), and your basis doesn't say so."
+    : "Your basis doesn't mention the source the check points to.";
+}
+
 /** The whole of attestations.js, in claims.js order so each sign-off's diff is easy to read in git. */
 export function serialize(entries, order) {
   const ids = Object.keys(entries).sort((a, b) => order.indexOf(a) - order.indexOf(b));

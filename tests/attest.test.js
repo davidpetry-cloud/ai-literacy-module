@@ -69,6 +69,29 @@ describe("a good sign-off", () => {
   });
 });
 
+// David, 2026-10-23: he couldn't find the weak sign-offs to re-sign. The desk now points them out.
+describe("a basis worth a second look", async () => {
+  const { basisHint, checkLine } = await import("../scripts/attest-core.mjs");
+  const sourced = "Check: Walters & Wilder (2023), Scientific Reports 13, 14045, abstract (Sources page). Rewritten 2026-10-23: it had cited nothing.";
+  const inCourse = "Check: nothing outside the course. It is a definition of attesting. Basis note added 2026-10-23.";
+  it("passes a basis that names the check's source, its year or its site", () => {
+    expect(basisHint(sourced, "Read Walters and Wilder's abstract")).toBeNull();
+    expect(basisHint(sourced, "Checked the 2023 paper's abstract")).toBeNull();
+    expect(basisHint("Check: NASA's mission record.", "Checked against NASA. (n.d.). Apollo 11.")).toBeNull();
+  });
+  it("points out a basis that names a different source", () => {
+    expect(basisHint(sourced, "Checked against the COPPA rule, 16 C.F.R. pt. 312")).toMatch(/doesn't mention the source/);
+  });
+  it("passes an in-course check judged from the course, and points out a vague one", () => {
+    expect(basisHint(inCourse, "A definition; I read the ledger code in vendor/")).toBeNull();
+    expect(basisHint(inCourse, "Checked Against Design Principle")).toMatch(/course itself/);
+  });
+  it("never flags a sign-off with no reasoning to compare against", () => expect(basisHint("", "anything")).toBeNull());
+  it("reads the check, not the change notes after it", () => {
+    expect(checkLine(sourced)).not.toMatch(/Rewritten/);
+  });
+});
+
 describe("a rejection", () => {
   it("needs a name and a reason", () => {
     expect(() => makeRejection({ by: "X", reason: "no" }, TODAY)).toThrow(/why/);
