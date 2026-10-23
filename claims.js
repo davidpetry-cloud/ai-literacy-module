@@ -194,43 +194,43 @@ export const CLAIMS = {
   "attest-not-propose": {
     text: "A model can propose a value but can't attest it. Attesting means a named person takes responsibility for having checked it, on a stated basis, on a date.",
     attestation: proposedBy(
-      "The rule attestation-ledger enforces and this course runs on. Stated as a definition of attesting, so it doesn't claim models are always wrong, only that they can't take responsibility."
+      "Check: nothing outside the course. It is a definition of attesting, the rule this course runs on, so it doesn't claim models are always wrong, only that they can't take responsibility. You can see it enforced: in the site's copy of the ledger (vendor/attestation-ledger@0.1.1/src/index.js), resolveStatus() returns 'proposed' for any record whose source is 'model', whatever else it says, and the governance tests hold it. Basis note added 2026-10-23."
     )
   },
   "attestation-lapses": {
     text: "A sign-off records a check at one point in time. Sources and rules change, so a sign-off should be treated as lapsed after a set period unless someone checks it again. The two-year window used here is this course's choice, not a standard.",
     attestation: proposedBy(
-      "Periodic review is common practice for policies and reference material. The last sentence stops learners reading 730 days (the ledger's default) as an external rule."
+      "Check: nothing outside the course. The claim states its own window as the course's choice, so it is a rule of thumb to attest as reasonable, not a quoted standard. The first two sentences are shown in Lesson 4 itself: the educators key changed in October 2026 because England's 2015 medical-conditions guidance is under review (DfE consulted in 2026), a rule changing after it was checked. The last sentence stops learners reading 730 days (the ledger's default) as an external rule. Basis rewritten 2026-10-23: it had cited 'common practice', which no listed source states."
     )
   },
   "signer-must-know": {
     text: "The right person to sign off is someone who did the check and answers for the result. Being the most senior person, or the one who asked for the output, isn't enough on its own.",
     attestation: proposedBy(
-      "Objective 4.2 rests on it. Worded around doing the check and being accountable, the two things each track's wrong-signer example lacks. Revised 2026-09-24: the old wording read as if a senior person could never be the right signer. A senior person who did the check can be."
+      "Check: nothing outside the course. It defines who should sign, a judgement to attest as reasonable; each track's wrong-signer sign-off shows it on the page. Objective 4.2 rests on it. Worded around doing the check and being accountable, the two things each track's wrong-signer example lacks. Revised 2026-09-24: the old wording read as if a senior person could never be the right signer. A senior person who did the check can be."
     )
   },
   "form-not-substance": {
     text: "Software can check that a sign-off has a name and a date and hasn't lapsed. Only a person can judge whether its basis is real and whether the signer could have made the check.",
     attestation: proposedBy(
-      "Checked against attestation-ledger 0.1.1: resolveStatus() reads source, by, verified and ttlDays, never basis or role, so a tool's name typed into 'by' resolves as attested. Lesson 4's reveal shows this with the real engine."
+      "Check: the site's own copy of the ledger, vendor/attestation-ledger@0.1.1/src/index.js, function resolveStatus(): it reads source, by, verified and ttlDays, never basis or role, so a tool's name typed into 'by' resolves as attested. Lesson 4's reveal shows this with the real engine: the 'not a person' and 'no basis' sign-offs both show Attested. The second sentence is the course's judgement that follows from that."
     )
   },
   "l4-key-educators": {
     text: "The answer key for the Lesson 4 educators sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. The people and sign-offs are fictional, so no outside source is needed: check each label against the sign-off as shown, and that the lapsed one is over two years old. Revised 2026-10-14 (UX audit 2026-10, finding 13): the sound sign-off was on 'Students may not carry their own prescription medicine on trips. Staff hold it.', a rule that real guidance rejects, so a sound key on it modelled bad practice. It now reads 'On trips, students keep their own inhalers and adrenaline pens with them. Staff hold other prescription medicine.' England's statutory guidance (DfE, Supporting pupils at school with medical conditions, December 2015, read in the gov.uk PDF) says children should wherever possible carry their own medicines, that inhalers and adrenaline pens should be readily available and not locked away, 'particularly … on school trips', and that it is 'not generally acceptable practice' to prevent children from easily accessing their inhalers. The Allergy & Asthma Network's state-laws page (read 2026-10-14) says all 50 US states protect students' rights to carry and use prescribed asthma and anaphylaxis medications. DfE consulted on an update to this guidance in 2026; recheck when it is published."
+      "Check: the people and sign-offs are fictional, so check each label against the sign-off as shown, and that the lapsed one is over two years old. The sound sign-off's rule rests on two Sources-page entries: (1) Department for Education (2015), 'Supporting pupils at school with medical conditions' (December 2015 PDF, linked from the gov.uk page): p. 19, para. 20 'The child's role in managing their own medical needs' ('Wherever possible, children should be allowed to carry their own medicines'); p. 20, 'Managing medicines on school premises' (inhalers and adrenaline pens 'always readily available … not locked away', 'e.g. on school trips'); p. 23, para. 25 'Unacceptable practice'. (2) Allergy & Asthma Network, 'State laws' (linked): all 50 US states protect students' right to carry asthma and anaphylaxis medication. Revised 2026-10-14 (UX audit 2026-10, finding 13): the sound sign-off was on 'Students may not carry their own prescription medicine on trips. Staff hold it.', a rule that real guidance rejects, so a sound key on it modelled bad practice. It now reads 'On trips, students keep their own inhalers and adrenaline pens with them. Staff hold other prescription medicine.' England's statutory guidance (DfE, Supporting pupils at school with medical conditions, December 2015, read in the gov.uk PDF) says children should wherever possible carry their own medicines, that inhalers and adrenaline pens should be readily available and not locked away, 'particularly … on school trips', and that it is 'not generally acceptable practice' to prevent children from easily accessing their inhalers. The Allergy & Asthma Network's state-laws page (read 2026-10-14) says all 50 US states protect students' rights to carry and use prescribed asthma and anaphylaxis medications. DfE consulted on an update to this guidance in 2026; recheck when it is published."
     )
   },
   "l4-key-professionals": {
     text: "The answer key for the Lesson 4 professionals sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. Fictional, so check each label against the sign-off as shown. The wrong-signer judgement assumes legal and data protection own retention periods, which is typical but worth a look. Revised 2026-09-24: the tool signer is now 'AI writing tool (verified)', replacing a product-like name."
+      "Check: nothing outside the course. The people and sign-offs are fictional, so check each label against the sign-off as shown. The wrong-signer label is a judgement from the page: the sign-off is about how long client data is kept, and the company's data protection lead (the sound sign-off's signer), not the sales lead, answers for that. Rewritten 2026-10-23: the reveal had said 'legal and data protection set retention', an outside fact; it now judges only what the page shows. Revised 2026-09-24: the tool signer is now 'AI writing tool (verified)', replacing a product-like name."
     )
   },
   "l4-key-students": {
     text: "The answer key for the Lesson 4 students sign-offs is correct: each sign-off's label matches what it shows, and exactly one of the five is sound.",
     attestation: proposedBy(
-      "Written with the document. Fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true. Revised 2026-09-24: the tool signer is now 'Study chatbot (self-check)', replacing a product-like name. Revised 2026-10-14: sign-off 1 said 'Our survey', yet was keyed Wrong signer because another group ran it, a fact the page never showed. It now says 'The eco group's survey', so the label matches what it shows (UX audit 2026-10, finding 9)."
+      "Check: nothing outside the course. The people and sign-offs are fictional, so check each label against the sign-off as shown. The plastic-bottle figure is a common unsourced number; the key is about who signed it, not whether it's true. Revised 2026-09-24: the tool signer is now 'Study chatbot (self-check)', replacing a product-like name. Revised 2026-10-14: sign-off 1 said 'Our survey', yet was keyed Wrong signer because another group ran it, a fact the page never showed. It now says 'The eco group's survey', so the label matches what it shows (UX audit 2026-10, finding 9)."
     )
   },
   "error-kinds": {

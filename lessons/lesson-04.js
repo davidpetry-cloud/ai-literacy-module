@@ -219,7 +219,7 @@ export default {
                 basis: "Matched against the client contract.",
                 daysAgo: 25,
                 key: "wrong-signer",
-                note: "A sales lead can read a contract. But legal and data protection set retention, and they answer for it. The data protection lead should sign."
+                note: "A sales lead can read a contract. But this is about how long client data is kept, and the data protection lead answers for that. They should sign."
               }
             ]
           }
