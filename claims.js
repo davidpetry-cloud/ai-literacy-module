@@ -234,58 +234,58 @@ export const CLAIMS = {
     )
   },
   "error-kinds": {
-    text: "Most AI output errors fall into four kinds: fabrication (an invented detail), outdated information (once true, no longer), bias (an assumption that favours or leaves out a group), and a misread instruction (ignoring or skipping something the request said). The four are a teaching frame, not a full list.",
+    text: "This course sorts AI output errors into four kinds: fabrication (an invented detail), outdated information (once true, no longer), bias (an assumption that favours or leaves out a group), and a misread instruction (ignoring or skipping something the request said). The four are a teaching frame, not a full list.",
     attestation: proposedBy(
-      "A teaching frame drawn from common failure analyses: hallucination, knowledge cutoff, social bias and instruction-following failures. Worded as 'most' and 'not a full list' so it doesn't claim to be complete. Objective 5.1 rests on it.",
-      "claude-sonnet-5"
+      "Check: the sorting is the course's own teaching frame, a definition. That each kind happens rests on Jurafsky & Martin (2026), 3rd ed. draft of 19 August 2026, ch. 1 (Sources page): §1.10 'Safety and Alignment' (pp. 28–29) on stereotypes and on models that 'hallucinate', 'inventing people or facts that simply don't exist'; §1.6.2 'Instruction Tuning' (pp. 15–16) on 'failures to follow instructions'; outdated information follows from model-predicts (attested). Objective 5.1 rests on it. Rewritten 2026-10-23: 'Most AI output errors fall into…' claimed a share no listed source measures; it now says the course sorts them this way.",
+      "claude-opus-5-5"
     )
   },
   "outdated-cutoff": {
     text: "A model's knowledge stops at a training cutoff, so it can state something as current that has since changed, even when it was once correct.",
     attestation: proposedBy(
-      "Follows from model-predicts: a model writes text it learned from data up to a cutoff. The three answer keys use Pluto (2006), Privacy Shield (2020 and 2023) and the digital SAT (2024). Check each against its source.",
-      "claude-sonnet-5"
+      "Check: follows from model-predicts (attested; Jurafsky & Martin ch. 7): a model writes from patterns in its training data, which was gathered up to some date, so later changes aren't in it. The three answer keys show facts that changed, each with a linked source on the Sources page: IAU Resolutions B5 and B6 (2006, Pluto), the CJEU's Schrems II judgment (2020) and Implementing Decision (EU) 2023/1795 (Privacy Shield replaced), and the College Board's digital SAT (2024). Basis rewritten 2026-10-23 to point at linked sources.",
+      "claude-opus-5-5"
     )
   },
   "bias-inherited": {
     text: "Models can reproduce stereotypes and one-sided assumptions from their training data, in wording that reads as neutral.",
     attestation: proposedBy(
-      "Widely documented in studies of language models. Worded as 'can reproduce', not 'always', and about neutral-sounding wording because that is what makes it hard to see.",
-      "claude-sonnet-5"
+      "Check: Jurafsky & Martin (2026), 3rd ed. draft of 19 August 2026, ch. 1 (Sources page): §1.2 (p. 7), a model that saw such sentences 'might learn to associate professors only with male pronouns'; §1.10 'Safety and Alignment' (p. 28), models generating 'harmful stereotypes' and working worse for some groups. 'In wording that reads as neutral' is the course's emphasis, shown by each track's bias sentence in Lesson 5 ('Mums can pack the lunches', 'Ask your mom or dad'). Worded as 'can reproduce', not 'always'. Basis rewritten 2026-10-23: it had cited 'widely documented', with no listed source.",
+      "claude-opus-5-5"
     )
   },
   "misread-instruction": {
     text: "A model can skip or contradict a constraint in a request while the rest of the output reads well, so compare the output with the request line by line.",
     attestation: proposedBy(
-      "Instruction-following failures are a standard evaluation category. Each misread sentence in Lesson 5 breaks one line of the request, so the check is a comparison you can make from the page.",
-      "claude-sonnet-5"
+      "Check: Jurafsky & Martin (2026), ch. 1, §1.6.2 'Instruction Tuning' (pp. 15–16, Sources page): pretraining alone leads to 'failures to follow instructions', which is why models are trained further to follow them, and Fig. 1.13 (p. 19) shows instruction-following prompts used to test it (IFEval). Each misread sentence in Lesson 5 breaks one line of the request, so the rest is a comparison you can make from the page. Basis rewritten 2026-10-23: it had cited 'a standard evaluation category', with no listed source.",
+      "claude-opus-5-5"
     )
   },
   "checklist-specific": {
-    text: "A checklist works best when it is short and each check is a specific action aimed at one kind of error. A general check such as 'does it sound right' catches none of the four kinds.",
+    text: "In this course, a checklist is short and each check is a specific action aimed at one kind of error. A general check such as 'does it sound right' catches none of the four kinds.",
     attestation: proposedBy(
-      "Checklist practice in aviation and medicine favours short, action-based items. The second sentence follows from fluency-not-evidence. 'Works best' is a claim about practice, not a measured threshold, and the five-check limit is this course's choice.",
-      "claude-sonnet-5"
+      "Check: nothing outside the course for the first sentence; it is the course's design rule (the five-check limit is its choice), to attest as reasonable. The second follows from Lesson 1's fluency-not-evidence (Xiong et al., 2024, attested): how an output sounds is not a reliable signal, and Lesson 5's checklist builder shows 'Read it again and see if it sounds right' catching none of the four kinds. Rewritten 2026-10-23: 'works best', resting on aviation and medicine checklist practice, cited no listed source; it now states the course's rule.",
+      "claude-opus-5-5"
     )
   },
   "l5-key-educators": {
     text: "The answer key for the Lesson 5 educators answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. Pluto's reclassification should be checked against IAU Resolution B5 (2006). The request and answer are made up, so check each other label against the sentence as shown. Revised 2026-09-24: the request now names everything the No error sentence says. Revised 2026-09-24: the invented guide is now 'Dr. Mara Linwood', because the old name was close to a real Yale astronomer.",
+      "Check: the outdated sentence against the IAU's List of Resolutions (Sources page, linked), under 2006, 'Resolutions B5 and B6: Definition of a Planet in the Solar System AND Pluto' (English PDF): B5 defines a planet, B6 names Pluto a dwarf planet, so 'all nine planets' is Outdated. The request and answer are made up, so check each other label against the sentence as shown; Dr. Mara Linwood is planted. Revised 2026-10-23: the reveal cited only B5; B6 is the resolution that names Pluto. Revised 2026-09-24: the request now names everything the No error sentence says. Revised 2026-09-24: the invented guide is now 'Dr. Mara Linwood', because the old name was close to a real Yale astronomer.",
       "claude-sonnet-5"
     )
   },
   "l5-key-professionals": {
     text: "The answer key for the Lesson 5 professionals answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. Privacy Shield's invalidation should be checked against CJEU Case C-311/18 (2020) and the EU-US Data Privacy Framework decision (2023). The misread sentence breaks the plain-words rule with a real reference, GDPR Article 46(2)(c) on Standard Contractual Clauses, which is correct in itself; check it. The vendor and audit are made up. Revised 2026-09-24: the No error sentence no longer adds a claim the request didn't make. Revised 2026-09-24: the vendor is no longer named, because 'Nimbus Hosting' is a real UK company.",
+      "Check, all on the Sources page and linked to EUR-Lex: (1) CJEU, Case C-311/18 (Schrems II), judgment of 16 July 2020, the ruling at the end ('On those grounds…'): Implementing Decision 2016/1250 on the EU-US Privacy Shield 'is invalid'. (2) Commission Implementing Decision (EU) 2023/1795 of 10 July 2023, the EU-US Data Privacy Framework, which replaced it; so 'covered by the Privacy Shield' is Outdated. (3) The misread sentence breaks the plain-words rule with a real reference, GDPR Article 46(2)(c) on standard data protection clauses, which is correct in itself: open the GDPR on EUR-Lex, Article 46, paragraph 2(c). The vendor and audit are made up. Revised 2026-09-24: the No error sentence no longer adds a claim the request didn't make. Revised 2026-09-24: the vendor is no longer named, because 'Nimbus Hosting' is a real UK company.",
       "claude-sonnet-5"
     )
   },
   "l5-key-students": {
     text: "The answer key for the Lesson 5 students answer is correct: each sentence's label matches what it shows, the outdated sentence's source says what the note says, and exactly one sentence has no error.",
     attestation: proposedBy(
-      "Written with the answer. The digital SAT for US students since spring 2024 should be checked against the College Board. The workshop and its score gains are made up. Revised 2026-09-24: the answer now keeps the request's word limit, the misread sentence ignores who the reminder is for, and the bias sentence is a default assumption about families rather than a contested group statistic. Revised 2026-09-24: the outdated sentence is now 'The SAT is a paper test', because the College Board still asks students to bring a pencil for scratch work, so the old sentence was only half outdated.",
+      "Check: College Board, 'SAT Suite of Assessments' (Sources page, linked): the SAT is now taken digitally, in the Bluebook app (in the US since spring 2024), so 'a paper test, filled in with answer bubbles' is Outdated. The workshop and its score gains are made up. Revised 2026-09-24: the answer now keeps the request's word limit, the misread sentence ignores who the reminder is for, and the bias sentence is a default assumption about families rather than a contested group statistic. Revised 2026-09-24: the outdated sentence is now 'The SAT is a paper test', because the College Board still asks students to bring a pencil for scratch work, so the old sentence was only half outdated.",
       "claude-sonnet-5"
     )
   },

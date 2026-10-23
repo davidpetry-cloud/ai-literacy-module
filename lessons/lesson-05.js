@@ -132,7 +132,7 @@ export default {
               {
                 text: "Students will see all nine planets in the dome show.",
                 key: "outdated",
-                source: "International Astronomical Union (2006). Resolution B5: Definition of a Planet in the Solar System. Pluto was reclassified as a dwarf planet, which leaves eight planets.",
+                source: "International Astronomical Union (2006). Resolutions B5 and B6: Definition of a Planet in the Solar System, and Pluto. B5 defines a planet; B6 names Pluto a dwarf planet, which leaves eight planets.",
                 note: "This was true until 2006. Pluto was then reclassified as a dwarf planet. Check the date behind a fact, not just the fact."
               },
               {
