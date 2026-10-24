@@ -719,5 +719,173 @@ export const ATTESTATIONS = {
       "source": "model",
       "model": "claude-opus-5-5"
     }
+  },
+  "ai-fraud-fbi": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Federal Bureau of Investigation. (2025, May 15). Senior US officials impersonated in malicious messaging campaign (Public Service Announcement I-051525-PSA). Internet Crime Complaint Center. https://www.ic3.gov/PSA/2025/PSA250515(opens in a new tab) Federal Communications Commission. (2024). Implications of artificial intelligence technologies on protecting consumers from unwanted robocalls and robotexts (Declaratory Ruling, FCC 24-17, CG Docket No. 23-362). https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "scam-signs-ncsc": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: National Cyber Security Centre. (2023, March 14). ChatGPT and large language models: What's the risk? https://www.ncsc.gov.uk/blog-post/chatgpt-and-large-language-models-whats-the-risk(opens in a new tab) National Cyber Security Centre. (n.d.). How to spot a scam email, text message or call. https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam email. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-email(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam text message. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-text-message",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "ai-tools-confidential": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: National Cyber Security Centre. (2023, March 14). ChatGPT and large language models: What's the risk? https://www.ncsc.gov.uk/blog-post/chatgpt-and-large-language-models-whats-the-risk(opens in a new tab) National Cyber Security Centre. (n.d.). How to spot a scam email, text message or call. https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam email. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-email(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam text message. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-text-message",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "passwords-nist": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Great reference Temoshok, D., Fenton, J. L., Choong, Y.-Y., Lefkovitz, N., Regenscheid, A., Galluzzo, R., & Richer, J. P. (2025). Digital identity guidelines: Authentication and authenticator management (NIST Special Publication 800-63B-4). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.SP.800-63B-4",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "passkeys-phishing-resistant": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: CISA is a professional standard Cybersecurity and Infrastructure Security Agency. (2022). Implementing phishing-resistant MFA [Fact sheet]. https://www.cisa.gov/sites/default/files/publications/fact-sheet-implementing-phishing-resistant-mfa-508c.pdf(opens in a new tab) Cybersecurity and Infrastructure Security Agency. (2025). Mobile communications best practice guidance. https://www.cisa.gov/sites/default/files/2025-12/guidance-mobile-communications-best-practices_508c.pdf(opens in a new tab) Cybersecurity and Infrastructure Security Agency. (n.d.). Cybersecurity performance goals 2.0 (CPG 2.0). Retrieved October 12, 2026, from https://www.cisa.gov/cybersecurity-performance-goals-2-0-cpg-2-0(opens in a new tab) Cybersecurity and Infrastructure Security Agency. (n.d.). Require multifactor authentication. Retrieved October 12, 2026, from https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/require-multifactor-authentication",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "report-scams": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: National Cyber Security Centre. (2023, March 14). ChatGPT and large language models: What's the risk? https://www.ncsc.gov.uk/blog-post/chatgpt-and-large-language-models-whats-the-risk(opens in a new tab) National Cyber Security Centre. (n.d.). How to spot a scam email, text message or call. https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam email. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-email(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam text message. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-text-message",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "ai-voice-calls": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Federal Communications Commission. (2024). Implications of artificial intelligence technologies on protecting consumers from unwanted robocalls and robotexts (Declaratory Ruling, FCC 24-17, CG Docket No. 23-362). https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf Puig, A. (2023, March 20). Scammers use AI to enhance their family emergency schemes. Federal Trade Commission, Consumer Advice. https://consumer.ftc.gov/consumer-alerts/2023/03/scammers-use-ai-enhance-their-family-emergency-schemes",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "answering-bot-calls": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Source for reporting fraud Federal Trade Commission. (2023). Robocalls. Consumer Advice. https://consumer.ftc.gov/articles/robocalls",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "ai-disclosure-laws": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Regulation reference European Parliament & Council of the European Union. (2024). Regulation (EU) 2024/1689 (Artificial Intelligence Act). Official Journal of the European Union, L series. https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "uk-159": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Stop Scams \"Stop, Hangup, Call 159\" Stop Scams UK. (n.d.). 159 phone number. Retrieved October 21, 2026, from https://stopscamsuk.org.uk/our-programmes/159-phone-number/",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e1-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Public Relations and Fraud Protection Federal Bureau of Investigation. (2024, December 3). Criminals use generative artificial intelligence to facilitate financial fraud (Public Service Announcement I-120324-PSA). Internet Crime Complaint Center. https://www.ic3.gov/PSA/2024/PSA241203(opens in a new tab) Federal Bureau of Investigation. (2026, September 4). Keeping teens safe on the web [Audio podcast episode]. In Inside the FBI. https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e1-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "Federal Bureau of Investigation. (2024, December 3). Criminals use generative artificial intelligence to facilitate financial fraud (Public Service Announcement I-120324-PSA). Internet Crime Complaint Center. https://www.ic3.gov/PSA/2024/PSA241203(opens in a new tab) Federal Bureau of Investigation. (2026, September 4). Keeping teens safe on the web [Audio podcast episode]. In Inside the FBI. https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e1-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Family Code Words and General Security Federal Bureau of Investigation. (2024, December 3). Criminals use generative artificial intelligence to facilitate financial fraud (Public Service Announcement I-120324-PSA). Internet Crime Complaint Center. https://www.ic3.gov/PSA/2024/PSA241203(opens in a new tab) Federal Bureau of Investigation. (2026, September 4). Keeping teens safe on the web [Audio podcast episode]. In Inside the FBI. https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e1-key-share": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "Checked: National Cyber Security Centre. (2023, March 14). ChatGPT and large language models: What's the risk? https://www.ncsc.gov.uk/blog-post/chatgpt-and-large-language-models-whats-the-risk(opens in a new tab) National Cyber Security Centre. (n.d.). How to spot a scam email, text message or call. https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam email. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-email(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam text message. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-text-message",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
   }
 };
