@@ -1019,5 +1019,149 @@ export const ATTESTATIONS = {
       "source": "model",
       "model": "claude-opus-5-5"
     }
+  },
+  "voice-cloning-bank-access": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: FBI IC3 PSA I-120324-PSA, “Criminals Use Generative Artificial Intelligence to Facilitate Financial Fraud” (3 December 2024, ic3.gov/PSA/2024/PSA241203), opened 2026-10-16, includes a section on “AI-Generated Audio, aka Vocal Cloning.” In this section, criminals gain access to bank accounts by using AI-generated audio clips to impersonate individuals. They also create short audio clips with a loved one’s voice to mimic a close relative in a crisis, requesting immediate financial help or demanding a ransom. Because the PSA provides no figures or clip lengths, the text uses “have used” and “short” without specifying seconds. This overlaps ai-fraud-fbi (Essentials 1) and supplies the bank-account case E3.1 and E3.4 require.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "voice-protection-fbi-fcc": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: FBI IC3 PSA I-120324-PSA (3 December 2024), “Tips to protect yourself,” opened 2026-10-16: “If possible, limit online content of your image or voice, make social media accounts private, and limit followers to people you know”; “Create a secret word or phrase with your family to verify their identity.” FCC, “Stop Unwanted Robocalls and Texts” (consumer guide, “Date Last Updated/Reviewed: Friday, February 27, 2026”), opened 2026-10-16 in a browser (the site refuses scripted requests): “Set up strong passwords for your voicemail so it doesn't get hacked.” The FCC’s concern is hacking rather than voice cloning, so the text separates the two, and the lesson’s table notes the password “stops someone breaking into your voicemail.”",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "can-you-hear-me-fcc": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: FCC, ‘Consumer Alert: “Can You Hear Me” Scams’ (27 March 2017, docs.fcc.gov/public/attachments/DOC-344083A1.pdf; text copy DOC-344083A1.txt opened 2026-10-16): callers ‘later use a recording of the response to authorize unwanted charges’; ‘The caller then records the consumer’s “Yes” response and thus obtains a voice signature’; ‘If you receive this type of call, immediately hang up’; ‘Don’t answer calls from unknown numbers. Let them go to voicemail’; if a caller ‘asks you to hit a button to stop receiving calls, just hang up’. The alert reflects a risk drawn from complaints rather than confirmed losses, so the text notes ‘has warned’ and ‘could’. It dates from 2017, before AI voice bots, as the lesson indicates; it exceeds the course’s three-year rule, so it is paired with current sources offering the same guidance: the FCC’s guide (reviewed 27 February 2026: ‘Don’t answer calls from numbers you don’t know’; ‘Hang up right away’) and the FTC’s ‘Robocalls’ (2023) regarding pressing numbers (answering-bot-calls).",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "bank-fraud-call-ftc": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: FTC consumer alert, T. Miller, “Got a call about fraud activity on your bank account? It could be a scammer” (consumer.ftc.gov, 2024; dated 8 July 2024 in sources.js), opened 2026-10-16 in a browser: “No caller — particularly someone from your bank or investment company’s fraud department — will request the verification code. That is always a scam”; “Never move or transfer your money to ‘protect it.’”; “Use the number you locate on your statement or card — never the number the caller provided.” FBI IC3 I-051525-PSA (15 May 2025), opened 2026-10-16: “Never share a two-factor code with anyone.” Drafted for Essentials 1 in docs/essentials-gaps-ai-calls-and-security.md, never added; included here for Essentials 3.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "help-desk-code-scam": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: I did not call the number FBI, CISA, RCMP, ASD’s ACSC, AFP, CCCS, and NCSC-UK released “Scattered Spider” (Cybersecurity Advisory AA23-320A; first published November 16, 2023, “Last Revised July 29, 2025”), accessed on cisa.gov on October 16, 2026. According to public reporting, actors have “posed as company IT and/or helpdesk staff using phone calls or SMS messages to obtain credentials from employees and gain access to the network” and “posed as IT staff to convince employees to share their one-time password (OTP), an MFA authentication code.” Both statements appear in the current (2025) text. The advisory does not mention AI voices; the lesson’s claim is invented. “Check by calling the help desk on the number you already have” reflects the FCC’s and FTC’s call-back guidance for answering bot calls; the advisory does not state it in those terms. This agency source satisfies David’s decision 3 (October 13, 2026) required for the professionals’ call.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "chatbots-cfpb": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: CFPB, 'Chatbots in Consumer Finance' (issue spotlight, June 2023; files.consumerfinance.gov/f/documents/cfpbchatbot-issue-spotlight2023-06.pdf), accessed 2026-10-16: negative results include 'receiving inaccurate information'; chatbots may 'lead them in continuous loops of repetitive, unhelpful jargon or legalese without an offramp to a human customer service representative. These \"doom loops\"…'; 'offramps to human customer service support further blocked through unreasonable waits'; 'Chatbots can also raise certain privacy and security risks'; 'too many vulnerabilities for these systems to be entrusted with sensitive customer data without appropriate guardrails'. The report addresses banks' chatbots, mostly text; applying it to phone AI agents is the lesson's step. 'Asking for a person is a reasonable step' is a practical reading. At three years and four months, it is just past the course's three-year rule; it is the agency study of the problem, and california-human-agent-law (2026) shows the concern still holds.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "california-human-agent-law": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: California AB 1609 (Zbur), “Customer service chatbots,” Statutes of 2026, chapter 733, was approved by the Governor and chaptered on 28 September 2026. The text is available on leginfo.legislature.ca.gov as of 2026-10-16, showing status and chaptered content. It adds Business and Professions Code §§ 22625–22629: a “large private business” is defined as exceeding $500,000,000 in gross annual revenue nationally (§ 22625(g)). Under § 22626, firms “shall not represent that a customer service chatbot is a human” and must disclose it is “artificially generated and not human if a reasonable person … is likely to be misled.” During regular business hours, all platforms—including online chatbot and telephonic customer service—must offer a feature allowing customers to request connection to an agent, with a good-faith effort to connect within 15 minutes or schedule a time within one business day (§ 22627). The effective date of 1 January 2027 aligns with California’s default for a regular-session statute and matches the text’s own “as of January 1, 2027.” Enforcement is limited to public prosecutors, with exemptions for certain utilities, hospitals, and credit reporting agencies. Found at build time after stage design, David chose to retain it in the lesson on 2026-10-16 as a content decision rather than an attestation.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "political-ai-calls-waiver": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: FCC Consumer and Governmental Affairs Bureau, Public Notice DA 26-940 (released 4 September 2026, CG Docket No. 02-278), opened on docs.fcc.gov on 16 October 2026: the Club for Growth requested ‘a limited waiver of section 64.1200(a)(1)(iii)’ and ‘an exemption from section 227(b)(1)(A)(iii)’ ‘to allow calling parties to make noncommercial, political calls to wireless telephone numbers using an artificial or prerecorded voice – including an AI-generated voice – without obtaining prior express consent’; the petition was filed on 31 August 2026, with comments due 5 October and replies due 19 October 2026. No decision appeared in a web search on 16 October 2026 (AP, 7 October 2026: a ruling might arrive ‘as soon as late October’). Rechecked on 21 October 2026, there was still no decision; replies closed on 19 October, most reply comments opposed it (Communications Daily, 21 October 2026), and an FCC spokesperson told Al Jazeera (19 October 2026) that ‘there are zero plans’ to issue an order on this or the other petition. This note is time-limited: recheck before each use, and withdraw or reword after a decision. This is a facilitator note for adult US groups only, never for students.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e3-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: The calls are fabricated. For Call 1, labeled “District Payroll” and not initiated by you, allow it to reach voicemail as noted in the FCC guide and the 2017 alert; hang up without saying “yes” per the can-you-hear-me-fcc guidance; avoid sharing any part of the account number, following the FCC rule to “never share account numbers”; if pressured within ten minutes, end the call and reach payroll using a number you already possess rather than the one provided, echoing FTC Miller’s advice to “never the number the caller gave you.” For Call 2, where you contacted a supplier’s official order line and the AI claims it is an AI, describe the issue in your own words; provide the order number instead of the password; request a person after two incorrect responses as suggested in chatbots-cfpb; allow it to send the books and ask for an email record. The best choices appear at positions 2.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e3-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: The calls are fabricated. Call 1 involves an “IT Service Desk” requesting the code it just sent: it goes to voicemail, then to the help desk on a number you already have; avoid saying “yes”; never read a code aloud, not even partially (help-desk-code-scam, AA23-320A; bank-fraud-call-ftc: no caller receives a code). Under pressure and a manager’s name, hang up, contact the help desk on a known number, and notify IT. Call 2 is you calling an insurer’s claims line: state what you need; provide the claim number and date of birth, not the password; request a person when it loops (chatbots-cfpb); ask for a written response rather than acting on it. “Date of birth” is a judgment: insurers often request it to locate a claim. The best choices sit at positions 3, 1, 2, 1 and 1, 2, 3, 1. These are judgments, not facts.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e3-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: The simulated calls concern the learner’s own phone and do not require any student to dial or record audio (docs/student-safety.md). In Call 1, labeled “your phone company,” the prompt “Can you hear me?” followed by a request for the account PIN should be met with a voicemail and a trusted adult; avoid saying “yes,” never share the PIN—even partially (FCC guide: never share “passwords, PINs”); if rushed, hang up and notify a trusted adult, who should call the number on the bill or website. In Call 2, a parent or carer uses the phone company’s official number with the student on speaker; when the AI asks for the account password, describe the issue, provide the phone number rather than the password, request a person during loops (chatbots-cfpb), and allow a data restart while asking for a text record. The tests require a trusted adult in every student choice that ends the call. The best choices appear at positions 1, 3, 2, 3 and 3, 1, 2, 3. These are judgments, not facts.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e3-key-say": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Security numbers, passwords, and PINs; the warning that “If … a caller asks you to pay with gift cards, it's a scam!”; calling back on an official number; the FCC’s 2017 “Can You Hear Me” alert; the FTC (T. Miller, 2024: no caller requests a verification code; never move money to “protect it”); and the CFPB on chatbots. The middle category reflects judgment: on a call you placed to an official number, some banks send a code to confirm your identity, so “a code your bank sends” belongs there rather than under “never”; the FTC’s “no caller will ever ask” applies to incoming calls. “Your name, and why you're calling” under “only on a call you made” is also a judgment, since you need not identify yourself to someone who called you. No source uses these exact terms; they are presented as reasonable rather than quoted.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
   }
 };
