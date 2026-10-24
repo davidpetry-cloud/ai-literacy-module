@@ -32,11 +32,14 @@ export function supersedesOf(current) {
  * that the sources were opened and checked.
  */
 export function makeAttestation(claim, current, form, today, proposal = current?.rationale) {
-  if (form.checked !== true) throw new Error("Tick \"I opened the sources and checked this myself\" first.");
+  const own = inCourse(proposal);
+  if (form.checked !== true) throw new Error(own ? "Tick \"I checked this against the page myself\" first." : "Tick \"I opened the sources and checked this myself\" first.");
   const by = clean(form.by);
   if (!by) throw new Error("Add your name. Anonymous sign-off is not sign-off.");
-  const basis = clean(form.basis);
-  if (basis.length < MIN_BASIS) {
+  // A claim judged from the course itself needs no source (David, 2026-10-24): the basis is optional, and a
+  // blank one says so in words.
+  const basis = clean(form.basis) || (own ? IN_COURSE_BASIS : "");
+  if (!own && basis.length < MIN_BASIS) {
     throw new Error(`Write the basis in full: the source, where in it, and what you did (at least ${MIN_BASIS} characters).`);
   }
   // The model's argument can't be pasted back as the basis, but its "Check:" line can be quoted: it names the
@@ -72,6 +75,10 @@ export function makeRejection(form, today) {
   return { rejection: { by, role: clean(form.role) || null, reason, reviewed: readDate(form.reviewed, today, "review") } };
 }
 
+/** A claim whose check is the course itself: its reasoning says no outside source is needed. */
+export const inCourse = (rationale = "") => /nothing outside the course|no outside source is needed/i.test(rationale ?? "");
+export const IN_COURSE_BASIS = "Checked against the course itself, as the claim's check says: no outside source is needed.";
+
 // Words that start a "Check:" line or a change note, not names of sources.
 const NOT_SOURCES = new Set("Check Sources Lesson Lessons Each Both None Nothing Basis Rewritten Revised Written The This That Attest Course Page Where Open Read".split(" "));
 const IN_COURSE = /course|page|screen|definition|judg|shown|sign-off|ledger|standard|ux-foundations/i;
@@ -94,8 +101,8 @@ export function basisHint(rationale, basis) {
   const names = (check.match(/\b[A-Z][A-Za-z&'.-]{2,}\b|\b(?:19|20)\d\d\b|[a-z0-9.-]+\.(?:gov|org|com|uk|eu|edu|int)\b/g) ?? []).map((w) => w.replace(/['’]s$/, "")).filter((w) => !NOT_SOURCES.has(w));
   const b = basis.toLowerCase();
   if (names.some((w) => b.includes(w.toLowerCase()))) return null;
-  if (/^Check: nothing outside the course/i.test(check) && IN_COURSE.test(basis)) return null;
-  return /^Check: nothing outside the course/i.test(check)
+  if (inCourse(rationale) && IN_COURSE.test(basis)) return null;
+  return inCourse(rationale)
     ? "The check is the course itself (a definition, a judgement, or the page), and your basis doesn't say so."
     : "Your basis doesn't mention the source the check points to.";
 }

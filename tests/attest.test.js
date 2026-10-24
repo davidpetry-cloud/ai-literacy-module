@@ -105,6 +105,31 @@ describe("a basis worth a second look", async () => {
   });
 });
 
+// David, 2026-10-24: "For attests that say 'no source needed,' do not require a source."
+describe("a claim judged from the course itself", async () => {
+  const { IN_COURSE_BASIS, inCourse } = await import("../scripts/attest-core.mjs");
+  const pageJudged = { source: "model", model: "claude-opus-5-5", rationale: "Written with the prompt pair. It is a judgement about the text on the page, so no outside source is needed." };
+  const ownRule = { source: "model", model: "claude-opus-5-5", rationale: "Check: nothing outside the course. This is the course's own rule of thumb." };
+  it("is recognised by either wording", () => {
+    expect(inCourse(pageJudged.rationale)).toBe(true);
+    expect(inCourse(ownRule.rationale)).toBe(true);
+    expect(inCourse("Check: Walters & Wilder (2023), abstract.")).toBe(false);
+  });
+  it("takes a blank basis, and the record says so in words", () => {
+    expect(makeAttestation(CLAIMS[modelId], pageJudged, { ...FIXTURE, basis: "" }, TODAY).basis).toBe(IN_COURSE_BASIS);
+  });
+  it("takes a short basis of your own", () => {
+    expect(makeAttestation(CLAIMS[modelId], ownRule, { ...FIXTURE, basis: "Read it beside the page." }, TODAY).basis).toBe("Read it beside the page.");
+  });
+  it("still needs the tick, in its own words", () => {
+    expect(() => makeAttestation(CLAIMS[modelId], pageJudged, { ...FIXTURE, basis: "", checked: false }, TODAY)).toThrow(/against the page myself/);
+  });
+  it("while a claim with sources still needs a full basis", () => {
+    const sourced = { source: "model", model: "claude-opus-5-5", rationale: "Check: Walters & Wilder (2023), abstract." };
+    expect(() => makeAttestation(CLAIMS[modelId], sourced, { ...FIXTURE, basis: "" }, TODAY)).toThrow(/basis in full/);
+  });
+});
+
 describe("a rejection", () => {
   it("needs a name and a reason", () => {
     expect(() => makeRejection({ by: "X", reason: "no" }, TODAY)).toThrow(/why/);

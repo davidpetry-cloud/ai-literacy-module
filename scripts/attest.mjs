@@ -14,7 +14,7 @@ import { CLAIMS, BASE, mergeAttestation } from "../claims.js";
 import { COURSE, lessonLabel } from "../course.js";
 import { SOURCES } from "../sources.js";
 import { claimLessons, statusBadge, modelName } from "../lesson-core.js";
-import { makeAttestation, makeRejection, serialize, allowed, basisHint, checkLine, TTL_CHOICES } from "./attest-core.mjs";
+import { makeAttestation, makeRejection, serialize, allowed, basisHint, checkLine, inCourse, TTL_CHOICES } from "./attest-core.mjs";
 
 export const PORT = 8091;
 const root = fileURLToPath(new URL("..", import.meta.url));
@@ -61,6 +61,8 @@ export async function createDesk({ file = join(root, "attestations.js"), port = 
       fromDesk: Boolean(entries[id]),
       rationale: BASE[id].rationale ?? null,
       check: BASE[id].rationale ? checkLine(BASE[id].rationale) : null,
+      // Judged from the course itself: the form needs no source (David, 2026-10-24).
+      inCourse: inCourse(BASE[id].rationale),
       // A sign-off whose basis doesn't mention what its check points to: shown under "Needs you" for a second look.
       hint: current.source === "practitioner" && !current.rejection ? basisHint(BASE[id].rationale, current.basis) : null,
       model: model?.model ? modelName(model.model) : null,

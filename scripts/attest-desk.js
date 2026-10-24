@@ -110,13 +110,17 @@ function attestForm(c) {
   return `<form class="dc-f" data-kind="attest" novalidate>
     <p class="dc-f-head">Sign off: say what you checked</p>
     ${c.check ? `<div class="dc-what"><p class="dc-what-head">What to check</p><p>${linkify(c.check)}</p></div>` : ""}
-    <p><label for="${p}-basis">Basis</label>
+    ${c.inCourse
+      ? `<p><label for="${p}-basis">What you checked (optional)</label>
+      <span class="hint" id="${p}-basis-hint">No outside source is needed for this one: it's judged from the course itself. Leave this blank, or add a few words about what you looked at.</span>
+      <textarea id="${p}-basis" name="basis" rows="2" aria-describedby="${p}-basis-hint"></textarea></p>`
+      : `<p><label for="${p}-basis">Basis</label>
       <span class="hint" id="${p}-basis-hint">The source, where in it, and what you did. For example: "Checked against WCAG 2.2 (W3C, 2023), 1.4.3 and 1.4.11."</span>
-      <textarea id="${p}-basis" name="basis" rows="4" aria-describedby="${p}-basis-hint" required></textarea></p>
+      <textarea id="${p}-basis" name="basis" rows="4" aria-describedby="${p}-basis-hint" required></textarea></p>`}
     <fieldset><legend>Review it again in</legend>${data.ttl.map((t) => `<label class="dc-radio"><input type="radio" name="ttlDays" value="${t}"${t === 730 ? " checked" : ""}> ${TTL_LABEL[t]}</label>`).join("")}</fieldset>
     <p><label for="${p}-date">Date you checked it</label><input id="${p}-date" name="verified" type="date" value="${data.today}" max="${data.today}" required></p>
     ${signerFields(p)}
-    <p class="dc-check"><label><input type="checkbox" name="checked" required> I opened the sources and checked this myself.</label></p>
+    <p class="dc-check"><label><input type="checkbox" name="checked" required> ${c.inCourse ? "I checked this against the page myself." : "I opened the sources and checked this myself."}</label></p>
     <p class="dc-error" role="alert"></p>
     <div class="dc-actions"><button type="submit" class="btn">Sign off this claim</button><button type="button" class="btn quiet" data-cancel>Cancel</button></div>
   </form>`;
