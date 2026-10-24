@@ -887,5 +887,137 @@ export const ATTESTATIONS = {
       "source": "model",
       "model": "claude-opus-5-5"
     }
+  },
+  "updates-ncsc-cisa": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: National Cyber Security Centre. (2021). Install the latest software and app updates (Top tips for staying secure online; first published 2018). https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/install-the-latest-software-and-app-updates(opens in a new tab) National Cyber Security Centre. (2022). Recovering a hacked account (first published 2018). https://www.ncsc.gov.uk/guidance/recovering-a-hacked-account",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "fake-updates-cisa": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Cybersecurity and Infrastructure Security Agency. (n.d.). Keep your device's operating system and applications up to date [Training]. Retrieved October 13, 2026, from https://www.cisa.gov/resources-tools/training/keep-your-devices-operating-system-and-applications-date(opens in a new tab) Cybersecurity and Infrastructure Security Agency, Federal Bureau of Investigation, Department of Health and Human Services, & Multi-State Information Sharing and Analysis Center. (2025, July 22). #StopRansomware: Interlock (Cybersecurity Advisory AA25-203A). https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "fake-downloads-fbi": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Federal Bureau of Investigation. (2022, December 21). Cyber criminals impersonating brands using search engine advertisement services to defraud users (Public Service Announcement I-122122-PSA). Internet Crime Complaint Center. https://www.ic3.gov/PSA/2022/PSA221221(opens in a new tab) Federal Bureau of Investigation. (2026, September 1). Malicious cyber actors gain access to victim accounts through consent phishing (Public Service Announcement I-090126-PSA). Internet Crime Complaint Center. https://www.ic3.gov/PSA/2026/PSA260901(opens in a new tab)",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "fake-ai-extensions-example": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Serious Malicious Hack Siman Tov Bustan, M. (2025, December 30). 900K users compromised: Chrome extensions steal ChatGPT and DeepSeek conversations. OX Security. https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "consent-phishing-fbi": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "checked: FBI IC3 PSA I-090126-PSA, 'Malicious Cyber Actors Gain Access to Victim Accounts Through Consent Phishing",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "recover-hacked-account": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: National Cyber Security Centre. (2021). Install the latest software and app updates (Top tips for staying secure online; first published 2018). https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/install-the-latest-software-and-app-updates(opens in a new tab) National Cyber Security Centre. (2022). Recovering a hacked account (first published 2018). https://www.ncsc.gov.uk/guidance/recovering-a-hacked-account",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "identitytheft-gov": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Federal Trade Commission. (2023). How to recover your hacked email or social media account. Consumer Advice. https://consumer.ftc.gov/articles/how-recover-your-hacked-email-or-social-media-account(opens in a new tab) Federal Trade Commission. (2024). Email or social media hacked? Here's what to do. Consumer Advice. https://consumer.ftc.gov/consumer-alerts/2024/10/email-or-social-media-hacked-heres-what-do(opens in a new tab) Federal Trade Commission. (n.d.). IdentityTheft.gov. Retrieved October 13, 2026, from https://www.identitytheft.gov/",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e2-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: The requests appear fabricated. Consider checking the laptop’s security update and enabling automatic updates (yes: NCSC, CISA). Evaluate the “Featured” grading extension that might read every site (verify first: badges and users offer little proof, OX Security; consult IT due to student data). Dismiss the browser-update pop-up (no: CISA training page, AA25-203A). Reject the quiz maker that asks to send email and read all files (no: exceeds what a quiz requires; FBI I-090126-PSA on consent and removing access). These are judgments rather than facts; confirm they are reasonable.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e2-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: An app requesting email access and contact visibility should be reviewed with IT first: a calendar might be suitable, but sending email is not (FBI I-090126-PSA). The “urgent” browser-update pop-up should be declined (CISA, AA25-203A). The AI sidebar in a search ad bearing a “Featured” badge needs prior review (FBI I-122122-PSA on search ads; OX Security’s actual case). The approved video-call app asking for the microphone immediately after clicking Join is acceptable (yes: approved app, requests only what the call requires, when needed). Revised 2026-10-13: this item previously asked for the microphone to record the meeting and was marked yes, but recording others requires their agreement and company policy, so a plain yes taught the wrong lesson. These are judgments, not facts.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e2-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: (docs/student-safety.md). Review these items: the homework app from an ad requesting contacts, photos, and location (check first with a trusted adult; use only school-approved tools); the free-coins site asking to send messages as you (no: consent phishing, FBI I-090126-PSA); the phone’s security update and the school reading app’s update from the official store (yes); the browser-update pop-up (no: CISA). Each “no” and “check first” requires a trusted adult. Revised 2026-10-15: the homework app remains check first, and its note now explains why a student checks rather than refuses: it requests more than homework needs, so the answer is usually no, and a trusted adult can confirm whether the school allows it (UX audit 2026-10, finding 14). These are judgments, not facts.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "e2-key-recover": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: National Cyber Security Centre. (2021). Install the latest software and app updates (Top tips for staying secure online; first published 2018). https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/install-the-latest-software-and-app-updates(opens in a new tab) National Cyber Security Centre. (2022). Recovering a hacked account (first published 2018). https://www.ncsc.gov.uk/guidance/recovering-a-hacked-account Federal Trade Commission. (2023). How to recover your hacked email or social media account. Consumer Advice. https://consumer.ftc.gov/articles/how-recover-your-hacked-email-or-social-media-account(opens in a new tab) Federal Trade Commission. (2024). Email or social media hacked? Here's what to do. Consumer Advice. https://consumer.ftc.gov/consumer-alerts/2024/10/email-or-social-media-hacked-heres-what-do(opens in a new tab) Federal Trade Commission. (n.d.). IdentityTheft.gov. Retrieved October 13, 2026, from https://www.identitytheft.gov/",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
   }
 };
