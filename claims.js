@@ -236,7 +236,7 @@ export const CLAIMS = {
   "error-kinds": {
     text: "This course sorts AI output errors into four kinds: fabrication (an invented detail), outdated information (once true, no longer), bias (an assumption that favours or leaves out a group), and a misread instruction (ignoring or skipping something the request said). The four are a teaching frame, not a full list.",
     attestation: proposedBy(
-      "Check: the sorting is the course's own teaching frame, a definition. That each kind happens rests on Jurafsky & Martin (2026), 3rd ed. draft of 19 August 2026, ch. 1 (Sources page): §1.10 'Safety and Alignment' (pp. 28–29) on stereotypes and on models that 'hallucinate', 'inventing people or facts that simply don't exist'; §1.6.2 'Instruction Tuning' (pp. 15–16) on 'failures to follow instructions'; outdated information follows from model-predicts (attested). Objective 5.1 rests on it. Rewritten 2026-10-23: 'Most AI output errors fall into…' claimed a share no listed source measures; it now says the course sorts them this way.",
+      "Check: nothing outside the course. The sorting is the course's own teaching frame, a definition. If you want to see that each kind happens: Jurafsky & Martin (2026), 3rd ed. draft of 19 August 2026, ch. 1 (Sources page): §1.10 'Safety and Alignment' (pp. 28–29) on stereotypes and on models that 'hallucinate', 'inventing people or facts that simply don't exist'; §1.6.2 'Instruction Tuning' (pp. 15–16) on 'failures to follow instructions'; outdated information follows from model-predicts (attested). Objective 5.1 rests on it. Rewritten 2026-10-23: 'Most AI output errors fall into…' claimed a share no listed source measures; it now says the course sorts them this way.",
       "claude-opus-5-5"
     )
   },
