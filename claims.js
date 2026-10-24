@@ -212,7 +212,7 @@ export const CLAIMS = {
   "form-not-substance": {
     text: "Software can check that a sign-off has a name and a date and hasn't lapsed. Only a person can judge whether its basis is real and whether the signer could have made the check.",
     attestation: proposedBy(
-      "Check: the site's own copy of the ledger, vendor/attestation-ledger@0.1.1/src/index.js, function resolveStatus(): it reads source, by, verified and ttlDays, never basis or role, so a tool's name typed into 'by' resolves as attested. Lesson 4's reveal shows this with the real engine: the 'not a person' and 'no basis' sign-offs both show Attested. The second sentence is the course's judgement that follows from that."
+      "Check: nothing outside the course. It is shown by the course's own engine: the site's copy of the ledger, vendor/attestation-ledger@0.1.1/src/index.js, function resolveStatus(): it reads source, by, verified and ttlDays, never basis or role, so a tool's name typed into 'by' resolves as attested. Lesson 4's reveal shows this with the real engine: the 'not a person' and 'no basis' sign-offs both show Attested. The second sentence is the course's judgement that follows from that."
     )
   },
   "l4-key-educators": {
