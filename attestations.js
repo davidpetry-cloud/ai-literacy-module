@@ -382,12 +382,49 @@ export const ATTESTATIONS = {
       "model": "claude-opus-5-5"
     }
   },
+  "context-principle": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Nielsen, J. (1994). 10 usability heuristics for user interface design. Nielsen Norman Group. https://www.nngroup.com/articles/ten-usability-heuristics/",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "user-control-principle": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Nielsen, J. (1994). 10 usability heuristics for user interface design. Nielsen Norman Group. https://www.nngroup.com/articles/ten-usability-heuristics/",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
   "ai-ui-polish": {
     "source": "practitioner",
     "by": "David Petry",
     "role": "Course author and UX lead",
-    "basis": "Checked against Federal Trade Commission. (2025). Children's Online Privacy Protection Rule, 16 C.F.R. pt. 312 (as amended). https://www.ecfr.gov/current/title-16/chapter-I/subchapter-C/part-312",
-    "verified": "2026-10-22",
+    "basis": "Checked against the course itself, as the claim's check says: no outside source is needed.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "practitioner",
+      "by": "David Petry",
+      "verified": "2026-10-24"
+    }
+  },
+  "l6-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Nielsen, J. (1993). Usability engineering. Academic Press. Nielsen, J. (1994). 10 usability heuristics for user interface design. Nielsen Norman Group. https://www.nngroup.com/articles/ten-usability-heuristics/(opens in a new tab) Nielsen, J. (2012). Usability 101: Introduction to usability. Nielsen Norman Group. https://www.nngroup.com/articles/usability-101-introduction-to-usability/",
+    "verified": "2026-10-24",
     "ttlDays": 730,
     "supersedes": {
       "source": "model",
@@ -398,12 +435,13 @@ export const ATTESTATIONS = {
     "source": "practitioner",
     "by": "David Petry",
     "role": "Course author and UX lead",
-    "basis": "Checked with and against UNESCO. (2023).",
-    "verified": "2026-10-22",
+    "basis": "Nielsen, J. (1993). Usability engineering. Academic Press. Nielsen, J. (1994). 10 usability heuristics for user interface design. Nielsen Norman Group. https://www.nngroup.com/articles/ten-usability-heuristics/(opens in a new tab) Nielsen, J. (2012). Usability 101: Introduction to usability. Nielsen Norman Group. https://www.nngroup.com/articles/usability-101-introduction-to-usability/",
+    "verified": "2026-10-24",
     "ttlDays": 730,
     "supersedes": {
-      "source": "model",
-      "model": "claude-opus-5-5"
+      "source": "practitioner",
+      "by": "David Petry",
+      "verified": "2026-10-22"
     }
   },
   "l6-key-students": {
@@ -430,12 +468,96 @@ export const ATTESTATIONS = {
       "model": "claude-opus-5-5"
     }
   },
+  "contrast-thresholds": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "Check: WCAG 2.2 (Sources page, linked): 1.4.3 Contrast (Minimum), AA, https://www.w3.org/TR/WCAG22/#contrast-minimum(opens in a new tab) ; 1.4.6 Contrast, AAA, https://www.w3.org/TR/WCAG22/#contrast-enhanced (opens in a new tab) ; 1.4.11 Non-text Contrast, AA, https://www.w3.org/TR/WCAG22/#non-text-contrast(opens in a new tab) ; 'large scale text' in the glossary, https://www.w3.org/TR/WCAG22/#dfn-large-scale(opens in a new tab) .",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "mindful-ux": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Brignull, H. (2010). Deceptive patterns [Website, first published as Dark Patterns]. https://deceptive.design/ Federal Trade Commission. (2022). Bringing dark patterns to light [Staff report]. https://www.ftc.gov/reports/bringing-dark-patterns-light THIS LINK IS A 404: \"European Commission. (2025). Guidelines on measures to ensure a high level of privacy, safety and security for minors online, pursuant to Article 28(4) of Regulation (EU) 2022/2065. https://digital-strategy.ec.europa.eu/en/library/commission-publishes-guidelines-protection-minors\"",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "wellbeing-habits": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED, this link requires a fee: Wood, W., & Rünger, D. (2016). Psychology of habit. Annual Review of Psychology, 67, 289–314. https://doi.org/10.1146/annurev-psych-122414-033417",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l7-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "Check: the screen is made up, so use it beside the key, with WCAG 2.2 (Sources page, linked) at these places: 1.4.3 Contrast (Minimum), AA, https://www.w3.org/TR/WCAG22/#contrast-minimum(opens in a new tab) ; 4.1.2 Name, Role, Value, A, https://www.w3.org/TR/WCAG22/#name-role-value(opens in a new tab) ; 2.2.1 Timing Adjustable, A, https://www.w3.org/TR/WCAG22/#timing-adjustable(opens in a new tab) . The instructions' contrast was measured at 2.44:1 (rounded down, as the checker does). Until 2026-10-14 part 4's buttons showed text symbols (＋ ✎ 🗑), which are their names, so a screen reader read them out and the 4.1.2 key was untrue; they are now drawn icons, hidden from screen readers, with no text, label or title, so the buttons have no name (UX audit 2026-10, finding 3).",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l7-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: (Sources page, linked) at these places: 1.4.1 Use of Color, A, https://www.w3.org/TR/WCAG22/#use-of-color(opens in a new tab) ; 2.5.8 Target Size (Minimum), AA, 24 by 24 CSS pixels unless spacing exceptions apply, https://www.w3.org/TR/WCAG22/#target-size-minimum(opens in a new tab) ; 3.3.3 Error Suggestion, AA, https://www.w3.org/TR/WCAG22/#error-suggestion(opens in a new tab) . The red border was measured at 1.94:1 against white.",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l7-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: 2.2.2 Pause, Stop, Hide, A (the carousel runs longer than 5 seconds with no pause), https://www.w3.org/TR/WCAG22/#pause-stop-hide(opens in a new tab) ; 1.4.10 Reflow, AA (filed under Perceivable, taught in the mobile and device group), https://www.w3.org/TR/WCAG22/#reflow(opens in a new tab) ; 3.3.2 Labels or Instructions, A, https://www.w3.org/TR/WCAG22/#labels-or-instructions(opens in a new tab) . The placeholder was measured at 2.16:1 (rounded down, as the checker does).",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
   "human-dignity-unesco": {
     "source": "practitioner",
     "by": "David Petry",
     "role": "Course author and UX lead",
     "basis": "Checked against UNESCO. (2021). Recommendation on the ethics of artificial intelligence. https://www.unesco.org/en/artificial-intelligence/recommendation-ethics",
     "verified": "2026-10-22",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "children-digital-rights": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "OVERALL CHECKED: UNESCO. (2021). Recommendation on the ethics of artificial intelligence. https://www.unesco.org/en/artificial-intelligence/recommendation-ethics(opens in a new tab) UNICEF. (2021). Policy guidance on AI for children (Version 2.0). UNICEF Office of Global Insight and Policy. https://www.unicef.org/innocenti/reports/policy-guidance-ai-children",
+    "verified": "2026-10-24",
     "ttlDays": 730,
     "supersedes": {
       "source": "model",
@@ -454,6 +576,18 @@ export const ATTESTATIONS = {
       "model": "claude-opus-5-5"
     }
   },
+  "hcai-framework": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Shneiderman, B. (2020). Human-centered artificial intelligence: Reliable, safe & trustworthy. International Journal of Human–Computer Interaction, 36(6), 495–504. https://doi.org/10.1080/10447318.2020.1741118",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
   "relationships-health": {
     "source": "practitioner",
     "by": "David Petry",
@@ -466,12 +600,60 @@ export const ATTESTATIONS = {
       "model": "claude-opus-5-5"
     }
   },
+  "wisdom-model": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Grossmann, I., Weststrate, N. M., Ardelt, M., Brienza, J. P., Dong, M., Ferrari, M., Fournier, M. A., Hu, C. S., Nusbaum, H. C., & Vervaeke, J. (2020). The science of wisdom in a polarized world: Knowns and unknowns. Psychological Inquiry, 31(2), 103–133. https://doi.org/10.1080/1047840X.2020.1750917",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
   "ai-index-adoption": {
     "source": "practitioner",
     "by": "David Petry",
     "role": "Course author and UX lead",
     "basis": "Checked against: Stanford HAI's AI Index 2026",
     "verified": "2026-10-22",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l8-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "GREAT ARTICLE-CHECKED: UNICEF. (2021). Policy guidance on AI for children (Version 2.0). UNICEF Office of Global Insight and Policy. https://www.unicef.org/innocenti/reports/policy-guidance-ai-children(opens in a new tab)",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l8-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: also reference 2024 EU AI ACT UNESCO. (2021). Recommendation on the ethics of artificial intelligence. https://www.unesco.org/en/artificial-intelligence/recommendation-ethics",
+    "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l8-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: UNICEF. (2021). Policy guidance on AI for children (Version 2.0). UNICEF Office of Global Insight and Policy. https://www.unicef.org/innocenti/reports/policy-guidance-ai-children",
+    "verified": "2026-10-24",
     "ttlDays": 730,
     "supersedes": {
       "source": "model",
