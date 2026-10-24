@@ -9,6 +9,12 @@
       ],
       "port": 8080,
       "autoPort": true
+    },
+    {
+      "name": "desk-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/desk-preview.mjs"],
+      "port": 8092
     }
   ]
 }
