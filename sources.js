@@ -78,7 +78,7 @@ export const SOURCES = [
   { lessons: [8], apa: "Shneiderman, B. (2022). *Human-centered AI*. Oxford University Press." },
   { lessons: [10], apa: "Snook, B., Eastwood, J., Gendreau, P., Goggin, C., & Cullen, R. M. (2007). Taking stock of criminal profiling: A narrative review and meta-analysis. *Criminal Justice and Behavior, 34*(4), 437–453.", url: "https://doi.org/10.1177/0093854806296925" },
   { lessons: [8], apa: "Stanford Institute for Human-Centered Artificial Intelligence. (2026). *The 2026 AI Index report*. Stanford University.", url: "https://hai.stanford.edu/ai-index/2026-ai-index-report" },
-  { lessons: [10], apa: "Stark, E. (2007). *Coercive control: How men entrap women in personal life*. Oxford University Press." },
+  { lessons: [10], apa: "Stark, E. (2023). *Coercive control: How men entrap women in personal life* (2nd ed.). Oxford University Press. (First edition 2007.)", url: "https://doi.org/10.1093/oso/9780197639986.001.0001" },
   { lessons: [12], apa: "Sweet, P. L. (2019). The sociology of gaslighting. *American Sociological Review, 84*(5), 851–875.", url: "https://doi.org/10.1177/0003122419874843" },
   { lessons: [8], apa: "UNESCO. (2021). *Recommendation on the ethics of artificial intelligence*.", url: "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics" },
   { lessons: [8], apa: "UNICEF. (2021). *Policy guidance on AI for children* (Version 2.0). UNICEF Office of Global Insight and Policy.", url: "https://www.unicef.org/innocenti/reports/policy-guidance-ai-children" },

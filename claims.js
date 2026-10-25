@@ -508,7 +508,7 @@ export const CLAIMS = {
   "coercive-control-pattern": {
     text: "Controlling abuse is best understood as a pattern of behavior over time, such as isolating someone, monitoring them, controlling their money or independence, threats and humiliation, rather than as single incidents. The law in England defines the offence by behavior that is repeated or continuous.",
     attestation: proposedBy(
-      "Stark (2007), Coercive Control: How Men Entrap Women in Personal Life, Oxford University Press. Home Office (April 2023), Controlling or Coercive Behaviour Statutory Guidance Framework, under the Serious Crime Act 2015, section 76 ('repeatedly or continuously'); it lists isolating, exploiting, depriving of independence, threats, humiliation and intimidation, and counts online messages and tracking as evidence."
+      "Check, both on the Sources page and linked: (1) Stark, Coercive Control: How Men Entrap Women in Personal Life, 2nd ed. (Oxford University Press, 2023; first edition 2007), https://doi.org/10.1093/oso/9780197639986.001.0001 (book page and chapter summaries): coercive control as an ongoing pattern of domination, not single incidents. (2) Home Office, statutory guidance, below. The book was cited as 'Stark (2007)' with the 2023 subtitle and no link until 2026-10-25, when David couldn't find it; both editions are confirmed in Crossref. Home Office (April 2023), Controlling or Coercive Behaviour Statutory Guidance Framework, under the Serious Crime Act 2015, section 76 ('repeatedly or continuously'); it lists isolating, exploiting, depriving of independence, threats, humiliation and intimidation, and counts online messages and tracking as evidence."
     )
   },
   "grooming-stages": {
