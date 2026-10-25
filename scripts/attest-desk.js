@@ -159,10 +159,31 @@ function openForm(article, kind, button) {
 }
 
 async function post(path, payload) {
-  const res = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", "X-Desk-Token": token }, body: JSON.stringify(payload) });
-  const out = await res.json();
-  if (!res.ok) throw new Error(out.error ?? "Something went wrong. Nothing was saved.");
+  let res;
+  try {
+    res = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", "X-Desk-Token": token }, body: JSON.stringify(payload) });
+  } catch {
+    // The desk was stopped (Control-C) while this page stayed open.
+    throw new Error("The desk isn't running, so nothing was saved. Start it again in Terminal (npm run attest), then reload this page.");
+  }
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    if (out.reload) staleBanner();
+    throw new Error(out.error ?? "Something went wrong. Nothing was saved.");
+  }
   return out.claim;
+}
+
+// A page left open from an earlier run of the desk: say so at the top, once, with a way to reload.
+function staleBanner() {
+  if ($("#stale")) return;
+  const p = document.createElement("p");
+  p.id = "stale";
+  p.className = "desk-stale";
+  p.setAttribute("role", "alert");
+  p.innerHTML = `This page is from an earlier run of the desk, so it can't save. <button type="button" class="btn" id="stale-reload">Reload the page</button>`;
+  document.body.prepend(p);
+  $("#stale-reload").addEventListener("click", () => location.reload());
 }
 
 // After a decision, focus goes to the next claim that still needs you, so you can keep going.

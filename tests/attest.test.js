@@ -218,6 +218,14 @@ describe("the desk server, on a scratch copy", () => {
     expect(r.claims).toHaveLength(ORDER.length);
     expect(r.lessons.flatMap((l) => l.ids).sort()).toEqual([...ORDER].sort());
   });
+  // David, 2026-10-25: a page left open across a restart kept failing with no hint what to do.
+  it("tells a page from an earlier run to reload, and saves nothing", async () => {
+    const r = await post("/api/attest", { id: modelId, ...FIXTURE }, { Origin: `http://127.0.0.1:${port}`, "X-Desk-Token": "an-older-run" });
+    expect(r.status).toBe(403);
+    expect(JSON.parse(r.body)).toMatchObject({ reload: true });
+    expect(JSON.parse(r.body).error).toMatch(/Reload the page/);
+    expect(await onDisk()).toEqual({});
+  });
   it("refuses another host name, another website, and a missing token", async () => {
     expect((await call("GET", "/", { headers: { Host: `evil.example:${port}` } })).status).toBe(403);
     expect((await post("/api/attest", { id: modelId, ...FIXTURE }, { Origin: "https://evil.example", "X-Desk-Token": secret })).status).toBe(403);

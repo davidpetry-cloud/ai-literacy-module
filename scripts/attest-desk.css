@@ -59,3 +59,6 @@
 .dc-what{border:1.5px solid var(--edge);border-radius:var(--r-md);padding:12px 16px;margin:0 0 16px}
 .dc-what-head{font-weight:700;color:var(--ink-2);margin:0 0 4px}
 .dc-what p:last-child{margin:0;max-width:var(--measure);overflow-wrap:anywhere}
+/* A page left open from an earlier run of the desk (2026-10-25): it can't save, so say so plainly at the top. */
+.desk-stale{margin:0;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 16px;background:var(--amber-pale);color:var(--text);border-bottom:2px solid var(--amber);font-weight:600}
+.desk-stale .btn{margin:0}

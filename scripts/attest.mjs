@@ -149,7 +149,9 @@ export async function createDesk({ file = join(root, "attestations.js"), port = 
       }
       if (req.method !== "POST") return send(res, 405, "text/plain", "Method not allowed");
       if (!allowed({ host: req.headers.host, origin: req.headers.origin, token: req.headers["x-desk-token"] }, { port, secret })) {
-        return json(res, 403, { error: "This change didn't come from the desk's own page, so it was refused." });
+        // The usual cause is a page left open from an earlier run: each run has a new token (David, 2026-10-25).
+        log(`Not saved    ${req.headers.origin ? "" : "(no origin) "}an old or outside page tried to save; the page needs reloading`);
+        return json(res, 403, { error: "This page is from an earlier run of the desk, so nothing was saved. Reload the page (Command-R) and sign again.", reload: true });
       }
       const form = await body(req);
       const id = String(form.id ?? "");
