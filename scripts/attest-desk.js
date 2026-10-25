@@ -57,10 +57,10 @@ function card(c) {
   const why = c.rationale
     ? `<details class="dc-why"${needsYou(c) ? " open" : ""}><summary>Why ${esc(c.model ?? "the model")} proposed it, with its sources</summary><p>${linkify(c.rationale)}</p></details>`
     : "";
-  const lapsed = c.status === "expired" ? `<p class="dc-note">This sign-off has passed its review date. Check the sources again, then sign it off again.</p>` : "";
+  const lapsed = c.status === "expired" ? `<p class="dc-note">This sign-off has passed its review date. Check the sources again, then sign it off again.</p>` : c.status === "rejected" ? `<p class="dc-note">You rejected this. If its sources check out after all, press Sign off instead. To leave it unchecked for now, press Undo my last decision.</p>` : "";
   const review = c.hint ? `<p class="dc-note dc-review"><b>Worth a second look.</b> ${esc(c.hint)} If it's right as it is, leave it. Otherwise press Sign off again and name what you checked.</p>` : "";
   const actions = `<div class="dc-actions">
-      ${c.status === "rejected" ? "" : `<button type="button" class="btn" data-open="attest" aria-expanded="false">${c.status === "attested" ? "Sign off again" : "Sign off"}<span class="sr">: ${esc(c.id)}</span></button>`}
+      <button type="button" class="btn" data-open="attest" aria-expanded="false">${c.status === "attested" ? "Sign off again" : c.status === "rejected" ? "Sign off instead" : "Sign off"}<span class="sr">: ${esc(c.id)}</span></button>
       ${c.status === "rejected" ? "" : `<button type="button" class="btn quiet" data-open="reject" aria-expanded="false">Reject<span class="sr">: ${esc(c.id)}</span></button>`}
       ${c.fromDesk ? `<button type="button" class="btn quiet" data-undo>Undo my last decision<span class="sr"> on ${esc(c.id)}</span></button>` : ""}
     </div>`;
