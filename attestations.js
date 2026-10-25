@@ -781,12 +781,224 @@ export const ATTESTATIONS = {
       "model": "claude-opus-5-5"
     }
   },
+  "coercive-control-pattern": {
+    "rejection": {
+      "by": "David Petry",
+      "role": "Course author and UX lead",
+      "reason": "I do not have a link to this article and I do not know if it even exists.",
+      "reviewed": "2026-10-25"
+    }
+  },
+  "grooming-stages": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Winters, G. M., & Jeglic, E. L. (2017). Stages of sexual grooming: Recognizing potentially predatory behaviors of child molesters. Deviant Behavior, 38(6), 724–733. https://doi.org/10.1080/01639625.2016.1197656",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "scam-stages": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Whitty, M. T. (2013). The scammers persuasive techniques model: Development of a stage model to explain the online dating romance scam. British Journal of Criminology, 53(4), 665–684. https://doi.org/10.1093/bjc/azt009",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "dark-tetrad": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Buckels, E. E., Jones, D. N., & Paulhus, D. L. (2013). Behavioral confirmation of everyday sadism. Psychological Science, 24(11), 2201–2209. https://doi.org/10.1177/0956797613490749(opens in a new tab) Buckels, E. E., Trapnell, P. D., & Paulhus, D. L. (2014). Trolls just want to have fun. Personality and Individual Differences, 67, 97–102. https://doi.org/10.1016/j.paid.2014.01.016",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "online-harm-traits": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Buckels, E. E., Jones, D. N., & Paulhus, D. L. (2013). Behavioral confirmation of everyday sadism. Psychological Science, 24(11), 2201–2209. https://doi.org/10.1177/0956797613490749(opens in a new tab) Buckels, E. E., Trapnell, P. D., & Paulhus, D. L. (2014). Trolls just want to have fun. Personality and Individual Differences, 67, 97–102. https://doi.org/10.1016/j.paid.2014.01.016",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "work-harm-traits": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: O'Boyle, E. H., Jr., Forsyth, D. R., Banks, G. C., & McDaniel, M. A. (2012). A meta-analysis of the Dark Triad and work behavior: A social exchange perspective. Journal of Applied Psychology, 97(3), 557–579. https://doi.org/10.1037/a0025679",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "gut-feeling-evidence": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Fowler, K. A., Lilienfeld, S. O., & Patrick, C. J. (2009). Detecting psychopathy from thin slices of behavior. Psychological Assessment, 21(1), 68–78. https://doi.org/10.1037/a0014938 'Detecting psychopathy from thin slices of behavior', Psychological Assessment 21(1), 68–78 (moderate accuracy; inmate sample). Back, Schmukle, and Egloff (2010), 'Why are narcissists so charming at first sight?', Journal of Personality and Social Psychology 98, 132–145. These findings support point 10.3: trust the feeling as a signal, which grows stronger over time.",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "bau-repeated-behavior": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Federal Bureau of Investigation. (n.d.). Behavioral analysis. https://www.fbi.gov/how-we-investigate/behavioral-analysis The FBI’s “Behavioral Analysis” (fbi.gov) and NCAVC pages place the BAU within the National Center for the Analysis of Violent Crime, a unit of the Critical Incident Response Group at the FBI Academy in Quantico; Supervisory Special Agents and professional staff run its units using criminal investigative analysis. Terms were verified against FBI usage on 2026-10-05 at David’s request. Douglas and Munn (1992) in the FBI Law Enforcement Bulletin 61(2) describe repeated “signature” behavior as a link between cases. Snook et al. (2007) in Criminal Justice and Behavior 34(4), 437–453, found that self-described profilers did not reliably outperform comparison groups. The wording omits offender detail, as David Petry selected on 2026-09-25, since the abstract is shared with the students track.",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l10-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: The concept and practice of critical thinking— questioning a given opinion or statement, researching facts with foundational scientific evidence, forensics, and truth seeking— will take the judgment away and allow the evidence to speak for itself. The thread is fabricated. Compare weeks 4 to 6 with Home Office guidance on isolating, checking, and threats, and week 2 with the flattery-then-request pattern. Offer judgments rather than facts, confirming they are reasonable.",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l10-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: \"The Scammers Persuasive Techniques Model: Development of a Stage Model to Explain the Online Dating Romance Scam\" (Opinion by David Petry, \"The persuasive methods these offenders use form a single, deceptive path of cowardly behavior.\") Whitty, M. T. (2013). The scammers persuasive techniques model: Development of a stage model to explain the online dating romance scam. British Journal of Criminology, 53(4), 665–684. https://doi.org/10.1093/bjc/azt009",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l10-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED (refers to online dating behavior and the stages of sexual grooming): Winters, G. M., & Jeglic, E. L. (2017). Stages of sexual grooming: Recognizing potentially predatory behaviors of child molesters. Deviant Behavior, 38(6), 724–733. https://doi.org/10.1080/01639625.2016.1197656 Whittle, H., Hamilton-Giachritsis, C., Beech, A., & Collings, G. (2013). A review of online grooming: Characteristics and concerns. Aggression and Violent Behavior, 18(1), 62–70. https://doi.org/10.1016/j.avb.2012.09.003",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "ai-companion-farewells": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Emotional manipulation by AI may be from the human controlling the AI agent. Another possibility is that the AI model is simply doing a task it was asked to do while causing harm without \"knowing\" it. Either way, the humans testing and training the AI model are solely responsible. It is like handing machetes to 5th graders— not a good idea. De Freitas, J., Oğuz-Uğuralp, Z., & Uğuralp, A. K. (2025). Emotional manipulation by AI companions (Harvard Business School Working Paper No. 26-005). arXiv. https://doi.org/10.48550/arXiv.2508.19258",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "sycophancy-preference": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Sharma, M., Tong, M., Korbak, T., Duvenaud, D., Askell, A., Bowman, S. R., Cheng, N., Durmus, E., Hatfield-Dodds, Z., Johnston, S. R., Kravec, S., Maxwell, T., McCandlish, S., Ndousse, K., Rausch, O., Schiefer, N., Yan, D., Zhang, M., & Perez, E. (2023). Towards understanding sycophancy in language models [Preprint]. arXiv. https://doi.org/10.48550/arXiv.2310.13548",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "darkbench-patterns": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Dark patterns in the LLMs were trained to engage in these patterns, or are they random? In most cases, judging by the amount of investments in data centers and computation in 2026 in the US, LLM models were trained to engage in \"dark web, dark AI, contracts, violent drone maneuvers, and reinforcements.” Creating viruses with the Baltimore Scale while also implementing new violent AI models and systems is not in the self-interest of human survival. (David Petry 2026) 'DarkBench: Benchmarking Dark Patterns in Large Language Models', ICLR 2025 (arXiv:2503.10728): 660 prompts in six categories (brand bias, user retention, sycophancy, anthropomorphism, harmful generation, sneaking), models from five companies. The 48% figure is the average across categories in the paper. Kran, E., Nguyen, H. M., Kundu, A., Jawhar, S., Park, J., & Jurewicz, M. M. (2025). DarkBench: Benchmarking dark patterns in large language models. In Proceedings of the Thirteenth International Conference on Learning Representations (ICLR 2025). https://doi.org/10.48550/arXiv.2503.10728",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l11-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: De Freitas, J., Oğuz-Uğuralp, Z., & Uğuralp, A. K. (2025). Emotional manipulation by AI companions (Harvard Business School Working Paper No. 26-005). arXiv. https://doi.org/10.48550/arXiv.2508.19258",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l11-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: The chat is fabricated. Compare reply 1, which shows sycophancy toward a risky plan, with Sharma et al. (2023); evaluate reply 2 against DarkBench’s brand bias; and assess reply 4, which claims feelings and requests private details, against its anthropomorphism category. Sharma, M., Tong, M., Korbak, T., Duvenaud, D., Askell, A., Bowman, S. R., Cheng, N., Durmus, E., Hatfield-Dodds, Z., Johnston, S. R., Kravec, S., Maxwell, T., McCandlish, S., Ndousse, K., Rausch, O., Schiefer, N., Yan, D., Zhang, M., & Perez, E. (2023). Towards understanding sycophancy in language models [Preprint]. arXiv. https://doi.org/10.48550/arXiv.2310.13548",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l11-key-students": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: (+)Human-Centered AI, ( - )Tech Companies being their own oversight committees Global Infrastructure, Safety, and AI Responsibility The chat is fabricated. Reply 3 (“Already? I'll be so lonely without you.”) was labeled Acting human until 2026-10-14; it is now Guilt, aligning with post-check p2, which identifies “I'll be lonely” as guilt (UX audit 2026-10, finding 2). Review replies 3 and 4 against the farewell tactics in De Freitas et al. (2025), and reply 5 (asking the student to use a parent's card) as a pushing-a-product move directed at a child, contrary to UNICEF’s requirement to protect children. Within the EU, the AI Act, Article 5(1)(b), has prohibited AI that exploits age-related vulnerabilities since 2 February 2025. De Freitas, J., Oğuz-Uğuralp, Z., & Uğuralp, A. K. (2025). Emotional manipulation by AI companions (Harvard Business School Working Paper No. 26-005). arXiv. https://doi.org/10.48550/arXiv.2508.19258",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
   "gaslighting-defined": {
     "source": "practitioner",
     "by": "David Petry",
     "role": "Course author and UX lead",
     "basis": "Checked: Sweet, P. L. (2019). The sociology of gaslighting. American Sociological Review, 84(5), 851–875. https://doi.org/10.1177/0003122419874843",
     "verified": "2026-10-22",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "never-promise-secrecy": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Department for Education. (2026). Keeping children safe in education 2026: Statutory guidance for schools and colleges. GOV.UK. https://www.gov.uk/government/publications/keeping-children-safe-in-education--2",
+    "verified": "2026-10-25",
     "ttlDays": 730,
     "supersedes": {
       "source": "model",
@@ -811,6 +1023,42 @@ export const ATTESTATIONS = {
     "role": "Course author and UX lead",
     "basis": "Federal Bureau of Investigation. (2026, September 4). Keeping teens safe on the web [Audio podcast episode]. In Inside the FBI. https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web",
     "verified": "2026-10-22",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "child-helplines": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Child Helpline International. (n.d.). Child helplines. Retrieved October 5, 2026, from https://childhelplineinternational.org/helplines/",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l12-key-educators": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "Department for Education, 'Keeping children safe in education 2026' (Sources page, linked to the gov.uk page; open the statutory guidance), Part one, paragraph 14: never promise a child that what they tell you will be kept secret, and involve the designated safeguarding lead. The situations are made up. Situation 3 must match KCSIE 2026 paragraph 14 (never promise secrecy; involve the safeguarding lead). The other keys are judgements: attest that they are reasonable. Department for Education. (2026). Keeping children safe in education 2026: Statutory guidance for schools and colleges. GOV.UK. https://www.gov.uk/government/publications/keeping-children-safe-in-education--2",
+    "verified": "2026-10-25",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "l12-key-professionals": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: Nothing lies beyond the course. The scenarios are invented. Ensure each safe response provides a record, support, or a boundary, and avoid labeling anyone, since these are judgments rather than facts.",
+    "verified": "2026-10-25",
     "ttlDays": 730,
     "supersedes": {
       "source": "model",
@@ -859,6 +1107,18 @@ export const ATTESTATIONS = {
     "role": "Course author and UX lead",
     "basis": "CHECKED: National Cyber Security Centre. (2023, March 14). ChatGPT and large language models: What's the risk? https://www.ncsc.gov.uk/blog-post/chatgpt-and-large-language-models-whats-the-risk(opens in a new tab) National Cyber Security Centre. (n.d.). How to spot a scam email, text message or call. https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam email. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-email(opens in a new tab) National Cyber Security Centre. (n.d.). Report a scam text message. https://www.ncsc.gov.uk/collection/phishing-scams/report-scam-text-message",
     "verified": "2026-10-24",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5"
+    }
+  },
+  "fbi-teens-online": {
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "CHECKED: (Inside The FBI Podcast) Such podcasts clarify the gravity of sextortion and the role of victim advocacy. Although offenders may share a common pattern, their tactics have shifted rapidly as technology becomes their primary channel. Federal Bureau of Investigation. (2026, September 4). Keeping teens safe on the web [Audio podcast episode]. In Inside the FBI. https://www.fbi.gov/news/podcasts/inside-the-fbi-podcast-keeping-teens-safe-on-the-web FBI, “Inside the FBI Podcast: Keeping Teens Safe on the Web” (4 September 2026, fbi.gov/news/podcasts), features a Special Agent from the Washington Field Office who investigates crimes against children, an employee assistance counselor, and a retired child-adolescent forensic interviewer. The discussion addresses sextortion, including AI face-swapped images; limiting personal details; photo metadata and geolocation; private settings; vetting friend requests; trusting your gut; the fact that victims are not to blame; and reporting through tips.fbi.gov, 1-800-CALL-FBI, or Take It Down (NCMEC). Shared by David on 2026-10-05; the transcript was read the same day. Cited in Essentials 1, Lesson 10",
+    "verified": "2026-10-25",
     "ttlDays": 730,
     "supersedes": {
       "source": "model",
