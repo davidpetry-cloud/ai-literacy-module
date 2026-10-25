@@ -95,7 +95,7 @@ describe("hub", () => {
   it("never shows a model-sourced claim as attested", () => {
     for (const c of doc.querySelectorAll(".claim")) {
       if (CLAIMS[c.dataset.claim].attestation.source === "model") {
-        expect(c.dataset.status).toBe("proposed");
+        expect(c.dataset.status).toBe(CLAIMS[c.dataset.claim].attestation.rejection ? "rejected" : "proposed");
         expect(c.textContent).not.toContain("Attested by");
       }
     }

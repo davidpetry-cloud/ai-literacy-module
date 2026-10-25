@@ -57,7 +57,8 @@ describe("claim records", () => {
 
   it.each(ids)("%s: a model-sourced claim never resolves to attested", (id) => {
     if (CLAIMS[id].attestation.source !== SOURCE.MODEL) return;
-    expect(resolveStatus(CLAIMS[id])).toBe(STATUS.PROPOSED);
+    // Proposed, or Rejected when David has rejected it (with a reason); never Attested.
+    expect(resolveStatus(CLAIMS[id])).toBe(CLAIMS[id].attestation.rejection ? STATUS.REJECTED : STATUS.PROPOSED);
   });
 
   it("a model claim dressed in human-looking fields still resolves to proposed", () => {
