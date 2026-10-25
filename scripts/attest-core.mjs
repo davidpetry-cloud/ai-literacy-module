@@ -46,7 +46,7 @@ export function makeAttestation(claim, current, form, today, proposal = current?
   // sources and places to look, which is what a basis names (David hit this on 2026-10-23, copying from the
   // desk's "What to check" box).
   const rationale = clean(proposal);
-  const check = /\bCheck\b/.test(proposal ?? "") ? clean(checkLine(proposal)) : "";
+  const check = CHECK_LINE.test(proposal ?? "") ? clean(checkLine(proposal)) : "";
   const argument = rationale.replace(check, " ").trim();
   const quotesCheck = check && check.includes(basis.replace(/^Check:\s*/i, ""));
   const echoes = [claim?.text, argument].map(clean).filter(Boolean);
@@ -84,8 +84,12 @@ const NOT_SOURCES = new Set("Check Sources Lesson Lessons Each Both None Nothing
 const IN_COURSE = /course|page|screen|definition|judg|shown|sign-off|ledger|standard|ux-foundations/i;
 
 /** The part of a claim's reasoning that says where to check: its "Check:" lines, or all of it if it has none. */
+// A real check line: "Check:" or "Check, both on the Sources page …:". The word "check" in a sentence
+// ("Check the manual itself if you have access.") is not one (David, 2026-10-25: trait-not-diagnosis).
+export const CHECK_LINE = /\bCheck(?:,[^:.]{0,80})?:/;
+
 export function checkLine(rationale = "") {
-  const at = rationale.indexOf("Check");
+  const at = rationale.search(CHECK_LINE);
   return (at === -1 ? rationale : rationale.slice(at)).split(/(?<=\.) (?=(?:Basis |Rewritten |Revised |Written with ))/)[0];
 }
 

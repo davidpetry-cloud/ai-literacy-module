@@ -100,6 +100,13 @@ describe("a basis worth a second look", async () => {
     expect(basisHint(inCourse, "Checked Against Design Principle")).toMatch(/course itself/);
   });
   it("never flags a sign-off with no reasoning to compare against", () => expect(basisHint("", "anything")).toBeNull());
+  // David, 2026-10-25: trait-not-diagnosis stayed flagged because "Check the manual itself" was read as its check.
+  it("doesn't mistake the word 'check' in a sentence for a check line", () => {
+    const r = "Paulhus and Williams (2002) for the traits as subclinical. DSM-5-TR, Section II. Check the manual itself if you have access.";
+    expect(checkLine(r)).toBe(r);
+    expect(basisHint(r, "Checked against Paulhus, D. L., & Williams, K. M. (2002).")).toBeNull();
+    expect(checkLine("Check, both on the Sources page: Paulhus (2016). Revised 2026-09-24: x.")).toMatch(/^Check, both/);
+  });
   it("reads the check, not the change notes after it", () => {
     expect(checkLine(sourced)).not.toMatch(/Rewritten/);
   });
