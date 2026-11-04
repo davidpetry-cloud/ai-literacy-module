@@ -1730,6 +1730,12 @@ const moves = (list) => `<ol class="moves">${list.map((m) => `<li>${esc(m)}</li>
 const watch = (text) => `<div class="watch"><b>Watch for</b>${esc(text)}</div>`;
 const targets = (ids) => `<span class="targets">Objectives ${ids.map(esc).join(", ")}</span>`;
 
+// Long pages (a lesson runs 10 to 30 screens on a phone) get a row of links to their parts (David, 2026-11-04).
+const pageNav = (links) =>
+  `<nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ul>${links
+    .map(([id, text]) => `<li><a href="#${id}">${esc(text)}</a></li>`)
+    .join("")}</ul></nav>`;
+
 // A first-time visitor needs to know why the choice is there (David, 2026-11-04): the legend asks a plain
 // question, one line says what changes, and each option says who it means.
 function trackPicker(current) {
@@ -1850,7 +1856,15 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
   const essentialCards = essentials().map((l) => card(l)).join("");
 
   doc.querySelector("#content").innerHTML = `
-    <section class="search" aria-labelledby="search-h"><h2 id="search-h">Search the course</h2>
+    ${pageNav([
+      ["search", "Search"],
+      ...(essentialCards ? [["essentials", "Essentials"]] : []),
+      ["lessons", "Lessons"],
+      ["built", "How it's built"],
+      ["evaluation", "Evaluation"],
+      ["claims", "Claims"]
+    ])}
+    <section class="search" id="search" aria-labelledby="search-h"><h2 id="search-h">Search the course</h2>
       <form role="search" id="search-form" class="search-form">
         <label for="course-search">Search lessons, objectives, stages and claims</label>
         <div class="search-row"><input id="course-search" type="search" autocomplete="off" spellcheck="false" value="${esc(query)}"><button type="button" class="btn" id="search-clear">Clear search</button></div>
@@ -1861,7 +1875,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
     ${essentialCards ? `<section id="essentials" class="band"><div class="band-bg" aria-hidden="true"></div><h2>Essentials</h2><p class="lede">Habits anyone needs, at any point in the course.</p><div class="cards">${essentialCards}</div></section>` : ""}
     <section id="lessons"><h2>Lessons</h2><p class="lede">${esc(TRACKS[track].who)}.</p>${track === "students" ? studentsNote : ""}${lessons}</section>
 
-    <section><h2>How it's built</h2>
+    <section id="built"><h2>How it's built</h2>
       <table class="basis"><thead><tr><th>Framework</th><th>Its one job here</th></tr></thead><tbody>
         <tr><td>Backward design<br><small>Wiggins &amp; McTighe</small></td><td>Order of work: objectives first, then the evidence that shows each was met, then the activities. The test suite refuses a lesson that skips a step.</td></tr>
         <tr><td>Revised Bloom's taxonomy<br><small>Anderson &amp; Krathwohl</small></td><td>Every objective names a level and an observable verb. "Understand" and "know" are not allowed as the verb.</td></tr>
@@ -1871,7 +1885,7 @@ export function renderHub(doc, { track = TRACK_IDS[0], now: clock = new Date(), 
       </tbody></table>
     </section>
 
-    <section><h2>Evaluation</h2>
+    <section id="evaluation"><h2>Evaluation</h2>
       <p class="lede">Four levels, after Kirkpatrick. Each builds on the one before, from how learners react on the day to what changes for the school or team.</p>
       <ol class="eval-levels">${Object.entries(EVALUATION)
         .map(
@@ -1937,15 +1951,16 @@ export function renderSources(doc) {
     })
     .join("");
   doc.querySelector("#content").innerHTML = `
-    <section aria-labelledby="help-h"><h2 id="help-h">Help check this course</h2>
+    ${pageNav([["help", "Help check this course"], ["by-lesson", "Main sources by lesson"], ["all", "All sources"]])}
+    <section id="help" aria-labelledby="help-h"><h2 id="help-h">Help check this course</h2>
       <p class="lede">This course teaches people to check their sources, so its own sources are open to checking. If you find a claim the evidence doesn't support, or a citation that's wrong, please say so. Every claim's status is in the <a href="index.html#claims">claims ledger</a>; a claim counts as attested only when a named person signs it.</p>
       <ul class="review-docs">${REVIEW_DOCS.map(([path, name, what]) => `<li><a href="${REPO}/blob/main/${path}">${esc(name)}</a>: ${esc(what)}.</li>`).join("")}</ul>
       <p class="lede">Specialists in psychology, criminology, education, human–computer interaction and law are especially welcome, but the evidence decides, not the title. To confirm or challenge a claim or source, <a href="${REPO}/issues/new?template=source-review.yml">fill in a review on GitHub</a>. It asks which claim or source, what you found, and the evidence. Reviews are evidence for the author; a claim is attested only when the author signs it. GitHub is for ages 13 and up; if you're under 18, ask a teacher to report it for you.</p>
     </section>
-    <section aria-labelledby="by-lesson-h"><h2 id="by-lesson-h">Main sources by lesson</h2>
+    <section id="by-lesson" aria-labelledby="by-lesson-h"><h2 id="by-lesson-h">Main sources by lesson</h2>
       <div class="claim-groups">${byLesson}</div>
     </section>
-    <section aria-labelledby="all-h"><h2 id="all-h">All sources</h2>
+    <section id="all" aria-labelledby="all-h"><h2 id="all-h">All sources</h2>
       <p class="lede">${list.length} sources, in alphabetical order. Made-up sources planted in exercises aren't listed, because they don't exist.</p>
       <ol class="refs">${list.map((x) => sourceItem(x)).join("")}</ol>
     </section>`;
@@ -2094,6 +2109,14 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
 
   content.innerHTML = `
     ${lesson.support ? `<aside class="support" aria-label="Before you start"><p><b>Before you start.</b> ${esc(lesson.support)}</p></aside>` : ""}
+    ${pageNav([
+      ["stage-warmup", "Warm-up"],
+      ["stage-concrete", "Concrete"],
+      ["stage-pictorial", "Pictorial"],
+      ["stage-abstract", "Abstract"],
+      ["stage-check", "Check"],
+      ["use-it", "Use it this week"]
+    ])}
     <div class="obj" id="objectives"><p><b>By the end, learners can:</b></p><ul>${lesson.objectives
       .map((o) => `<li><span class="oid">${esc(o.id)}</span> ${esc(o.text)} <span class="bloom">${esc(o.bloom)}</span></li>`)
       .join("")}</ul><p class="legend">Boxes marked <b>Facilitator</b> are for whoever leads the session. Everything else is for learners.</p></div>
@@ -2146,7 +2169,7 @@ export function renderLesson(doc, lesson, { track = TRACK_IDS[0], now: clock = n
       <div class="exit"><b>Exit ticket</b><p>${esc(lesson.check.exit.rating)}</p><p>${esc(lesson.check.exit.open)}</p></div>
     </section>
 
-    <section class="block transfer"><h2>Use it this week</h2>
+    <section class="block transfer" id="use-it"><h2>Use it this week</h2>
       <p>${esc(lesson.transfer[track])}</p>
       <p class="sense">${esc(lesson.followUp ?? "Follow up in two weeks: bring one AI output you used and show what you checked.")}</p>
     </section>
@@ -2320,6 +2343,21 @@ export function boot(doc) {
   });
 
   win.addEventListener("hashchange", () => openClaimGroup(doc, win.location.hash));
+
+  // "Back to top" shows once the header has scrolled away. It moves focus to the top too, so a keyboard
+  // user carries on from there. With reduce motion on, the page jumps instead of gliding.
+  const toTop = doc.querySelector(".to-top");
+  const header = doc.querySelector("#page-top");
+  if (toTop && header) {
+    if (win.IntersectionObserver) new win.IntersectionObserver(([e]) => (toTop.hidden = e.isIntersecting)).observe(header);
+    else toTop.hidden = false;
+    toTop.addEventListener("click", (e) => {
+      e.preventDefault();
+      const still = win.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      win.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+      header.focus({ preventScroll: true });
+    });
+  }
   draw();
   if (page === "hub" && win.location.hash) doc.getElementById(win.location.hash.slice(1))?.scrollIntoView();
   doc.body.dataset.ready = "true";

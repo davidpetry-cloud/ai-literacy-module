@@ -2247,6 +2247,29 @@ describe("user control and context fixes (UX audit, 2026-09-24)", () => {
     expect(doc.activeElement).toBe(doc.querySelector('input[name="track"][value="professionals"]'));
   });
 
+  // Getting around long pages (David, 2026-11-04): a skip link first, "Back to top" outside the re-rendered
+  // area, and an "On this page" row whose every link lands on something.
+  it.each([
+    ["index.html", "http://localhost/index.html"],
+    ["lesson.html", "http://localhost/lesson.html?n=1&track=educators"],
+    ["sources.html", "http://localhost/sources.html"]
+  ])("%s has a skip link, a way back to the top, and links to its parts", async (name, url) => {
+    const { boot } = await import("../lesson-core.js");
+    const dom = new JSDOM(readFileSync(new URL(`../${name}`, import.meta.url), "utf8").replace(/<script[\s\S]*?<\/script>/g, ""), { url });
+    const doc = dom.window.document;
+    boot(doc);
+    const first = doc.querySelector("a[href], button, input");
+    expect(first.textContent).toBe("Skip to main content");
+    expect(doc.querySelector(first.getAttribute("href")).tagName).toBe("MAIN");
+    const toTop = doc.querySelector("a.to-top");
+    expect(toTop.textContent.trim()).toMatch(/Back to top$/);
+    expect(toTop.closest("#top, #content")).toBeNull();
+    expect(doc.querySelector(toTop.getAttribute("href")).tagName).toBe("HEADER");
+    const links = [...doc.querySelectorAll('nav[aria-label="On this page"] a')];
+    expect(links.length).toBeGreaterThanOrEqual(3);
+    for (const a of links) expect(doc.querySelector(a.getAttribute("href")), a.textContent).not.toBeNull();
+  });
+
   // A first-time visitor should see why the choice is there (David, 2026-11-04).
   it.each(["index.html", "lesson.html"])("%s says what the audience choice is for and who each option means", async (name) => {
     const { boot } = await import("../lesson-core.js");

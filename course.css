@@ -395,6 +395,23 @@ ol.probs li{margin-bottom:16px}
 .figure{overflow-x:auto;margin-bottom:12px;container-type:inline-size}
 .btn{font-family:var(--sans);font-weight:600;font-size:var(--fs-sm);background:var(--btn-bg);color:var(--on-dark);border:2px solid var(--btn-edge);border-radius:var(--r-md);padding:8px 16px;cursor:pointer;margin-bottom:16px;min-height:44px}
 .btn:hover{background:var(--btn-bg-hover)}
+
+/* Getting around a long page (David, 2026-11-04). A skip link for keyboard users, shown when it has focus;
+   "Back to top" in the corner once the header has gone; and a row of links to each part of the page.
+   Focused things scroll clear of the corner button (WCAG 2.4.11, Focus Not Obscured). */
+html{scroll-padding-bottom:calc(48px + 24px)}
+a.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.skip{position:absolute;left:16px;top:-200px;z-index:30;margin:0}
+.skip:focus{top:16px}
+#page-top:focus{outline:none}
+.to-top{position:fixed;right:16px;bottom:16px;z-index:20;margin:0;box-shadow:var(--lift)}
+.to-top[hidden]{display:none}
+.toc{margin:0 0 24px}
+.toc-label{font-family:var(--sans);font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);margin:0 0 8px}
+.toc ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.toc a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1.5px solid var(--edge);border-radius:var(--r-pill);background:var(--card);color:var(--ink);font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;text-decoration:none}
+.toc a:hover{border-color:var(--ink-2)}
+main section[id],main .block[id]{scroll-margin-top:16px}
 /* Next lesson is the main action; previous is quieter (hierarchy). Both are 44px targets. */
 .lesson-nav{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;margin:24px 0 0}
 .lesson-nav a{min-height:44px;display:inline-flex;align-items:center;font-family:var(--sans);font-weight:600}
@@ -654,7 +671,10 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
 .align tbody th{color:var(--ink-3);text-align:left}
 .align td{color:var(--att-text);font-weight:700}
 
-.foot{font-size:var(--fs-sm);color:var(--muted);padding-bottom:48px}
+/* Room under the last links, so "Back to top" in the corner never sits over them. footer.foot outranks the
+   phone rule .wrap{padding:0 16px}, which used to take the footer's bottom padding away. */
+.foot{font-size:var(--fs-sm);color:var(--muted)}
+footer.foot{padding-bottom:calc(48px + 48px)}
 .foot p{margin:0 0 8px;max-width:var(--measure)}
 /* Footer links sit in their own row, not in the sentence, so each can be a full 44px tap target (Apple's HIG). */
 .foot-links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0 24px}
@@ -666,6 +686,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
   .side{position:static}
   .top #top{display:block}
   .top #top > .tracks{flex-direction:row;flex-wrap:wrap;gap:0 24px}
+  .tracks-hint{max-width:none}
 }
 @media (max-width:560px){
   .wrap{padding:0 16px}
@@ -702,7 +723,7 @@ table.align{border-collapse:collapse;width:100%;font-family:var(--sans);font-siz
   .top,[data-page] .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none}
   .top h1,.facts b{color:#000}
   .facts,.top .sub,.top .eyebrow{color:#333}
-  .tracks,.btn,.back,.theme-toggle,.foot{display:none}
+  .tracks,.btn,.back,.theme-toggle,.foot,.toc{display:none}
   .card{box-shadow:none;transform:none}
   .lesson{grid-template-columns:minmax(0,1fr)}
   .side{position:static}
