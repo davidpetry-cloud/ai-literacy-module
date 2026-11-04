@@ -27,14 +27,17 @@ import lesson15 from "./lessons/lesson-15.js";
 export const TRACKS = {
   educators: {
     label: "Educators",
+    short: "Teachers and school staff",
     who: "K–12 teachers and school staff using AI for planning, feedback and communication"
   },
   professionals: {
     label: "Professionals",
+    short: "Adults using AI at work",
     who: "Adults using AI at work for writing, research, summaries and analysis"
   },
   students: {
     label: "Students",
+    short: "Grades 9 to 12",
     who: "Grades 9–12 learners using AI for study, research and writing"
   }
 };

@@ -2243,8 +2243,27 @@ describe("user control and context fixes (UX audit, 2026-09-24)", () => {
     const radio = doc.querySelector('input[name="track"][value="professionals"]');
     radio.checked = true;
     radio.dispatchEvent(new dom.window.Event("change", { bubbles: true }));
-    expect(live.textContent).toBe("Now showing the Professionals track.");
+    expect(live.textContent).toBe("Now showing it for Professionals.");
     expect(doc.activeElement).toBe(doc.querySelector('input[name="track"][value="professionals"]'));
+  });
+
+  // A first-time visitor should see why the choice is there (David, 2026-11-04).
+  it.each(["index.html", "lesson.html"])("%s says what the audience choice is for and who each option means", async (name) => {
+    const { boot } = await import("../lesson-core.js");
+    const { TRACKS } = await import("../course.js");
+    const url = name === "lesson.html" ? "http://localhost/lesson.html?n=1&track=educators" : "http://localhost/index.html";
+    const dom = new JSDOM(readFileSync(new URL(`../${name}`, import.meta.url), "utf8").replace(/<script[\s\S]*?<\/script>/g, ""), { url });
+    const doc = dom.window.document;
+    boot(doc);
+    const set = doc.querySelector("fieldset.tracks");
+    expect(set.querySelector("legend").textContent).toBe("Who is it for?");
+    const hint = doc.getElementById(set.getAttribute("aria-describedby"));
+    expect(hint.textContent).toMatch(/examples and tasks change/);
+    for (const [id, t] of Object.entries(TRACKS)) {
+      const label = set.querySelector(`input[value="${id}"]`).closest("label");
+      // Words stay apart in the accessible name: "Educators Teachers and school staff".
+      expect(label.textContent.replace(/\s+/g, " ").trim()).toBe(`${t.label} ${t.short}`);
+    }
   });
 });
 

@@ -1730,10 +1730,13 @@ const moves = (list) => `<ol class="moves">${list.map((m) => `<li>${esc(m)}</li>
 const watch = (text) => `<div class="watch"><b>Watch for</b>${esc(text)}</div>`;
 const targets = (ids) => `<span class="targets">Objectives ${ids.map(esc).join(", ")}</span>`;
 
+// A first-time visitor needs to know why the choice is there (David, 2026-11-04): the legend asks a plain
+// question, one line says what changes, and each option says who it means.
 function trackPicker(current) {
-  return `<fieldset class="tracks"><legend>Audience track</legend>${TRACK_IDS.map(
+  return `<fieldset class="tracks" aria-describedby="tracks-hint"><legend>Who is it for?</legend>
+    <p class="tracks-hint" id="tracks-hint">The examples and tasks change to fit. The lesson stays the same.</p>${TRACK_IDS.map(
     (t) =>
-      `<label><input type="radio" name="track" value="${t}"${t === current ? " checked" : ""}> ${esc(TRACKS[t].label)}</label>`
+      `<label><input type="radio" name="track" value="${t}"${t === current ? " checked" : ""}> <span class="t-text"><span class="t-name">${esc(TRACKS[t].label)}</span> <span class="t-who">${esc(TRACKS[t].short)}</span></span></label>`
   ).join("")}</fieldset>`;
 }
 
@@ -2312,7 +2315,7 @@ export function boot(doc) {
       doc.querySelector(`input[name="track"][value="${track}"]`)?.focus();
       // The whole page re-rendered around the radio. Say so, for anyone who can't see it (context; WCAG 4.1.3).
       const announce = doc.querySelector("#announce");
-      if (announce) announce.textContent = `Now showing the ${TRACKS[track].label} track.`;
+      if (announce) announce.textContent = `Now showing it for ${TRACKS[track].label}.`;
     });
   });
 
