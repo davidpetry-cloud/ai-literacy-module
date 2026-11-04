@@ -782,11 +782,21 @@ export const ATTESTATIONS = {
     }
   },
   "coercive-control-pattern": {
-    "rejection": {
-      "by": "David Petry",
-      "role": "Course author and UX lead",
-      "reason": "I do not have a link to this article and I do not know if it even exists.",
-      "reviewed": "2026-10-25"
+    "source": "practitioner",
+    "by": "David Petry",
+    "role": "Course author and UX lead",
+    "basis": "Stark, E. (2023). Coercive control: How men entrap women in personal life (2nd ed.). Oxford University Press. (First edition 2007.) https://doi.org/10.1093/oso/9780197639986.001.0001 (book page and chapter summaries): coercive control as an ongoing pattern of domination, not single incidents. (2) Home Office, statutory guidance, below. The book was cited as 'Stark (2007)' with the 2023 subtitle and no link until 2026-10-25, when David couldn't find it; both editions are confirmed in Crossref. Home Office (April 2023), Controlling or Coercive Behaviour Statutory Guidance Framework, under the Serious Crime Act 2015, section 76 ('repeatedly or continuously'); it lists isolating, exploiting, depriving of independence, threats, humiliation and intimidation, and counts online messages and tracking as evidence.",
+    "verified": "2026-11-04",
+    "ttlDays": 730,
+    "supersedes": {
+      "source": "model",
+      "model": "claude-opus-5-5",
+      "rejection": {
+        "by": "David Petry",
+        "role": "Course author and UX lead",
+        "reason": "I do not have a link to this article and I do not know if it even exists.",
+        "reviewed": "2026-10-25"
+      }
     }
   },
   "grooming-stages": {
