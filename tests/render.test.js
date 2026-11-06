@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
-import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, shareGrid, CALL_KIND, pauseVerdict, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
+import { modelName, renderHub, renderLesson, STATUS_LABEL, PARTS, INVENTED, LEVELS, SIGNOFF_LABEL, signoffStatus, signoffTimeline, ERROR_LABEL, KINDS, checklistStatus, runChecklist, PRINCIPLE_LABEL, fixOrder, AUDIT_LABEL, checkContrast, contrastRatio, nearestPassing, parseHex, buildSearchIndex, searchCourse, highlight, searchStatus, VERDICT_LABEL, overlapMean, overlapPick, THREAD_LABEL, PATTERN_LABEL, MOVE_LABEL, RESPONSE_LABEL, planStatus, planFor, INBOX_LABEL, SIGN_LABEL, SHARE_LABEL, shareStatus, shareGrid, CALL_KIND, pauseVerdict, REQUEST_LABEL, LOOK_LABEL, recoverStatus, recoverMoveText, placesText, calendarDay, lessonNav, renderSources, sortedSources, apaHtml } from "../lesson-core.js";
 import { COURSE, TRACK_IDS, getLesson, EVALUATION, lessonLabel, mainLessons, essentials, GROUPS } from "../course.js";
 import { CLAIMS } from "../claims.js";
 
@@ -414,7 +414,8 @@ describe("lesson 4: today is the learner's own date", () => {
 });
 
 describe("lesson 4: the sign-off builder", () => {
-  const today = new Date().toISOString().slice(0, 10);
+  // The learner's own date, as the builder uses it; the UTC date is tomorrow in the Americas each evening.
+  const today = calendarDay().toISOString().slice(0, 10);
 
   it("steps through Proposed, Lapsed and Attested as the fields change, using the real engine", () => {
     const doc = lesson4Doc(TRACK_IDS[0]);
