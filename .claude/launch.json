@@ -15,6 +15,20 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["scripts/desk-preview.mjs"],
       "port": 8092
+    },
+    {
+      "name": "two-forecasts-prototype",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8096",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/Users/davidjamespetry/Projects/two-forecasts-one-sky/site"
+      ],
+      "port": 8096
     }
   ]
 }
