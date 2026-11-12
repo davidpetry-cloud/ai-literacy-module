@@ -268,6 +268,11 @@ shorter and plainer. Never raise a ceiling to make a lesson pass.
   a box cut into the page looked "boxy"); the Evaluation levels are the same
   cards in stone and earth, cool to warm: slate, verdigris, pine, clay. Lessons in design get a dashed outline and a dashed
   "In design" status. Number chips carry the `textures/stone.svg` grain.
+- **Lesson pages wear the same frame** (David, 2026-11-12): one `.top` rule serves
+  every page, so a lesson's header has the grain, roof diamonds and Danube wave,
+  with its lamplight in the lesson's fill (`--lcf`) instead of a flat colour bar.
+  Stage blocks, the objectives box and sidebar boxes take petal corners and
+  `--lift`; a stage's top rule is 6px in its own colour (`--stage`). Print hides the wave.
 - **Depth by illusion, never real 3D:** light, shade and shadow; nothing rotates,
   skews or tilts, so text never warps. Hover lifts a card straight up (6px) and
   deepens its shadow (David: "bring the motion back"); the shadow is `--lift-hi`.
