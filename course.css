@@ -104,7 +104,7 @@ html{font-size:106.25%}
    learner's "Allow motion" beat the device-wide reduce rule above. */
 @supports (animation-timeline:view()){
   :root[data-motion="on"] [data-stage],:root[data-motion="on"] .card{animation:rise linear both!important;animation-timeline:view()!important;animation-range:entry 0% entry 70%!important}
-  :root[data-motion="on"] .top[data-lesson]::after{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:var(--lc);transform-origin:0 50%;animation:progress linear both;animation-timeline:scroll(root);z-index:10;pointer-events:none}
+  :root[data-motion="on"] .top[data-lesson] .hdr-row::after{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:var(--lc);transform-origin:0 50%;animation:progress linear both;animation-timeline:scroll(root);z-index:10;pointer-events:none}
 }
 :root[data-motion="on"] .key[open] > :not(summary){animation:reveal .18s ease-out!important}
 @keyframes rise{0%{translate:0 40px}75%{translate:0 -4px}100%{translate:0 0}}
@@ -119,9 +119,15 @@ a{color:var(--ink-2)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* header */
-.top{background:var(--header-bg);color:var(--on-dark);padding:24px 0 16px;
-  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
-  background-size:26px 26px}
+/* Every page's header wears the Singapore Math frame (David, 2026-10-20 for the hub and Sources; the lesson pages
+   followed on 2026-11-11): grain, a lamplight glow and Zsolnay roof diamonds (David's pick over the rosette), closed
+   by the Danube wave with an amber line along its crest. The amber line is also the header's edge against the dark page. */
+.top{position:relative;background:var(--header-bg);color:var(--on-dark);padding:24px 0 48px;
+  background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/roof-diamonds.svg);
+  background-size:160px 160px,auto,32px 32px}
+.top::after,.top::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:40px;pointer-events:none;
+  mask:url(textures/wave-fill.svg) center / 100% 100% no-repeat;background:var(--paper)}
+.top::before{bottom:0;mask-image:url(textures/wave-line.svg);background:var(--amber);z-index:1}
 .top a{color:var(--header-muted)}
 .hdr-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .top a.back{font-family:var(--sans);font-size:var(--fs-lg);color:var(--pill-text);text-decoration:none;
@@ -152,18 +158,6 @@ a{color:var(--ink-2)}
 /* Room under the header. main also has .wrap, whose padding shorthand would win over a plain
    main rule (a class beats an element) and leave the content touching the header. */
 main.wrap{padding-top:32px}
-/* The hub and Sources headers have no lesson-colour band, and in dark mode the header and page are
-   almost the same colour, so an amber rule marks the header's edge (as on Singapore Math). */
-/* The hub and Sources headers wear the Singapore Math frame (David, 2026-10-20): grain, a lamplight glow and
-   Zsolnay roof diamonds (David's pick over the rosette), closed by the Danube wave with an amber line along its crest. The amber line
-   is also the header's edge against the dark page. */
-[data-page="hub"] .top,[data-page="sources"] .top{position:relative;padding-bottom:48px;
-  background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--chip-bg) 60%,transparent),transparent 60%),url(textures/roof-diamonds.svg);
-  background-size:160px 160px,auto,32px 32px}
-[data-page="hub"] .top::after,[data-page="hub"] .top::before,[data-page="sources"] .top::after,[data-page="sources"] .top::before{
-  content:"";position:absolute;left:0;right:0;bottom:-1px;height:40px;pointer-events:none;
-  mask:url(textures/wave-fill.svg) center / 100% 100% no-repeat;background:var(--paper)}
-[data-page="hub"] .top::before,[data-page="sources"] .top::before{bottom:0;mask-image:url(textures/wave-line.svg);background:var(--amber);z-index:1}
 /* Section headings on the hub carry the flourish beneath them. */
 [data-page="hub"] #content > section > h2::after{content:"";display:block;width:132px;height:16px;margin-top:8px;
   mask:url(textures/flourish.svg) center / contain no-repeat;background:var(--prop)}
@@ -266,7 +260,8 @@ body[data-page="hub"]{overflow-x:clip}
 #essentials.band .status{color:var(--on-dark);border-color:color-mix(in oklch,var(--lcf) 45%,var(--on-dark))}
 #essentials.band .card h3 a:focus-visible::after{outline-color:var(--amber)}
 #essentials.band .card:not(.pending):has(h3 a:hover),#essentials.band .card:not(.pending):has(h3 a:focus-visible){border-color:color-mix(in oklch,var(--on-dark) 55%,transparent);box-shadow:0 18px 36px -20px oklch(0 0 0 / .7)}
-.top[data-lesson]{border-bottom:8px solid var(--lc)}
+/* A lesson's header keeps the frame; its lamplight takes the lesson's own fill, which replaced a flat colour bar (2026-11-11). */
+.top[data-lesson]{background-image:url(textures/grain.svg),radial-gradient(120% 90% at 85% -10%,color-mix(in oklch,var(--lcf) 85%,transparent),transparent 62%),url(textures/roof-diamonds.svg)}
 .lesson-no{display:inline-block;background:url(textures/stone.svg),var(--lcf,var(--lc));color:var(--on-lc);font-weight:700;padding:4px 12px;border-radius:var(--r-sm)}
 .bloom{font-family:var(--sans);font-size:var(--fs-xs);color:var(--ink-3);background:var(--card);border:1px solid var(--edge);padding:2px 8px;border-radius:var(--r-sm);margin-right:8px;white-space:nowrap;letter-spacing:.02em}
 .note{font-size:var(--fs-sm);color:var(--muted);margin:12px 0 0}
@@ -334,19 +329,19 @@ details[open] > summary::before{content:"▾" / ""}
 /* lesson */
 /* The sidebar is sized in rem, so it grows with the reader's text size (WCAG 1.4.4: 200% text without loss). */
 .lesson{display:grid;grid-template-columns:minmax(0,1fr) 17.5rem;gap:24px;align-items:start}
-.obj{background:var(--card);border:1.5px solid var(--edge);border-left:4px solid var(--amber);padding:16px 24px;border-radius:0 var(--r-md) var(--r-md) 0;margin-bottom:16px}
+.obj{background:var(--card);border:1.5px solid var(--edge);border-left:6px solid var(--amber);padding:16px 24px;border-radius:var(--r-sm) var(--r-xl) var(--r-sm) var(--r-sm);margin-bottom:24px;box-shadow:var(--lift)}
 .obj p{margin:0 0 8px}
 .obj ul{margin:0;padding-left:0;list-style:none}
 .obj li{margin-bottom:8px}
 .oid{font-family:var(--sans);font-weight:600;color:var(--ink-3);margin-right:4px}
-.block{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-lg);padding:24px 24px;margin-bottom:16px}
+.block{background:linear-gradient(color-mix(in oklch,var(--stage,transparent) 55%,transparent),color-mix(in oklch,var(--stage,transparent) 55%,transparent)) 0 4px / 100% 1px no-repeat,var(--card);border:1.5px solid var(--edge);border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);padding:24px 24px;margin-bottom:24px;box-shadow:var(--lift)}
 .block > h2{font-family:var(--serif);font-size:var(--fs-lg);font-weight:600;margin:0 0 8px;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;line-height:var(--lh-heading)}
-.block.c{border-top:4px solid var(--teal)}
-.block.p{border-top:4px solid var(--amber)}
-.block.a{border-top:4px solid var(--peri)}
-.block.w{border-top:4px solid var(--rose)}
-.block.why{border-top:4px solid var(--ink-3)}
-.block.transfer{border-top:4px solid var(--ink)}
+.block.c{--stage:var(--teal);border-top:6px solid var(--stage)}
+.block.p{--stage:var(--amber);border-top:6px solid var(--stage)}
+.block.a{--stage:var(--peri);border-top:6px solid var(--stage)}
+.block.w{--stage:var(--rose);border-top:6px solid var(--stage)}
+.block.why{--stage:var(--ink-3);border-top:6px solid var(--stage)}
+.block.transfer{--stage:var(--ink);border-top:6px solid var(--stage)}
 .relevance{font-family:var(--serif);font-size:var(--fs-md);color:var(--ink-2);max-width:var(--measure-serif)}
 .mins{font-family:var(--sans);font-size:var(--fs-xs);color:var(--on-dark);background:var(--chip-bg);padding:2px 8px;border-radius:var(--r-sm);font-weight:400}
 .sense{font-family:var(--sans);font-size:var(--fs-base);font-weight:600;color:var(--teal-text);margin:0 0 12px}
@@ -662,7 +657,7 @@ table.grid-alt{display:none;width:100%;border-collapse:collapse;table-layout:aut
 .g-mark text{fill:var(--on-dark);font-size:16px;font-weight:700;text-anchor:middle}
 
 .side{position:sticky;top:18px;display:grid;gap:16px}
-.sidebox{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-lg);padding:16px 16px;font-size:var(--fs-sm)}
+.sidebox{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm);padding:16px 16px;font-size:var(--fs-sm);box-shadow:var(--lift)}
 .sidebox h2{font-family:var(--serif);font-size:var(--fs-md);margin:0 0 8px;color:var(--ink);line-height:var(--lh-heading)}
 .sidebox p{margin:0 0 12px}
 .sidebox p b{text-transform:capitalize;display:block;font-family:var(--sans);font-size:var(--fs-xs);color:var(--teal-text)}
@@ -720,7 +715,8 @@ footer.foot{padding-bottom:calc(48px + 48px)}
     --edge:#666;--btn-edge:#0F2338;--shadow:#000000;--hi:#FFFFFF;--glow:#FFFFFF;--paper:#fff;--card:#fff;--line:#999;--text:#000;--muted:#333;
   }
   body{background:#fff;font-size:11pt}
-  .top,[data-page] .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none}
+  .top{background:#fff;color:#000;border-bottom:2px solid #000;background-image:none;padding-bottom:16px}
+  .top::before,.top::after{display:none}
   .top h1,.facts b{color:#000}
   .facts,.top .sub,.top .eyebrow{color:#333}
   .tracks,.btn,.back,.theme-toggle,.foot,.toc{display:none}

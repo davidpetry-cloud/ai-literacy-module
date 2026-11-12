@@ -96,8 +96,10 @@ describe.each(Object.keys(THEMES))("%s theme contrast", (name) => {
 // colour, so the hub and Sources headers need an edge that shows. In light mode the dark header is its own edge.
 describe("header edge", () => {
   // Since 2026-10-20 the edge is the Singapore Math wave: an amber line along the crest of the Danube.
-  it("closes the hub and Sources header with the wave and its amber line", () => {
-    expect(rules.find((r) => r.sel === '[data-page="hub"] .top::before,[data-page="sources"] .top::before')?.body).toMatch(/mask-image:url\(textures\/wave-line\.svg\);background:var\(--amber\)/);
+  // Since 2026-11-11 the lesson pages wear it too, so the rule is the header's own, not one page's.
+  it("closes every page's header with the wave and its amber line", () => {
+    expect(rules.find((r) => r.sel === ".top::before")?.body).toMatch(/mask-image:url\(textures\/wave-line\.svg\);background:var\(--amber\)/);
+    expect(css).not.toMatch(/\[data-page="(hub|sources|lesson)"\] \.top[:{,]/);
     for (const f of ["roof-diamonds", "wave-fill", "wave-line", "flourish"]) expect(read(`textures/${f}.svg`), f).toContain("<svg");
   });
 
@@ -538,6 +540,23 @@ describe("theme toggle", () => {
     expect(rules.find((r) => r.sel === ".status").body).toContain("border:1.5px solid var(--lc,var(--edge))");
     expect(css).toMatch(/\.group-label\{[^}]*text-transform:uppercase/);
     expect(css).toMatch(/\.group-label::after\{[^}]*height:2px;background:var\(--lc\)/);
+  });
+
+  // Lesson pages match the hub (David, 2026-11-11): stage blocks, the objectives box and the sidebar boxes take
+  // the petal corners and the soft lift; a stage's top rule is 6px in its own colour. Blocks are not links,
+  // so nothing lifts on hover, and the boxes inside a block (notes, keys) stay plain.
+  it("draws lesson blocks and sidebar boxes as petal cards, each stage under its own colour rule", () => {
+    for (const sel of [".block", ".sidebox"]) {
+      const box = rules.find((r) => r.sel === sel).body;
+      expect(box, sel).toContain("border-radius:var(--r-xl) var(--r-sm) var(--r-xl) var(--r-sm)");
+      expect(box, sel).toContain("box-shadow:var(--lift)");
+    }
+    expect(rules.find((r) => r.sel === ".obj").body).toContain("box-shadow:var(--lift)");
+    for (const stage of ["c", "p", "a", "w", "why", "transfer"]) expect(rules.find((r) => r.sel === `.block.${stage}`).body, stage).toMatch(/--stage:var\(--[a-z0-9-]+\);border-top:6px solid var\(--stage\)/);
+    expect(css).not.toMatch(/\.(block|sidebox|obj)[^{},]*:hover/);
+    // The lesson's colour is in the header's lamplight, not a flat bar under it.
+    expect(rules.find((r) => r.sel === ".top[data-lesson]").body).toContain("var(--lcf)");
+    expect(css).not.toContain("border-bottom:8px solid var(--lc)");
   });
 
   // Essentials sit in a dark frame of their own, like the Singapore Math hub's access band.
